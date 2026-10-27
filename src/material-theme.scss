@@ -1,0 +1,3 @@
+@use '@angular/material' as mat;
+html { @include mat.theme((color:(primary:mat.$green-palette,tertiary:mat.$azure-palette),typography:Arial,density:0)); }
+/* Valentina: adaptar las paletas al Style Guide sin modificar los estilos locales de otros módulos. */

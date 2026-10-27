@@ -1,0 +1,13 @@
+{
+  "tipo": "estructura-sin-implementacion",
+  "pantallas": 120,
+  "carpetas_dialogo": 8,
+  "layouts": 5,
+  "componentes_reutilizables": 13,
+  "campos_formulario": 0,
+  "api_conectada": false,
+  "fecha_local": "2026-10-24",
+  "verificacion_estructura": "Correcta",
+  "compilacion_angular_22": "Correcta",
+  "pantallas_desarrolladas": 0
+}

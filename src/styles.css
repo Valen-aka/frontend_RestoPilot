@@ -1,0 +1,2 @@
+:root{--rp-primary:#1b7954;--rp-navy:#15324e;--rp-container:#d8f2e3;--rp-surface:#fffbf7;--rp-ink:#172d3b;--rp-outline:#dce4dd;--rp-radius:16px;--rp-space:8px}
+*{box-sizing:border-box}body{margin:0;background:var(--rp-surface);color:var(--rp-ink);font-family:Arial,Helvetica,sans-serif}p{line-height:1.65}a:focus-visible,button:focus-visible{outline:3px solid var(--rp-navy);outline-offset:4px}mat-card-content{padding-top:16px!important}

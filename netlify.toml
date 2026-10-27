@@ -1,0 +1,5 @@
+[build]
+command = "npm run build"
+publish = "dist/restopilot/browser"
+[build.environment]
+NODE_VERSION = "24.21.0"
