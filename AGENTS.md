@@ -29,3 +29,9 @@ No introducir HTTP, JWT, Supabase, usuarios ficticios ni operaciones reales sin 
 
 ## Verificar
 Ejecutar npm.cmd run verify. Una compilación correcta verifica la base, no la implementación de las 120 pantallas. Al implementar una pantalla, comparar Desktop/Mobile, validaciones y navegación. No marcar integración ni tareas como Done sin aceptación real.
+
+
+## Landing y reparto de archivos
+La landing forma parte de este frontend en `src/app/home/` y la ruta `/` carga el componente `Home`. No crear otro proyecto o servidor para la landing. Alexandra Fong es su única responsable, incluido despliegue; se conserva la estructura vacía hasta que se autorice implementar el diseño.
+
+Consultar `docs/ASIGNACION-EQUIPO.md` y `docs/asignacion-equipo.json` antes de modificar una carpeta. Estos archivos especifican el mantenedor principal de cada componente y archivo compartido. El inventario de las 120 pantallas se conserva sin cambios.

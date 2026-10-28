@@ -1,35 +1,36 @@
-# RestoPilot — Estructura completa, sin pantallas desarrolladas
+# RestoPilot — Frontend y Landing Page en una sola aplicación
 
+## Ejecutar por primera vez
 ```powershell
-cd RestoPilot-Estructura-Completa
+cd C:\Users\Alex\frontend_RestoPilot
 npm.cmd ci
 npm.cmd run dev
 ```
 
-Abrir http://localhost:4200/estructura para comprobar el inventario. La ruta / y las rutas de pantalla están vacías intencionalmente.
+- http://localhost:4200/ → Home / Landing Page, todavía sin contenido.
+- http://localhost:4200/estructura → inventario técnico de las 120 pantallas.
 
+Después de modificar código basta guardar con el servidor activo o ejecutar npm.cmd run dev. Repetir npm.cmd ci únicamente cuando cambien las dependencias/lockfile.
+
+## Landing integrada
+La landing está en src/app/home/: home.ts, home.html y home.css. La ruta / ya carga Home desde app.routes.ts. No se utiliza un proyecto o servidor de landing separado. Toda la landing, incluido su despliegue, corresponde a Alexandra Fong. Consultar src/app/home/README.md.
+
+## Quién modifica cada archivo
+- docs/ASIGNACION-EQUIPO.md: reparto por integrante, carpeta y componente.
+- docs/asignacion-equipo.json: inventario completo de archivos con un responsable principal.
+- docs/pantallas-y-responsables.json: las 120 pantallas y sus referencias US originales.
+
+Reservas y Pedidos tienen responsables distintos por pantalla; no asignar toda la carpeta de esos dominios a una sola persona. Los componentes compartidos tienen un mantenedor principal para evitar cambios simultáneos.
+
+## Verificar
 ```powershell
 npm.cmd run verify
 ```
 
-Requiere Node 24.21.0 o compatible con el package.json. Extraer en una carpeta nueva, sin mezclar con versiones anteriores.
+Node recomendado: 24.21.0. La base incluye configuración Angular 22, Material, Reactive Forms vacíos, 120 carpetas de pantalla, ocho modales, layouts y componentes reutilizables.
 
-## Preparado
-- Configuración Angular 22, Angular Material, TypeScript y lockfile.
-- 120 carpetas con archivos .ts, .html y .css, una por frame.
-- Grupos de rutas y carga diferida. Variantes mediante ?vista=; no se crean endpoints de negocio.
-- FormGroup vacío donde corresponde; sin campos ni validaciones implementadas.
-- 8 carpetas de diálogo con MatDialog preparado y contenido vacío.
-- 5 layouts y 13 componentes reutilizables, sin diseño desarrollado.
-- Assets originales y variables visuales base.
-- home/ vacío para la landing de Alexandra.
-- Inventario, responsables, rutas y archivos en docs/pantallas-y-responsables.json.
+## Alcance
+Las plantillas y componentes siguen sin implementar. No hay operaciones, datos de ejemplo, login, backend, Supabase ni IA funcionando. Una compilación correcta comprueba la estructura, no la aceptación de tareas. Las 18 vistas IA son trabajo futuro y no aumentan los 122 SP del sprint sin IA más landing.
 
-## Por hacer
-Implementar el contenido de cada pantalla, completar campos/validaciones, completar el dise?o de layouts y conectar componentes reutilizables, abrir los modales desde las acciones y revisar Desktop/Mobile con las capturas.
-
-No hay formularios completos, datos de ejemplo, operaciones, login, backend, Supabase, guardias de acceso ni IA funcionando. Las interfaces IA tienen su carpeta como alcance visual futuro. Ninguna tarea queda Done por entregar esta estructura.
-
-La base incluye únicamente un índice técnico en /estructura. No confundirlo con el dashboard del producto.
-
-La landing y su despliegue pertenecen a Alexandra. Francesco conserva la preparación de despliegue de Angular; al compilarse home/ junto con el resto, la publicación del artefacto debe coordinarse. No se ha publicado nada.
+## Publicación pendiente
+Un solo build genera dist/restopilot/browser; netlify.toml y public/_redirects preparan una SPA. Alexandra es responsable de la landing y su despliegue; Francesco de preparar el despliegue de Angular. Al estar integradas ambas partes, se coordina una publicación única, sin mantener otra landing por separado. No se ha desplegado nada.
