@@ -1033,8 +1033,8 @@
     ],
     "owner": "Francesco Meza",
     "us": "US21",
-    "status": "Pendiente",
-    "contenidoImplementado": false
+    "status": "Implementado visualmente; integración pendiente",
+    "contenidoImplementado": true
   },
   {
     "slug": "op-categorias",
@@ -2088,8 +2088,8 @@
     ],
     "owner": "Francesco Meza",
     "us": "US22",
-    "status": "Pendiente",
-    "contenidoImplementado": false
+    "status": "Implementado visualmente; integración pendiente",
+    "contenidoImplementado": true
   },
   {
     "slug": "dueno-administrador-creado",
@@ -2110,8 +2110,8 @@
     ],
     "owner": "Francesco Meza",
     "us": "US22",
-    "status": "Pendiente",
-    "contenidoImplementado": false
+    "status": "Implementado visualmente; integración pendiente",
+    "contenidoImplementado": true
   },
   {
     "slug": "dueno-administrador-duplicado",
@@ -2132,8 +2132,8 @@
     ],
     "owner": "Francesco Meza",
     "us": "US22",
-    "status": "Pendiente",
-    "contenidoImplementado": false
+    "status": "Implementado visualmente; integración pendiente",
+    "contenidoImplementado": true
   },
   {
     "slug": "estado-403",

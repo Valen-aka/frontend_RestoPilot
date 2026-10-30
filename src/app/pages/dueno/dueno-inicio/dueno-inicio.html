@@ -1,3 +1,32 @@
-<!-- FRAME: dueno-inicio | Tu negocio, con perspectiva -->
-<!-- TODO: implementar Desktop y Mobile con Angular Material. -->
-<!-- No hay campos, datos ni contenido visual implementados. -->
+<rp-workspace-shell [role]="'owner'" breadcrumb="Dueño" active="inicio">
+  <header class="page-heading">
+    <p class="eyebrow">Dueño</p>
+    <h1>Tu negocio, con perspectiva</h1>
+    <p class="subtitle">Una sola vista. Mejores decisiones.</p>
+  </header>
+  <p class="dashboard-disclaimer"><span class="badge">Vista previa</span> Datos ilustrativos del diseño. No representan actividad de tu restaurante.</p>
+  <section class="metrics" aria-label="Indicadores ilustrativos del período">
+    <article class="metric"><p>Pagos confirmados</p><strong>S/ 1,280</strong><small>Período seleccionado</small></article>
+    <article class="metric"><p>Pedidos atendidos</p><strong>24</strong><small>Pedidos entregados</small></article>
+    <article class="metric"><p>Reservas completadas</p><strong>12</strong><small>Atenciones independientes</small></article>
+    <article class="metric"><p>Ocupación de mesas</p><strong>68%</strong><small>Por tiempo reservado</small></article>
+  </section>
+  <div class="columns dashboard-columns">
+    <section class="panel" aria-labelledby="service-title">
+      <h2 class="panel-title" id="service-title">Listo para el próximo servicio</h2>
+      <ul class="summary-list preparation-list">
+        <li><span aria-hidden="true">✓</span> Carta publicada y organizada</li>
+        <li><span aria-hidden="true">✓</span> Mesas configuradas para reservar</li>
+        <li><span aria-hidden="true">✓</span> Administradores con acceso individual</li>
+      </ul>
+      <p class="hint">Lista de preparación de referencia; todavía no se consulta el estado del restaurante.</p>
+      <a mat-flat-button class="primary" routerLink="/operacion/reportes">Consultar resultados</a>
+    </section>
+    <section class="panel" aria-labelledby="team-title">
+      <h2 class="panel-title" id="team-title">Un equipo bien acompañado</h2>
+      <h3>Cada persona, su propia cuenta</h3>
+      <p>Incorpora administradores para gestionar tu restaurante. Su rol y restaurante los determina el servidor.</p>
+      <a mat-stroked-button class="secondary" routerLink="/dueno/administradores/nuevo">Incorporar administrador</a>
+    </section>
+  </div>
+</rp-workspace-shell>
