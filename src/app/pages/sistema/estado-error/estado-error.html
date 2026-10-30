@@ -1,3 +1,5 @@
-<!-- FRAME: estado-error | No pudimos cargar la información -->
-<!-- TODO: implementar Desktop y Mobile con Angular Material. -->
-<!-- No hay campos, datos ni contenido visual implementados. -->
+<rp-cuenta-layout>
+ <header class="page-heading"><p class="eyebrow">Estados del sistema</p><h1>No pudimos cargar la información</h1><p class="subtitle">A veces, volver a empezar es el siguiente paso.</p></header>
+ <rp-empty-state icon="!" title="No pudimos cargar la información" description="Tus datos no se han confirmado. Reintenta cuando la conexión vuelva a estar disponible." actionLabel="Reintentar" (action)="retry()" />
+ @if(notice()){<p class="notice retry-note" role="status">{{notice()}}</p>}
+</rp-cuenta-layout>

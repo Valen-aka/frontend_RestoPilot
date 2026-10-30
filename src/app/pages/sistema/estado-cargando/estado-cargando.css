@@ -1,2 +1,1 @@
-:host{display:block}
-/* TODO: estilos responsive exclusivos de esta pantalla; utilizar variables globales. */
+:host{display:block}.preview-note{margin-top:20px;font-size:12px;color:#647480}
