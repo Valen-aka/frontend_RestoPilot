@@ -1,2 +1,1 @@
-:host{display:block}
-/* TODO: estilos responsive exclusivos de esta pantalla; utilizar variables globales. */
+:host{display:block}.preview-notice{margin-bottom:24px}.payment-amount{font-size:36px;line-height:1.2;font-weight:700;letter-spacing:-1px;margin:28px 0;color:#18334a}.payment-details{display:grid;gap:24px;margin:0 0 24px}.payment-details div{display:block}.payment-details dt{font-size:11px;color:#8798a2;margin:0 0 6px}.payment-details dd{font-size:13px;margin:0;color:#18334a}.panel>.notice{margin-top:24px}.panel>.actions{justify-content:flex-start;flex-wrap:wrap}

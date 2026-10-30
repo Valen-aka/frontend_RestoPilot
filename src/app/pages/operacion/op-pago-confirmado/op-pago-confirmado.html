@@ -1,3 +1,9 @@
-<!-- FRAME: op-pago-confirmado | Pago registrado -->
-<!-- TODO: implementar Desktop y Mobile con Angular Material. -->
-<!-- No hay campos, datos ni contenido visual implementados. -->
+<rp-workspace-shell [role]="'operation'" breadcrumb="Pagos" active="pagos">
+ <header class="page-heading"><p class="eyebrow">Pagos</p><h1>Pago registrado</h1><p class="subtitle">Un registro claro, sin duplicidades.</p></header>
+ <p class="notice preview-notice" role="note">Vista previa del estado confirmado con datos de la referencia. No se ha registrado ni confirmado un pago real.</p>
+ <section class="panel" aria-labelledby="confirmed-title"><h2 class="panel-title" id="confirmed-title">Pedido #1042</h2><span class="badge">Pagado · referencia visual</span><p class="payment-amount">S/ 66.00</p>
+  <dl class="definition-list payment-details"><div><dt>Método</dt><dd>Yape</dd></div><div><dt>Referencia</dt><dd>OP-204812</dd></div><div><dt>Fecha de pago</dt><dd>20 oct 2026 · 13:35</dd></div></dl>
+  <p class="notice">Pago confirmado e inamovible en la referencia. No se permite reemplazarlo ni volver a registrarlo.</p>
+  <div class="actions"><a mat-stroked-button class="secondary" routerLink="/operacion/pedido">Ver pedido</a><a class="text-link" routerLink="/operacion/pagos">Buscar otro pedido</a></div>
+ </section>
+</rp-workspace-shell>
