@@ -1,2 +1,13 @@
-:host{display:block}
-/* TODO: estilos responsive exclusivos de esta pantalla; utilizar variables globales. */
+:host { display: block; }
+.preview-note .badge { margin-right: 8px; }
+.notifications-panel { margin-top: 22px; }
+.notification-list { list-style: none; padding: 0; margin: 0; }
+.notification { display: grid; grid-template-columns: 40px minmax(0, 1fr); align-items: start; gap: 18px; padding: 25px 0 20px; border-bottom: 1px solid #e9eeea; }
+.notification:last-child { border-bottom: 0; padding-bottom: 10px; }
+.notification-icon { width: 40px; height: 40px; border-radius: 12px; display: grid; place-items: center; color: #219567; background: #edf6f0; font-size: 25px; }
+.clock-icon { font-size: 21px; }
+.notification .notification-time { font-size: 11px; margin: 4px 0 5px; color: #85939e; }
+.notification h3 { font-size: 13px; line-height: 1.5; margin: 0 0 6px; }
+.notification p { margin: 0; color: #758591; font-size: 12px; }
+.notification .text-link { font-size: 12px; font-weight: 400; padding: 8px 0; margin-top: 5px; justify-content: start; }
+@media (max-width: 600px) { .notification { grid-template-columns: 38px minmax(0,1fr); gap: 18px; padding-top: 24px; } .notification-icon { width: 38px; height: 38px; } .notification p { font-size: 11px; } }

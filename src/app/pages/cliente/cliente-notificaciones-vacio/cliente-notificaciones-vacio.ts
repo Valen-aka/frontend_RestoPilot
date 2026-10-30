@@ -1,6 +1,12 @@
 import {Component} from '@angular/core';
-/** Frame: cliente-notificaciones-vacio. Responsable: Francesco Meza. Implementación pendiente. */
-@Component({selector:'rp-cliente-notificaciones-vacio',imports:[],templateUrl:'./cliente-notificaciones-vacio.html',styleUrl:'./cliente-notificaciones-vacio.css'})
-export class ClienteNotificacionesVacioPage{
+import {RouterLink} from '@angular/router';
+import {MatButtonModule} from '@angular/material/button';
+import {WorkspaceShell} from '../../../components/workspace-shell/workspace-shell';
 
-}
+@Component({
+  selector: 'rp-cliente-notificaciones-vacio',
+  imports: [WorkspaceShell, RouterLink, MatButtonModule],
+  templateUrl: './cliente-notificaciones-vacio.html',
+  styleUrls: ['../../../components/workspace-shell/workspace-pages.css', './cliente-notificaciones-vacio.css'],
+})
+export class ClienteNotificacionesVacioPage {}

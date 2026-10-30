@@ -1,2 +1,5 @@
-:host{display:block}
-/* TODO: estilos responsive exclusivos de esta pantalla; utilizar variables globales. */
+:host { display: block; }
+.notifications-empty { max-width: 850px; margin: 60px auto 24px; padding-block: 58px 46px; }
+.notifications-empty p { margin-top: 32px; margin-bottom: 32px; }
+.preview-note { text-align: center; }
+@media (max-width: 600px) { .notifications-empty { margin-top: 60px; padding: 58px 18px 46px; } .notifications-empty .result-icon { margin-bottom: 30px; } .notifications-empty p { margin-top: 38px; margin-bottom: 30px; } }

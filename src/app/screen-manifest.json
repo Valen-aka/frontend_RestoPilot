@@ -967,8 +967,8 @@
     ],
     "owner": "Francesco Meza",
     "us": "US28",
-    "status": "Pendiente",
-    "contenidoImplementado": false
+    "status": "Implementado visualmente; integración pendiente",
+    "contenidoImplementado": true
   },
   {
     "slug": "cliente-notificaciones-vacio",
@@ -989,8 +989,8 @@
     ],
     "owner": "Francesco Meza",
     "us": "US28",
-    "status": "Pendiente",
-    "contenidoImplementado": false
+    "status": "Implementado visualmente; integración pendiente",
+    "contenidoImplementado": true
   },
   {
     "slug": "op-inicio",
@@ -2066,8 +2066,8 @@
     ],
     "owner": "Francesco Meza",
     "us": "US28",
-    "status": "Pendiente",
-    "contenidoImplementado": false
+    "status": "Implementado visualmente; integración pendiente",
+    "contenidoImplementado": true
   },
   {
     "slug": "dueno-administrador-nuevo",
