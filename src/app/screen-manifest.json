@@ -1394,8 +1394,8 @@
     ],
     "owner": "Francesco Meza",
     "us": "US24",
-    "status": "Pendiente",
-    "contenidoImplementado": false
+    "status": "Implementado visualmente; integración pendiente",
+    "contenidoImplementado": true
   },
   {
     "slug": "op-pedido-cancelar",
@@ -1419,8 +1419,8 @@
     ],
     "owner": "Francesco Meza",
     "us": "US24",
-    "status": "Pendiente",
-    "contenidoImplementado": false
+    "status": "Implementado visualmente; integración pendiente",
+    "contenidoImplementado": true
   },
   {
     "slug": "op-pedido-bloqueado",
@@ -1441,8 +1441,8 @@
     ],
     "owner": "Francesco Meza",
     "us": "US24",
-    "status": "Pendiente",
-    "contenidoImplementado": false
+    "status": "Implementado visualmente; integración pendiente",
+    "contenidoImplementado": true
   },
   {
     "slug": "op-pago-buscar",
