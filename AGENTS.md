@@ -25,7 +25,7 @@ No introducir HTTP, JWT, Supabase, usuarios ficticios ni operaciones reales sin 
 - components/: reutilizables; contenido pendiente.
 - dialogs/: ocho modales; contenido y apertura pendientes.
 - home/: landing, sin implementar.
-- docs/pantallas-y-responsables.json: inventario y rutas de archivo.
+- src/app/screen-manifest.json: inventario y rutas de archivo.
 
 ## Verificar
 Ejecutar npm.cmd run verify. Una compilación correcta verifica la base, no la implementación de las 120 pantallas. Al implementar una pantalla, comparar Desktop/Mobile, validaciones y navegación. No marcar integración ni tareas como Done sin aceptación real.

@@ -1,0 +1,2539 @@
+{
+  "schemaVersion": 1,
+  "sourceDocument": "RestoPilot_Carpetas_Componentes_Por_Integrante.docx",
+  "screenInventory": "src/app/screen-manifest.json",
+  "assignments": [
+    {
+      "owner": "Valentina Montenegro",
+      "kind": "screen",
+      "name": "cliente-inicio",
+      "component": "ClienteInicioPage",
+      "folder": "src/app/pages/cliente/cliente-inicio/",
+      "references": "US10 S2-TSK-017, S2-TSK-018",
+      "files": [
+        "src/app/pages/cliente/cliente-inicio/cliente-inicio.ts",
+        "src/app/pages/cliente/cliente-inicio/cliente-inicio.html",
+        "src/app/pages/cliente/cliente-inicio/cliente-inicio.css"
+      ],
+      "missingFiles": [],
+      "url": "/cliente"
+    },
+    {
+      "owner": "Valentina Montenegro",
+      "kind": "screen",
+      "name": "cliente-carta",
+      "component": "ClienteCartaPage",
+      "folder": "src/app/pages/cliente/cliente-carta/",
+      "references": "US10 S2-TSK-017, S2-TSK-018",
+      "files": [
+        "src/app/pages/cliente/cliente-carta/cliente-carta.ts",
+        "src/app/pages/cliente/cliente-carta/cliente-carta.html",
+        "src/app/pages/cliente/cliente-carta/cliente-carta.css"
+      ],
+      "missingFiles": [],
+      "url": "/cliente/carta"
+    },
+    {
+      "owner": "Valentina Montenegro",
+      "kind": "screen",
+      "name": "cliente-carta-categoria",
+      "component": "ClienteCartaCategoriaPage",
+      "folder": "src/app/pages/cliente/cliente-carta-categoria/",
+      "references": "US10 S2-TSK-017, S2-TSK-018",
+      "files": [
+        "src/app/pages/cliente/cliente-carta-categoria/cliente-carta-categoria.ts",
+        "src/app/pages/cliente/cliente-carta-categoria/cliente-carta-categoria.html",
+        "src/app/pages/cliente/cliente-carta-categoria/cliente-carta-categoria.css"
+      ],
+      "missingFiles": [],
+      "url": "/cliente/carta?vista=cliente-carta-categoria"
+    },
+    {
+      "owner": "Valentina Montenegro",
+      "kind": "screen",
+      "name": "cliente-carta-vacia",
+      "component": "ClienteCartaVaciaPage",
+      "folder": "src/app/pages/cliente/cliente-carta-vacia/",
+      "references": "US10 S2-TSK-017, S2-TSK-018",
+      "files": [
+        "src/app/pages/cliente/cliente-carta-vacia/cliente-carta-vacia.ts",
+        "src/app/pages/cliente/cliente-carta-vacia/cliente-carta-vacia.html",
+        "src/app/pages/cliente/cliente-carta-vacia/cliente-carta-vacia.css"
+      ],
+      "missingFiles": [],
+      "url": "/cliente/carta?vista=cliente-carta-vacia"
+    },
+    {
+      "owner": "Valentina Montenegro",
+      "kind": "screen",
+      "name": "cliente-plato",
+      "component": "ClientePlatoPage",
+      "folder": "src/app/pages/cliente/cliente-plato/",
+      "references": "US10 S2-TSK-017, S2-TSK-018",
+      "files": [
+        "src/app/pages/cliente/cliente-plato/cliente-plato.ts",
+        "src/app/pages/cliente/cliente-plato/cliente-plato.html",
+        "src/app/pages/cliente/cliente-plato/cliente-plato.css"
+      ],
+      "missingFiles": [],
+      "url": "/cliente/plato"
+    },
+    {
+      "owner": "Valentina Montenegro",
+      "kind": "screen",
+      "name": "cliente-plato-agotado",
+      "component": "ClientePlatoAgotadoPage",
+      "folder": "src/app/pages/cliente/cliente-plato-agotado/",
+      "references": "US10 S2-TSK-017, S2-TSK-018",
+      "files": [
+        "src/app/pages/cliente/cliente-plato-agotado/cliente-plato-agotado.ts",
+        "src/app/pages/cliente/cliente-plato-agotado/cliente-plato-agotado.html",
+        "src/app/pages/cliente/cliente-plato-agotado/cliente-plato-agotado.css"
+      ],
+      "missingFiles": [],
+      "url": "/cliente/plato?vista=cliente-plato-agotado"
+    },
+    {
+      "owner": "Valentina Montenegro",
+      "kind": "screen",
+      "name": "cliente-reservas-deshabilitadas",
+      "component": "ClienteReservasDeshabilitadasPage",
+      "folder": "src/app/pages/cliente/cliente-reservas-deshabilitadas/",
+      "references": "US27 S2-TSK-019, S2-TSK-020",
+      "files": [
+        "src/app/pages/cliente/cliente-reservas-deshabilitadas/cliente-reservas-deshabilitadas.ts",
+        "src/app/pages/cliente/cliente-reservas-deshabilitadas/cliente-reservas-deshabilitadas.html",
+        "src/app/pages/cliente/cliente-reservas-deshabilitadas/cliente-reservas-deshabilitadas.css"
+      ],
+      "missingFiles": [],
+      "url": "/cliente/reservar?vista=cliente-reservas-deshabilitadas"
+    },
+    {
+      "owner": "Valentina Montenegro",
+      "kind": "screen",
+      "name": "op-categorias",
+      "component": "OpCategoriasPage",
+      "folder": "src/app/pages/operacion/op-categorias/",
+      "references": "US23 S2-TSK-013, S2-TSK-014",
+      "files": [
+        "src/app/pages/operacion/op-categorias/op-categorias.ts",
+        "src/app/pages/operacion/op-categorias/op-categorias.html",
+        "src/app/pages/operacion/op-categorias/op-categorias.css"
+      ],
+      "missingFiles": [],
+      "url": "/operacion/categorias"
+    },
+    {
+      "owner": "Valentina Montenegro",
+      "kind": "screen",
+      "name": "op-categoria-nueva",
+      "component": "OpCategoriaNuevaPage",
+      "folder": "src/app/pages/operacion/op-categoria-nueva/",
+      "references": "US23 S2-TSK-013, S2-TSK-014",
+      "files": [
+        "src/app/pages/operacion/op-categoria-nueva/op-categoria-nueva.ts",
+        "src/app/pages/operacion/op-categoria-nueva/op-categoria-nueva.html",
+        "src/app/pages/operacion/op-categoria-nueva/op-categoria-nueva.css"
+      ],
+      "missingFiles": [],
+      "url": "/operacion/categoria/nueva"
+    },
+    {
+      "owner": "Valentina Montenegro",
+      "kind": "screen",
+      "name": "op-categoria-editar",
+      "component": "OpCategoriaEditarPage",
+      "folder": "src/app/pages/operacion/op-categoria-editar/",
+      "references": "US23 S2-TSK-013, S2-TSK-014",
+      "files": [
+        "src/app/pages/operacion/op-categoria-editar/op-categoria-editar.ts",
+        "src/app/pages/operacion/op-categoria-editar/op-categoria-editar.html",
+        "src/app/pages/operacion/op-categoria-editar/op-categoria-editar.css"
+      ],
+      "missingFiles": [],
+      "url": "/operacion/categoria/editar"
+    },
+    {
+      "owner": "Valentina Montenegro",
+      "kind": "screen",
+      "name": "op-categoria-eliminar",
+      "component": "OpCategoriaEliminarPage",
+      "folder": "src/app/pages/operacion/op-categoria-eliminar/",
+      "references": "US23 S2-TSK-013, S2-TSK-014",
+      "files": [
+        "src/app/pages/operacion/op-categoria-eliminar/op-categoria-eliminar.ts",
+        "src/app/pages/operacion/op-categoria-eliminar/op-categoria-eliminar.html",
+        "src/app/pages/operacion/op-categoria-eliminar/op-categoria-eliminar.css"
+      ],
+      "missingFiles": [],
+      "url": "/operacion/categoria/eliminar"
+    },
+    {
+      "owner": "Valentina Montenegro",
+      "kind": "screen",
+      "name": "op-platos",
+      "component": "OpPlatosPage",
+      "folder": "src/app/pages/operacion/op-platos/",
+      "references": "US14 S2-TSK-015, S2-TSK-016",
+      "files": [
+        "src/app/pages/operacion/op-platos/op-platos.ts",
+        "src/app/pages/operacion/op-platos/op-platos.html",
+        "src/app/pages/operacion/op-platos/op-platos.css"
+      ],
+      "missingFiles": [],
+      "url": "/operacion/platos"
+    },
+    {
+      "owner": "Valentina Montenegro",
+      "kind": "screen",
+      "name": "op-plato-nuevo",
+      "component": "OpPlatoNuevoPage",
+      "folder": "src/app/pages/operacion/op-plato-nuevo/",
+      "references": "US14 S2-TSK-015, S2-TSK-016",
+      "files": [
+        "src/app/pages/operacion/op-plato-nuevo/op-plato-nuevo.ts",
+        "src/app/pages/operacion/op-plato-nuevo/op-plato-nuevo.html",
+        "src/app/pages/operacion/op-plato-nuevo/op-plato-nuevo.css"
+      ],
+      "missingFiles": [],
+      "url": "/operacion/plato/nuevo"
+    },
+    {
+      "owner": "Valentina Montenegro",
+      "kind": "screen",
+      "name": "op-plato-editar",
+      "component": "OpPlatoEditarPage",
+      "folder": "src/app/pages/operacion/op-plato-editar/",
+      "references": "US14 S2-TSK-015, S2-TSK-016",
+      "files": [
+        "src/app/pages/operacion/op-plato-editar/op-plato-editar.ts",
+        "src/app/pages/operacion/op-plato-editar/op-plato-editar.html",
+        "src/app/pages/operacion/op-plato-editar/op-plato-editar.css"
+      ],
+      "missingFiles": [],
+      "url": "/operacion/plato/editar"
+    },
+    {
+      "owner": "Valentina Montenegro",
+      "kind": "screen",
+      "name": "op-plato-disponibilidad",
+      "component": "OpPlatoDisponibilidadPage",
+      "folder": "src/app/pages/operacion/op-plato-disponibilidad/",
+      "references": "US14 S2-TSK-015, S2-TSK-016",
+      "files": [
+        "src/app/pages/operacion/op-plato-disponibilidad/op-plato-disponibilidad.ts",
+        "src/app/pages/operacion/op-plato-disponibilidad/op-plato-disponibilidad.html",
+        "src/app/pages/operacion/op-plato-disponibilidad/op-plato-disponibilidad.css"
+      ],
+      "missingFiles": [],
+      "url": "/operacion/plato/disponibilidad"
+    },
+    {
+      "owner": "Valentina Montenegro",
+      "kind": "screen",
+      "name": "op-plato-eliminar",
+      "component": "OpPlatoEliminarPage",
+      "folder": "src/app/pages/operacion/op-plato-eliminar/",
+      "references": "US14 S2-TSK-015, S2-TSK-016",
+      "files": [
+        "src/app/pages/operacion/op-plato-eliminar/op-plato-eliminar.ts",
+        "src/app/pages/operacion/op-plato-eliminar/op-plato-eliminar.html",
+        "src/app/pages/operacion/op-plato-eliminar/op-plato-eliminar.css"
+      ],
+      "missingFiles": [],
+      "url": "/operacion/plato/eliminar"
+    },
+    {
+      "owner": "Valentina Montenegro",
+      "kind": "screen",
+      "name": "op-mesas",
+      "component": "OpMesasPage",
+      "folder": "src/app/pages/operacion/op-mesas/",
+      "references": "US16 S2-TSK-021, S2-TSK-022",
+      "files": [
+        "src/app/pages/operacion/op-mesas/op-mesas.ts",
+        "src/app/pages/operacion/op-mesas/op-mesas.html",
+        "src/app/pages/operacion/op-mesas/op-mesas.css"
+      ],
+      "missingFiles": [],
+      "url": "/operacion/mesas"
+    },
+    {
+      "owner": "Valentina Montenegro",
+      "kind": "screen",
+      "name": "op-mesas-lista",
+      "component": "OpMesasListaPage",
+      "folder": "src/app/pages/operacion/op-mesas-lista/",
+      "references": "US16 S2-TSK-021, S2-TSK-022",
+      "files": [
+        "src/app/pages/operacion/op-mesas-lista/op-mesas-lista.ts",
+        "src/app/pages/operacion/op-mesas-lista/op-mesas-lista.html",
+        "src/app/pages/operacion/op-mesas-lista/op-mesas-lista.css"
+      ],
+      "missingFiles": [],
+      "url": "/operacion/mesas/lista"
+    },
+    {
+      "owner": "Valentina Montenegro",
+      "kind": "screen",
+      "name": "op-mesa-nueva",
+      "component": "OpMesaNuevaPage",
+      "folder": "src/app/pages/operacion/op-mesa-nueva/",
+      "references": "US16 S2-TSK-021, S2-TSK-022",
+      "files": [
+        "src/app/pages/operacion/op-mesa-nueva/op-mesa-nueva.ts",
+        "src/app/pages/operacion/op-mesa-nueva/op-mesa-nueva.html",
+        "src/app/pages/operacion/op-mesa-nueva/op-mesa-nueva.css"
+      ],
+      "missingFiles": [],
+      "url": "/operacion/mesa/nueva"
+    },
+    {
+      "owner": "Valentina Montenegro",
+      "kind": "screen",
+      "name": "op-mesa-editar",
+      "component": "OpMesaEditarPage",
+      "folder": "src/app/pages/operacion/op-mesa-editar/",
+      "references": "US16 S2-TSK-021, S2-TSK-022",
+      "files": [
+        "src/app/pages/operacion/op-mesa-editar/op-mesa-editar.ts",
+        "src/app/pages/operacion/op-mesa-editar/op-mesa-editar.html",
+        "src/app/pages/operacion/op-mesa-editar/op-mesa-editar.css"
+      ],
+      "missingFiles": [],
+      "url": "/operacion/mesa/editar"
+    },
+    {
+      "owner": "Valentina Montenegro",
+      "kind": "screen",
+      "name": "op-mesa-desactivar",
+      "component": "OpMesaDesactivarPage",
+      "folder": "src/app/pages/operacion/op-mesa-desactivar/",
+      "references": "US16 S2-TSK-021, S2-TSK-022",
+      "files": [
+        "src/app/pages/operacion/op-mesa-desactivar/op-mesa-desactivar.ts",
+        "src/app/pages/operacion/op-mesa-desactivar/op-mesa-desactivar.html",
+        "src/app/pages/operacion/op-mesa-desactivar/op-mesa-desactivar.css"
+      ],
+      "missingFiles": [],
+      "url": "/operacion/mesa/desactivar"
+    },
+    {
+      "owner": "Valentina Montenegro",
+      "kind": "screen",
+      "name": "op-mesa-bloqueada",
+      "component": "OpMesaBloqueadaPage",
+      "folder": "src/app/pages/operacion/op-mesa-bloqueada/",
+      "references": "US16 S2-TSK-021, S2-TSK-022",
+      "files": [
+        "src/app/pages/operacion/op-mesa-bloqueada/op-mesa-bloqueada.ts",
+        "src/app/pages/operacion/op-mesa-bloqueada/op-mesa-bloqueada.html",
+        "src/app/pages/operacion/op-mesa-bloqueada/op-mesa-bloqueada.css"
+      ],
+      "missingFiles": [],
+      "url": "/operacion/mesa/desactivar?vista=op-mesa-bloqueada"
+    },
+    {
+      "owner": "Valentina Montenegro",
+      "kind": "screen",
+      "name": "op-reservas",
+      "component": "OpReservasPage",
+      "folder": "src/app/pages/operacion/op-reservas/",
+      "references": "US29 S2-TSK-027, S2-TSK-028",
+      "files": [
+        "src/app/pages/operacion/op-reservas/op-reservas.ts",
+        "src/app/pages/operacion/op-reservas/op-reservas.html",
+        "src/app/pages/operacion/op-reservas/op-reservas.css"
+      ],
+      "missingFiles": [],
+      "url": "/operacion/reservas"
+    },
+    {
+      "owner": "Valentina Montenegro",
+      "kind": "screen",
+      "name": "op-reserva-editar",
+      "component": "OpReservaEditarPage",
+      "folder": "src/app/pages/operacion/op-reserva-editar/",
+      "references": "US29 S2-TSK-027, S2-TSK-028",
+      "files": [
+        "src/app/pages/operacion/op-reserva-editar/op-reserva-editar.ts",
+        "src/app/pages/operacion/op-reserva-editar/op-reserva-editar.html",
+        "src/app/pages/operacion/op-reserva-editar/op-reserva-editar.css"
+      ],
+      "missingFiles": [],
+      "url": "/operacion/reserva/editar"
+    },
+    {
+      "owner": "Valentina Montenegro",
+      "kind": "screen",
+      "name": "op-reserva-cancelar",
+      "component": "OpReservaCancelarPage",
+      "folder": "src/app/pages/operacion/op-reserva-cancelar/",
+      "references": "US29 S2-TSK-027, S2-TSK-028",
+      "files": [
+        "src/app/pages/operacion/op-reserva-cancelar/op-reserva-cancelar.ts",
+        "src/app/pages/operacion/op-reserva-cancelar/op-reserva-cancelar.html",
+        "src/app/pages/operacion/op-reserva-cancelar/op-reserva-cancelar.css"
+      ],
+      "missingFiles": [],
+      "url": "/operacion/reserva/cancelar"
+    },
+    {
+      "owner": "Valentina Montenegro",
+      "kind": "screen",
+      "name": "op-reservas-modulo",
+      "component": "OpReservasModuloPage",
+      "folder": "src/app/pages/operacion/op-reservas-modulo/",
+      "references": "US27 S2-TSK-019, S2-TSK-020",
+      "files": [
+        "src/app/pages/operacion/op-reservas-modulo/op-reservas-modulo.ts",
+        "src/app/pages/operacion/op-reservas-modulo/op-reservas-modulo.html",
+        "src/app/pages/operacion/op-reservas-modulo/op-reservas-modulo.css"
+      ],
+      "missingFiles": [],
+      "url": "/operacion/atencion"
+    },
+    {
+      "owner": "Valentina Montenegro",
+      "kind": "screen",
+      "name": "op-reservas-modulo-confirmar",
+      "component": "OpReservasModuloConfirmarPage",
+      "folder": "src/app/pages/operacion/op-reservas-modulo-confirmar/",
+      "references": "US27 S2-TSK-019, S2-TSK-020",
+      "files": [
+        "src/app/pages/operacion/op-reservas-modulo-confirmar/op-reservas-modulo-confirmar.ts",
+        "src/app/pages/operacion/op-reservas-modulo-confirmar/op-reservas-modulo-confirmar.html",
+        "src/app/pages/operacion/op-reservas-modulo-confirmar/op-reservas-modulo-confirmar.css"
+      ],
+      "missingFiles": [],
+      "url": "/operacion/atencion/confirmar"
+    },
+    {
+      "owner": "Valentina Montenegro",
+      "kind": "screen",
+      "name": "op-reportes",
+      "component": "OpReportesPage",
+      "folder": "src/app/pages/operacion/op-reportes/",
+      "references": "US20 S2-TSK-057, S2-TSK-058",
+      "files": [
+        "src/app/pages/operacion/op-reportes/op-reportes.ts",
+        "src/app/pages/operacion/op-reportes/op-reportes.html",
+        "src/app/pages/operacion/op-reportes/op-reportes.css"
+      ],
+      "missingFiles": [],
+      "url": "/operacion/reportes"
+    },
+    {
+      "owner": "Valentina Montenegro",
+      "kind": "screen",
+      "name": "op-reportes-pagos",
+      "component": "OpReportesPagosPage",
+      "folder": "src/app/pages/operacion/op-reportes-pagos/",
+      "references": "US20 S2-TSK-057, S2-TSK-058",
+      "files": [
+        "src/app/pages/operacion/op-reportes-pagos/op-reportes-pagos.ts",
+        "src/app/pages/operacion/op-reportes-pagos/op-reportes-pagos.html",
+        "src/app/pages/operacion/op-reportes-pagos/op-reportes-pagos.css"
+      ],
+      "missingFiles": [],
+      "url": "/operacion/reportes/pagos"
+    },
+    {
+      "owner": "Valentina Montenegro",
+      "kind": "screen",
+      "name": "op-reportes-vacio",
+      "component": "OpReportesVacioPage",
+      "folder": "src/app/pages/operacion/op-reportes-vacio/",
+      "references": "US20 S2-TSK-057, S2-TSK-058",
+      "files": [
+        "src/app/pages/operacion/op-reportes-vacio/op-reportes-vacio.ts",
+        "src/app/pages/operacion/op-reportes-vacio/op-reportes-vacio.html",
+        "src/app/pages/operacion/op-reportes-vacio/op-reportes-vacio.css"
+      ],
+      "missingFiles": [],
+      "url": "/operacion/reportes?vista=op-reportes-vacio"
+    },
+    {
+      "owner": "Valentina Montenegro",
+      "kind": "screen",
+      "name": "op-reportes-fechas-invalidas",
+      "component": "OpReportesFechasInvalidasPage",
+      "folder": "src/app/pages/operacion/op-reportes-fechas-invalidas/",
+      "references": "US20 S2-TSK-057, S2-TSK-058",
+      "files": [
+        "src/app/pages/operacion/op-reportes-fechas-invalidas/op-reportes-fechas-invalidas.ts",
+        "src/app/pages/operacion/op-reportes-fechas-invalidas/op-reportes-fechas-invalidas.html",
+        "src/app/pages/operacion/op-reportes-fechas-invalidas/op-reportes-fechas-invalidas.css"
+      ],
+      "missingFiles": [],
+      "url": "/operacion/reportes?vista=op-reportes-fechas-invalidas"
+    },
+    {
+      "owner": "Valentina Montenegro",
+      "kind": "screen",
+      "name": "cliente-plato-bowl",
+      "component": "ClientePlatoBowlPage",
+      "folder": "src/app/pages/cliente/cliente-plato-bowl/",
+      "references": "US10 S2-TSK-017, S2-TSK-018",
+      "files": [
+        "src/app/pages/cliente/cliente-plato-bowl/cliente-plato-bowl.ts",
+        "src/app/pages/cliente/cliente-plato-bowl/cliente-plato-bowl.html",
+        "src/app/pages/cliente/cliente-plato-bowl/cliente-plato-bowl.css"
+      ],
+      "missingFiles": [],
+      "url": "/cliente/plato?vista=cliente-plato-bowl"
+    },
+    {
+      "owner": "Valentina Montenegro",
+      "kind": "screen",
+      "name": "op-ia",
+      "component": "OpIaPage",
+      "folder": "src/app/pages/operacion/op-ia/",
+      "references": "US04 · Funcionalidad prevista Transversal / revisar IA prevista: no implementar como servicio real.",
+      "files": [
+        "src/app/pages/operacion/op-ia/op-ia.ts",
+        "src/app/pages/operacion/op-ia/op-ia.html",
+        "src/app/pages/operacion/op-ia/op-ia.css"
+      ],
+      "missingFiles": [],
+      "url": "/operacion/asistente"
+    },
+    {
+      "owner": "Valentina Montenegro",
+      "kind": "screen",
+      "name": "op-ia-platos",
+      "component": "OpIaPlatosPage",
+      "folder": "src/app/pages/operacion/op-ia-platos/",
+      "references": "US04 · Funcionalidad prevista Transversal / revisar IA prevista: no implementar como servicio real.",
+      "files": [
+        "src/app/pages/operacion/op-ia-platos/op-ia-platos.ts",
+        "src/app/pages/operacion/op-ia-platos/op-ia-platos.html",
+        "src/app/pages/operacion/op-ia-platos/op-ia-platos.css"
+      ],
+      "missingFiles": [],
+      "url": "/operacion/asistente?vista=op-ia-platos"
+    },
+    {
+      "owner": "Valentina Montenegro",
+      "kind": "screen",
+      "name": "op-ia-atenciones",
+      "component": "OpIaAtencionesPage",
+      "folder": "src/app/pages/operacion/op-ia-atenciones/",
+      "references": "US04 · Funcionalidad prevista Transversal / revisar IA prevista: no implementar como servicio real.",
+      "files": [
+        "src/app/pages/operacion/op-ia-atenciones/op-ia-atenciones.ts",
+        "src/app/pages/operacion/op-ia-atenciones/op-ia-atenciones.html",
+        "src/app/pages/operacion/op-ia-atenciones/op-ia-atenciones.css"
+      ],
+      "missingFiles": [],
+      "url": "/operacion/asistente?vista=op-ia-atenciones"
+    },
+    {
+      "owner": "Valentina Montenegro",
+      "kind": "screen",
+      "name": "op-ia-demanda",
+      "component": "OpIaDemandaPage",
+      "folder": "src/app/pages/operacion/op-ia-demanda/",
+      "references": "US04 · Funcionalidad prevista Transversal / revisar IA prevista: no implementar como servicio real.",
+      "files": [
+        "src/app/pages/operacion/op-ia-demanda/op-ia-demanda.ts",
+        "src/app/pages/operacion/op-ia-demanda/op-ia-demanda.html",
+        "src/app/pages/operacion/op-ia-demanda/op-ia-demanda.css"
+      ],
+      "missingFiles": [],
+      "url": "/operacion/asistente?vista=op-ia-demanda"
+    },
+    {
+      "owner": "Valentina Montenegro",
+      "kind": "screen",
+      "name": "op-ia-pagos",
+      "component": "OpIaPagosPage",
+      "folder": "src/app/pages/operacion/op-ia-pagos/",
+      "references": "US04 · Funcionalidad prevista Transversal / revisar IA prevista: no implementar como servicio real.",
+      "files": [
+        "src/app/pages/operacion/op-ia-pagos/op-ia-pagos.ts",
+        "src/app/pages/operacion/op-ia-pagos/op-ia-pagos.html",
+        "src/app/pages/operacion/op-ia-pagos/op-ia-pagos.css"
+      ],
+      "missingFiles": [],
+      "url": "/operacion/asistente?vista=op-ia-pagos"
+    },
+    {
+      "owner": "Valentina Montenegro",
+      "kind": "screen",
+      "name": "op-ia-sin-datos",
+      "component": "OpIaSinDatosPage",
+      "folder": "src/app/pages/operacion/op-ia-sin-datos/",
+      "references": "US04 · Funcionalidad prevista Transversal / revisar IA prevista: no implementar como servicio real.",
+      "files": [
+        "src/app/pages/operacion/op-ia-sin-datos/op-ia-sin-datos.ts",
+        "src/app/pages/operacion/op-ia-sin-datos/op-ia-sin-datos.html",
+        "src/app/pages/operacion/op-ia-sin-datos/op-ia-sin-datos.css"
+      ],
+      "missingFiles": [],
+      "url": "/operacion/asistente?vista=op-ia-sin-datos"
+    },
+    {
+      "owner": "Valentina Montenegro",
+      "kind": "screen",
+      "name": "op-ia-aclarar",
+      "component": "OpIaAclararPage",
+      "folder": "src/app/pages/operacion/op-ia-aclarar/",
+      "references": "US04 · Funcionalidad prevista Transversal / revisar IA prevista: no implementar como servicio real.",
+      "files": [
+        "src/app/pages/operacion/op-ia-aclarar/op-ia-aclarar.ts",
+        "src/app/pages/operacion/op-ia-aclarar/op-ia-aclarar.html",
+        "src/app/pages/operacion/op-ia-aclarar/op-ia-aclarar.css"
+      ],
+      "missingFiles": [],
+      "url": "/operacion/asistente?vista=op-ia-aclarar"
+    },
+    {
+      "owner": "Valentina Montenegro",
+      "kind": "screen",
+      "name": "op-ia-error",
+      "component": "OpIaErrorPage",
+      "folder": "src/app/pages/operacion/op-ia-error/",
+      "references": "US04 · Funcionalidad prevista Transversal / revisar IA prevista: no implementar como servicio real.",
+      "files": [
+        "src/app/pages/operacion/op-ia-error/op-ia-error.ts",
+        "src/app/pages/operacion/op-ia-error/op-ia-error.html",
+        "src/app/pages/operacion/op-ia-error/op-ia-error.css"
+      ],
+      "missingFiles": [],
+      "url": "/operacion/asistente?vista=op-ia-error"
+    },
+    {
+      "owner": "Valentina Montenegro",
+      "kind": "shared",
+      "name": "op-categoria-eliminar-dialog",
+      "component": "OpCategoriaEliminarDialog",
+      "folder": "src/app/dialogs/op-categoria-eliminar/",
+      "references": "US23 S2-TSK-013, S2-TSK-014",
+      "files": [
+        "src/app/dialogs/op-categoria-eliminar/op-categoria-eliminar-dialog.ts",
+        "src/app/dialogs/op-categoria-eliminar/op-categoria-eliminar-dialog.html",
+        "src/app/dialogs/op-categoria-eliminar/op-categoria-eliminar-dialog.css"
+      ],
+      "missingFiles": []
+    },
+    {
+      "owner": "Valentina Montenegro",
+      "kind": "shared",
+      "name": "op-plato-disponibilidad-dialog",
+      "component": "OpPlatoDisponibilidadDialog",
+      "folder": "src/app/dialogs/op-plato-disponibilidad/",
+      "references": "US14 S2-TSK-015, S2-TSK-016",
+      "files": [
+        "src/app/dialogs/op-plato-disponibilidad/op-plato-disponibilidad-dialog.ts",
+        "src/app/dialogs/op-plato-disponibilidad/op-plato-disponibilidad-dialog.html",
+        "src/app/dialogs/op-plato-disponibilidad/op-plato-disponibilidad-dialog.css"
+      ],
+      "missingFiles": []
+    },
+    {
+      "owner": "Valentina Montenegro",
+      "kind": "shared",
+      "name": "op-plato-eliminar-dialog",
+      "component": "OpPlatoEliminarDialog",
+      "folder": "src/app/dialogs/op-plato-eliminar/",
+      "references": "US14 S2-TSK-015, S2-TSK-016",
+      "files": [
+        "src/app/dialogs/op-plato-eliminar/op-plato-eliminar-dialog.ts",
+        "src/app/dialogs/op-plato-eliminar/op-plato-eliminar-dialog.html",
+        "src/app/dialogs/op-plato-eliminar/op-plato-eliminar-dialog.css"
+      ],
+      "missingFiles": []
+    },
+    {
+      "owner": "Valentina Montenegro",
+      "kind": "shared",
+      "name": "op-mesa-desactivar-dialog",
+      "component": "OpMesaDesactivarDialog",
+      "folder": "src/app/dialogs/op-mesa-desactivar/",
+      "references": "US16 S2-TSK-021, S2-TSK-022",
+      "files": [
+        "src/app/dialogs/op-mesa-desactivar/op-mesa-desactivar-dialog.ts",
+        "src/app/dialogs/op-mesa-desactivar/op-mesa-desactivar-dialog.html",
+        "src/app/dialogs/op-mesa-desactivar/op-mesa-desactivar-dialog.css"
+      ],
+      "missingFiles": []
+    },
+    {
+      "owner": "Valentina Montenegro",
+      "kind": "shared",
+      "name": "op-reserva-cancelar-dialog",
+      "component": "OpReservaCancelarDialog",
+      "folder": "src/app/dialogs/op-reserva-cancelar/",
+      "references": "US29 S2-TSK-027, S2-TSK-028",
+      "files": [
+        "src/app/dialogs/op-reserva-cancelar/op-reserva-cancelar-dialog.ts",
+        "src/app/dialogs/op-reserva-cancelar/op-reserva-cancelar-dialog.html",
+        "src/app/dialogs/op-reserva-cancelar/op-reserva-cancelar-dialog.css"
+      ],
+      "missingFiles": []
+    },
+    {
+      "owner": "Valentina Montenegro",
+      "kind": "shared",
+      "name": "op-reservas-modulo-confirmar-dialog",
+      "component": "OpReservasModuloConfirmarDialog",
+      "folder": "src/app/dialogs/op-reservas-modulo-confirmar/",
+      "references": "US27 S2-TSK-019, S2-TSK-020",
+      "files": [
+        "src/app/dialogs/op-reservas-modulo-confirmar/op-reservas-modulo-confirmar-dialog.ts",
+        "src/app/dialogs/op-reservas-modulo-confirmar/op-reservas-modulo-confirmar-dialog.html",
+        "src/app/dialogs/op-reservas-modulo-confirmar/op-reservas-modulo-confirmar-dialog.css"
+      ],
+      "missingFiles": []
+    },
+    {
+      "owner": "Valentina Montenegro",
+      "kind": "shared",
+      "name": "brand",
+      "component": "Brand",
+      "folder": "src/app/components/brand/",
+      "references": "Transversal S2-TSK-001",
+      "files": [
+        "src/app/components/brand/brand.ts",
+        "src/app/components/brand/brand.html",
+        "src/app/components/brand/brand.css"
+      ],
+      "missingFiles": []
+    },
+    {
+      "owner": "Valentina Montenegro",
+      "kind": "shared",
+      "name": "page-heading",
+      "component": "PageHeading",
+      "folder": "src/app/components/page-heading/",
+      "references": "Transversal S2-TSK-001",
+      "files": [
+        "src/app/components/page-heading/page-heading.ts",
+        "src/app/components/page-heading/page-heading.html",
+        "src/app/components/page-heading/page-heading.css"
+      ],
+      "missingFiles": []
+    },
+    {
+      "owner": "Valentina Montenegro",
+      "kind": "shared",
+      "name": "status-badge",
+      "component": "StatusBadge",
+      "folder": "src/app/components/status-badge/",
+      "references": "Transversal S2-TSK-001",
+      "files": [
+        "src/app/components/status-badge/status-badge.ts",
+        "src/app/components/status-badge/status-badge.html",
+        "src/app/components/status-badge/status-badge.css"
+      ],
+      "missingFiles": []
+    },
+    {
+      "owner": "Valentina Montenegro",
+      "kind": "shared",
+      "name": "data-table",
+      "component": "DataTable",
+      "folder": "src/app/components/data-table/",
+      "references": "Transversal S2-TSK-001",
+      "files": [
+        "src/app/components/data-table/data-table.ts",
+        "src/app/components/data-table/data-table.html",
+        "src/app/components/data-table/data-table.css"
+      ],
+      "missingFiles": []
+    },
+    {
+      "owner": "Valentina Montenegro",
+      "kind": "shared",
+      "name": "floor-plan",
+      "component": "FloorPlan",
+      "folder": "src/app/components/floor-plan/",
+      "references": "Transversal S2-TSK-001",
+      "files": [
+        "src/app/components/floor-plan/floor-plan.ts",
+        "src/app/components/floor-plan/floor-plan.html",
+        "src/app/components/floor-plan/floor-plan.css"
+      ],
+      "missingFiles": []
+    },
+    {
+      "owner": "Valentina Montenegro",
+      "kind": "shared",
+      "name": "sidebar",
+      "component": "Sidebar",
+      "folder": "src/app/components/sidebar/",
+      "references": "Transversal S2-TSK-001",
+      "files": [
+        "src/app/components/sidebar/sidebar.ts",
+        "src/app/components/sidebar/sidebar.html",
+        "src/app/components/sidebar/sidebar.css"
+      ],
+      "missingFiles": []
+    },
+    {
+      "owner": "Valentina Montenegro",
+      "kind": "shared",
+      "name": "admin-layout",
+      "component": "AdminLayout",
+      "folder": "src/app/layouts/admin-layout/",
+      "references": "Transversal S2-TSK-001",
+      "files": [
+        "src/app/layouts/admin-layout/admin-layout.ts",
+        "src/app/layouts/admin-layout/admin-layout.html",
+        "src/app/layouts/admin-layout/admin-layout.css"
+      ],
+      "missingFiles": []
+    },
+    {
+      "owner": "Valentina Montenegro",
+      "kind": "shared",
+      "name": "dueno-layout",
+      "component": "DuenoLayout",
+      "folder": "src/app/layouts/dueno-layout/",
+      "references": "Transversal S2-TSK-001",
+      "files": [
+        "src/app/layouts/dueno-layout/dueno-layout.ts",
+        "src/app/layouts/dueno-layout/dueno-layout.html",
+        "src/app/layouts/dueno-layout/dueno-layout.css"
+      ],
+      "missingFiles": []
+    },
+    {
+      "owner": "Valentina Montenegro",
+      "kind": "support",
+      "name": "src/material-theme.scss",
+      "references": "Tema y assets compartidos; coordinar su uso con las páginas",
+      "files": [
+        "src/material-theme.scss"
+      ],
+      "missingFiles": []
+    },
+    {
+      "owner": "Valentina Montenegro",
+      "kind": "support",
+      "name": "src/styles.css",
+      "references": "Tema y assets compartidos; coordinar su uso con las páginas",
+      "files": [
+        "src/styles.css"
+      ],
+      "missingFiles": []
+    },
+    {
+      "owner": "Cristian Condori",
+      "kind": "screen",
+      "name": "cliente-reservar",
+      "component": "ClienteReservarPage",
+      "folder": "src/app/pages/cliente/cliente-reservar/",
+      "references": "US05 S2-TSK-023, S2-TSK-024",
+      "files": [
+        "src/app/pages/cliente/cliente-reservar/cliente-reservar.ts",
+        "src/app/pages/cliente/cliente-reservar/cliente-reservar.html",
+        "src/app/pages/cliente/cliente-reservar/cliente-reservar.css"
+      ],
+      "missingFiles": [],
+      "url": "/cliente/reservar"
+    },
+    {
+      "owner": "Cristian Condori",
+      "kind": "screen",
+      "name": "cliente-plano",
+      "component": "ClientePlanoPage",
+      "folder": "src/app/pages/cliente/cliente-plano/",
+      "references": "US05 S2-TSK-023, S2-TSK-024",
+      "files": [
+        "src/app/pages/cliente/cliente-plano/cliente-plano.ts",
+        "src/app/pages/cliente/cliente-plano/cliente-plano.html",
+        "src/app/pages/cliente/cliente-plano/cliente-plano.css"
+      ],
+      "missingFiles": [],
+      "url": "/cliente/plano"
+    },
+    {
+      "owner": "Cristian Condori",
+      "kind": "screen",
+      "name": "cliente-sin-disponibilidad",
+      "component": "ClienteSinDisponibilidadPage",
+      "folder": "src/app/pages/cliente/cliente-sin-disponibilidad/",
+      "references": "US05 S2-TSK-023, S2-TSK-024",
+      "files": [
+        "src/app/pages/cliente/cliente-sin-disponibilidad/cliente-sin-disponibilidad.ts",
+        "src/app/pages/cliente/cliente-sin-disponibilidad/cliente-sin-disponibilidad.html",
+        "src/app/pages/cliente/cliente-sin-disponibilidad/cliente-sin-disponibilidad.css"
+      ],
+      "missingFiles": [],
+      "url": "/cliente/reservar?vista=cliente-sin-disponibilidad"
+    },
+    {
+      "owner": "Cristian Condori",
+      "kind": "screen",
+      "name": "cliente-reserva-revisar",
+      "component": "ClienteReservaRevisarPage",
+      "folder": "src/app/pages/cliente/cliente-reserva-revisar/",
+      "references": "US06 S2-TSK-025, S2-TSK-026",
+      "files": [
+        "src/app/pages/cliente/cliente-reserva-revisar/cliente-reserva-revisar.ts",
+        "src/app/pages/cliente/cliente-reserva-revisar/cliente-reserva-revisar.html",
+        "src/app/pages/cliente/cliente-reserva-revisar/cliente-reserva-revisar.css"
+      ],
+      "missingFiles": [],
+      "url": "/cliente/reserva/revisar"
+    },
+    {
+      "owner": "Cristian Condori",
+      "kind": "screen",
+      "name": "cliente-reservas",
+      "component": "ClienteReservasPage",
+      "folder": "src/app/pages/cliente/cliente-reservas/",
+      "references": "US07 S2-TSK-047, S2-TSK-048",
+      "files": [
+        "src/app/pages/cliente/cliente-reservas/cliente-reservas.ts",
+        "src/app/pages/cliente/cliente-reservas/cliente-reservas.html",
+        "src/app/pages/cliente/cliente-reservas/cliente-reservas.css"
+      ],
+      "missingFiles": [],
+      "url": "/cliente/reservas"
+    },
+    {
+      "owner": "Cristian Condori",
+      "kind": "screen",
+      "name": "cliente-reserva-pendiente",
+      "component": "ClienteReservaPendientePage",
+      "folder": "src/app/pages/cliente/cliente-reserva-pendiente/",
+      "references": "US07 S2-TSK-047, S2-TSK-048",
+      "files": [
+        "src/app/pages/cliente/cliente-reserva-pendiente/cliente-reserva-pendiente.ts",
+        "src/app/pages/cliente/cliente-reserva-pendiente/cliente-reserva-pendiente.html",
+        "src/app/pages/cliente/cliente-reserva-pendiente/cliente-reserva-pendiente.css"
+      ],
+      "missingFiles": [],
+      "url": "/cliente/reserva"
+    },
+    {
+      "owner": "Cristian Condori",
+      "kind": "screen",
+      "name": "cliente-reserva-confirmada",
+      "component": "ClienteReservaConfirmadaPage",
+      "folder": "src/app/pages/cliente/cliente-reserva-confirmada/",
+      "references": "US07 S2-TSK-047, S2-TSK-048",
+      "files": [
+        "src/app/pages/cliente/cliente-reserva-confirmada/cliente-reserva-confirmada.ts",
+        "src/app/pages/cliente/cliente-reserva-confirmada/cliente-reserva-confirmada.html",
+        "src/app/pages/cliente/cliente-reserva-confirmada/cliente-reserva-confirmada.css"
+      ],
+      "missingFiles": [],
+      "url": "/cliente/reserva?vista=cliente-reserva-confirmada"
+    },
+    {
+      "owner": "Cristian Condori",
+      "kind": "screen",
+      "name": "cliente-reserva-rechazada",
+      "component": "ClienteReservaRechazadaPage",
+      "folder": "src/app/pages/cliente/cliente-reserva-rechazada/",
+      "references": "US07 S2-TSK-047, S2-TSK-048",
+      "files": [
+        "src/app/pages/cliente/cliente-reserva-rechazada/cliente-reserva-rechazada.ts",
+        "src/app/pages/cliente/cliente-reserva-rechazada/cliente-reserva-rechazada.html",
+        "src/app/pages/cliente/cliente-reserva-rechazada/cliente-reserva-rechazada.css"
+      ],
+      "missingFiles": [],
+      "url": "/cliente/reserva?vista=cliente-reserva-rechazada"
+    },
+    {
+      "owner": "Cristian Condori",
+      "kind": "screen",
+      "name": "cliente-reserva-cancelada",
+      "component": "ClienteReservaCanceladaPage",
+      "folder": "src/app/pages/cliente/cliente-reserva-cancelada/",
+      "references": "US07 S2-TSK-047, S2-TSK-048",
+      "files": [
+        "src/app/pages/cliente/cliente-reserva-cancelada/cliente-reserva-cancelada.ts",
+        "src/app/pages/cliente/cliente-reserva-cancelada/cliente-reserva-cancelada.html",
+        "src/app/pages/cliente/cliente-reserva-cancelada/cliente-reserva-cancelada.css"
+      ],
+      "missingFiles": [],
+      "url": "/cliente/reserva?vista=cliente-reserva-cancelada"
+    },
+    {
+      "owner": "Cristian Condori",
+      "kind": "screen",
+      "name": "cliente-reserva-expirada",
+      "component": "ClienteReservaExpiradaPage",
+      "folder": "src/app/pages/cliente/cliente-reserva-expirada/",
+      "references": "US07, US26 S2-TSK-047, S2-TSK-048",
+      "files": [
+        "src/app/pages/cliente/cliente-reserva-expirada/cliente-reserva-expirada.ts",
+        "src/app/pages/cliente/cliente-reserva-expirada/cliente-reserva-expirada.html",
+        "src/app/pages/cliente/cliente-reserva-expirada/cliente-reserva-expirada.css"
+      ],
+      "missingFiles": [],
+      "url": "/cliente/reserva?vista=cliente-reserva-expirada"
+    },
+    {
+      "owner": "Cristian Condori",
+      "kind": "screen",
+      "name": "cliente-reserva-completada",
+      "component": "ClienteReservaCompletadaPage",
+      "folder": "src/app/pages/cliente/cliente-reserva-completada/",
+      "references": "US07, US25 S2-TSK-047, S2-TSK-048",
+      "files": [
+        "src/app/pages/cliente/cliente-reserva-completada/cliente-reserva-completada.ts",
+        "src/app/pages/cliente/cliente-reserva-completada/cliente-reserva-completada.html",
+        "src/app/pages/cliente/cliente-reserva-completada/cliente-reserva-completada.css"
+      ],
+      "missingFiles": [],
+      "url": "/cliente/reserva?vista=cliente-reserva-completada"
+    },
+    {
+      "owner": "Cristian Condori",
+      "kind": "screen",
+      "name": "cliente-reserva-editar",
+      "component": "ClienteReservaEditarPage",
+      "folder": "src/app/pages/cliente/cliente-reserva-editar/",
+      "references": "US08 S2-TSK-049, S2-TSK-050",
+      "files": [
+        "src/app/pages/cliente/cliente-reserva-editar/cliente-reserva-editar.ts",
+        "src/app/pages/cliente/cliente-reserva-editar/cliente-reserva-editar.html",
+        "src/app/pages/cliente/cliente-reserva-editar/cliente-reserva-editar.css"
+      ],
+      "missingFiles": [],
+      "url": "/cliente/reserva/editar"
+    },
+    {
+      "owner": "Cristian Condori",
+      "kind": "screen",
+      "name": "cliente-reserva-cancelar",
+      "component": "ClienteReservaCancelarPage",
+      "folder": "src/app/pages/cliente/cliente-reserva-cancelar/",
+      "references": "US09 S2-TSK-051, S2-TSK-052",
+      "files": [
+        "src/app/pages/cliente/cliente-reserva-cancelar/cliente-reserva-cancelar.ts",
+        "src/app/pages/cliente/cliente-reserva-cancelar/cliente-reserva-cancelar.html",
+        "src/app/pages/cliente/cliente-reserva-cancelar/cliente-reserva-cancelar.css"
+      ],
+      "missingFiles": [],
+      "url": "/cliente/reserva/cancelar"
+    },
+    {
+      "owner": "Cristian Condori",
+      "kind": "screen",
+      "name": "cliente-reserva-cancelacion-bloqueada",
+      "component": "ClienteReservaCancelacionBloqueadaPage",
+      "folder": "src/app/pages/cliente/cliente-reserva-cancelacion-bloqueada/",
+      "references": "US09 S2-TSK-051, S2-TSK-052",
+      "files": [
+        "src/app/pages/cliente/cliente-reserva-cancelacion-bloqueada/cliente-reserva-cancelacion-bloqueada.ts",
+        "src/app/pages/cliente/cliente-reserva-cancelacion-bloqueada/cliente-reserva-cancelacion-bloqueada.html",
+        "src/app/pages/cliente/cliente-reserva-cancelacion-bloqueada/cliente-reserva-cancelacion-bloqueada.css"
+      ],
+      "missingFiles": [],
+      "url": "/cliente/reserva/cancelar?vista=cliente-reserva-cancelacion-bloqueada"
+    },
+    {
+      "owner": "Cristian Condori",
+      "kind": "screen",
+      "name": "op-reserva-nueva",
+      "component": "OpReservaNuevaPage",
+      "folder": "src/app/pages/operacion/op-reserva-nueva/",
+      "references": "US06, US29 S2-TSK-025, S2-TSK-026",
+      "files": [
+        "src/app/pages/operacion/op-reserva-nueva/op-reserva-nueva.ts",
+        "src/app/pages/operacion/op-reserva-nueva/op-reserva-nueva.html",
+        "src/app/pages/operacion/op-reserva-nueva/op-reserva-nueva.css"
+      ],
+      "missingFiles": [],
+      "url": "/operacion/reserva/nueva"
+    },
+    {
+      "owner": "Cristian Condori",
+      "kind": "screen",
+      "name": "op-reserva-detalle",
+      "component": "OpReservaDetallePage",
+      "folder": "src/app/pages/operacion/op-reserva-detalle/",
+      "references": "US17, US29 S2-TSK-029, S2-TSK-030",
+      "files": [
+        "src/app/pages/operacion/op-reserva-detalle/op-reserva-detalle.ts",
+        "src/app/pages/operacion/op-reserva-detalle/op-reserva-detalle.html",
+        "src/app/pages/operacion/op-reserva-detalle/op-reserva-detalle.css"
+      ],
+      "missingFiles": [],
+      "url": "/operacion/reserva"
+    },
+    {
+      "owner": "Cristian Condori",
+      "kind": "screen",
+      "name": "op-reserva-rechazar",
+      "component": "OpReservaRechazarPage",
+      "folder": "src/app/pages/operacion/op-reserva-rechazar/",
+      "references": "US17, US29 S2-TSK-029, S2-TSK-030",
+      "files": [
+        "src/app/pages/operacion/op-reserva-rechazar/op-reserva-rechazar.ts",
+        "src/app/pages/operacion/op-reserva-rechazar/op-reserva-rechazar.html",
+        "src/app/pages/operacion/op-reserva-rechazar/op-reserva-rechazar.css"
+      ],
+      "missingFiles": [],
+      "url": "/operacion/reserva/rechazar"
+    },
+    {
+      "owner": "Cristian Condori",
+      "kind": "screen",
+      "name": "op-reserva-rechazada",
+      "component": "OpReservaRechazadaPage",
+      "folder": "src/app/pages/operacion/op-reserva-rechazada/",
+      "references": "US17, US29 S2-TSK-029, S2-TSK-030",
+      "files": [
+        "src/app/pages/operacion/op-reserva-rechazada/op-reserva-rechazada.ts",
+        "src/app/pages/operacion/op-reserva-rechazada/op-reserva-rechazada.html",
+        "src/app/pages/operacion/op-reserva-rechazada/op-reserva-rechazada.css"
+      ],
+      "missingFiles": [],
+      "url": "/operacion/reserva?vista=op-reserva-rechazada"
+    },
+    {
+      "owner": "Cristian Condori",
+      "kind": "shared",
+      "name": "cliente-reserva-cancelar-dialog",
+      "component": "ClienteReservaCancelarDialog",
+      "folder": "src/app/dialogs/cliente-reserva-cancelar/",
+      "references": "US09 S2-TSK-051, S2-TSK-052",
+      "files": [
+        "src/app/dialogs/cliente-reserva-cancelar/cliente-reserva-cancelar-dialog.ts",
+        "src/app/dialogs/cliente-reserva-cancelar/cliente-reserva-cancelar-dialog.html",
+        "src/app/dialogs/cliente-reserva-cancelar/cliente-reserva-cancelar-dialog.css"
+      ],
+      "missingFiles": []
+    },
+    {
+      "owner": "Cristian Condori",
+      "kind": "support",
+      "name": "docs/QA-RESERVAS-CRISTIAN.md",
+      "references": "Verificación de reservas",
+      "files": [
+        "docs/QA-RESERVAS-CRISTIAN.md"
+      ],
+      "missingFiles": [
+        "docs/QA-RESERVAS-CRISTIAN.md"
+      ]
+    },
+    {
+      "owner": "Francesco Meza",
+      "kind": "screen",
+      "name": "acceso",
+      "component": "AccesoPage",
+      "folder": "src/app/pages/auth/acceso/",
+      "references": "US02 S2-TSK-009, S2-TSK-010",
+      "files": [
+        "src/app/pages/auth/acceso/acceso.ts",
+        "src/app/pages/auth/acceso/acceso.html",
+        "src/app/pages/auth/acceso/acceso.css"
+      ],
+      "missingFiles": [],
+      "url": "/auth/login"
+    },
+    {
+      "owner": "Francesco Meza",
+      "kind": "screen",
+      "name": "acceso-error",
+      "component": "AccesoErrorPage",
+      "folder": "src/app/pages/auth/acceso-error/",
+      "references": "US02 S2-TSK-009, S2-TSK-010",
+      "files": [
+        "src/app/pages/auth/acceso-error/acceso-error.ts",
+        "src/app/pages/auth/acceso-error/acceso-error.html",
+        "src/app/pages/auth/acceso-error/acceso-error.css"
+      ],
+      "missingFiles": [],
+      "url": "/auth/login?vista=acceso-error"
+    },
+    {
+      "owner": "Francesco Meza",
+      "kind": "screen",
+      "name": "registro-cliente",
+      "component": "RegistroClientePage",
+      "folder": "src/app/pages/auth/registro-cliente/",
+      "references": "US01 S2-TSK-007, S2-TSK-008",
+      "files": [
+        "src/app/pages/auth/registro-cliente/registro-cliente.ts",
+        "src/app/pages/auth/registro-cliente/registro-cliente.html",
+        "src/app/pages/auth/registro-cliente/registro-cliente.css"
+      ],
+      "missingFiles": [],
+      "url": "/auth/registro"
+    },
+    {
+      "owner": "Francesco Meza",
+      "kind": "screen",
+      "name": "registro-dueno",
+      "component": "RegistroDuenoPage",
+      "folder": "src/app/pages/auth/registro-dueno/",
+      "references": "US21 S2-TSK-005, S2-TSK-006",
+      "files": [
+        "src/app/pages/auth/registro-dueno/registro-dueno.ts",
+        "src/app/pages/auth/registro-dueno/registro-dueno.html",
+        "src/app/pages/auth/registro-dueno/registro-dueno.css"
+      ],
+      "missingFiles": [],
+      "url": "/auth/registro-dueno"
+    },
+    {
+      "owner": "Francesco Meza",
+      "kind": "screen",
+      "name": "registro-restaurante",
+      "component": "RegistroRestaurantePage",
+      "folder": "src/app/pages/auth/registro-restaurante/",
+      "references": "US21 S2-TSK-005, S2-TSK-006",
+      "files": [
+        "src/app/pages/auth/registro-restaurante/registro-restaurante.ts",
+        "src/app/pages/auth/registro-restaurante/registro-restaurante.html",
+        "src/app/pages/auth/registro-restaurante/registro-restaurante.css"
+      ],
+      "missingFiles": [],
+      "url": "/auth/restaurante"
+    },
+    {
+      "owner": "Francesco Meza",
+      "kind": "screen",
+      "name": "registro-duplicado",
+      "component": "RegistroDuplicadoPage",
+      "folder": "src/app/pages/auth/registro-duplicado/",
+      "references": "US21 S2-TSK-005, S2-TSK-006",
+      "files": [
+        "src/app/pages/auth/registro-duplicado/registro-duplicado.ts",
+        "src/app/pages/auth/registro-duplicado/registro-duplicado.html",
+        "src/app/pages/auth/registro-duplicado/registro-duplicado.css"
+      ],
+      "missingFiles": [],
+      "url": "/auth/registro-dueno?vista=registro-duplicado"
+    },
+    {
+      "owner": "Francesco Meza",
+      "kind": "screen",
+      "name": "dueno-bienvenida",
+      "component": "DuenoBienvenidaPage",
+      "folder": "src/app/pages/dueno/dueno-bienvenida/",
+      "references": "US21 S2-TSK-005, S2-TSK-006",
+      "files": [
+        "src/app/pages/dueno/dueno-bienvenida/dueno-bienvenida.ts",
+        "src/app/pages/dueno/dueno-bienvenida/dueno-bienvenida.html",
+        "src/app/pages/dueno/dueno-bienvenida/dueno-bienvenida.css"
+      ],
+      "missingFiles": [],
+      "url": "/dueno/bienvenida"
+    },
+    {
+      "owner": "Francesco Meza",
+      "kind": "screen",
+      "name": "cliente-notificaciones",
+      "component": "ClienteNotificacionesPage",
+      "folder": "src/app/pages/cliente/cliente-notificaciones/",
+      "references": "US28 S2-TSK-045, S2-TSK-046",
+      "files": [
+        "src/app/pages/cliente/cliente-notificaciones/cliente-notificaciones.ts",
+        "src/app/pages/cliente/cliente-notificaciones/cliente-notificaciones.html",
+        "src/app/pages/cliente/cliente-notificaciones/cliente-notificaciones.css"
+      ],
+      "missingFiles": [],
+      "url": "/cliente/notificaciones"
+    },
+    {
+      "owner": "Francesco Meza",
+      "kind": "screen",
+      "name": "cliente-notificaciones-vacio",
+      "component": "ClienteNotificacionesVacioPage",
+      "folder": "src/app/pages/cliente/cliente-notificaciones-vacio/",
+      "references": "US28 S2-TSK-045, S2-TSK-046",
+      "files": [
+        "src/app/pages/cliente/cliente-notificaciones-vacio/cliente-notificaciones-vacio.ts",
+        "src/app/pages/cliente/cliente-notificaciones-vacio/cliente-notificaciones-vacio.html",
+        "src/app/pages/cliente/cliente-notificaciones-vacio/cliente-notificaciones-vacio.css"
+      ],
+      "missingFiles": [],
+      "url": "/cliente/notificaciones?vista=cliente-notificaciones-vacio"
+    },
+    {
+      "owner": "Francesco Meza",
+      "kind": "screen",
+      "name": "op-inicio",
+      "component": "OpInicioPage",
+      "folder": "src/app/pages/operacion/op-inicio/",
+      "references": "Vista de acceso a módulos operativos Transversal / revisar",
+      "files": [
+        "src/app/pages/operacion/op-inicio/op-inicio.ts",
+        "src/app/pages/operacion/op-inicio/op-inicio.html",
+        "src/app/pages/operacion/op-inicio/op-inicio.css"
+      ],
+      "missingFiles": [],
+      "url": "/operacion"
+    },
+    {
+      "owner": "Francesco Meza",
+      "kind": "screen",
+      "name": "dueno-inicio",
+      "component": "DuenoInicioPage",
+      "folder": "src/app/pages/dueno/dueno-inicio/",
+      "references": "US21 S2-TSK-005, S2-TSK-006",
+      "files": [
+        "src/app/pages/dueno/dueno-inicio/dueno-inicio.ts",
+        "src/app/pages/dueno/dueno-inicio/dueno-inicio.html",
+        "src/app/pages/dueno/dueno-inicio/dueno-inicio.css"
+      ],
+      "missingFiles": [],
+      "url": "/dueno"
+    },
+    {
+      "owner": "Francesco Meza",
+      "kind": "screen",
+      "name": "op-pedido-editar",
+      "component": "OpPedidoEditarPage",
+      "folder": "src/app/pages/operacion/op-pedido-editar/",
+      "references": "US24 S2-TSK-043, S2-TSK-044",
+      "files": [
+        "src/app/pages/operacion/op-pedido-editar/op-pedido-editar.ts",
+        "src/app/pages/operacion/op-pedido-editar/op-pedido-editar.html",
+        "src/app/pages/operacion/op-pedido-editar/op-pedido-editar.css"
+      ],
+      "missingFiles": [],
+      "url": "/operacion/pedido/editar"
+    },
+    {
+      "owner": "Francesco Meza",
+      "kind": "screen",
+      "name": "op-pedido-cancelar",
+      "component": "OpPedidoCancelarPage",
+      "folder": "src/app/pages/operacion/op-pedido-cancelar/",
+      "references": "US24 S2-TSK-043, S2-TSK-044",
+      "files": [
+        "src/app/pages/operacion/op-pedido-cancelar/op-pedido-cancelar.ts",
+        "src/app/pages/operacion/op-pedido-cancelar/op-pedido-cancelar.html",
+        "src/app/pages/operacion/op-pedido-cancelar/op-pedido-cancelar.css"
+      ],
+      "missingFiles": [],
+      "url": "/operacion/pedido/cancelar"
+    },
+    {
+      "owner": "Francesco Meza",
+      "kind": "screen",
+      "name": "op-pedido-bloqueado",
+      "component": "OpPedidoBloqueadoPage",
+      "folder": "src/app/pages/operacion/op-pedido-bloqueado/",
+      "references": "US24 S2-TSK-043, S2-TSK-044",
+      "files": [
+        "src/app/pages/operacion/op-pedido-bloqueado/op-pedido-bloqueado.ts",
+        "src/app/pages/operacion/op-pedido-bloqueado/op-pedido-bloqueado.html",
+        "src/app/pages/operacion/op-pedido-bloqueado/op-pedido-bloqueado.css"
+      ],
+      "missingFiles": [],
+      "url": "/operacion/pedido/editar?vista=op-pedido-bloqueado"
+    },
+    {
+      "owner": "Francesco Meza",
+      "kind": "screen",
+      "name": "op-pago-buscar",
+      "component": "OpPagoBuscarPage",
+      "folder": "src/app/pages/operacion/op-pago-buscar/",
+      "references": "US18 S2-TSK-039, S2-TSK-040",
+      "files": [
+        "src/app/pages/operacion/op-pago-buscar/op-pago-buscar.ts",
+        "src/app/pages/operacion/op-pago-buscar/op-pago-buscar.html",
+        "src/app/pages/operacion/op-pago-buscar/op-pago-buscar.css"
+      ],
+      "missingFiles": [],
+      "url": "/operacion/pagos"
+    },
+    {
+      "owner": "Francesco Meza",
+      "kind": "screen",
+      "name": "op-pago-registrar",
+      "component": "OpPagoRegistrarPage",
+      "folder": "src/app/pages/operacion/op-pago-registrar/",
+      "references": "US18 S2-TSK-039, S2-TSK-040",
+      "files": [
+        "src/app/pages/operacion/op-pago-registrar/op-pago-registrar.ts",
+        "src/app/pages/operacion/op-pago-registrar/op-pago-registrar.html",
+        "src/app/pages/operacion/op-pago-registrar/op-pago-registrar.css"
+      ],
+      "missingFiles": [],
+      "url": "/operacion/pago/registrar"
+    },
+    {
+      "owner": "Francesco Meza",
+      "kind": "screen",
+      "name": "op-pago-confirmado",
+      "component": "OpPagoConfirmadoPage",
+      "folder": "src/app/pages/operacion/op-pago-confirmado/",
+      "references": "US18 S2-TSK-039, S2-TSK-040",
+      "files": [
+        "src/app/pages/operacion/op-pago-confirmado/op-pago-confirmado.ts",
+        "src/app/pages/operacion/op-pago-confirmado/op-pago-confirmado.html",
+        "src/app/pages/operacion/op-pago-confirmado/op-pago-confirmado.css"
+      ],
+      "missingFiles": [],
+      "url": "/operacion/pago/registrar?vista=op-pago-confirmado"
+    },
+    {
+      "owner": "Francesco Meza",
+      "kind": "screen",
+      "name": "op-pago-error",
+      "component": "OpPagoErrorPage",
+      "folder": "src/app/pages/operacion/op-pago-error/",
+      "references": "US18 S2-TSK-039, S2-TSK-040",
+      "files": [
+        "src/app/pages/operacion/op-pago-error/op-pago-error.ts",
+        "src/app/pages/operacion/op-pago-error/op-pago-error.html",
+        "src/app/pages/operacion/op-pago-error/op-pago-error.css"
+      ],
+      "missingFiles": [],
+      "url": "/operacion/pago/registrar?vista=op-pago-error"
+    },
+    {
+      "owner": "Francesco Meza",
+      "kind": "screen",
+      "name": "op-notificaciones",
+      "component": "OpNotificacionesPage",
+      "folder": "src/app/pages/operacion/op-notificaciones/",
+      "references": "US28 S2-TSK-045, S2-TSK-046",
+      "files": [
+        "src/app/pages/operacion/op-notificaciones/op-notificaciones.ts",
+        "src/app/pages/operacion/op-notificaciones/op-notificaciones.html",
+        "src/app/pages/operacion/op-notificaciones/op-notificaciones.css"
+      ],
+      "missingFiles": [],
+      "url": "/operacion/notificaciones"
+    },
+    {
+      "owner": "Francesco Meza",
+      "kind": "screen",
+      "name": "dueno-administrador-nuevo",
+      "component": "DuenoAdministradorNuevoPage",
+      "folder": "src/app/pages/dueno/dueno-administrador-nuevo/",
+      "references": "US22 S2-TSK-011, S2-TSK-012",
+      "files": [
+        "src/app/pages/dueno/dueno-administrador-nuevo/dueno-administrador-nuevo.ts",
+        "src/app/pages/dueno/dueno-administrador-nuevo/dueno-administrador-nuevo.html",
+        "src/app/pages/dueno/dueno-administrador-nuevo/dueno-administrador-nuevo.css"
+      ],
+      "missingFiles": [],
+      "url": "/dueno/administradores/nuevo"
+    },
+    {
+      "owner": "Francesco Meza",
+      "kind": "screen",
+      "name": "dueno-administrador-creado",
+      "component": "DuenoAdministradorCreadoPage",
+      "folder": "src/app/pages/dueno/dueno-administrador-creado/",
+      "references": "US22 S2-TSK-011, S2-TSK-012",
+      "files": [
+        "src/app/pages/dueno/dueno-administrador-creado/dueno-administrador-creado.ts",
+        "src/app/pages/dueno/dueno-administrador-creado/dueno-administrador-creado.html",
+        "src/app/pages/dueno/dueno-administrador-creado/dueno-administrador-creado.css"
+      ],
+      "missingFiles": [],
+      "url": "/dueno/administradores/nuevo?vista=dueno-administrador-creado"
+    },
+    {
+      "owner": "Francesco Meza",
+      "kind": "screen",
+      "name": "dueno-administrador-duplicado",
+      "component": "DuenoAdministradorDuplicadoPage",
+      "folder": "src/app/pages/dueno/dueno-administrador-duplicado/",
+      "references": "US22 S2-TSK-011, S2-TSK-012",
+      "files": [
+        "src/app/pages/dueno/dueno-administrador-duplicado/dueno-administrador-duplicado.ts",
+        "src/app/pages/dueno/dueno-administrador-duplicado/dueno-administrador-duplicado.html",
+        "src/app/pages/dueno/dueno-administrador-duplicado/dueno-administrador-duplicado.css"
+      ],
+      "missingFiles": [],
+      "url": "/dueno/administradores/nuevo?vista=dueno-administrador-duplicado"
+    },
+    {
+      "owner": "Francesco Meza",
+      "kind": "screen",
+      "name": "estado-403",
+      "component": "Estado403Page",
+      "folder": "src/app/pages/sistema/estado-403/",
+      "references": "Transversal; US02 para sesión y permisos S2-TSK-009, S2-TSK-010",
+      "files": [
+        "src/app/pages/sistema/estado-403/estado-403.ts",
+        "src/app/pages/sistema/estado-403/estado-403.html",
+        "src/app/pages/sistema/estado-403/estado-403.css"
+      ],
+      "missingFiles": [],
+      "url": "/estado/403"
+    },
+    {
+      "owner": "Francesco Meza",
+      "kind": "screen",
+      "name": "estado-404",
+      "component": "Estado404Page",
+      "folder": "src/app/pages/sistema/estado-404/",
+      "references": "Transversal; US02 para sesión y permisos S2-TSK-009, S2-TSK-010",
+      "files": [
+        "src/app/pages/sistema/estado-404/estado-404.ts",
+        "src/app/pages/sistema/estado-404/estado-404.html",
+        "src/app/pages/sistema/estado-404/estado-404.css"
+      ],
+      "missingFiles": [],
+      "url": "/estado/404"
+    },
+    {
+      "owner": "Francesco Meza",
+      "kind": "screen",
+      "name": "estado-sesion-expirada",
+      "component": "EstadoSesionExpiradaPage",
+      "folder": "src/app/pages/sistema/estado-sesion-expirada/",
+      "references": "Transversal; US02 para sesión y permisos S2-TSK-009, S2-TSK-010",
+      "files": [
+        "src/app/pages/sistema/estado-sesion-expirada/estado-sesion-expirada.ts",
+        "src/app/pages/sistema/estado-sesion-expirada/estado-sesion-expirada.html",
+        "src/app/pages/sistema/estado-sesion-expirada/estado-sesion-expirada.css"
+      ],
+      "missingFiles": [],
+      "url": "/estado/sesion"
+    },
+    {
+      "owner": "Francesco Meza",
+      "kind": "screen",
+      "name": "estado-error",
+      "component": "EstadoErrorPage",
+      "folder": "src/app/pages/sistema/estado-error/",
+      "references": "Transversal; US02 para sesión y permisos S2-TSK-009, S2-TSK-010",
+      "files": [
+        "src/app/pages/sistema/estado-error/estado-error.ts",
+        "src/app/pages/sistema/estado-error/estado-error.html",
+        "src/app/pages/sistema/estado-error/estado-error.css"
+      ],
+      "missingFiles": [],
+      "url": "/estado/error"
+    },
+    {
+      "owner": "Francesco Meza",
+      "kind": "screen",
+      "name": "estado-cargando",
+      "component": "EstadoCargandoPage",
+      "folder": "src/app/pages/sistema/estado-cargando/",
+      "references": "Transversal; US02 para sesión y permisos S2-TSK-009, S2-TSK-010",
+      "files": [
+        "src/app/pages/sistema/estado-cargando/estado-cargando.ts",
+        "src/app/pages/sistema/estado-cargando/estado-cargando.html",
+        "src/app/pages/sistema/estado-cargando/estado-cargando.css"
+      ],
+      "missingFiles": [],
+      "url": "/estado/cargando"
+    },
+    {
+      "owner": "Francesco Meza",
+      "kind": "shared",
+      "name": "op-pedido-cancelar-dialog",
+      "component": "OpPedidoCancelarDialog",
+      "folder": "src/app/dialogs/op-pedido-cancelar/",
+      "references": "US24 S2-TSK-043, S2-TSK-044",
+      "files": [
+        "src/app/dialogs/op-pedido-cancelar/op-pedido-cancelar-dialog.ts",
+        "src/app/dialogs/op-pedido-cancelar/op-pedido-cancelar-dialog.html",
+        "src/app/dialogs/op-pedido-cancelar/op-pedido-cancelar-dialog.css"
+      ],
+      "missingFiles": []
+    },
+    {
+      "owner": "Francesco Meza",
+      "kind": "shared",
+      "name": "auth-story",
+      "component": "AuthStory",
+      "folder": "src/app/components/auth-story/",
+      "references": "Transversal Transversal / revisar",
+      "files": [
+        "src/app/components/auth-story/auth-story.ts",
+        "src/app/components/auth-story/auth-story.html",
+        "src/app/components/auth-story/auth-story.css"
+      ],
+      "missingFiles": []
+    },
+    {
+      "owner": "Francesco Meza",
+      "kind": "shared",
+      "name": "form-errors",
+      "component": "FormErrors",
+      "folder": "src/app/components/form-errors/",
+      "references": "Transversal Transversal / revisar",
+      "files": [
+        "src/app/components/form-errors/form-errors.ts",
+        "src/app/components/form-errors/form-errors.html",
+        "src/app/components/form-errors/form-errors.css"
+      ],
+      "missingFiles": []
+    },
+    {
+      "owner": "Francesco Meza",
+      "kind": "shared",
+      "name": "empty-state",
+      "component": "EmptyState",
+      "folder": "src/app/components/empty-state/",
+      "references": "Transversal Transversal / revisar",
+      "files": [
+        "src/app/components/empty-state/empty-state.ts",
+        "src/app/components/empty-state/empty-state.html",
+        "src/app/components/empty-state/empty-state.css"
+      ],
+      "missingFiles": []
+    },
+    {
+      "owner": "Francesco Meza",
+      "kind": "shared",
+      "name": "loading-state",
+      "component": "LoadingState",
+      "folder": "src/app/components/loading-state/",
+      "references": "Transversal Transversal / revisar",
+      "files": [
+        "src/app/components/loading-state/loading-state.ts",
+        "src/app/components/loading-state/loading-state.html",
+        "src/app/components/loading-state/loading-state.css"
+      ],
+      "missingFiles": []
+    },
+    {
+      "owner": "Francesco Meza",
+      "kind": "shared",
+      "name": "auth-layout",
+      "component": "AuthLayout",
+      "folder": "src/app/layouts/auth-layout/",
+      "references": "Transversal Transversal / revisar",
+      "files": [
+        "src/app/layouts/auth-layout/auth-layout.ts",
+        "src/app/layouts/auth-layout/auth-layout.html",
+        "src/app/layouts/auth-layout/auth-layout.css"
+      ],
+      "missingFiles": []
+    },
+    {
+      "owner": "Francesco Meza",
+      "kind": "shared",
+      "name": "cuenta-layout",
+      "component": "CuentaLayout",
+      "folder": "src/app/layouts/cuenta-layout/",
+      "references": "Transversal Transversal / revisar",
+      "files": [
+        "src/app/layouts/cuenta-layout/cuenta-layout.ts",
+        "src/app/layouts/cuenta-layout/cuenta-layout.html",
+        "src/app/layouts/cuenta-layout/cuenta-layout.css"
+      ],
+      "missingFiles": []
+    },
+    {
+      "owner": "Francesco Meza",
+      "kind": "support",
+      "name": ".editorconfig",
+      "references": "Configuración, rutas, carga, inventario o documentación técnica compartida",
+      "files": [
+        ".editorconfig"
+      ],
+      "missingFiles": []
+    },
+    {
+      "owner": "Francesco Meza",
+      "kind": "support",
+      "name": ".gitignore",
+      "references": "Configuración, rutas, carga, inventario o documentación técnica compartida",
+      "files": [
+        ".gitignore"
+      ],
+      "missingFiles": []
+    },
+    {
+      "owner": "Francesco Meza",
+      "kind": "support",
+      "name": ".nvmrc",
+      "references": "Configuración, rutas, carga, inventario o documentación técnica compartida",
+      "files": [
+        ".nvmrc"
+      ],
+      "missingFiles": []
+    },
+    {
+      "owner": "Francesco Meza",
+      "kind": "support",
+      "name": "README.md",
+      "references": "Configuración, rutas, carga, inventario o documentación técnica compartida",
+      "files": [
+        "README.md"
+      ],
+      "missingFiles": []
+    },
+    {
+      "owner": "Francesco Meza",
+      "kind": "support",
+      "name": "angular.json",
+      "references": "Configuración, rutas, carga, inventario o documentación técnica compartida",
+      "files": [
+        "angular.json"
+      ],
+      "missingFiles": []
+    },
+    {
+      "owner": "Francesco Meza",
+      "kind": "support",
+      "name": "netlify.toml",
+      "references": "Configuración, rutas, carga, inventario o documentación técnica compartida",
+      "files": [
+        "netlify.toml"
+      ],
+      "missingFiles": []
+    },
+    {
+      "owner": "Francesco Meza",
+      "kind": "support",
+      "name": "package-lock.json",
+      "references": "Configuración, rutas, carga, inventario o documentación técnica compartida",
+      "files": [
+        "package-lock.json"
+      ],
+      "missingFiles": []
+    },
+    {
+      "owner": "Francesco Meza",
+      "kind": "support",
+      "name": "package.json",
+      "references": "Configuración, rutas, carga, inventario o documentación técnica compartida",
+      "files": [
+        "package.json"
+      ],
+      "missingFiles": []
+    },
+    {
+      "owner": "Francesco Meza",
+      "kind": "support",
+      "name": "public/_redirects",
+      "references": "Configuración, rutas, carga, inventario o documentación técnica compartida",
+      "files": [
+        "public/_redirects"
+      ],
+      "missingFiles": []
+    },
+    {
+      "owner": "Francesco Meza",
+      "kind": "support",
+      "name": "scripts/check-structure.mjs",
+      "references": "Configuración, rutas, carga, inventario o documentación técnica compartida",
+      "files": [
+        "scripts/check-structure.mjs"
+      ],
+      "missingFiles": []
+    },
+    {
+      "owner": "Francesco Meza",
+      "kind": "support",
+      "name": "src/app/app.config.ts",
+      "references": "Configuración, rutas, carga, inventario o documentación técnica compartida",
+      "files": [
+        "src/app/app.config.ts"
+      ],
+      "missingFiles": []
+    },
+    {
+      "owner": "Francesco Meza",
+      "kind": "support",
+      "name": "src/app/app.css",
+      "references": "Configuración, rutas, carga, inventario o documentación técnica compartida",
+      "files": [
+        "src/app/app.css"
+      ],
+      "missingFiles": []
+    },
+    {
+      "owner": "Francesco Meza",
+      "kind": "support",
+      "name": "src/app/app.html",
+      "references": "Configuración, rutas, carga, inventario o documentación técnica compartida",
+      "files": [
+        "src/app/app.html"
+      ],
+      "missingFiles": []
+    },
+    {
+      "owner": "Francesco Meza",
+      "kind": "support",
+      "name": "src/app/app.routes.ts",
+      "references": "Configuración, rutas, carga, inventario o documentación técnica compartida",
+      "files": [
+        "src/app/app.routes.ts"
+      ],
+      "missingFiles": []
+    },
+    {
+      "owner": "Francesco Meza",
+      "kind": "support",
+      "name": "src/app/app.ts",
+      "references": "Configuración, rutas, carga, inventario o documentación técnica compartida",
+      "files": [
+        "src/app/app.ts"
+      ],
+      "missingFiles": []
+    },
+    {
+      "owner": "Francesco Meza",
+      "kind": "support",
+      "name": "src/app/routes/auth/auth.routes.ts",
+      "references": "Configuración, rutas, carga, inventario o documentación técnica compartida",
+      "files": [
+        "src/app/routes/auth/auth.routes.ts"
+      ],
+      "missingFiles": []
+    },
+    {
+      "owner": "Francesco Meza",
+      "kind": "support",
+      "name": "src/app/routes/cliente/cliente.routes.ts",
+      "references": "Configuración, rutas, carga, inventario o documentación técnica compartida",
+      "files": [
+        "src/app/routes/cliente/cliente.routes.ts"
+      ],
+      "missingFiles": []
+    },
+    {
+      "owner": "Francesco Meza",
+      "kind": "support",
+      "name": "src/app/routes/dueno/dueno.routes.ts",
+      "references": "Configuración, rutas, carga, inventario o documentación técnica compartida",
+      "files": [
+        "src/app/routes/dueno/dueno.routes.ts"
+      ],
+      "missingFiles": []
+    },
+    {
+      "owner": "Francesco Meza",
+      "kind": "support",
+      "name": "src/app/routes/estado/estado.routes.ts",
+      "references": "Configuración, rutas, carga, inventario o documentación técnica compartida",
+      "files": [
+        "src/app/routes/estado/estado.routes.ts"
+      ],
+      "missingFiles": []
+    },
+    {
+      "owner": "Francesco Meza",
+      "kind": "support",
+      "name": "src/app/routes/operacion/operacion.routes.ts",
+      "references": "Configuración, rutas, carga, inventario o documentación técnica compartida",
+      "files": [
+        "src/app/routes/operacion/operacion.routes.ts"
+      ],
+      "missingFiles": []
+    },
+    {
+      "owner": "Francesco Meza",
+      "kind": "support",
+      "name": "src/app/screen-host.ts",
+      "references": "Configuración, rutas, carga, inventario o documentación técnica compartida",
+      "files": [
+        "src/app/screen-host.ts"
+      ],
+      "missingFiles": []
+    },
+    {
+      "owner": "Francesco Meza",
+      "kind": "support",
+      "name": "src/app/screen-loaders.ts",
+      "references": "Configuración, rutas, carga, inventario o documentación técnica compartida",
+      "files": [
+        "src/app/screen-loaders.ts"
+      ],
+      "missingFiles": []
+    },
+    {
+      "owner": "Francesco Meza",
+      "kind": "support",
+      "name": "src/app/screen-manifest.json",
+      "references": "Configuración, rutas, carga, inventario o documentación técnica compartida",
+      "files": [
+        "src/app/screen-manifest.json"
+      ],
+      "missingFiles": []
+    },
+    {
+      "owner": "Francesco Meza",
+      "kind": "support",
+      "name": "src/app/structure-index/structure-index.css",
+      "references": "Configuración, rutas, carga, inventario o documentación técnica compartida",
+      "files": [
+        "src/app/structure-index/structure-index.css"
+      ],
+      "missingFiles": []
+    },
+    {
+      "owner": "Francesco Meza",
+      "kind": "support",
+      "name": "src/app/structure-index/structure-index.html",
+      "references": "Configuración, rutas, carga, inventario o documentación técnica compartida",
+      "files": [
+        "src/app/structure-index/structure-index.html"
+      ],
+      "missingFiles": []
+    },
+    {
+      "owner": "Francesco Meza",
+      "kind": "support",
+      "name": "src/app/structure-index/structure-index.ts",
+      "references": "Configuración, rutas, carga, inventario o documentación técnica compartida",
+      "files": [
+        "src/app/structure-index/structure-index.ts"
+      ],
+      "missingFiles": []
+    },
+    {
+      "owner": "Francesco Meza",
+      "kind": "support",
+      "name": "src/environments/environment.development.ts",
+      "references": "Configuración, rutas, carga, inventario o documentación técnica compartida",
+      "files": [
+        "src/environments/environment.development.ts"
+      ],
+      "missingFiles": []
+    },
+    {
+      "owner": "Francesco Meza",
+      "kind": "support",
+      "name": "src/environments/environment.ts",
+      "references": "Configuración, rutas, carga, inventario o documentación técnica compartida",
+      "files": [
+        "src/environments/environment.ts"
+      ],
+      "missingFiles": []
+    },
+    {
+      "owner": "Francesco Meza",
+      "kind": "support",
+      "name": "src/index.html",
+      "references": "Configuración, rutas, carga, inventario o documentación técnica compartida",
+      "files": [
+        "src/index.html"
+      ],
+      "missingFiles": []
+    },
+    {
+      "owner": "Francesco Meza",
+      "kind": "support",
+      "name": "src/main.ts",
+      "references": "Configuración, rutas, carga, inventario o documentación técnica compartida",
+      "files": [
+        "src/main.ts"
+      ],
+      "missingFiles": []
+    },
+    {
+      "owner": "Francesco Meza",
+      "kind": "support",
+      "name": "tsconfig.app.json",
+      "references": "Configuración, rutas, carga, inventario o documentación técnica compartida",
+      "files": [
+        "tsconfig.app.json"
+      ],
+      "missingFiles": []
+    },
+    {
+      "owner": "Francesco Meza",
+      "kind": "support",
+      "name": "tsconfig.json",
+      "references": "Configuración, rutas, carga, inventario o documentación técnica compartida",
+      "files": [
+        "tsconfig.json"
+      ],
+      "missingFiles": []
+    },
+    {
+      "owner": "Alexandra Fong",
+      "kind": "screen",
+      "name": "cliente-carrito",
+      "component": "ClienteCarritoPage",
+      "folder": "src/app/pages/cliente/cliente-carrito/",
+      "references": "US11 S2-TSK-031, S2-TSK-032",
+      "files": [
+        "src/app/pages/cliente/cliente-carrito/cliente-carrito.ts",
+        "src/app/pages/cliente/cliente-carrito/cliente-carrito.html",
+        "src/app/pages/cliente/cliente-carrito/cliente-carrito.css"
+      ],
+      "missingFiles": [],
+      "url": "/cliente/carrito"
+    },
+    {
+      "owner": "Alexandra Fong",
+      "kind": "screen",
+      "name": "cliente-carrito-vacio",
+      "component": "ClienteCarritoVacioPage",
+      "folder": "src/app/pages/cliente/cliente-carrito-vacio/",
+      "references": "US11 S2-TSK-031, S2-TSK-032",
+      "files": [
+        "src/app/pages/cliente/cliente-carrito-vacio/cliente-carrito-vacio.ts",
+        "src/app/pages/cliente/cliente-carrito-vacio/cliente-carrito-vacio.html",
+        "src/app/pages/cliente/cliente-carrito-vacio/cliente-carrito-vacio.css"
+      ],
+      "missingFiles": [],
+      "url": "/cliente/carrito?vista=cliente-carrito-vacio"
+    },
+    {
+      "owner": "Alexandra Fong",
+      "kind": "screen",
+      "name": "cliente-entrega-salon",
+      "component": "ClienteEntregaSalonPage",
+      "folder": "src/app/pages/cliente/cliente-entrega-salon/",
+      "references": "US11 S2-TSK-031, S2-TSK-032",
+      "files": [
+        "src/app/pages/cliente/cliente-entrega-salon/cliente-entrega-salon.ts",
+        "src/app/pages/cliente/cliente-entrega-salon/cliente-entrega-salon.html",
+        "src/app/pages/cliente/cliente-entrega-salon/cliente-entrega-salon.css"
+      ],
+      "missingFiles": [],
+      "url": "/cliente/entrega"
+    },
+    {
+      "owner": "Alexandra Fong",
+      "kind": "screen",
+      "name": "cliente-entrega-delivery",
+      "component": "ClienteEntregaDeliveryPage",
+      "folder": "src/app/pages/cliente/cliente-entrega-delivery/",
+      "references": "US11 S2-TSK-031, S2-TSK-032",
+      "files": [
+        "src/app/pages/cliente/cliente-entrega-delivery/cliente-entrega-delivery.ts",
+        "src/app/pages/cliente/cliente-entrega-delivery/cliente-entrega-delivery.html",
+        "src/app/pages/cliente/cliente-entrega-delivery/cliente-entrega-delivery.css"
+      ],
+      "missingFiles": [],
+      "url": "/cliente/entrega?vista=cliente-entrega-delivery"
+    },
+    {
+      "owner": "Alexandra Fong",
+      "kind": "screen",
+      "name": "cliente-entrega-llevar",
+      "component": "ClienteEntregaLlevarPage",
+      "folder": "src/app/pages/cliente/cliente-entrega-llevar/",
+      "references": "US11 S2-TSK-031, S2-TSK-032",
+      "files": [
+        "src/app/pages/cliente/cliente-entrega-llevar/cliente-entrega-llevar.ts",
+        "src/app/pages/cliente/cliente-entrega-llevar/cliente-entrega-llevar.html",
+        "src/app/pages/cliente/cliente-entrega-llevar/cliente-entrega-llevar.css"
+      ],
+      "missingFiles": [],
+      "url": "/cliente/entrega?vista=cliente-entrega-llevar"
+    },
+    {
+      "owner": "Alexandra Fong",
+      "kind": "screen",
+      "name": "cliente-entrega-recoger",
+      "component": "ClienteEntregaRecogerPage",
+      "folder": "src/app/pages/cliente/cliente-entrega-recoger/",
+      "references": "US11 S2-TSK-031, S2-TSK-032",
+      "files": [
+        "src/app/pages/cliente/cliente-entrega-recoger/cliente-entrega-recoger.ts",
+        "src/app/pages/cliente/cliente-entrega-recoger/cliente-entrega-recoger.html",
+        "src/app/pages/cliente/cliente-entrega-recoger/cliente-entrega-recoger.css"
+      ],
+      "missingFiles": [],
+      "url": "/cliente/entrega?vista=cliente-entrega-recoger"
+    },
+    {
+      "owner": "Alexandra Fong",
+      "kind": "screen",
+      "name": "cliente-restaurante-cerrado",
+      "component": "ClienteRestauranteCerradoPage",
+      "folder": "src/app/pages/cliente/cliente-restaurante-cerrado/",
+      "references": "US11 S2-TSK-031, S2-TSK-032",
+      "files": [
+        "src/app/pages/cliente/cliente-restaurante-cerrado/cliente-restaurante-cerrado.ts",
+        "src/app/pages/cliente/cliente-restaurante-cerrado/cliente-restaurante-cerrado.html",
+        "src/app/pages/cliente/cliente-restaurante-cerrado/cliente-restaurante-cerrado.css"
+      ],
+      "missingFiles": [],
+      "url": "/cliente/entrega?vista=cliente-restaurante-cerrado"
+    },
+    {
+      "owner": "Alexandra Fong",
+      "kind": "screen",
+      "name": "cliente-pedido-creado",
+      "component": "ClientePedidoCreadoPage",
+      "folder": "src/app/pages/cliente/cliente-pedido-creado/",
+      "references": "US11 S2-TSK-031, S2-TSK-032",
+      "files": [
+        "src/app/pages/cliente/cliente-pedido-creado/cliente-pedido-creado.ts",
+        "src/app/pages/cliente/cliente-pedido-creado/cliente-pedido-creado.html",
+        "src/app/pages/cliente/cliente-pedido-creado/cliente-pedido-creado.css"
+      ],
+      "missingFiles": [],
+      "url": "/cliente/pedido?vista=cliente-pedido-creado"
+    },
+    {
+      "owner": "Alexandra Fong",
+      "kind": "screen",
+      "name": "cliente-pedidos",
+      "component": "ClientePedidosPage",
+      "folder": "src/app/pages/cliente/cliente-pedidos/",
+      "references": "US12, US13 S2-TSK-033, S2-TSK-034, S2-TSK-041, S2-TSK-042",
+      "files": [
+        "src/app/pages/cliente/cliente-pedidos/cliente-pedidos.ts",
+        "src/app/pages/cliente/cliente-pedidos/cliente-pedidos.html",
+        "src/app/pages/cliente/cliente-pedidos/cliente-pedidos.css"
+      ],
+      "missingFiles": [],
+      "url": "/cliente/pedidos"
+    },
+    {
+      "owner": "Alexandra Fong",
+      "kind": "screen",
+      "name": "cliente-pedido-detalle",
+      "component": "ClientePedidoDetallePage",
+      "folder": "src/app/pages/cliente/cliente-pedido-detalle/",
+      "references": "US12, US13 S2-TSK-033, S2-TSK-034, S2-TSK-041, S2-TSK-042",
+      "files": [
+        "src/app/pages/cliente/cliente-pedido-detalle/cliente-pedido-detalle.ts",
+        "src/app/pages/cliente/cliente-pedido-detalle/cliente-pedido-detalle.html",
+        "src/app/pages/cliente/cliente-pedido-detalle/cliente-pedido-detalle.css"
+      ],
+      "missingFiles": [],
+      "url": "/cliente/pedido"
+    },
+    {
+      "owner": "Alexandra Fong",
+      "kind": "screen",
+      "name": "cliente-pedido-listo",
+      "component": "ClientePedidoListoPage",
+      "folder": "src/app/pages/cliente/cliente-pedido-listo/",
+      "references": "US12, US13 S2-TSK-033, S2-TSK-034, S2-TSK-041, S2-TSK-042",
+      "files": [
+        "src/app/pages/cliente/cliente-pedido-listo/cliente-pedido-listo.ts",
+        "src/app/pages/cliente/cliente-pedido-listo/cliente-pedido-listo.html",
+        "src/app/pages/cliente/cliente-pedido-listo/cliente-pedido-listo.css"
+      ],
+      "missingFiles": [],
+      "url": "/cliente/pedido?vista=cliente-pedido-listo"
+    },
+    {
+      "owner": "Alexandra Fong",
+      "kind": "screen",
+      "name": "cliente-pedido-entregado",
+      "component": "ClientePedidoEntregadoPage",
+      "folder": "src/app/pages/cliente/cliente-pedido-entregado/",
+      "references": "US11 S2-TSK-031, S2-TSK-032",
+      "files": [
+        "src/app/pages/cliente/cliente-pedido-entregado/cliente-pedido-entregado.ts",
+        "src/app/pages/cliente/cliente-pedido-entregado/cliente-pedido-entregado.html",
+        "src/app/pages/cliente/cliente-pedido-entregado/cliente-pedido-entregado.css"
+      ],
+      "missingFiles": [],
+      "url": "/cliente/pedido?vista=cliente-pedido-entregado"
+    },
+    {
+      "owner": "Alexandra Fong",
+      "kind": "screen",
+      "name": "cliente-pedido-cancelado",
+      "component": "ClientePedidoCanceladoPage",
+      "folder": "src/app/pages/cliente/cliente-pedido-cancelado/",
+      "references": "US12, US13 S2-TSK-033, S2-TSK-034, S2-TSK-041, S2-TSK-042",
+      "files": [
+        "src/app/pages/cliente/cliente-pedido-cancelado/cliente-pedido-cancelado.ts",
+        "src/app/pages/cliente/cliente-pedido-cancelado/cliente-pedido-cancelado.html",
+        "src/app/pages/cliente/cliente-pedido-cancelado/cliente-pedido-cancelado.css"
+      ],
+      "missingFiles": [],
+      "url": "/cliente/pedido?vista=cliente-pedido-cancelado"
+    },
+    {
+      "owner": "Alexandra Fong",
+      "kind": "screen",
+      "name": "cliente-pago",
+      "component": "ClientePagoPage",
+      "folder": "src/app/pages/cliente/cliente-pago/",
+      "references": "US12, US18 S2-TSK-033, S2-TSK-034",
+      "files": [
+        "src/app/pages/cliente/cliente-pago/cliente-pago.ts",
+        "src/app/pages/cliente/cliente-pago/cliente-pago.html",
+        "src/app/pages/cliente/cliente-pago/cliente-pago.css"
+      ],
+      "missingFiles": [],
+      "url": "/cliente/pago"
+    },
+    {
+      "owner": "Alexandra Fong",
+      "kind": "screen",
+      "name": "cliente-pago-pendiente",
+      "component": "ClientePagoPendientePage",
+      "folder": "src/app/pages/cliente/cliente-pago-pendiente/",
+      "references": "US12, US18 S2-TSK-033, S2-TSK-034",
+      "files": [
+        "src/app/pages/cliente/cliente-pago-pendiente/cliente-pago-pendiente.ts",
+        "src/app/pages/cliente/cliente-pago-pendiente/cliente-pago-pendiente.html",
+        "src/app/pages/cliente/cliente-pago-pendiente/cliente-pago-pendiente.css"
+      ],
+      "missingFiles": [],
+      "url": "/cliente/pago?vista=cliente-pago-pendiente"
+    },
+    {
+      "owner": "Alexandra Fong",
+      "kind": "screen",
+      "name": "op-pedidos",
+      "component": "OpPedidosPage",
+      "folder": "src/app/pages/operacion/op-pedidos/",
+      "references": "US12, US15 S2-TSK-033, S2-TSK-034, S2-TSK-035, S2-TSK-036",
+      "files": [
+        "src/app/pages/operacion/op-pedidos/op-pedidos.ts",
+        "src/app/pages/operacion/op-pedidos/op-pedidos.html",
+        "src/app/pages/operacion/op-pedidos/op-pedidos.css"
+      ],
+      "missingFiles": [],
+      "url": "/operacion/pedidos"
+    },
+    {
+      "owner": "Alexandra Fong",
+      "kind": "screen",
+      "name": "op-cocina",
+      "component": "OpCocinaPage",
+      "folder": "src/app/pages/operacion/op-cocina/",
+      "references": "US15 S2-TSK-035, S2-TSK-036",
+      "files": [
+        "src/app/pages/operacion/op-cocina/op-cocina.ts",
+        "src/app/pages/operacion/op-cocina/op-cocina.html",
+        "src/app/pages/operacion/op-cocina/op-cocina.css"
+      ],
+      "missingFiles": [],
+      "url": "/operacion/cocina"
+    },
+    {
+      "owner": "Alexandra Fong",
+      "kind": "screen",
+      "name": "op-pedido-detalle",
+      "component": "OpPedidoDetallePage",
+      "folder": "src/app/pages/operacion/op-pedido-detalle/",
+      "references": "US12, US15 S2-TSK-033, S2-TSK-034, S2-TSK-035, S2-TSK-036",
+      "files": [
+        "src/app/pages/operacion/op-pedido-detalle/op-pedido-detalle.ts",
+        "src/app/pages/operacion/op-pedido-detalle/op-pedido-detalle.html",
+        "src/app/pages/operacion/op-pedido-detalle/op-pedido-detalle.css"
+      ],
+      "missingFiles": [],
+      "url": "/operacion/pedido"
+    },
+    {
+      "owner": "Alexandra Fong",
+      "kind": "screen",
+      "name": "op-pedido-listo",
+      "component": "OpPedidoListoPage",
+      "folder": "src/app/pages/operacion/op-pedido-listo/",
+      "references": "US19 S2-TSK-037, S2-TSK-038",
+      "files": [
+        "src/app/pages/operacion/op-pedido-listo/op-pedido-listo.ts",
+        "src/app/pages/operacion/op-pedido-listo/op-pedido-listo.html",
+        "src/app/pages/operacion/op-pedido-listo/op-pedido-listo.css"
+      ],
+      "missingFiles": [],
+      "url": "/operacion/pedido/listo"
+    },
+    {
+      "owner": "Alexandra Fong",
+      "kind": "screen",
+      "name": "op-pedido-entregar",
+      "component": "OpPedidoEntregarPage",
+      "folder": "src/app/pages/operacion/op-pedido-entregar/",
+      "references": "US19 S2-TSK-037, S2-TSK-038",
+      "files": [
+        "src/app/pages/operacion/op-pedido-entregar/op-pedido-entregar.ts",
+        "src/app/pages/operacion/op-pedido-entregar/op-pedido-entregar.html",
+        "src/app/pages/operacion/op-pedido-entregar/op-pedido-entregar.css"
+      ],
+      "missingFiles": [],
+      "url": "/operacion/pedido/entregar"
+    },
+    {
+      "owner": "Alexandra Fong",
+      "kind": "screen",
+      "name": "op-pedido-entregado",
+      "component": "OpPedidoEntregadoPage",
+      "folder": "src/app/pages/operacion/op-pedido-entregado/",
+      "references": "US19 S2-TSK-037, S2-TSK-038",
+      "files": [
+        "src/app/pages/operacion/op-pedido-entregado/op-pedido-entregado.ts",
+        "src/app/pages/operacion/op-pedido-entregado/op-pedido-entregado.html",
+        "src/app/pages/operacion/op-pedido-entregado/op-pedido-entregado.css"
+      ],
+      "missingFiles": [],
+      "url": "/operacion/pedido?vista=op-pedido-entregado"
+    },
+    {
+      "owner": "Alexandra Fong",
+      "kind": "screen",
+      "name": "op-reserva-llegada",
+      "component": "OpReservaLlegadaPage",
+      "folder": "src/app/pages/operacion/op-reserva-llegada/",
+      "references": "US25 S2-TSK-053, S2-TSK-054",
+      "files": [
+        "src/app/pages/operacion/op-reserva-llegada/op-reserva-llegada.ts",
+        "src/app/pages/operacion/op-reserva-llegada/op-reserva-llegada.html",
+        "src/app/pages/operacion/op-reserva-llegada/op-reserva-llegada.css"
+      ],
+      "missingFiles": [],
+      "url": "/operacion/reserva/llegada"
+    },
+    {
+      "owner": "Alexandra Fong",
+      "kind": "screen",
+      "name": "op-reserva-atendiendo",
+      "component": "OpReservaAtendiendoPage",
+      "folder": "src/app/pages/operacion/op-reserva-atendiendo/",
+      "references": "US25 S2-TSK-053, S2-TSK-054",
+      "files": [
+        "src/app/pages/operacion/op-reserva-atendiendo/op-reserva-atendiendo.ts",
+        "src/app/pages/operacion/op-reserva-atendiendo/op-reserva-atendiendo.html",
+        "src/app/pages/operacion/op-reserva-atendiendo/op-reserva-atendiendo.css"
+      ],
+      "missingFiles": [],
+      "url": "/operacion/reserva/atendiendo"
+    },
+    {
+      "owner": "Alexandra Fong",
+      "kind": "screen",
+      "name": "op-reserva-completada",
+      "component": "OpReservaCompletadaPage",
+      "folder": "src/app/pages/operacion/op-reserva-completada/",
+      "references": "US25 S2-TSK-053, S2-TSK-054",
+      "files": [
+        "src/app/pages/operacion/op-reserva-completada/op-reserva-completada.ts",
+        "src/app/pages/operacion/op-reserva-completada/op-reserva-completada.html",
+        "src/app/pages/operacion/op-reserva-completada/op-reserva-completada.css"
+      ],
+      "missingFiles": [],
+      "url": "/operacion/reserva?vista=op-reserva-completada"
+    },
+    {
+      "owner": "Alexandra Fong",
+      "kind": "screen",
+      "name": "op-reserva-expirada",
+      "component": "OpReservaExpiradaPage",
+      "folder": "src/app/pages/operacion/op-reserva-expirada/",
+      "references": "US26 S2-TSK-055, S2-TSK-056",
+      "files": [
+        "src/app/pages/operacion/op-reserva-expirada/op-reserva-expirada.ts",
+        "src/app/pages/operacion/op-reserva-expirada/op-reserva-expirada.html",
+        "src/app/pages/operacion/op-reserva-expirada/op-reserva-expirada.css"
+      ],
+      "missingFiles": [],
+      "url": "/operacion/reserva?vista=op-reserva-expirada"
+    },
+    {
+      "owner": "Alexandra Fong",
+      "kind": "screen",
+      "name": "cliente-ia",
+      "component": "ClienteIaPage",
+      "folder": "src/app/pages/cliente/cliente-ia/",
+      "references": "US03 · Funcionalidad prevista Transversal / revisar IA prevista: no implementar como servicio real.",
+      "files": [
+        "src/app/pages/cliente/cliente-ia/cliente-ia.ts",
+        "src/app/pages/cliente/cliente-ia/cliente-ia.html",
+        "src/app/pages/cliente/cliente-ia/cliente-ia.css"
+      ],
+      "missingFiles": [],
+      "url": "/cliente/asistente"
+    },
+    {
+      "owner": "Alexandra Fong",
+      "kind": "screen",
+      "name": "cliente-ia-recomendaciones",
+      "component": "ClienteIaRecomendacionesPage",
+      "folder": "src/app/pages/cliente/cliente-ia-recomendaciones/",
+      "references": "US03 · Funcionalidad prevista Transversal / revisar IA prevista: no implementar como servicio real.",
+      "files": [
+        "src/app/pages/cliente/cliente-ia-recomendaciones/cliente-ia-recomendaciones.ts",
+        "src/app/pages/cliente/cliente-ia-recomendaciones/cliente-ia-recomendaciones.html",
+        "src/app/pages/cliente/cliente-ia-recomendaciones/cliente-ia-recomendaciones.css"
+      ],
+      "missingFiles": [],
+      "url": "/cliente/asistente?vista=cliente-ia-recomendaciones"
+    },
+    {
+      "owner": "Alexandra Fong",
+      "kind": "screen",
+      "name": "cliente-ia-ingredientes",
+      "component": "ClienteIaIngredientesPage",
+      "folder": "src/app/pages/cliente/cliente-ia-ingredientes/",
+      "references": "US03 · Funcionalidad prevista Transversal / revisar IA prevista: no implementar como servicio real.",
+      "files": [
+        "src/app/pages/cliente/cliente-ia-ingredientes/cliente-ia-ingredientes.ts",
+        "src/app/pages/cliente/cliente-ia-ingredientes/cliente-ia-ingredientes.html",
+        "src/app/pages/cliente/cliente-ia-ingredientes/cliente-ia-ingredientes.css"
+      ],
+      "missingFiles": [],
+      "url": "/cliente/asistente?vista=cliente-ia-ingredientes"
+    },
+    {
+      "owner": "Alexandra Fong",
+      "kind": "screen",
+      "name": "cliente-ia-carta",
+      "component": "ClienteIaCartaPage",
+      "folder": "src/app/pages/cliente/cliente-ia-carta/",
+      "references": "US03 · Funcionalidad prevista Transversal / revisar IA prevista: no implementar como servicio real.",
+      "files": [
+        "src/app/pages/cliente/cliente-ia-carta/cliente-ia-carta.ts",
+        "src/app/pages/cliente/cliente-ia-carta/cliente-ia-carta.html",
+        "src/app/pages/cliente/cliente-ia-carta/cliente-ia-carta.css"
+      ],
+      "missingFiles": [],
+      "url": "/cliente/asistente?vista=cliente-ia-carta"
+    },
+    {
+      "owner": "Alexandra Fong",
+      "kind": "screen",
+      "name": "cliente-ia-sin-informacion",
+      "component": "ClienteIaSinInformacionPage",
+      "folder": "src/app/pages/cliente/cliente-ia-sin-informacion/",
+      "references": "US03 · Funcionalidad prevista Transversal / revisar IA prevista: no implementar como servicio real.",
+      "files": [
+        "src/app/pages/cliente/cliente-ia-sin-informacion/cliente-ia-sin-informacion.ts",
+        "src/app/pages/cliente/cliente-ia-sin-informacion/cliente-ia-sin-informacion.html",
+        "src/app/pages/cliente/cliente-ia-sin-informacion/cliente-ia-sin-informacion.css"
+      ],
+      "missingFiles": [],
+      "url": "/cliente/asistente?vista=cliente-ia-sin-informacion"
+    },
+    {
+      "owner": "Alexandra Fong",
+      "kind": "screen",
+      "name": "cliente-ia-cancelar",
+      "component": "ClienteIaCancelarPage",
+      "folder": "src/app/pages/cliente/cliente-ia-cancelar/",
+      "references": "US03 · Funcionalidad prevista Transversal / revisar IA prevista: no implementar como servicio real.",
+      "files": [
+        "src/app/pages/cliente/cliente-ia-cancelar/cliente-ia-cancelar.ts",
+        "src/app/pages/cliente/cliente-ia-cancelar/cliente-ia-cancelar.html",
+        "src/app/pages/cliente/cliente-ia-cancelar/cliente-ia-cancelar.css"
+      ],
+      "missingFiles": [],
+      "url": "/cliente/asistente?vista=cliente-ia-cancelar"
+    },
+    {
+      "owner": "Alexandra Fong",
+      "kind": "screen",
+      "name": "cliente-ia-cancelado",
+      "component": "ClienteIaCanceladoPage",
+      "folder": "src/app/pages/cliente/cliente-ia-cancelado/",
+      "references": "US03 · Funcionalidad prevista Transversal / revisar IA prevista: no implementar como servicio real.",
+      "files": [
+        "src/app/pages/cliente/cliente-ia-cancelado/cliente-ia-cancelado.ts",
+        "src/app/pages/cliente/cliente-ia-cancelado/cliente-ia-cancelado.html",
+        "src/app/pages/cliente/cliente-ia-cancelado/cliente-ia-cancelado.css"
+      ],
+      "missingFiles": [],
+      "url": "/cliente/asistente?vista=cliente-ia-cancelado"
+    },
+    {
+      "owner": "Alexandra Fong",
+      "kind": "screen",
+      "name": "cliente-ia-notificacion-cancelacion",
+      "component": "ClienteIaNotificacionCancelacionPage",
+      "folder": "src/app/pages/cliente/cliente-ia-notificacion-cancelacion/",
+      "references": "US03 · Funcionalidad prevista Transversal / revisar IA prevista: no implementar como servicio real.",
+      "files": [
+        "src/app/pages/cliente/cliente-ia-notificacion-cancelacion/cliente-ia-notificacion-cancelacion.ts",
+        "src/app/pages/cliente/cliente-ia-notificacion-cancelacion/cliente-ia-notificacion-cancelacion.html",
+        "src/app/pages/cliente/cliente-ia-notificacion-cancelacion/cliente-ia-notificacion-cancelacion.css"
+      ],
+      "missingFiles": [],
+      "url": "/cliente/notificaciones/ia"
+    },
+    {
+      "owner": "Alexandra Fong",
+      "kind": "screen",
+      "name": "cliente-ia-cancelacion-bloqueada",
+      "component": "ClienteIaCancelacionBloqueadaPage",
+      "folder": "src/app/pages/cliente/cliente-ia-cancelacion-bloqueada/",
+      "references": "US03 · Funcionalidad prevista Transversal / revisar IA prevista: no implementar como servicio real.",
+      "files": [
+        "src/app/pages/cliente/cliente-ia-cancelacion-bloqueada/cliente-ia-cancelacion-bloqueada.ts",
+        "src/app/pages/cliente/cliente-ia-cancelacion-bloqueada/cliente-ia-cancelacion-bloqueada.html",
+        "src/app/pages/cliente/cliente-ia-cancelacion-bloqueada/cliente-ia-cancelacion-bloqueada.css"
+      ],
+      "missingFiles": [],
+      "url": "/cliente/asistente?vista=cliente-ia-cancelacion-bloqueada"
+    },
+    {
+      "owner": "Alexandra Fong",
+      "kind": "screen",
+      "name": "cliente-ia-estado-bloqueado",
+      "component": "ClienteIaEstadoBloqueadoPage",
+      "folder": "src/app/pages/cliente/cliente-ia-estado-bloqueado/",
+      "references": "US03 · Funcionalidad prevista Transversal / revisar IA prevista: no implementar como servicio real.",
+      "files": [
+        "src/app/pages/cliente/cliente-ia-estado-bloqueado/cliente-ia-estado-bloqueado.ts",
+        "src/app/pages/cliente/cliente-ia-estado-bloqueado/cliente-ia-estado-bloqueado.html",
+        "src/app/pages/cliente/cliente-ia-estado-bloqueado/cliente-ia-estado-bloqueado.css"
+      ],
+      "missingFiles": [],
+      "url": "/cliente/asistente?vista=cliente-ia-estado-bloqueado"
+    },
+    {
+      "owner": "Alexandra Fong",
+      "kind": "screen",
+      "name": "home",
+      "component": "Home",
+      "folder": "src/app/home/",
+      "references": "LP01 S2-TSK-003, S2-TSK-004",
+      "files": [
+        "src/app/home/home.ts",
+        "src/app/home/home.html",
+        "src/app/home/home.css",
+        "src/app/home/README.md"
+      ],
+      "missingFiles": [],
+      "url": "/"
+    },
+    {
+      "owner": "Alexandra Fong",
+      "kind": "shared",
+      "name": "client-header",
+      "component": "ClientHeader",
+      "folder": "src/app/components/client-header/",
+      "references": "Transversal Transversal / revisar",
+      "files": [
+        "src/app/components/client-header/client-header.ts",
+        "src/app/components/client-header/client-header.html",
+        "src/app/components/client-header/client-header.css"
+      ],
+      "missingFiles": []
+    },
+    {
+      "owner": "Alexandra Fong",
+      "kind": "shared",
+      "name": "client-footer",
+      "component": "ClientFooter",
+      "folder": "src/app/components/client-footer/",
+      "references": "Transversal Transversal / revisar",
+      "files": [
+        "src/app/components/client-footer/client-footer.ts",
+        "src/app/components/client-footer/client-footer.html",
+        "src/app/components/client-footer/client-footer.css"
+      ],
+      "missingFiles": []
+    },
+    {
+      "owner": "Alexandra Fong",
+      "kind": "shared",
+      "name": "chat-panel",
+      "component": "ChatPanel",
+      "folder": "src/app/components/chat-panel/",
+      "references": "Transversal Transversal / revisar IA prevista: no implementar como servicio real.",
+      "files": [
+        "src/app/components/chat-panel/chat-panel.ts",
+        "src/app/components/chat-panel/chat-panel.html",
+        "src/app/components/chat-panel/chat-panel.css"
+      ],
+      "missingFiles": []
+    },
+    {
+      "owner": "Alexandra Fong",
+      "kind": "shared",
+      "name": "cliente-layout",
+      "component": "ClienteLayout",
+      "folder": "src/app/layouts/cliente-layout/",
+      "references": "Transversal Transversal / revisar",
+      "files": [
+        "src/app/layouts/cliente-layout/cliente-layout.ts",
+        "src/app/layouts/cliente-layout/cliente-layout.html",
+        "src/app/layouts/cliente-layout/cliente-layout.css"
+      ],
+      "missingFiles": []
+    }
+  ]
+}
