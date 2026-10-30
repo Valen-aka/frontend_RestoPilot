@@ -1,3 +1,4 @@
 import {Component} from '@angular/core';
-@Component({selector:'rp-auth-story',imports:[],templateUrl:'./auth-story.html',styleUrl:'./auth-story.css'})
+import {RouterLink} from '@angular/router';
+@Component({selector:'rp-auth-story',imports:[RouterLink],templateUrl:'./auth-story.html',styleUrl:'./auth-story.css'})
 export class AuthStory{}

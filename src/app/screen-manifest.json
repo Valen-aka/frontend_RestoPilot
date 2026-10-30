@@ -18,8 +18,8 @@
     ],
     "owner": "Francesco Meza",
     "us": "US02",
-    "status": "Pendiente",
-    "contenidoImplementado": false
+    "status": "Implementado visualmente; integración pendiente",
+    "contenidoImplementado": true
   },
   {
     "slug": "acceso-error",
@@ -40,8 +40,8 @@
     ],
     "owner": "Francesco Meza",
     "us": "US02",
-    "status": "Pendiente",
-    "contenidoImplementado": false
+    "status": "Implementado visualmente; integración pendiente",
+    "contenidoImplementado": true
   },
   {
     "slug": "registro-cliente",
@@ -62,8 +62,8 @@
     ],
     "owner": "Francesco Meza",
     "us": "US01",
-    "status": "Pendiente",
-    "contenidoImplementado": false
+    "status": "Implementado visualmente; integración pendiente",
+    "contenidoImplementado": true
   },
   {
     "slug": "registro-dueno",
@@ -84,8 +84,8 @@
     ],
     "owner": "Francesco Meza",
     "us": "US21",
-    "status": "Pendiente",
-    "contenidoImplementado": false
+    "status": "Implementado visualmente; integración pendiente",
+    "contenidoImplementado": true
   },
   {
     "slug": "registro-restaurante",
@@ -106,8 +106,8 @@
     ],
     "owner": "Francesco Meza",
     "us": "US21",
-    "status": "Pendiente",
-    "contenidoImplementado": false
+    "status": "Implementado visualmente; integración pendiente",
+    "contenidoImplementado": true
   },
   {
     "slug": "registro-duplicado",
@@ -128,8 +128,8 @@
     ],
     "owner": "Francesco Meza",
     "us": "US21",
-    "status": "Pendiente",
-    "contenidoImplementado": false
+    "status": "Implementado visualmente; integración pendiente",
+    "contenidoImplementado": true
   },
   {
     "slug": "dueno-bienvenida",
@@ -150,8 +150,8 @@
     ],
     "owner": "Francesco Meza",
     "us": "US21",
-    "status": "Pendiente",
-    "contenidoImplementado": false
+    "status": "Implementado visualmente; integración pendiente",
+    "contenidoImplementado": true
   },
   {
     "slug": "cliente-inicio",

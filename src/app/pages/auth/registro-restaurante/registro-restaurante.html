@@ -1,3 +1,37 @@
-<!-- FRAME: registro-restaurante | Presenta tu restaurante -->
-<!-- TODO: implementar Desktop y Mobile con Angular Material. -->
-<!-- No hay campos, datos ni contenido visual implementados. -->
+<div class="auth-page">
+<header class="auth-heading"><div><p class="eyebrow">Acceso</p><h1>Presenta tu restaurante</h1><p>Un nuevo espacio para hacer crecer tu negocio.</p></div></header>
+<ol class="steps" aria-label="Progreso del registro"><li class="step"><a routerLink="/auth/registro-dueno">01 Tu cuenta</a></li><li class="step active" aria-current="step">02 Tu restaurante</li></ol>
+<section class="auth-section" aria-labelledby="restaurant-title"><h2 id="restaurant-title">Datos del nuevo restaurante</h2>
+<form class="auth-form" [formGroup]="form" (ngSubmit)="submit()" novalidate>
+<div class="field"><label class="field-label" for="nombre">Nombre del restaurante</label>
+<input matInput id="nombre" type="text" formControlName="nombre" autocomplete="organization" maxlength="150" [attr.aria-invalid]="form.controls.nombre.touched && form.controls.nombre.invalid" aria-describedby="nombre-errors">
+
+<div id="nombre-errors"><rp-form-errors [messages]="errors(form.controls.nombre, 'Nombre del restaurante')" /></div></div>
+<div class="field"><label class="field-label" for="direccion">Dirección</label>
+<input matInput id="direccion" type="text" formControlName="direccion" autocomplete="street-address" maxlength="255" [attr.aria-invalid]="form.controls.direccion.touched && form.controls.direccion.invalid" aria-describedby="direccion-errors">
+
+<div id="direccion-errors"><rp-form-errors [messages]="errors(form.controls.direccion, 'Dirección')" /></div></div>
+<div class="field"><label class="field-label" for="telefono">Teléfono</label>
+<input matInput id="telefono" type="tel" formControlName="telefono" autocomplete="tel" maxlength="20" inputmode="tel" [attr.aria-invalid]="form.controls.telefono.touched && form.controls.telefono.invalid" aria-describedby="telefono-errors">
+
+<div id="telefono-errors"><rp-form-errors [messages]="errors(form.controls.telefono, 'Teléfono')" /></div></div>
+<div class="field"><label class="field-label" for="apertura">Hora de apertura</label>
+<input matInput id="apertura" type="time" formControlName="apertura" autocomplete="off"  [attr.aria-invalid]="form.controls.apertura.touched && form.controls.apertura.invalid" aria-describedby="apertura-errors">
+
+<div id="apertura-errors"><rp-form-errors [messages]="errors(form.controls.apertura, 'Hora de apertura')" /></div></div>
+<div class="field"><label class="field-label" for="cierre">Hora de cierre</label>
+<input matInput id="cierre" type="time" formControlName="cierre" autocomplete="off" [attr.aria-invalid]="form.controls.cierre.touched && (form.controls.cierre.invalid || form.hasError('horario'))"  aria-describedby="cierre-errors horario-errors">
+
+<div id="cierre-errors"><rp-form-errors [messages]="errors(form.controls.cierre, 'Hora de cierre')" /></div></div>
+<div id="horario-errors">
+@if ((form.controls.apertura.touched || form.controls.cierre.touched) && form.hasError('horario')) {
+<rp-form-errors [messages]="['La hora de apertura debe ser anterior a la de cierre, dentro del mismo día.']" />
+}
+</div>
+<div class="field"><label class="field-label" for="salon">Atención física</label><select matNativeControl id="salon" formControlName="salon"><option [ngValue]="true">Sí, con salón</option><option [ngValue]="false">No, sin salón</option></select></div>
+<div class="field"><label class="field-label" for="delivery">Delivery</label><select matNativeControl id="delivery" formControlName="delivery"><option [ngValue]="true">Sí, habilitado</option><option [ngValue]="false">No, deshabilitado</option></select></div>
+<div class="auth-actions"><button mat-flat-button class="primary-action" type="submit">Crear restaurante</button></div>
+@if (notice()) {<p class="notice" role="status">{{ notice() }}</p>}
+</form></section>
+<p class="notice schedule-notice"><span aria-hidden="true">ⓘ</span> La apertura debe ser anterior al cierre, dentro del mismo día. No se puede reclamar un restaurante existente.</p>
+</div>

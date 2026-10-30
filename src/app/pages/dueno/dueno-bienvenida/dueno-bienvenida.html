@@ -1,3 +1,17 @@
-<!-- FRAME: dueno-bienvenida | Tu restaurante ya tiene copiloto -->
-<!-- TODO: implementar Desktop y Mobile con Angular Material. -->
-<!-- No hay campos, datos ni contenido visual implementados. -->
+<rp-auth-layout>
+ <section class="welcome-page" aria-labelledby="welcome-heading">
+  <header class="welcome-header">
+   <p class="welcome-eyebrow">Dueño</p>
+   <h1 id="welcome-heading">Tu restaurante ya tiene copiloto</h1>
+   <p class="welcome-subtitle">Una nueva etapa para tu negocio.</p>
+  </header>
+
+  <div class="welcome-result">
+   <div class="welcome-check" aria-hidden="true">✓</div>
+   <h2>Bienvenido a tu restaurante</h2>
+   <p>El siguiente paso: prepara tu carta, mesas y equipo.</p>
+   <a mat-flat-button class="welcome-action" routerLink="/dueno">Entrar a mi restaurante</a>
+   <p class="welcome-preview" role="note">Vista previa de bienvenida. El registro real estará disponible al conectar el servicio.</p>
+  </div>
+ </section>
+</rp-auth-layout>

@@ -1,2 +1,3 @@
-:host{display:block}
-/* TODO: estilos responsive exclusivos de esta pantalla; utilizar variables globales. */
+:host { display: block; }
+.error-notice { margin-bottom: 24px; display: flex; gap: 12px; background: #fff0ed; border-color: #f2d3cc; color: #b95c4e; }
+.error-notice p { margin: 4px 0 0; }

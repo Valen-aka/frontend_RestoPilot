@@ -1,4 +1,3 @@
-import {Component} from '@angular/core';
-import {MatFormFieldModule} from '@angular/material/form-field';
-@Component({selector:'rp-form-errors',imports:[MatFormFieldModule],templateUrl:'./form-errors.html',styleUrl:'./form-errors.css'})
-export class FormErrors{}
+import {Component,Input} from '@angular/core';
+@Component({selector:'rp-form-errors',templateUrl:'./form-errors.html',styleUrl:'./form-errors.css'})
+export class FormErrors{@Input() messages:readonly string[]=[];}

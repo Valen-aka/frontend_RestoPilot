@@ -1,3 +1,9 @@
-<!-- FRAME: registro-duplicado | Ese correo ya está registrado -->
-<!-- TODO: implementar Desktop y Mobile con Angular Material. -->
-<!-- No hay campos, datos ni contenido visual implementados. -->
+<div class="auth-page">
+<header class="auth-heading"><div><p class="eyebrow">Acceso</p><h1>Ese correo ya está registrado</h1><p>La cuenta y el restaurante no se han creado.</p></div></header>
+<section class="result" aria-labelledby="duplicate-title">
+<div class="result-icon" aria-hidden="true">@</div>
+<h2 id="duplicate-title">Ya existe una cuenta con este correo</h2>
+<p>No cambiamos automáticamente una cuenta de cliente a dueño. Usa otro correo o inicia sesión.</p>
+<a mat-flat-button class="primary-action" routerLink="/auth/login">Ir a iniciar sesión</a>
+</section>
+</div>
