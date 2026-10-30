@@ -1011,8 +1011,8 @@
     ],
     "owner": "Francesco Meza",
     "us": "Vista de acceso a módulos operativos",
-    "status": "Pendiente",
-    "contenidoImplementado": false
+    "status": "Implementado visualmente; integración pendiente",
+    "contenidoImplementado": true
   },
   {
     "slug": "dueno-inicio",

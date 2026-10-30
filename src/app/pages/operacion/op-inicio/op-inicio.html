@@ -1,3 +1,15 @@
-<!-- FRAME: op-inicio | Cada servicio, bajo control -->
-<!-- TODO: implementar Desktop y Mobile con Angular Material. -->
-<!-- No hay campos, datos ni contenido visual implementados. -->
+<rp-workspace-shell [role]="'operation'" breadcrumb="Operación" active="inicio">
+<header class="page-heading"><p class="eyebrow">Operación</p><h1>Cada servicio, bajo control</h1><p class="subtitle">Una vista de tu operación para preparar el siguiente servicio.</p></header>
+<p class="preview-note"><span class="badge">Vista previa</span> Indicadores y pedidos ilustrativos del diseño. El servicio todavía no está conectado.</p>
+<section class="metrics" aria-label="Indicadores ilustrativos">
+<article class="metric"><p>Pagos confirmados</p><strong>S/ 1,280</strong><small>Período seleccionado</small></article><article class="metric"><p>Pedidos atendidos</p><strong>24</strong><small>Pedidos entregados</small></article><article class="metric"><p>Reservas completadas</p><strong>12</strong><small>Atenciones independientes</small></article><article class="metric"><p>Ocupación de mesas</p><strong>68%</strong><small>Por tiempo reservado</small></article>
+</section>
+<div class="columns">
+<section class="panel" aria-labelledby="pulse-title"><h2 id="pulse-title">El pulso de tu restaurante</h2>
+<figure class="chart"><div class="bars" role="img" aria-label="Pedidos ilustrativos por hora: 10h 3, 11h 5, 12h 9, 13h 11, 14h 8, 15h 6, 16h 4">
+@for(hour of hours;track hour.label){<div class="bar-column"><div class="bar" [class.highlight]="hour.label==='13h'||hour.label==='14h'" [style.height.%]="hour.value/11*100"></div><span>{{hour.label}}</span></div>}</div><figcaption>Pedidos por hora · Datos de ejemplo</figcaption></figure>
+</section>
+<section class="panel"><h2>Tu siguiente movimiento</h2><nav class="quick-actions" aria-label="Acciones operativas"><a mat-stroked-button class="secondary" routerLink="/operacion/cocina">Revisar cocina</a><a mat-stroked-button class="secondary" routerLink="/operacion/reservas">Gestionar reservas</a><a mat-stroked-button class="secondary" routerLink="/operacion/pagos">Registrar un pago</a></nav></section>
+</div>
+<section class="panel"><h2>Cola del restaurante</h2><div class="table-wrap"><table class="data-table"><caption>Pedidos de referencia para revisar la distribución de la interfaz.</caption><thead><tr><th scope="col">Pedido</th><th scope="col">Modalidad</th><th scope="col">Estado</th><th scope="col">Importe</th><th scope="col">Acción</th></tr></thead><tbody>@for(order of queue;track order.id){<tr><td>#{{order.id}}</td><td>{{order.mode}}</td><td><span class="badge" [class.preparing]="order.status==='En preparación'">{{order.status}}</span></td><td>S/ {{order.amount}}</td><td><a class="text-link" [routerLink]="order.target" aria-label="Ver pantalla de edición de referencia">Gestionar</a></td></tr>}</tbody></table></div><p class="hint">Los enlaces abren vistas de diseño; todavía no seleccionan pedidos reales.</p></section>
+</rp-workspace-shell>
