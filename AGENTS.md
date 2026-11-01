@@ -76,6 +76,23 @@ Conservar los identificadores, responsables, rutas y archivos del inventario sal
 
 La landing pertenece a esta aplicación: la ruta `/` carga `Home`. No crear otra aplicación, repositorio o servidor de landing dentro de este trabajo. Sus accesos deben utilizar las rutas de autenticación acordadas.
 
+## Estilo visual compartido
+
+El contrato funcional y visual completo está en [SPEC.md](SPEC.md). Leer también el [SPEC de landing](docs/specs/landing/SPEC.md) para la primera entrega. Documentar el producto completo no autoriza implementar otras pantallas.
+
+- Fuente visual vigente para esta tarea: archivo Figma sRxKEwFdrMKfXPosGFvoHc, página Style 5:124 y guía 125:3. El enlace al archivo anterior de la sección Fuentes es un antecedente; comprobar IDs antes de reutilizarlos.
+- Colores obligatorios de la base: primary #1B7954/on-primary #FFFFFF; azul #15324E; verde gráfico #219567; container #D8F2E3/on-container #073A24; surface #FFFBF7/on-surface #172D3B; error #BA1A1A.
+- Roboto Regular 400, Medium 500 y Bold 700; Arial/Helvetica/sans-serif como respaldo. No se incluye una fuente remota ni se afirma que Roboto esté instalada. Incorporar una fuente local solo con recurso y alcance verificados.
+- Escala tamaño/interlineado: display 45/52, headline 32/40, title 22/28, body 16/24 y label 14/20 px, expresados en rem en la base. Espaciado de 4, 8, 12, 16, 24 y 32 px. Radios inputs 4, cards 12 y diálogos 28 px; iconos de 24 px; botones de altura visual 44 px y área táctil accesible.
+- Usar variables --rp-* de src/styles.css; no repetir valores sueltos en cada pantalla si ya existe un token adecuado. Mantener aliases existentes --rp-space y --rp-radius para compatibilidad.
+- src/material-theme.scss define el tema mediante las APIs públicas de Angular Material. No sustituir controles Material por imitaciones HTML para conseguir estilo. No usar clases internas MDC ni ::ng-deep. Reservar !important exclusivamente para la salvaguarda global de movimiento reducido, no para corregir layouts.
+- src/styles.css contiene fundamentos globales y utilidades optativas rp-container, rp-page, rp-section, rp-stack, rp-cluster, rp-grid, rp-card, rp-actions, rp-field, rp-help, rp-field-error, rp-feedback, rp-badge y rp-table. Los componentes mantienen su composición en su CSS local.
+- Las utilidades no añaden semántica: mantener labels, roles, títulos, mensajes asociados y aria-live donde corresponda. Las clases de feedback no deben inferir un estado de negocio. Comunicar estado con texto además de color.
+- El ancho de contenido de 75rem, el breakpoint auxiliar de 37.5rem, las sombras y colores auxiliares son decisiones de implementación; no presentarlos como tokens Figma confirmados ni como breakpoints definitivos de todas las pantallas.
+- Verificar desktop/mobile y anchos intermedios, zoom, textos largos y ausencia de recortes. Mantener foco visible, navegación por teclado, áreas táctiles y prefers-reduced-motion. No ocultar overflow global para disimular un desbordamiento.
+- No activar modo oscuro, cambiar marca ni agregar animaciones, imágenes o fuentes externas sin diseño y alcance aprobados.
+- Al cambiar la base visual, mantener SPEC.md y este contrato de estilos coherentes. Ejecutar chequeo y build; registrar por separado las pruebas visuales realmente realizadas. Compilar no certifica equivalencia con Figma ni accesibilidad.
+
 ## Interfaz y accesibilidad
 
 - Comparar escritorio y móvil con la referencia aprobada. Corregir desbordamientos, recortes, alineación y espaciado.
