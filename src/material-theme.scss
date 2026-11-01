@@ -1,3 +1,39 @@
 @use '@angular/material' as mat;
-html { @include mat.theme((color:(primary:mat.$green-palette,tertiary:mat.$azure-palette),typography:Arial,density:0)); }
-/* Valentina: adaptar las paletas al Style Guide sin modificar los estilos locales de otros módulos. */
+
+/* Material public API: shared palette and typography, no internal selectors. */
+html {
+  @include mat.theme((
+    color: (primary: mat.$green-palette, tertiary: mat.$azure-palette),
+    typography: (plain-family: 'Roboto, Arial, Helvetica, sans-serif',
+      brand-family: 'Roboto, Arial, Helvetica, sans-serif',
+      regular-weight: 400, medium-weight: 500, bold-weight: 700),
+    density: 0
+  ));
+  @include mat.theme-overrides((
+    primary: #1b7954,
+    on-primary: #ffffff,
+    primary-container: #d8f2e3,
+    on-primary-container: #073a24,
+    secondary: #15324e,
+    on-secondary: #ffffff,
+    surface: #fffbf7,
+    on-surface: #172d3b,
+    background: #fffbf7,
+    on-background: #172d3b,
+    error: #ba1a1a,
+    on-error: #ffffff,
+    outline: #52616b,
+    outline-variant: #dce4dd,
+    display-medium-size: 2.8125rem,
+    display-medium-line-height: 3.25rem,
+    headline-large-size: 2rem,
+    headline-large-line-height: 2.5rem,
+    title-large-size: 1.375rem,
+    title-large-line-height: 1.75rem,
+    body-large-size: 1rem,
+    body-large-line-height: 1.5rem,
+    label-large-size: .875rem,
+    label-large-line-height: 1.25rem
+  ));
+}
+
