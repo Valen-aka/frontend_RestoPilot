@@ -1,6 +1,6 @@
 # SPEC común — RestoPilot
 
-Guía funcional y visual compartida. Actualización: 01/11/2026. Documentar el producto completo no autoriza implementar todas sus pantallas. Primera entrega: [Landing](docs/specs/landing/SPEC.md). Solo se mantienen estos dos SPEC.
+Guía funcional y visual compartida. Actualización: 01/11/2026. Documentar el producto completo no autoriza implementar todas sus pantallas. Primera entrega: [Landing](docs/specs/landing/SPEC.md). Complementos autorizados: landing y detalle/seguimiento del pedido.
 
 ## Índice
 
@@ -2573,4 +2573,4 @@ El chequeo actual exige contenidoImplementado=false para las 120 pantallas. Al a
 | Contraste/responsive | Combinaciones y vistas reales |
 | Estado Done | Aceptación y pruebas, no solo documentación |
 
-Solo dos SPEC: común y landing. Esta guía completa no amplía la primera implementación a otras pantallas.
+Complementos: [Landing](docs/specs/landing/SPEC.md) y [Detalle y seguimiento del pedido](docs/specs/cliente-pedido/SPEC.md). Cada complemento delimita su tarea; esta guía no autoriza implementar otras pantallas.
