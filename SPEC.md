@@ -1208,7 +1208,7 @@ Escenario 7: Cancelación por el restaurante Dado que la reserva pendiente o con
 
 ### Landing adicional
 
-LP01, ruta /, src/app/home/home.ts, home.html, home.css. Frame desktop confirmado 115:144 (1280 px); mobile y destino del CTA principal pendientes de verificar. Tareas 003/004; consultar SPEC de landing.
+LP01, ruta /, src/app/home/home.ts, home.html, home.css. Frame desktop confirmado 115:144 (1280 px); mobile confirmado 115:781 (390 px); CTA principal a /auth/registro-dueno aprobado por el usuario. Tareas 003/004; consultar SPEC de landing.
 
 ### Pantalla: acceso
 
@@ -2564,7 +2564,7 @@ El chequeo actual exige contenidoImplementado=false para las 120 pantallas. Al a
 | Tema | Confirmación requerida |
 | --- | --- |
 | Frames vigentes desktop/mobile | Resolver nombre/ID y capturas antes de cada pantalla |
-| Mobile landing y CTA principal | Confirmar frame y destino |
+| Mobile landing y CTA principal | Confirmados: 115:781 y /auth/registro-dueno; ver ejecución en SPEC landing |
 | Roboto | Recurso local; Arial funciona como respaldo |
 | API | Contratos, enums, errores, sesión y permisos |
 | Moneda, zona horaria y formatos | Contrato/diseño; no inferir del equipo |

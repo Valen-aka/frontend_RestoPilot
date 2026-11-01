@@ -1,6 +1,6 @@
 # SPEC — Landing de RestoPilot
 
-Fecha de revisión: 01/11/2026. Estado: especificación preparada; interfaz pendiente de implementar. Funcionalidad LP01, tareas S2-TSK-003 y S2-TSK-004. Rama de implementación propuesta: feature/landing.
+Fecha de revisión: 01/11/2026. Estado: interfaz visual implementada y verificada localmente; aceptación del equipo pendiente. Funcionalidad LP01, tareas S2-TSK-003 y S2-TSK-004. Rama de implementación propuesta: feature/landing.
 
 Leer el [SPEC común](../../../SPEC.md) y [AGENTS.md](../../../AGENTS.md). Esta especificación detalla únicamente la landing y no autoriza implementar otras pantallas.
 
@@ -365,3 +365,15 @@ Descripción: Define la estructura, contenido, variante visual, navegación y cr
 
 El futuro commit de implementación puede usar feat(landing): implementa la landing responsive de RestoPilot, pero ese nombre no describe este cambio documental.
 
+
+## 15. Ejecución y decisiones confirmadas — 01/11/2026
+
+El usuario aprobó CTA principal hacia registro de restaurante y demos dentro de la landing. Implementado /auth/registro-dueno para CTA repetidos; registro cliente en /auth/registro. Conocer el lado del equipo/Explorar el prototipo → soluciones; enlaces IA → muestras locales. No se accede a otros módulos como si fueran demos públicas.
+
+Las variantes de recorrido y soluciones se construyeron con textos/datos ilustrativos del SPEC, tras aprobar demos locales. No se presentan como variantes de prototipo ejecutadas. Menú usa Angular Material; FAQ un panel abierto; navbar se condensa después del hero. Términos quedan informativos como «Pendientes de publicación», sin enlace inexistente.
+
+Se exportó la ilustración completa 115:161 e icono original, y se incorporaron Manrope/DM Sans con licencias locales. La variante de marketing está aislada en Home, sin alterar CSS/tema global ni inventario de otras pantallas.
+
+Verificación: estructura, build y navegador local en 320/390/768/1280/1440 px; sin desborde horizontal. FAQ, selecciones de demos, menú/Escape/foco, anclas, skip link y rutas de registro comprobados. Fuentes/assets cargan; no se observaron errores de ejecución ni solicitudes fallidas. Zoom 200 % sin desbordamiento en viewport 1280. Detalle en [README de Home](../../../src/app/home/README.md).
+
+Estos resultados actualizan la evidencia de LP-L01–20 para el alcance visual probado; no sustituyen revisión humana, documento legal definitivo ni prueba completa de accesibilidad. Los pendientes históricos anteriores quedan resueltos solo en lo descrito aquí. No se declaran operativos IA, backend ni formularios de destino, ni se creó commit o despliegue.
