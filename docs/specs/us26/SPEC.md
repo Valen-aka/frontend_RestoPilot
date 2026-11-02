@@ -1,6 +1,6 @@
 # SPEC — US26: consulta de reservas expiradas
 
-Fecha: 01/11/2026. Entrega actual: documentación. Rama prevista: feature/reserva-expirada. PR hacia develop.
+Fecha: 01/11/2026. Entrega actual: implementación frontend de muestra. Rama: feature/reserva-expirada. PR hacia develop.
 
 Leer [SPEC común](../../../SPEC.md), [AGENTS.md](../../../AGENTS.md) y [reparto de mantenimiento](../../ASIGNACION-EQUIPO.md). Consultar también la sección US25 del SPEC común; su documento independiente todavía no está disponible en esta base. Este documento conserva los requisitos completos de US26 y separa su presentación frontend del vencimiento automático del servidor.
 
@@ -12,7 +12,7 @@ Entrega frontend: mostrar el estado Expirada, fecha de vencimiento y datos conse
 
 Secuencia: SPEC → commit documental → implementación frontend → commit de código → integración API autorizada y aceptación. No crear commits automáticamente ni reunir implementación con documentación.
 
-La verificación final se realiza en feature/reserva-expirada, creada por el usuario. Esta base conserva 20 interfaces declaradas y todavía no incluye el SPEC ni la implementación de US25. Consultar sus reglas en el SPEC común y comprobar su integración antes de reutilizar sus componentes; no importar archivos ausentes. No se crearon commits durante la documentación.
+La implementación se realiza en feature/reserva-expirada, creada por el usuario. La base anterior a esta implementación conserva 20 interfaces declaradas y todavía no incluye el SPEC ni la implementación de US25. Consultar sus reglas en el SPEC común y comprobar su integración antes de reutilizar sus componentes; no importar archivos ausentes. No se crean commits automáticamente; el mensaje se entrega para revisión.
 
 ## 2. Tareas y alcance
 
@@ -40,9 +40,9 @@ Fuente visual autorizada por AGENTS.md y memory.md: [Figma original](https://www
 | cliente-reservas, apoyo acotado | 84:48114 · 1440 × 900 | 84:48251 · 390 × 822.50 |
 | op-reservas, apoyo acotado | 91:51761 · 1440 × 900 | 91:51957 · 390 × 1097 |
 
-En esta entrega documental se verificaron los IDs, dimensiones y textos relevantes de estas cuatro vistas mediante MCP oficial en el Figma original autorizado. Las referencias consultadas antes en la copia se trataron como antecedente y se contrastaron con el original. No se compararon capturas de aplicación ni se obtuvieron contextos para implementación; hacerlo antes de construir las pantallas desktop/mobile.
+Se verificaron los IDs, dimensiones y textos relevantes de estas cuatro vistas mediante MCP oficial en el Figma original autorizado. Para implementar se obtuvieron los ocho contextos desktop/mobile y se compararon capturas de aplicación. Se reutilizan la marca local existente y las fuentes locales verificadas; el mapa decorativo conserva el gradiente CSS del frame original, sin imágenes temporales ni capturas incrustadas.
 
-Las cuatro entradas aún conservan estructura pendiente. Las dos variantes expiradas están asociadas a distintas tareas/mantenimientos en el inventario. Conservar esas asociaciones; el alcance funcional US26 no reasigna archivos ni convierte los listados completos en trabajo terminado.
+Las dos variantes expiradas declaran detalle visual de muestra, con API pendiente. Los dos listados mantienen contenidoImplementado=false y estado parcial US26; el módulo general US07/US29 sigue pendiente. Se conservan asociaciones de tareas, responsables, clases, archivos y rutas del inventario.
 
 ### Diferencias que resolver
 
@@ -222,3 +222,32 @@ Escenario 4: Llegada registrada a tiempo Dado que la reserva tiene registrada la
 
 Escenario 5: Solicitud tardía sobre una reserva expirada Dado que la reserva ya cumplió las condiciones de vencimiento. Cuando se intenta confirmarla, reprogramarla, cancelarla o completar su atención. Entonces el sistema conserva la condición Expirada y no restablece el bloqueo de la mesa por esa solicitud.
 
+
+## 15. Implementación y verificaciones ejecutadas
+
+Entrega frontend de muestra, 01/11/2026:
+
+- Componentes standalone compartidos en src/app/pages/reserva-expirada-ui/, con archivos TS/HTML/CSS separados. Se conservan las rutas hijas y los cuatro componentes de entrada existentes. Material Card, Table, Button y Spinner; sin formularios nuevos ni dependencias adicionales.
+- Fuente local de lectura para los contextos de cliente y operación. Historial de Expiradas y detalles #190/#208 con fechas explícitas, causas distintas, datos conservados y selección por ID. La navegación solo acepta IDs y consulta la colección; no acepta snapshots como registros.
+- Fecha/cause ausente o incoherente informa el problema sin calcular otra fecha. Estado vigente recibido se muestra como tal. Las vistas no exponen acciones de confirmación, reprogramación, cancelación, llegada, finalización ni reactivación de una Expirada.
+- Carga, error inicial, vacío, selección inexistente/ajena y lectura anterior identificada. Los filtros de fixtures no equivalen a autenticación ni autorización del servidor.
+- Cambio mínimo del shell de cocina para destacar Reservas y su encabezado, conservando Pedidos/Cocina. Los listados se limitan a Expiradas y no sustituyen los módulos generales.
+
+Resultados ejecutados:
+
+| Verificación | Resultado |
+| --- | --- |
+| Chequeo estructural | 120 escenarios; 22 interfaces declaradas; 98 pendientes. No acredita aceptación funcional. |
+| Compilación de producción | Correcta. |
+| node --test scripts/reserva-expirada.test.mjs | 16 pruebas correctas: límites inclusivos, tolerancia, llegada oportuna, estados finales, offsets, conservación y contexto, fechas y causas incompletas. |
+| Cuatro rutas en cinco anchos | 20 combinaciones correctas: 320, 390, 768, 1024 y 1440 px; sin desbordamiento de página. Tabla con desplazamiento propio. |
+| Navegación | #190/#208 en ambos contextos, detalle, retorno con foco, recarga, atrás/adelante y acceso directo. IDs inválidos o ajenos no reemplazados por otra reserva. |
+| Estados locales | Carga, error y reapertura, vacío, lectura anterior, fechas ausentes/inválidas, motivo desconocido, estado Confirmada y textos largos. Orden de la fuente conservado. |
+| Reloj | Adelanto hasta 2030 y un día adicional: una Confirmada se conserva, sin aparecer en historial de Expiradas. |
+| Accesibilidad comprobada | Salto al contenido, foco de navegación/retorno, menú operativo y Escape, zoom 200 %. No constituye auditoría completa. |
+| Recursos y errores | Marca local cargada en ambos shells; sin errores JavaScript ni solicitudes de escritura durante el recorrido US26. |
+| Compatibilidad compartida | Encabezados de Pedidos/Cocina conservados y Reservas destacado. Detalle y acción local de cocina revisados. |
+
+Pendientes: S2-TSK-056, autenticación/permisos reales, consulta autoritativa, expiración atómica del servidor, liberación de horario, notificaciones y rechazo real de escrituras tardías. S2-TSK-055 tiene presentación de muestra verificada, no aceptación integrada. US07/US29 conservan alcance parcial.
+
+La rama actual no contiene US25: no se ejecutaron sus flujos de llegada y finalización ni se afirma compatibilidad integrada entre ambas historias. Repetir esos recorridos al incorporar ambas implementaciones en develop, incluyendo llegada antes de +15, cruce del límite sin expiración indebida y finalización posterior. La regla temporal pura probada aquí no escribe estado ni sustituye esa prueba conjunta.

@@ -13,7 +13,9 @@ export class CocinaShell {
   private readonly breakpoint = toSignal(inject(BreakpointObserver).observe('(max-width: 900px)'));
   readonly mobile = computed(() => this.breakpoint()?.matches ?? false);
   readonly menuOpen = signal(false);
-  readonly active = input<'queue' | 'board' | 'detail'>('queue');
+  readonly active = input<'queue' | 'board' | 'detail' | 'reservations'>('queue');
+  readonly activePath = computed(() => this.active() === 'reservations' ? '/operacion/reservas' : this.active() === 'board' ? '/operacion/cocina' : '/operacion/pedidos');
+  readonly sectionLabel = computed(() => this.active() === 'reservations' ? 'Reservas operación' : 'Pedidos operación');
   readonly links = [
     {label: 'Vista general', icon: '◫', path: '/operacion'},
     {label: 'Pedidos', icon: '▤', path: '/operacion/pedidos'},

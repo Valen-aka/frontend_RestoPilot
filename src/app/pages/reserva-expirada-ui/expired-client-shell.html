@@ -1,0 +1,17 @@
+<a class="skip-link" href="#expiry-client-content" (click)="skip($event)">Saltar al contenido</a>
+<div class="pedido-shell">
+  <header class="client-header">
+    <a class="brand" routerLink="/cliente" aria-label="RestoPilot, inicio de cliente">
+      <span class="brand-image" aria-hidden="true"><img src="/assets/carrito/brand-reference.png" alt="" width="43" height="43"><span></span></span>
+      <span>Resto<span class="brand-accent">Pilot</span><small>Tu restaurante, en piloto automático</small></span>
+    </a>
+    <nav aria-label="Navegación de cliente">
+      <a routerLink="/cliente">Inicio</a><a routerLink="/cliente/carta">La carta</a>
+      <a routerLink="/cliente/reservas" class="active" aria-current="page">Mis reservas</a>
+      <a routerLink="/cliente/pedidos">Mis pedidos</a><a routerLink="/cliente/asistente">Asistente IA</a>
+    </nav>
+    <div class="sample-context"><span class="sample-avatar" aria-hidden="true">M</span><div><strong>Vista de muestra</strong><small>Sin sesión conectada</small></div></div>
+  </header>
+  <main id="expiry-client-content" tabindex="-1" class="pedido-main"><ng-content /></main>
+  <footer class="client-footer"><span>© 2026 RestoPilot</span><span>Tu restaurante, en piloto automático</span></footer>
+</div>
