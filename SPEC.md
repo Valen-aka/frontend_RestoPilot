@@ -1,6 +1,6 @@
 # SPEC común — RestoPilot
 
-Guía funcional y visual compartida. Actualización: 01/11/2026. Documentar el producto completo no autoriza implementar todas sus pantallas. Primera entrega: [Landing](docs/specs/landing/SPEC.md). Solo se mantienen estos dos SPEC.
+Guía funcional y visual compartida. Actualización: 01/11/2026. Documentar el producto completo no autoriza implementar todas sus pantallas. Primera entrega: [Landing](docs/specs/landing/SPEC.md). Complementos actuales: landing y US12, detalle del pedido y consulta de pago.
 
 ## Índice
 
@@ -2549,7 +2549,7 @@ Documentación: comprobar enlaces, IDs y cobertura. CSS/código: ejecutar npm.cm
 
 Interfaz: probar en navegador desktop/mobile, anchos intermedios, teclado, foco, estados y rutas. Integración: respuestas reales autorizadas, errores y restricciones. Compilación no certifica funcionalidad.
 
-El chequeo actual exige contenidoImplementado=false para las 120 pantallas. Al autorizar una implementación, ajustar control/estado con evidencia sin desactivar verificaciones para ocultar fallos. Landing está fuera del inventario de 120.
+El chequeo conserva 120 escenarios únicos, sus archivos y estados coherentes. Una interfaz declarada implementada debe tener plantilla no vacía; eso no acredita integración ni aceptación. Landing está fuera del inventario de 120.
 
 ### Entrega inicial
 
@@ -2573,4 +2573,4 @@ El chequeo actual exige contenidoImplementado=false para las 120 pantallas. Al a
 | Contraste/responsive | Combinaciones y vistas reales |
 | Estado Done | Aceptación y pruebas, no solo documentación |
 
-Solo dos SPEC: común y landing. Esta guía completa no amplía la primera implementación a otras pantallas.
+Complementos: [Landing](docs/specs/landing/SPEC.md) y [US12: detalle y consulta de pago](docs/specs/us12/SPEC.md). Cada complemento delimita su entrega.
