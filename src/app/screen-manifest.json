@@ -304,8 +304,8 @@
     ],
     "owner": "Alexandra Fong",
     "us": "US11",
-    "status": "Pendiente",
-    "contenidoImplementado": false
+    "status": "Interfaz implementada; integración y aceptación pendientes",
+    "contenidoImplementado": true
   },
   {
     "slug": "cliente-carrito-vacio",
@@ -326,8 +326,8 @@
     ],
     "owner": "Alexandra Fong",
     "us": "US11",
-    "status": "Pendiente",
-    "contenidoImplementado": false
+    "status": "Interfaz implementada; integración y aceptación pendientes",
+    "contenidoImplementado": true
   },
   {
     "slug": "cliente-entrega-salon",
@@ -348,8 +348,8 @@
     ],
     "owner": "Alexandra Fong",
     "us": "US11",
-    "status": "Pendiente",
-    "contenidoImplementado": false
+    "status": "Interfaz implementada; integración y aceptación pendientes",
+    "contenidoImplementado": true
   },
   {
     "slug": "cliente-entrega-delivery",
@@ -370,8 +370,8 @@
     ],
     "owner": "Alexandra Fong",
     "us": "US11",
-    "status": "Pendiente",
-    "contenidoImplementado": false
+    "status": "Interfaz implementada; integración y aceptación pendientes",
+    "contenidoImplementado": true
   },
   {
     "slug": "cliente-entrega-llevar",
@@ -392,8 +392,8 @@
     ],
     "owner": "Alexandra Fong",
     "us": "US11",
-    "status": "Pendiente",
-    "contenidoImplementado": false
+    "status": "Interfaz implementada; integración y aceptación pendientes",
+    "contenidoImplementado": true
   },
   {
     "slug": "cliente-entrega-recoger",
@@ -414,8 +414,8 @@
     ],
     "owner": "Alexandra Fong",
     "us": "US11",
-    "status": "Pendiente",
-    "contenidoImplementado": false
+    "status": "Interfaz implementada; integración y aceptación pendientes",
+    "contenidoImplementado": true
   },
   {
     "slug": "cliente-restaurante-cerrado",
@@ -436,8 +436,8 @@
     ],
     "owner": "Alexandra Fong",
     "us": "US11",
-    "status": "Pendiente",
-    "contenidoImplementado": false
+    "status": "Interfaz implementada; integración y aceptación pendientes",
+    "contenidoImplementado": true
   },
   {
     "slug": "cliente-pedido-creado",
@@ -458,8 +458,8 @@
     ],
     "owner": "Alexandra Fong",
     "us": "US11",
-    "status": "Pendiente",
-    "contenidoImplementado": false
+    "status": "Interfaz implementada; integración y aceptación pendientes",
+    "contenidoImplementado": true
   },
   {
     "slug": "cliente-pedidos",

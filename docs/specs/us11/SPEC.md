@@ -1,6 +1,6 @@
 # SPEC — US11: carrito y registro del pedido según modalidad
 
-Fecha: 01/11/2026. Entrega actual: documentación. Rama de trabajo: feature/cliente-pedido. PR hacia develop.
+Fecha: 01/11/2026. Entrega actual: interfaz y recorrido local implementados; integración y aceptación pendientes. Rama de trabajo: feature/cliente-pedido. PR hacia develop.
 
 Leer el [SPEC común](../../../SPEC.md), [AGENTS.md](../../../AGENTS.md), [SPEC de US12](../us12/SPEC.md) y [SPEC de US13](../us13/SPEC.md). Este documento corresponde únicamente a US11 y no sustituye las historias ya preparadas.
 
@@ -47,7 +47,7 @@ Fuente visual: [Figma vigente, página de aplicación](https://www.figma.com/des
 
 En esta entrega se consultaron estructura, identificadores, dimensiones y textos desktop de estas ocho vistas mediante Figma. No se realizaron comparaciones visuales por captura ni pruebas de navegador de US11. Antes de implementar, obtener contexto y capturas de las referencias desktop/mobile y revisar sus controles y recursos; esta lectura documental no sustituye esa comparación.
 
-Las ocho entradas figuran pendientes en el manifiesto y la entrada de carrito conserva la estructura base. El código de detalle, pago y seguimiento ya existe: reutilizar lo adecuado sin declarar terminada US11 por esa existencia.
+Al preparar el SPEC, las ocho entradas figuraban pendientes en el manifiesto y carrito conservaba la estructura base. El avance posterior se registra en la sección 15. El código de detalle, pago y seguimiento ya existe: reutilizar lo adecuado sin declarar terminada US11 por esa existencia.
 
 ## 4. Rutas y archivos
 
@@ -266,3 +266,44 @@ Escenario 8: Pedido vacío o cantidad inválida Dado que el cliente no seleccion
 
 Escenario 9: Cálculo del importe Dado que el cliente confirma un pedido válido. Cuando el sistema registra los platos y sus cantidades. Entonces el total corresponde a la suma de sus subtotales y se conservan los nombres y precios utilizados en esa compra.
 
+
+## 15. Ejecución de US11 — 01/11/2026
+
+Implementación visual y de navegación en feature/cliente-pedido. Se preservaron las rutas hijas existentes de /cliente, sus cargadores y variantes ?vista=. No se implementaron los módulos de carta, cocina o reservas.
+
+Cambios:
+- Ocho entradas de pantalla con componentes standalone y archivos .ts/.html/.css separados.
+- Componentes reutilizables CarritoView, CarritoTable y VaciarDialog; estado de borrador local CarritoStore.
+- Angular Material para tablas, tarjetas, botones, campos, selector de mesa, modalidad, diálogo y carga. Reactive Forms para cantidades, mesa y dirección.
+- Cantidades enteras positivas, importes en centavos, conteo de unidades y vaciado con confirmación y retorno del foco.
+- Cuatro modalidades con campos condicionales y rechazos locales de condiciones inválidas. No se calcula un horario real ni se consulta disponibilidad del servidor.
+- Confirmación explícitamente de muestra; apertura directa sin contexto comunica que no existe confirmación en ese recorrido.
+- Contexto de presentación en memoria que lleva el snapshot a detalle, seguimiento y pago; pedido y pago Pendiente, conservando modalidad, mesa/dirección y cantidades. El contexto no concede permisos.
+- Ajuste del conteo de US12 para sumar unidades y del enlace a pago para respetar Pendiente; las visitas directas anteriores conservan sus muestras.
+- Ocho metadatos de interfaz actualizados sin cambiar responsables, rutas, identificadores o asociación original de Entregado.
+- Recurso de marca descargado desde Figma a public/assets/carrito/brand-reference.png. Se conserva su slot de 43 × 43 px y la superposición blanca del diseño. Las fuentes locales existentes se reutilizan.
+
+Se obtuvieron contextos de diseño y capturas de las ocho pantallas desktop/mobile mediante MCP oficial de Figma. Se compararon capturas de aplicación con las referencias. La presentación conserva estructura y estilo de aplicación y añade controles, ayudas y aclaraciones necesarias para la muestra; no se afirma equivalencia exacta de píxeles.
+
+### Comprobaciones ejecutadas
+
+- Chequeo estructural correcto: 120 escenarios conservados; 14 interfaces declaradas y 106 pendientes. No acredita aceptación funcional.
+- Compilación de producción correcta y git diff --check sin errores.
+- Chrome local: 40 combinaciones de ocho rutas por 1440, 390, 320, 768 y 1280 px; sin desbordamiento de página y recurso local cargado a 43 × 43 px.
+- Ocho rutas con recarga; confirmación directa sin contexto no anuncia registro exitoso.
+- Cantidades vacías, cero, negativas y fraccionarias rechazadas; cálculo 2 × 38 + 28 = S/ 104.00 y conteo de tres unidades comprobados. Escritura de varios dígitos conserva foco.
+- Mesa requerida y mesa activa del mismo restaurante; fixtures de mesa inactiva/ajena y salón deshabilitado rechazados.
+- Dirección vacía, espacios y 256 caracteres rechazados; 255 caracteres aceptados como entrada. Delivery deshabilitado rechazado.
+- Restaurante cerrado/inactivo y plato agotado/ajeno rechazados localmente, conservando el borrador. La hora exacta de cierre queda pendiente de integración y contrato horario.
+- SALON conserva mesa; LLEVAR/RECOGER mantienen valores distintos y no envían mesa ni dirección de delivery en el snapshot.
+- Vaciado cancelado con Escape conserva cantidades; confirmado muestra vacío y devuelve foco al encabezado. Editar/vaciar el borrador no altera el snapshot ya confirmado.
+- Delivery con S/ 104.00 llega a detalle y consulta de pago Pendiente sin heredar Yape ni pago registrado; retorno conserva datos y estado.
+- Atrás/adelante conserva modalidad y dirección dentro del recorrido. Recargar reinicia la muestra local; no existe persistencia de operaciones.
+- Carga, error y recuperación mediante «Reabrir muestra» comprobados; corregir campos retira mensajes anteriores.
+- Teclado, salto al contenido, selector con flechas, diálogo, zoom 200 % y textos largos verificados.
+- Regresión US12/US13: cinco estados en cinco anchos, tres variantes con recarga, retorno desde pago, errores y no encontrado; sin alterar datos, importes o progreso.
+- Sin errores de ejecución, solicitudes fallidas ni solicitudes de creación/cobro/API en las comprobaciones.
+
+Los guiones locales, resultados y capturas están en us11-implementation, en la carpeta local de trabajo fuera del repositorio. La regresión existente se ejecutó desde us13-implementation. No se añadieron dependencias ni herramientas de pruebas al producto.
+
+S2-TSK-032 sigue pendiente: faltan autenticación, validación autoritativa, registro real, total confirmado por API y aceptación integrada. Esta entrega no acredita cumplimiento integrado de los nueve criterios. No se creó commit, PR ni despliegue.

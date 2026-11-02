@@ -1,6 +1,6 @@
 # SPEC común — RestoPilot
 
-Guía funcional y visual compartida. Actualización: 01/11/2026. Documentar el producto completo no autoriza implementar todas sus pantallas. Primera entrega: [Landing](docs/specs/landing/SPEC.md). Complementos actuales: landing, US12 (detalle y pago) y US13 (seguimiento), con documentos independientes.
+Guía funcional y visual compartida. Actualización: 01/11/2026. Documentar el producto completo no autoriza implementar todas sus pantallas. Primera entrega: [Landing](docs/specs/landing/SPEC.md). Complementos actuales: landing, [US11 (carrito y modalidades)](docs/specs/us11/SPEC.md), US12 (detalle y pago) y US13 (seguimiento), con documentos independientes.
 
 ## Índice
 

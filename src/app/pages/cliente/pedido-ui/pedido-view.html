@@ -67,7 +67,7 @@
                 <p class="information"><span aria-hidden="true">i</span>El restaurante registró este pago recibido por un medio externo. RestoPilot no procesa el cobro.</p>
               }
             }
-            <a mat-stroked-button class="back-to-order" routerLink="/cliente/pedido" [queryParams]="{vista: backVista}">Volver al pedido</a>
+            <a mat-stroked-button class="back-to-order" routerLink="/cliente/pedido" [queryParams]="{vista: backVista}" [state]="returnState">Volver al pedido</a>
           </mat-card>
         } @else {
           <mat-card appearance="outlined" class="tracking-card">
@@ -91,7 +91,7 @@
                 </table>
               </div>
               <p class="table-help" id="table-help">En pantallas pequeñas, desplaza la tabla para ver todas las columnas.</p>
-              <p class="selection-count">{{ order().lines.length }} platos <span>{{ order().total | currency:'PEN':'S/ ':'1.2-2' }}</span></p>
+              <p class="selection-count">{{ unitCount() }} {{ unitCount() === 1 ? 'plato' : 'platos' }} <span>{{ order().total | currency:'PEN':'S/ ':'1.2-2' }}</span></p>
               <p class="selection-total"><span>Total del pedido</span><strong>{{ order().total | currency:'PEN':'S/ ':'1.2-2' }}</strong></p>
               <p class="total-note">El total definitivo lo calcula el restaurante. No se cobra desde esta pantalla.</p>
             </mat-card>

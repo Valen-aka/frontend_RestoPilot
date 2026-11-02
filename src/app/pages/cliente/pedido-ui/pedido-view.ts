@@ -5,6 +5,7 @@ import {MatButtonModule} from '@angular/material/button';
 import {MatCardModule} from '@angular/material/card';
 import {MatTableModule} from '@angular/material/table';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import {PedidoDemoContext} from './pedido-demo-context';
 import {PedidoProgress} from './pedido-progress';
 import {MODALITY_LABELS, OrderSnapshot, OrderStatus, PaymentSnapshot, PaymentState, QueryState,
   SAMPLE_ORDER, SAMPLE_PAYMENT, validOrderVista, vistaForStatus} from './pedido.model';
@@ -28,12 +29,15 @@ export class PedidoView {
     this.payment() === 'paid' && this.paymentRecord()?.orderId !== this.order().id ? 'missing' : this.payment());
   readonly columns = ['name', 'quantity', 'unitPrice', 'subtotal'];
   readonly labels = MODALITY_LABELS;
+  private readonly demoOrder = inject(PedidoDemoContext).forCurrentNavigation();
   readonly receivedState = this.document.defaultView?.history.state;
   readonly backVista = validOrderVista(this.receivedState?.pedidoVista);
   readonly paymentQuery = computed(() => ({
-    vista: this.status() === 'Cancelado' ? 'cliente-pago-pendiente' : 'cliente-pago'
+    vista: this.payment() === 'pending' || this.status() === 'Cancelado' ? 'cliente-pago-pendiente' : 'cliente-pago'
   }));
-  readonly navigationState = computed(() => ({pedidoVista: vistaForStatus(this.status())}));
+  readonly navigationState = computed(() => ({pedidoVista: vistaForStatus(this.status()), us11Demo: !!this.demoOrder}));
+  readonly returnState = {us11Demo: !!this.demoOrder};
+  readonly unitCount = computed(() => this.order().lines.reduce((sum, line) => sum + line.quantity, 0));
   readonly title = computed(() => {
     if (this.queryState() === 'not-found') return 'No se encontró el pedido';
     if (this.queryState() === 'error') return 'No pudimos mostrar tu pedido';
