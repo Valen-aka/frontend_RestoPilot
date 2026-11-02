@@ -1,5 +1,5 @@
 @if (status() === 'Cancelado') {
-  <p class="cancelled" role="status">Cancelado</p>
+  <p class="cancelled">Cancelado</p>
 } @else {
   <ol aria-label="Avance del pedido" class="progress">
     @for (stage of stages; track stage; let i = $index) {
@@ -11,3 +11,4 @@
     }
   </ol>
 }
+<p class="status-summary" role="status" aria-live="polite" aria-atomic="true">{{ summary() }}</p>

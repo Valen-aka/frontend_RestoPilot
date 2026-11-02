@@ -1,6 +1,6 @@
 # SPEC — US13: seguimiento del pedido
 
-Fecha: 01/11/2026. Entrega actual: documentación independiente de US13. Rama propuesta: feature/cliente-pedido. PR hacia develop.
+Fecha: 01/11/2026. Entrega actual: seguimiento visual verificado con fixtures; integración y aceptación del equipo pendientes. Rama propuesta: feature/cliente-pedido. PR hacia develop.
 
 Leer [SPEC común](../../../SPEC.md), [AGENTS.md](../../../AGENTS.md) y [SPEC de US12](../us12/SPEC.md). Este documento no sustituye el de US12 ni reúne sus commits.
 
@@ -14,7 +14,7 @@ Secuencia de entregas acordada:
 3. Este documento de US13 y su commit.
 4. Implementación de US13 y su commit.
 
-La existencia de código de seguimiento del intento conjunto anterior no acredita revisión, aceptación ni creación de sus commits. Este cambio es exclusivamente documental. No incorporar modificaciones de código al commit del SPEC mediante una selección masiva.
+La existencia de código de seguimiento del intento conjunto anterior no acredita revisión, aceptación ni creación de sus commits. El commit documental previo no sustituye el commit de implementación; mantener sus cambios separados.
 
 ## 2. Alcance
 
@@ -169,7 +169,7 @@ Heurísticas aplicables: estado visible, lenguaje familiar, consistencia entre v
 
 Comandos de implementación: npm.cmd run check y npm.cmd run build. Registrar además capturas y pruebas de navegador por estado/plataforma. No declarar S2-TSK-042 terminada por compilar o representar una muestra.
 
-Para este commit documental, comprobar enlaces, cobertura de cinco criterios y separación de US12; no incluir código, manifiesto ni recursos de implementación pendientes.
+Para el commit documental se comprobaron enlaces, cobertura de cinco criterios y separación de US12. Los resultados de implementación se registran en la sección de ejecución.
 
 ## 11. Commits previstos
 
@@ -210,3 +210,44 @@ Escenario 4: Pedido cancelado Dado que el pedido fue cancelado. Cuando el client
 #### US13-CA05 — Pedido ajeno o inexistente
 
 Escenario 5: Pedido ajeno o inexistente Dado que el pedido no existe o no pertenece al cliente. Cuando el cliente consulta su estado. Entonces el sistema informa que no se encontró el pedido y no revela datos de otra cuenta.
+
+## 13. Ejecución de US13 — 01/11/2026
+
+Rama feature/cliente-pedido. Parte de la presentación y sus variantes ya estaba incluida en commits anteriores; no se reescribió ese historial ni se afirmó que toda esa base fuera nueva.
+
+Cambios de esta entrega:
+- Resumen específico para Pendiente, En preparación, Listo, Entregado y Cancelado.
+- Resumen anunciado mediante role=status, aria-live=polite y aria-atomic, sin anunciar el desglose completo.
+- Cancelado con etiqueta de error coherente, sin progreso de éxito ni anuncios duplicados.
+- Enlace «Consultar notificaciones» a la ruta existente /cliente/notificaciones.
+- Conservación de detalle, pago, datos de compra, rutas y componentes de US12.
+
+Se consultaron también contextos y capturas mobile de Listo, Entregado y Cancelado. Las adaptaciones responsive evitan el solapamiento de etapas del diseño. No se afirma igualdad exacta de píxeles ni certificación completa de accesibilidad.
+
+### Comprobaciones ejecutadas
+
+- node scripts/check-structure.mjs: correcto, 120 escenarios conservados.
+- node node_modules/@angular/cli/bin/ng.js build: compilación de producción correcta.
+- git diff --check: sin errores de formato.
+- Chrome local: 25 combinaciones de cinco estados por 1440, 390, 320, 768 y 1280 px.
+- Tres rutas de variante y recarga comprobadas.
+- Resumen, aria-current y etapas alcanzadas coherentes; Cancelado sin etapas de éxito.
+- Comparación del contenido de selección/resumen antes y después de cambiar estado: datos e importes de US12 intactos.
+- Consulta de pago y retorno a Listo conservan #1042.
+- No encontrado sin progreso, identificador, tabla ni datos del pedido; error sin nuevo estado confirmado.
+- Fixture actualizado a Listo refleja el cambio; no se presenta como respuesta del backend.
+- Teclado, enlace de notificaciones y zoom 200 % comprobados; sin desbordamiento de página.
+- Sin errores de ejecución, solicitudes fallidas ni llamadas /api/ en esta verificación.
+- Capturas de Listo mobile y Cancelado desktop inspeccionadas frente a la referencia.
+
+El guion de navegador, sus resultados y capturas están en la carpeta local de trabajo us13-implementation, fuera del repositorio. No se instalaron dependencias ni se modificaron otras pantallas.
+
+| Criterio | Evidencia de esta entrega | Límite |
+| --- | --- | --- |
+| US13-CA01 | Cinco etiquetas/resúmenes y progreso correctos en fixtures | No consulta un estado real |
+| US13-CA02 | Cambio de entrada actualiza vista y enlace de notificaciones accesible | Sin API ni avisos reales |
+| US13-CA03 | Entregado conserva detalle y no añade etapas | Estado final de muestra |
+| US13-CA04 | Cancelado conserva datos y no muestra progreso exitoso | No cancela operaciones |
+| US13-CA05 | No encontrado sin contenido del pedido | No prueba autorización del servidor |
+
+S2-TSK-042 y la aceptación funcional integrada siguen pendientes. No se creó commit, PR ni despliegue.

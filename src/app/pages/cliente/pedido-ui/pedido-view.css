@@ -27,6 +27,8 @@ h2{font:700 16px/1.4 'Pedido Roboto',Arial,sans-serif;letter-spacing:-.35px;colo
 .tracking-card{padding:24px;margin-bottom:22px;min-height:150px}
 .tracking-heading{display:flex;gap:16px;justify-content:space-between;align-items:center}
 .current-status{font-size:12px;color:var(--rp-primary);font-weight:600}
+.current-status.cancelled-status{color:var(--rp-error)}
+.tracking-notifications{display:inline-flex;align-items:center;align-self:flex-start;min-height:44px;margin-top:8px;font-size:12px;color:var(--rp-primary);text-underline-offset:4px}
 .detail-grid{display:grid;grid-template-columns:minmax(0,1.55fr) minmax(0,1fr);gap:24px;align-items:start}
 .selection-card,.order-information{padding:24px}
 .selection-card h2{margin-bottom:18px}

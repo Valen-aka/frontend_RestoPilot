@@ -71,8 +71,9 @@
           </mat-card>
         } @else {
           <mat-card appearance="outlined" class="tracking-card">
-            <div class="tracking-heading"><h2>Pedido #{{ order().id }}</h2><span class="current-status">{{ status() }}</span></div>
+            <div class="tracking-heading"><h2>Pedido #{{ order().id }}</h2><span class="current-status" [class.cancelled-status]="status() === 'Cancelado'">{{ status() }}</span></div>
             <rp-pedido-progress [status]="status()" />
+            <a class="tracking-notifications" routerLink="/cliente/notificaciones">Consultar notificaciones</a>
           </mat-card>
 
           <div class="detail-grid">
