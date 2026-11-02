@@ -1,10 +1,10 @@
 import {Component, inject, signal} from '@angular/core';
 import {PedidoDemoContext} from '../pedido-ui/pedido-demo-context';
-import {PedidoView} from '../pedido-ui/pedido-view';
+import {PedidoSelectionView} from '../pedido-ui/pedido-selection-view';
 import {OrderSnapshot, OrderStatus, PaymentState, QueryState, SAMPLE_ORDER} from '../pedido-ui/pedido.model';
 
 /** Entrada del escenario existente; solo presentación de muestra, sin API. */
-@Component({selector:'rp-cliente-pago',imports:[PedidoView],templateUrl:'./cliente-pago.html',styleUrl:'./cliente-pago.css'})
+@Component({selector:'rp-cliente-pago',imports:[PedidoSelectionView],templateUrl:'./cliente-pago.html',styleUrl:'./cliente-pago.css'})
 export class ClientePagoPage {
   private readonly demoOrder = inject(PedidoDemoContext).forCurrentNavigation();
   readonly order = signal<OrderSnapshot>(this.demoOrder ?? SAMPLE_ORDER);

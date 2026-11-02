@@ -1,3 +1,39 @@
-<!-- FRAME: cliente-pedidos | Tus pedidos -->
-<!-- TODO: implementar Desktop y Mobile con Angular Material. -->
-<!-- No hay campos, datos ni contenido visual implementados. -->
+<a class="skip-link" href="#orders-content" (click)="skip($event)">Saltar al contenido</a>
+<div class="pedido-shell">
+  <header class="client-header">
+    <a class="brand orders-brand" routerLink="/cliente" aria-label="RestoPilot, inicio de cliente">
+      <span class="brand-image" aria-hidden="true"><img src="/assets/carrito/brand-reference.png" alt="" width="43" height="43"><span></span></span>
+      <span>Resto<span class="brand-accent">Pilot</span><small>Tu restaurante, en piloto automático</small></span>
+    </a>
+    <nav aria-label="Navegación de cliente"><a routerLink="/cliente">Inicio</a><a routerLink="/cliente/carta">La carta</a><a routerLink="/cliente/reservas">Mis reservas</a><a routerLink="/cliente/pedidos" class="active" aria-current="page">Mis pedidos</a><a routerLink="/cliente/asistente">Asistente IA</a></nav>
+    <div class="sample-context"><span class="sample-avatar" aria-hidden="true">M</span><div><strong>Vista de muestra</strong><small>Sin sesión conectada</small></div></div>
+  </header>
+  <main id="orders-content" tabindex="-1" class="pedido-main">
+    <div class="page-heading"><p class="eyebrow">PEDIDOS CLIENTE</p><h1 id="orders-title" tabindex="-1">Tus pedidos</h1><p class="subtitle">Sigue el de hoy o vuelve a tus favoritos.</p><p class="sample-notice">Datos de muestra · No se consultan servicios ni se registran cobros. Al recargar se reinicia la muestra.</p></div>
+    @if (store.queryState() === 'loading') {
+      <mat-card appearance="outlined" class="state-card" role="status" aria-busy="true"><mat-spinner diameter="32" aria-hidden="true"/><h2>Consultando tus pedidos…</h2></mat-card>
+    } @else if (store.queryState() === 'error' || store.problem()) {
+      <mat-card appearance="outlined" class="state-card" role="alert"><h2>No pudimos mostrar tus pedidos</h2><p>{{ store.problem() || 'La consulta no está disponible. Se conservan los datos de muestra.' }}</p>
+        @if (!store.problem()) {<button mat-stroked-button type="button" (click)="store.reopenSample()">Volver a abrir la muestra</button>}
+      </mat-card>
+    } @else if (!store.history().length) {
+      <mat-card appearance="outlined" class="state-card" role="status"><h2>No tienes pedidos en esta muestra</h2><p>Cuando haya pedidos disponibles, podrás consultar aquí su detalle y seguimiento.</p><a mat-flat-button routerLink="/cliente/carta">Ver la carta</a></mat-card>
+    } @else {
+      <mat-card appearance="outlined" class="orders-card"><h2 id="orders-table-title">Cada antojo tiene su historia</h2>
+        <div class="table-region" role="region" tabindex="0" aria-labelledby="orders-table-title" aria-describedby="orders-table-help">
+          <table mat-table [dataSource]="rows()" aria-label="Mis pedidos de muestra">
+            <ng-container matColumnDef="id"><th mat-header-cell *matHeaderCellDef scope="col">Pedido</th><td mat-cell *matCellDef="let row">#{{ row.order.id }}</td></ng-container>
+            <ng-container matColumnDef="date"><th mat-header-cell *matHeaderCellDef scope="col">Fecha</th><td mat-cell *matCellDef="let row">{{ row.order.requestedAt }}</td></ng-container>
+            <ng-container matColumnDef="modality"><th mat-header-cell *matHeaderCellDef scope="col">Modalidad</th><td mat-cell *matCellDef="let row">{{ modalityLabel(row.order.modality) }}</td></ng-container>
+            <ng-container matColumnDef="status"><th mat-header-cell *matHeaderCellDef scope="col">Estado</th><td mat-cell *matCellDef="let row"><span class="order-state" [class.cancelled]="row.status === 'Cancelado'" [class.finished]="row.status === 'Entregado'" [class.ready]="row.status === 'Listo'">{{ row.status }}</span></td></ng-container>
+            <ng-container matColumnDef="total"><th mat-header-cell *matHeaderCellDef scope="col">Total</th><td mat-cell *matCellDef="let row">{{ row.order.total | currency:'PEN':'S/ ':'1.2-2' }}</td></ng-container>
+            <ng-container matColumnDef="action"><th mat-header-cell *matHeaderCellDef scope="col"><span class="sr-only">Consulta</span></th><td mat-cell *matCellDef="let row"><a mat-button [id]="'client-order-' + row.order.id" routerLink="/cliente/pedido" [queryParams]="{vista: vista(row.status)}" [state]="{pedidoId: row.order.id}" [attr.aria-label]="'Ver pedido ' + row.order.id">Ver pedido</a><a mat-button routerLink="/cliente/pago" [queryParams]="{vista: row.payment === 'pending' ? 'cliente-pago-pendiente' : 'cliente-pago'}" [state]="{pedidoId: row.order.id}" [attr.aria-label]="'Ver pago del pedido ' + row.order.id">Ver pago</a></td></ng-container>
+            <tr mat-header-row *matHeaderRowDef="columns"></tr><tr mat-row *matRowDef="let row; columns: columns;"></tr>
+          </table>
+        </div><p class="table-help" id="orders-table-help">Desplaza la tabla para consultar el total, el detalle y el pago. El detalle incluye el seguimiento.</p>
+        <mat-paginator [length]="store.history().length" [pageSize]="store.pageSize()" [pageIndex]="pageIndex()" [pageSizeOptions]="[5,10,20]" [showFirstLastButtons]="true" (page)="page($event)" aria-label="Páginas del historial de pedidos"/>
+      </mat-card>
+    }
+  </main>
+  <footer class="client-footer"><p>RestoPilot · La Mesa Verde</p><p>Tu restaurante, en piloto automático.</p><a routerLink="/auth/login">Salir de la muestra</a></footer>
+</div>

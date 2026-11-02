@@ -16,7 +16,7 @@
   <main id="pedido-contenido" tabindex="-1" class="pedido-main">
     <div class="page-heading">
       <p class="eyebrow">{{ mode() === 'payment' ? 'PAGOS' : 'PEDIDOS CLIENTE' }}</p>
-      <h1>{{ title() }}</h1>
+      <h1 id="pedido-title" tabindex="-1">{{ title() }}</h1>
       <p class="subtitle">{{ mode() === 'payment' ? 'Tu información, en un solo lugar.' : 'Cada paso, sin perderte nada.' }}</p>
       <p class="sample-notice">Demostración visual · Los datos son de ejemplo y no se guardan operaciones.</p>
     </div>
@@ -67,7 +67,7 @@
                 <p class="information"><span aria-hidden="true">i</span>El restaurante registró este pago recibido por un medio externo. RestoPilot no procesa el cobro.</p>
               }
             }
-            <a mat-stroked-button class="back-to-order" routerLink="/cliente/pedido" [queryParams]="{vista: backVista}" [state]="returnState">Volver al pedido</a>
+            <a mat-stroked-button class="back-to-order" routerLink="/cliente/pedido" [queryParams]="{vista: backVista()}" [state]="returnState">Volver al pedido</a>
           </mat-card>
         } @else {
           <mat-card appearance="outlined" class="tracking-card">
@@ -108,7 +108,7 @@
               <a mat-stroked-button routerLink="/cliente/pago" [queryParams]="paymentQuery()" [state]="navigationState()">Ver registro de pago</a>
             </mat-card>
           </div>
-          <a class="orders-return" routerLink="/cliente/pedidos">← Volver a mis pedidos</a>
+          <a class="orders-return" routerLink="/cliente/pedidos" [state]="{pedidoReturnId: order().id}">← Volver a mis pedidos</a>
         }
       }
     }

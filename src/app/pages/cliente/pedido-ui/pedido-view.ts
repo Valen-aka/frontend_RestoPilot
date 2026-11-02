@@ -1,6 +1,6 @@
-import {Component, computed, DOCUMENT, inject, input} from '@angular/core';
+import {afterNextRender, Component, computed, DOCUMENT, inject, input} from '@angular/core';
 import {CurrencyPipe} from '@angular/common';
-import {RouterLink} from '@angular/router';
+import {Router, RouterLink} from '@angular/router';
 import {MatButtonModule} from '@angular/material/button';
 import {MatCardModule} from '@angular/material/card';
 import {MatTableModule} from '@angular/material/table';
@@ -30,13 +30,14 @@ export class PedidoView {
   readonly columns = ['name', 'quantity', 'unitPrice', 'subtotal'];
   readonly labels = MODALITY_LABELS;
   private readonly demoOrder = inject(PedidoDemoContext).forCurrentNavigation();
-  readonly receivedState = this.document.defaultView?.history.state;
-  readonly backVista = validOrderVista(this.receivedState?.pedidoVista);
+  readonly receivedState = inject(Router).currentNavigation()?.extras.state ?? this.document.defaultView?.history.state ?? {};
+  readonly selectionState = Object.hasOwn(this.receivedState, 'pedidoId') ? {pedidoId: this.receivedState['pedidoId']} : {us11Demo: !!this.demoOrder};
+  readonly backVista = computed(() => Object.hasOwn(this.receivedState, 'pedidoId') ? vistaForStatus(this.status()) : validOrderVista(this.receivedState?.['pedidoVista']));
   readonly paymentQuery = computed(() => ({
     vista: this.payment() === 'pending' || this.status() === 'Cancelado' ? 'cliente-pago-pendiente' : 'cliente-pago'
   }));
-  readonly navigationState = computed(() => ({pedidoVista: vistaForStatus(this.status()), us11Demo: !!this.demoOrder}));
-  readonly returnState = {us11Demo: !!this.demoOrder};
+  readonly navigationState = computed(() => ({pedidoVista: vistaForStatus(this.status()), ...this.selectionState}));
+  readonly returnState = this.selectionState;
   readonly unitCount = computed(() => this.order().lines.reduce((sum, line) => sum + line.quantity, 0));
   readonly title = computed(() => {
     if (this.queryState() === 'not-found') return 'No se encontró el pedido';
@@ -54,6 +55,12 @@ export class PedidoView {
       default: return 'Estamos preparando algo bueno';
     }
   });
+
+  constructor() {
+    afterNextRender(() => {
+      if (Object.hasOwn(this.receivedState, 'pedidoId')) this.document.getElementById('pedido-title')?.focus();
+    });
+  }
 
   skipToContent(event: Event): void {
     event.preventDefault();

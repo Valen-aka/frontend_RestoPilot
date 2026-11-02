@@ -480,8 +480,8 @@
     ],
     "owner": "Alexandra Fong",
     "us": "US12, US13",
-    "status": "Pendiente",
-    "contenidoImplementado": false
+    "status": "Listado y navegación de muestra implementados; integración y aceptación pendientes",
+    "contenidoImplementado": true
   },
   {
     "slug": "cliente-pedido-detalle",
