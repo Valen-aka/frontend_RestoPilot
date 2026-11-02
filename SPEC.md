@@ -1,6 +1,6 @@
 # SPEC común — RestoPilot
 
-Guía funcional y visual compartida. Actualización: 01/11/2026. Documentar el producto completo no autoriza implementar todas sus pantallas. Primera entrega: [Landing](docs/specs/landing/SPEC.md). Complementos actuales: landing y US12, detalle del pedido y consulta de pago.
+Guía funcional y visual compartida. Actualización: 01/11/2026. Documentar el producto completo no autoriza implementar todas sus pantallas. Primera entrega: [Landing](docs/specs/landing/SPEC.md). Complementos actuales: landing, US12 (detalle y pago) y US13 (seguimiento), con documentos independientes.
 
 ## Índice
 
@@ -2573,4 +2573,4 @@ El chequeo conserva 120 escenarios únicos, sus archivos y estados coherentes. U
 | Contraste/responsive | Combinaciones y vistas reales |
 | Estado Done | Aceptación y pruebas, no solo documentación |
 
-Complementos: [Landing](docs/specs/landing/SPEC.md) y [US12: detalle y consulta de pago](docs/specs/us12/SPEC.md). Cada complemento delimita su entrega.
+Complementos: [Landing](docs/specs/landing/SPEC.md) y [US12: detalle y consulta de pago](docs/specs/us12/SPEC.md) y [US13: seguimiento del pedido](docs/specs/us13/SPEC.md). Cada complemento delimita su entrega.
