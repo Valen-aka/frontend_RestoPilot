@@ -13,6 +13,7 @@ El alcance de cada tarea lo determina la solicitud del usuario o el acuerdo expl
 Antes de modificar código, consultar:
 
 1. Este archivo y las instrucciones adicionales aplicables a la carpeta.
+   Consultar también [memory.md](memory.md) para aprendizajes verificados; sus notas no sustituyen estas reglas ni la solicitud vigente.
 2. [Asignación del equipo](docs/ASIGNACION-EQUIPO.md) y su [versión estructurada](docs/asignacion-equipo.json), para identificar al mantenedor de las pantallas y archivos compartidos.
 3. `src/app/screen-manifest.json`, para consultar los 120 identificadores de pantalla, sus responsables, rutas, estados alternativos y archivos. La landing se mantiene adicionalmente en `src/app/home/`.
 4. El diseño de la pantalla solicitada y sus variantes de escritorio y móvil en [Figma](https://www.figma.com/design/wBq85sZ8G5W5RQ1RmQmdqg/RestoPilot?node-id=5-92).
@@ -78,9 +79,9 @@ La landing pertenece a esta aplicación: la ruta `/` carga `Home`. No crear otra
 
 ## Estilo visual compartido
 
-El contrato funcional y visual completo está en [SPEC.md](SPEC.md). Leer también el [SPEC de landing](docs/specs/landing/SPEC.md) para la primera entrega. Documentar el producto completo no autoriza implementar otras pantallas.
+El contrato funcional y visual completo está en [SPEC.md](SPEC.md). Consultar también los complementos de la historia o pantalla solicitada, si existen, listados en el SPEC común. No se requiere un SPEC separado por cada US; crear o ampliar complementos cuando la tarea lo requiera. Documentar el producto completo no autoriza implementar otras pantallas.
 
-- Fuente visual vigente para esta tarea: archivo Figma sRxKEwFdrMKfXPosGFvoHc, página Style 5:124 y guía 125:3. El enlace al archivo anterior de la sección Fuentes es un antecedente; comprobar IDs antes de reutilizarlos.
+- Única fuente visual autorizada: el archivo Figma original wBq85sZ8G5W5RQ1RmQmdqg enlazado en Fuentes de referencia. Consultar allí la pantalla y sus variantes desktop/mobile. Comprobar los IDs en el original antes de reutilizar referencias de otros archivos; los tokens siguientes se conservan como contrato de implementación, sin afirmar que se hayan vuelto a verificar en el original.
 - Colores obligatorios de la base: primary #1B7954/on-primary #FFFFFF; azul #15324E; verde gráfico #219567; container #D8F2E3/on-container #073A24; surface #FFFBF7/on-surface #172D3B; error #BA1A1A.
 - Roboto Regular 400, Medium 500 y Bold 700; Arial/Helvetica/sans-serif como respaldo. No se incluye una fuente remota ni se afirma que Roboto esté instalada. Incorporar una fuente local solo con recurso y alcance verificados.
 - Escala tamaño/interlineado: display 45/52, headline 32/40, title 22/28, body 16/24 y label 14/20 px, expresados en rem en la base. Espaciado de 4, 8, 12, 16, 24 y 32 px. Radios inputs 4, cards 12 y diálogos 28 px; iconos de 24 px; botones de altura visual 44 px y área táctil accesible.
