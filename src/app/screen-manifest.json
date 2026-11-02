@@ -744,7 +744,7 @@
     ],
     "owner": "Cristian Condori",
     "us": "US07",
-    "status": "Pendiente",
+    "status": "Parcial US26: historial de expiradas de muestra; módulo general US07/US29 pendiente",
     "contenidoImplementado": false
   },
   {
@@ -854,8 +854,8 @@
     ],
     "owner": "Cristian Condori",
     "us": "US07, US26",
-    "status": "Pendiente",
-    "contenidoImplementado": false
+    "status": "US26: detalle visual de muestra; integración con API pendiente",
+    "contenidoImplementado": true
   },
   {
     "slug": "cliente-reserva-completada",
@@ -1686,7 +1686,7 @@
     ],
     "owner": "Valentina Montenegro",
     "us": "US29",
-    "status": "Pendiente",
+    "status": "Parcial US26: historial de expiradas de muestra; módulo general US07/US29 pendiente",
     "contenidoImplementado": false
   },
   {
@@ -1862,8 +1862,8 @@
     ],
     "owner": "Alexandra Fong",
     "us": "US26",
-    "status": "Pendiente",
-    "contenidoImplementado": false
+    "status": "US26: detalle visual de muestra; integración con API pendiente",
+    "contenidoImplementado": true
   },
   {
     "slug": "op-reserva-editar",

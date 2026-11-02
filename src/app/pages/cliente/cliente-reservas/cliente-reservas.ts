@@ -1,6 +1,5 @@
 import {Component} from '@angular/core';
-/** Frame: cliente-reservas. Responsable: Cristian Condori. Implementación pendiente. */
-@Component({selector:'rp-cliente-reservas',imports:[],templateUrl:'./cliente-reservas.html',styleUrl:'./cliente-reservas.css'})
-export class ClienteReservasPage{
-
-}
+import {ReservaExpiradaView} from '../../reserva-expirada-ui/reserva-expirada-view';
+/** Frame: cliente-reservas. Responsable: Cristian Condori. US26: soporte parcial de reservas expiradas; módulo general pendiente. */
+@Component({selector:'rp-cliente-reservas',imports:[ReservaExpiradaView],templateUrl:'./cliente-reservas.html',styleUrl:'./cliente-reservas.css'})
+export class ClienteReservasPage {}

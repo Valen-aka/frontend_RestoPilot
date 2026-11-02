@@ -1,0 +1,78 @@
+<ng-template #content>
+  <section class="expiry-view">
+    <div class="page-heading">
+      <p class="eyebrow">RESERVAS {{ context() === 'client' ? 'CLIENTE' : 'OPERACIÓN' }}</p>
+      <h1 id="expiry-heading" tabindex="-1">{{ title() }}</h1>
+      <p class="subtitle">{{ mode() === 'history' ? 'Consulta el detalle y la fecha de vencimiento de cada reserva.' : 'Toda la información de tu reserva, en un solo lugar.' }}</p>
+      <p class="sample-notice">Datos de muestra · Sin sesión ni servicios conectados. No se envían notificaciones ni se modifica la disponibilidad.</p>
+    </div>
+    @if (store.queryState() === 'loading') {
+      <mat-card appearance="outlined" class="state-card" role="status" aria-busy="true"><mat-spinner diameter="32" aria-hidden="true"/><h2>Consultando las reservas…</h2></mat-card>
+    } @else if (store.queryState() === 'error' || problem()) {
+      <mat-card appearance="outlined" class="state-card" role="alert"><h2>No pudimos completar la consulta</h2><p>{{ problem() || 'No se ha modificado ninguna reserva. Puedes volver a abrir la muestra.' }}</p>
+        @if (!problem()) {<button mat-stroked-button type="button" (click)="store.reopenSample()">Volver a abrir la muestra</button>}
+        <a mat-button [routerLink]="historyPath()">Volver a reservas</a>
+      </mat-card>
+    } @else {
+      @if (store.queryState() === 'stale') {
+        <div class="notice" role="alert"><strong>No se pudo actualizar.</strong> Se conserva la última consulta disponible; puede estar desactualizada. <button mat-button type="button" (click)="store.reopenSample()">Volver a abrir la muestra</button></div>
+      }
+      @if (mode() === 'history') {
+        <mat-card appearance="outlined" class="history-card">
+          <h2>Historial de reservas expiradas</h2><p class="muted">Se muestran únicamente reservas expiradas.</p>
+          @if (rows().length) {
+            <div class="table-region" role="region" tabindex="0" aria-label="Reservas expiradas. Desplaza horizontalmente para ver todas las columnas.">
+              <table mat-table [dataSource]="rows()" aria-label="Historial de reservas expiradas">
+                <ng-container matColumnDef="id"><th mat-header-cell *matHeaderCellDef>Reserva</th><td mat-cell *matCellDef="let row">#{{ row.id }}<small>{{ context() === 'operation' ? row.customer : row.restaurant }}</small></td></ng-container>
+                <ng-container matColumnDef="startsAt"><th mat-header-cell *matHeaderCellDef>Inicio</th><td mat-cell *matCellDef="let row">{{ date(row.startsAt) }}</td></ng-container>
+                <ng-container matColumnDef="table"><th mat-header-cell *matHeaderCellDef>Mesa</th><td mat-cell *matCellDef="let row">{{ row.table }}</td></ng-container>
+                <ng-container matColumnDef="guests"><th mat-header-cell *matHeaderCellDef>Personas</th><td mat-cell *matCellDef="let row">{{ row.guests }}</td></ng-container>
+                <ng-container matColumnDef="status"><th mat-header-cell *matHeaderCellDef>Estado</th><td mat-cell *matCellDef="let row"><span class="status">{{ row.status }}</span></td></ng-container>
+                <ng-container matColumnDef="expiredAt"><th mat-header-cell *matHeaderCellDef>Expiró el</th><td mat-cell *matCellDef="let row">{{ expirationDate(row) }}</td></ng-container>
+                <ng-container matColumnDef="action"><th mat-header-cell *matHeaderCellDef>Detalle</th><td mat-cell *matCellDef="let row"><a mat-stroked-button [id]="'expiry-row-' + row.id" [routerLink]="detailPath()" [queryParams]="detailQuery()" [state]="{expiredReservationId: row.id}" [attr.aria-label]="'Ver reserva ' + row.id">Ver reserva</a></td></ng-container>
+                <tr mat-header-row *matHeaderRowDef="columns"></tr><tr mat-row *matRowDef="let row; columns: columns;"></tr>
+              </table>
+            </div>
+          } @else {<div class="empty-state" role="status"><h3>No hay reservas expiradas</h3><p>No se recibieron reservas expiradas para esta consulta.</p></div>}
+        </mat-card>
+      } @else if (selected(); as reservation) {
+        <div class="detail-grid" [class.operation]="context() === 'operation'">
+          <mat-card appearance="outlined" class="reservation-card">
+            <div class="card-title"><h2>Reserva #{{ reservation.id }}</h2><span class="status">{{ reservation.status }}</span></div>
+            <h3>{{ context() === 'client' ? 'Nos vemos en ' + reservation.restaurant : reservation.customer }}</h3>
+            @if (reservation.status === 'Expirada') {<p class="muted">Esta reserva ya no está activa.</p>}
+            @else {<p class="notice" role="status">La reserva consultada figura como {{ reservation.status }}. No se ha cambiado su estado a Expirada.</p>}
+            <dl>
+              @if (context() === 'operation') {<div><dt>Restaurante</dt><dd>{{ reservation.restaurant }}</dd></div>}
+              <div><dt>Inicio</dt><dd>{{ date(reservation.startsAt) }}</dd></div>
+              <div><dt>Fin</dt><dd>{{ date(reservation.endsAt) }}</dd></div>
+              <div><dt>Mesa</dt><dd>{{ reservation.table }}</dd></div><div><dt>Personas</dt><dd>{{ reservation.guests }}</dd></div>
+              @if (reservation.status === 'Expirada') {<div class="full"><dt>Expiró el</dt><dd>{{ expirationDate(reservation) }}</dd></div>}
+              <div class="full"><dt>Notas</dt><dd>{{ reservation.notes || 'Sin notas registradas.' }}</dd></div>
+            </dl>
+            @if (reservation.status === 'Expirada') {
+              <div class="notice"><strong>Reserva expirada</strong><p>{{ reason(reservation) }}</p></div>
+              @if (expirationIssue(reservation)) {<p class="data-warning" role="status">{{ expirationIssue(reservation) }}</p>}
+            }
+            <div class="actions">
+              @if (context() === 'client' && reservation.status === 'Expirada') {<a mat-flat-button routerLink="/cliente/reservar">Hacer otra reserva</a>}
+              <a mat-stroked-button [routerLink]="historyPath()" [state]="{expiredReturnId: reservation.id}">{{ context() === 'client' ? 'Volver a mis reservas' : 'Ver reservas' }}</a>
+            </div>
+          </mat-card>
+          @if (context() === 'client') {
+            <mat-card appearance="outlined" class="restaurant-card">
+              <div class="restaurant-map" aria-hidden="true"><span>{{ reservation.restaurantId === restaurantSampleId ? 'LMV' : 'R' }}</span></div>
+              <h2>{{ reservation.restaurant }}</h2>
+              @if (reservation.restaurantId === restaurantSampleId) {<p>Av. La Marina 2500, San Miguel, Lima</p><p>Horario de muestra: 09:00–22:00</p>}
+              <p class="muted">Información de restaurante de muestra.</p>
+            </mat-card>
+          }
+        </div>
+      } @else {
+        <mat-card appearance="outlined" class="state-card" role="status"><h2>Reserva no disponible</h2><p>No se encontró la reserva o no está disponible para esta consulta.</p><a mat-stroked-button [routerLink]="historyPath()">Volver a reservas</a></mat-card>
+      }
+    }
+  </section>
+</ng-template>
+@if (context() === 'operation') {<rp-cocina-shell active="reservations"><ng-container [ngTemplateOutlet]="content"/></rp-cocina-shell>}
+@else {<rp-expired-client-shell><ng-container [ngTemplateOutlet]="content"/></rp-expired-client-shell>}
