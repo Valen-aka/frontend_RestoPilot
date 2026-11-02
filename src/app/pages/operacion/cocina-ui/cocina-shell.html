@@ -10,14 +10,14 @@
     <nav id="kitchen-navigation" aria-label="Navegación de operación" [hidden]="mobile() && !menuOpen()">
       <p class="nav-label">TU ESPACIO DE TRABAJO</p>
       @for (link of links; track link.path) {
-        <a [routerLink]="link.path" [class.active]="(active() === 'board' ? '/operacion/cocina' : '/operacion/pedidos') === link.path"
-          [attr.aria-current]="(active() === 'board' ? '/operacion/cocina' : '/operacion/pedidos') === link.path ? 'page' : null"><span aria-hidden="true">{{ link.icon }}</span>{{ link.label }}</a>
+        <a [routerLink]="link.path" [class.active]="activePath() === link.path"
+          [attr.aria-current]="activePath() === link.path ? 'page' : null"><span aria-hidden="true">{{ link.icon }}</span>{{ link.label }}</a>
       }
     </nav>
     <div class="sample-user"><strong>Vista de muestra</strong><small>Sin sesión conectada</small><a routerLink="/auth/login">Salir de la muestra →</a></div>
   </aside>
   <div class="workspace">
-    <header><p>La Mesa Verde <span aria-hidden="true">/</span> <strong>Pedidos operación</strong></p><span class="sample-badge">Datos de muestra</span></header>
+    <header><p>La Mesa Verde <span aria-hidden="true">/</span> <strong>{{ sectionLabel() }}</strong></p><span class="sample-badge">Datos de muestra</span></header>
     <main id="kitchen-content" tabindex="-1"><ng-content /></main>
   </div>
 </div>

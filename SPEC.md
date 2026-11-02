@@ -1,6 +1,6 @@
 # SPEC común — RestoPilot
 
-Guía funcional y visual compartida para todos los integrantes del equipo. Actualización: 01/11/2026. Define requisitos comunes, historias, criterios de aceptación y procedimientos aplicables a cualquier tarea asignada. Documentar el producto completo no autoriza implementar todas sus pantallas ni establece un orden de trabajo entre integrantes.
+Guía funcional y visual compartida. Actualización: 01/11/2026. Documentar el producto completo no autoriza implementar todas sus pantallas. Primera entrega: [Landing](docs/specs/landing/SPEC.md). Complementos actuales: landing, [US11 (carrito y modalidades)](docs/specs/us11/SPEC.md), US12 (detalle y pago), US13 (seguimiento), [US15 (cola y tablero de cocina)](docs/specs/us15/SPEC.md), [US19 (preparación y entrega)](docs/specs/us19/SPEC.md) y [US25 (atención de reservas)](docs/specs/us25/SPEC.md), con documentos independientes.
 
 ## Índice
 

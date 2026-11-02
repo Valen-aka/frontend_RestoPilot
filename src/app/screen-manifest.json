@@ -1796,8 +1796,8 @@
     ],
     "owner": "Alexandra Fong",
     "us": "US25",
-    "status": "Pendiente",
-    "contenidoImplementado": false
+    "status": "Interfaz y atención de muestra implementadas; integración y aceptación pendientes",
+    "contenidoImplementado": true
   },
   {
     "slug": "op-reserva-atendiendo",
@@ -1818,8 +1818,8 @@
     ],
     "owner": "Alexandra Fong",
     "us": "US25",
-    "status": "Pendiente",
-    "contenidoImplementado": false
+    "status": "Interfaz y atención de muestra implementadas; integración y aceptación pendientes",
+    "contenidoImplementado": true
   },
   {
     "slug": "op-reserva-completada",
@@ -1840,8 +1840,8 @@
     ],
     "owner": "Alexandra Fong",
     "us": "US25",
-    "status": "Pendiente",
-    "contenidoImplementado": false
+    "status": "Interfaz y atención de muestra implementadas; integración y aceptación pendientes",
+    "contenidoImplementado": true
   },
   {
     "slug": "op-reserva-expirada",
