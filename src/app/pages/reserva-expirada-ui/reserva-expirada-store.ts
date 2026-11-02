@@ -1,12 +1,13 @@
-import {Injectable, computed, signal} from '@angular/core';
-import {EXPIRY_SAMPLES, ExpiryContext, ExpiryReservation, belongsToExpiryContext, expiredHistory, validExpiryReservation} from './reserva-expirada.model';
+import {Injectable, computed, inject, signal} from '@angular/core';
+import {ReservaMuestraStore} from '../reserva-muestra-ui/reserva-muestra-store';
+import {ExpiryContext, ExpiryReservation, belongsToExpiryContext, expiredHistory, validExpiryReservation} from './reserva-expirada.model';
 
 @Injectable({providedIn: 'root'})
 export class ReservaExpiradaStore {
-  readonly reservations = signal<readonly ExpiryReservation[]>(EXPIRY_SAMPLES);
+  readonly reservations = inject(ReservaMuestraStore).reservations;
   readonly queryState = signal<'ready' | 'loading' | 'error' | 'stale'>('ready');
   readonly previous = signal<readonly ExpiryReservation[]>([]);
-  readonly selectedIds = signal<Record<ExpiryContext, number | undefined>>({client: 208, operation: 208});
+  readonly selectedIds = signal<Record<ExpiryContext, number | undefined>>({client: 207, operation: 207});
   readonly source = computed(() => this.queryState() === 'stale' ? this.previous() : this.reservations());
 
   history(context: ExpiryContext): ExpiryReservation[] {return expiredHistory(this.source(), context);}

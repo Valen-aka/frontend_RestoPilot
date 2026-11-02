@@ -8,7 +8,8 @@ import {MatTableModule} from '@angular/material/table';
 import {CocinaShell} from '../operacion/cocina-ui/cocina-shell';
 import {ExpiredClientShell} from './expired-client-shell';
 import {ReservaExpiradaStore} from './reserva-expirada-store';
-import {EXPIRY_RESTAURANT, ExpiryContext, expirationDate, expirationIssue, expirationReason, formatExpiryDate} from './reserva-expirada.model';
+import {attendanceDestination} from '../operacion/reserva-atencion-ui/reserva-atencion.model';
+import {EXPIRY_RESTAURANT, ExpiryContext, belongsToExpiryContext, expirationDate, expirationIssue, expirationReason, formatExpiryDate} from './reserva-expirada.model';
 
 @Component({
   selector: 'rp-reserva-expirada-view',
@@ -24,11 +25,14 @@ export class ReservaExpiradaView implements OnInit {
   private readonly navigationState = this.router.currentNavigation()?.extras.state ?? this.document.defaultView?.history.state ?? {};
   readonly selected = computed(() => this.store.find(this.context()));
   readonly rows = computed(() => this.store.history(this.context()));
+  readonly attendanceRows = computed(() => this.context() === 'operation' ? this.store.source().filter(reservation =>
+    belongsToExpiryContext(reservation, 'operation') && ['Confirmada', 'Completada'].includes(reservation.status)) : []);
+  readonly attendanceDestination = attendanceDestination;
   readonly problem = computed(() => this.store.problem(this.context()));
   readonly historyPath = computed(() => this.context() === 'client' ? '/cliente/reservas' : '/operacion/reservas');
   readonly detailPath = computed(() => this.context() === 'client' ? '/cliente/reserva' : '/operacion/reserva');
   readonly detailQuery = computed(() => ({vista: this.context() === 'client' ? 'cliente-reserva-expirada' : 'op-reserva-expirada'}));
-  readonly title = computed(() => this.mode() === 'history' ? 'Reservas expiradas de muestra' :
+  readonly title = computed(() => this.mode() === 'history' ? (this.context() === 'operation' ? 'Reservas de muestra' : 'Reservas expiradas de muestra') :
     this.selected()?.status === 'Expirada' ? (this.context() === 'client' ? 'Tu reserva expirada' : 'Reserva expirada') : 'Consulta de la reserva');
   readonly columns = ['id', 'startsAt', 'table', 'guests', 'status', 'expiredAt', 'action'];
   readonly restaurantSampleId = EXPIRY_RESTAURANT;

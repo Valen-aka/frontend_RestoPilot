@@ -2,7 +2,7 @@
 
 Fecha: 01/11/2026. Entrega actual: implementación frontend de muestra. Rama: feature/reserva-expirada. PR hacia develop.
 
-Leer [SPEC común](../../../SPEC.md), [AGENTS.md](../../../AGENTS.md) y [reparto de mantenimiento](../../ASIGNACION-EQUIPO.md). Consultar también la sección US25 del SPEC común; su documento independiente todavía no está disponible en esta base. Este documento conserva los requisitos completos de US26 y separa su presentación frontend del vencimiento automático del servidor.
+Leer [SPEC común](../../../SPEC.md), [AGENTS.md](../../../AGENTS.md) y [reparto de mantenimiento](../../ASIGNACION-EQUIPO.md). Consultar también [US25](../us25/SPEC.md), integrado en develop junto con US26. La corrección conjunta se documenta en la sección 16. Este documento conserva los requisitos completos de US26 y separa su presentación frontend del vencimiento automático del servidor.
 
 ## 1. Objetivo y secuencia
 
@@ -250,4 +250,29 @@ Resultados ejecutados:
 
 Pendientes: S2-TSK-056, autenticación/permisos reales, consulta autoritativa, expiración atómica del servidor, liberación de horario, notificaciones y rechazo real de escrituras tardías. S2-TSK-055 tiene presentación de muestra verificada, no aceptación integrada. US07/US29 conservan alcance parcial.
 
-La rama actual no contiene US25: no se ejecutaron sus flujos de llegada y finalización ni se afirma compatibilidad integrada entre ambas historias. Repetir esos recorridos al incorporar ambas implementaciones en develop, incluyendo llegada antes de +15, cruce del límite sin expiración indebida y finalización posterior. La regla temporal pura probada aquí no escribe estado ni sustituye esa prueba conjunta.
+Durante la entrega inicial de US26, su rama todavía no contenía US25: no se ejecutaron entonces sus flujos de llegada y finalización ni se afirmó compatibilidad integrada entre ambas historias. Repetir esos recorridos al incorporar ambas implementaciones en develop, incluyendo llegada antes de +15, cruce del límite sin expiración indebida y finalización posterior. La regla temporal pura probada aquí no escribe estado ni sustituye esa prueba conjunta.
+
+## 16. Corrección conjunta de muestras US25–US26 — 01/11/2026
+
+Rama: fix/reservas-consistencia, posterior a la integración de ambas historias en develop.
+
+Problema reproducido: completar #208 en US25 y volver a /operacion/reservas mostraba la misma reserva como Expirada sin llegada en US26. Ambas vistas mantenían colecciones independientes con la misma identidad y estados incompatibles.
+
+Corrección:
+- ReservaMuestraStore mantiene una sola colección en memoria para los dos stores. Se conserva el contexto de lectura y los estados de consulta de cada vista.
+- #208 corresponde a la visita Confirmada de Mesa 04 y conserva llegada/finalización durante la navegación. #190 sigue representando vencimiento por falta de confirmación y #207, Mesa 02, representa falta de llegada.
+- La vista operativa añade un resumen acotado de atención con el estado, fechas y acceso a la ficha de US25. Una #208 Completada permanece visible como tal al volver; no entra al historial de Expiradas.
+- Los detalles consultan la misma colección y conservan identidad, cliente, restaurante, notas y fechas. El registro de muestra actualizado no sustituye metadatos por los de otra reserva.
+- Se conserva el alcance parcial de agenda/historial. No se implementa el módulo completo US07/US29 ni se cambia el inventario, los responsables o las rutas hijas.
+- Recargar reinicia explícitamente la muestra. No se añade persistencia ni expiración por reloj del navegador.
+
+Verificaciones:
+- 48 pruebas de reservas correctas: 28 de atención, 16 de expiración y 4 nuevas de consistencia en scripts/reserva-consistencia.test.mjs.
+- Chequeo estructural correcto: 120 escenarios, 25 interfaces declaradas y 95 pendientes; no acredita aceptación funcional.
+- Compilación de producción correcta.
+- Cinco recorridos en navegador, a 320/390/768/1024/1440 px: agenda → llegada → retorno → atención → finalización a las 19:30 con llegada 19:05 → historial → consulta de #207 → retorno y reapertura de #208 Completada.
+- Cancelar confirmación conserva la muestra; atrás/adelante conserva Completada; llegada al límite 19:15 sigue bloqueada. Fecha de llegada original y fecha de finalización permanecen intactas.
+- Consulta de #208 desde el contexto de cliente conserva Completada y sus fechas; los historiales de Expiradas conservan únicamente #190/#207.
+- Sin desbordamiento de página en los cinco anchos; capturas desktop/mobile inspeccionadas. Sin errores JavaScript ni solicitudes de escritura en los recorridos comprobados.
+
+Esta corrección corresponde exclusivamente al frontend de muestra. Los resultados de las secciones anteriores permanecen como evidencia histórica de entregas anteriores.

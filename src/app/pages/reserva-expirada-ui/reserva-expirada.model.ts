@@ -14,6 +14,7 @@ export interface ExpiryReservation {
   readonly guests: number;
   readonly notes?: string;
   readonly arrivedAt?: string;
+  readonly completedAt?: string;
   readonly expiredAt?: string;
   readonly expiryReason?: ExpiryReason;
 }
@@ -25,9 +26,9 @@ export const EXPIRY_SAMPLES: readonly ExpiryReservation[] = Object.freeze([
     status: 'Expirada' as const, startsAt: '2026-10-17T19:00:00-05:00', endsAt: '2026-10-17T20:30:00-05:00',
     table: 'Mesa 01', guests: 4, notes: 'Preferimos una mesa junto a la ventana.',
     expiredAt: '2026-10-17T19:00:00-05:00', expiryReason: 'unconfirmed' as const}),
-  Object.freeze({id: 208, restaurantId: EXPIRY_RESTAURANT, clientId: EXPIRY_CLIENT, restaurant: 'La Mesa Verde', customer: 'Ana Pérez',
+  Object.freeze({id: 207, restaurantId: EXPIRY_RESTAURANT, clientId: EXPIRY_CLIENT, restaurant: 'La Mesa Verde', customer: 'Ana Pérez',
     status: 'Expirada' as const, startsAt: '2026-10-24T19:00:00-05:00', endsAt: '2026-10-24T20:30:00-05:00',
-    table: 'Mesa 04', guests: 4, notes: 'Preferimos una mesa junto a la ventana.',
+    table: 'Mesa 02', guests: 4, notes: 'Preferimos una mesa junto a la ventana.',
     expiredAt: '2026-10-24T19:15:00-05:00', expiryReason: 'no-arrival' as const})
 ]);
 export function belongsToExpiryContext(reservation: ExpiryReservation, context: ExpiryContext): boolean {

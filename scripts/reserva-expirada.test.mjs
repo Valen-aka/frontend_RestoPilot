@@ -31,13 +31,13 @@ test('datos incompletos no producen un vencimiento inventado',()=>{
 });
 test('el historial solo filtra por estado recibido y no cambia los registros',()=>{
  const active={...base,id:300,status:'Confirmada',expiredAt:undefined};const list=Object.freeze([...EXPIRY_SAMPLES,active]);const before=structuredClone(list);
- assert.deepEqual(expiredHistory(list,'client').map(r=>r.id),[190,208]);assert.deepEqual(list,before);assert.equal(active.status,'Confirmada');
+ assert.deepEqual(expiredHistory(list,'client').map(r=>r.id),[190,207]);assert.deepEqual(list,before);assert.equal(active.status,'Confirmada');
 });
 test('cliente consulta sus reservas y operación las de su restaurante',()=>{
  const otherClient={...base,id:301,clientId:'otro-cliente'},otherRestaurant={...base,id:302,restaurantId:'otro-restaurante'};
  const list=[...EXPIRY_SAMPLES,otherClient,otherRestaurant];
- assert.deepEqual(expiredHistory(list,'client').map(r=>r.id),[190,208,302]);
- assert.deepEqual(expiredHistory(list,'operation').map(r=>r.id),[190,208,301]);
+ assert.deepEqual(expiredHistory(list,'client').map(r=>r.id),[190,207,302]);
+ assert.deepEqual(expiredHistory(list,'operation').map(r=>r.id),[190,207,301]);
  assert(belongsToExpiryContext({...base,clientId:EXPIRY_CLIENT},'client'));
  assert(belongsToExpiryContext({...base,restaurantId:EXPIRY_RESTAURANT},'operation'));
 });

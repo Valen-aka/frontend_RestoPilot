@@ -37,3 +37,8 @@ Conservar aprendizajes verificables que ayuden a evitar errores repetidos en est
 - Contexto/evidencia: el usuario pidió eliminar la orientación a una integrante y señaló rutas personales, etapas centradas en landing y dudas sobre los complementos.
 - Aprendizaje: el contrato común debe usar referencias compartidas y procedimientos neutrales. Los detalles de entrega de una tarea pertenecen a su complemento; no se necesita un SPEC por cada US.
 - Comprobación: revisar el documento completo, no solo las frases señaladas; comprobar que los enlaces a complementos existen y que ninguna carpeta personal sea requisito de trabajo.
+### 2026-11-01 — Verificar identidad y estado entre recorridos de muestra
+
+- Contexto/evidencia: la prueba conjunta US25 → historial US26 mostraba #208 Completada y luego Expirada por colecciones independientes, aunque las pruebas aisladas pasaban.
+- Aprendizaje: los recorridos que representan la misma entidad deben consultar una fuente coherente de muestra. Distinguir los IDs de casos alternativos y conservar metadatos al actualizar; pasar pruebas de cada módulo no acredita la coherencia entre pantallas.
+- Comprobación: recorrer llegada → finalización → historial → detalle sin recargar; verificar ID, estado y fechas, además de comprobar que el reinicio explícito al recargar no se confunda con persistencia.

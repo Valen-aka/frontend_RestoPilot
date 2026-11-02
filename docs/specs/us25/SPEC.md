@@ -291,3 +291,11 @@ Las pruebas de reglas están versionadas en scripts/reserva-atencion.test.mjs. E
 | US25-CA07 | Selección/colección propia validadas localmente | No demuestra permisos reales |
 
 S2-TSK-054, notificaciones, disponibilidad real y aceptación integrada siguen pendientes. No se implementó expiración automática de US26. No se creó commit, push, PR ni despliegue.
+
+## 16. Consistencia con el historial de US26 — 01/11/2026
+
+En fix/reservas-consistencia, ReservaAtencionStore comparte la colección de ReservaMuestraStore con el historial de US26. La llegada y la finalización actualizan la misma reserva #208 sin perder los metadatos de cliente/restaurante. El retorno muestra Completada con sus fechas y permite volver a consultar su ficha. Los casos Expirada tienen IDs independientes #190/#207; no se expira una visita atendida por navegar o avanzar el reloj.
+
+Verificación conjunta: 48 pruebas de reservas correctas, chequeo y build correctos, cinco recorridos de llegada/finalización/retorno en 320/390/768/1024/1440 px, cancelación de confirmación, atrás/adelante, límite de tolerancia y reinicio explícito de muestra al recargar. Detalle del alcance y resultados en la [sección 16 de US26](../us26/SPEC.md#16-corrección-conjunta-de-muestras-us25us26--01112026).
+
+La agenda permanece parcial; se conserva el marco, Angular Material y las rutas hijas existentes. No se crean operaciones persistentes.

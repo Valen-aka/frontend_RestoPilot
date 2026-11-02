@@ -4,7 +4,7 @@
       <p class="eyebrow">RESERVAS {{ context() === 'client' ? 'CLIENTE' : 'OPERACIÓN' }}</p>
       <h1 id="expiry-heading" tabindex="-1">{{ title() }}</h1>
       <p class="subtitle">{{ mode() === 'history' ? 'Consulta el detalle y la fecha de vencimiento de cada reserva.' : 'Toda la información de tu reserva, en un solo lugar.' }}</p>
-      <p class="sample-notice">Datos de muestra · Sin sesión ni servicios conectados. No se envían notificaciones ni se modifica la disponibilidad.</p>
+      <p class="sample-notice">Datos de muestra · Sin sesión ni servicios conectados. No se envían notificaciones ni se modifica la disponibilidad. La muestra se reinicia al recargar.</p>
     </div>
     @if (store.queryState() === 'loading') {
       <mat-card appearance="outlined" class="state-card" role="status" aria-busy="true"><mat-spinner diameter="32" aria-hidden="true"/><h2>Consultando las reservas…</h2></mat-card>
@@ -18,6 +18,23 @@
         <div class="notice" role="alert"><strong>No se pudo actualizar.</strong> Se conserva la última consulta disponible; puede estar desactualizada. <button mat-button type="button" (click)="store.reopenSample()">Volver a abrir la muestra</button></div>
       }
       @if (mode() === 'history') {
+        @if (attendanceRows().length) {
+          <mat-card appearance="outlined" class="history-card attendance-summary">
+            <h2>Atención de muestra</h2>
+            @for (reservation of attendanceRows(); track reservation.id) {
+              <section class="attendance-entry" [attr.aria-label]="'Atención de la reserva ' + reservation.id">
+                <div class="card-title"><h3>Reserva #{{ reservation.id }}</h3><span class="status">{{ reservation.status }}</span></div>
+                <p>{{ reservation.customer }} · {{ reservation.table }} · {{ reservation.guests }} personas</p>
+                <dl>
+                  <div><dt>Inicio</dt><dd>{{ date(reservation.startsAt) }}</dd></div>
+                  @if (reservation.arrivedAt) {<div><dt>Llegada registrada</dt><dd>{{ date(reservation.arrivedAt) }}</dd></div>}
+                  @if (reservation.completedAt) {<div><dt>Finalización registrada</dt><dd>{{ date(reservation.completedAt) }}</dd></div>}
+                </dl>
+                <a mat-stroked-button [routerLink]="attendanceDestination(reservation).path" [queryParams]="{vista: attendanceDestination(reservation).vista}" [state]="{us25ReservationId: reservation.id}" [attr.aria-label]="'Consultar reserva ' + reservation.id">Consultar reserva</a>
+              </section>
+            }
+          </mat-card>
+        }
         <mat-card appearance="outlined" class="history-card">
           <h2>Historial de reservas expiradas</h2><p class="muted">Se muestran únicamente reservas expiradas.</p>
           @if (rows().length) {
@@ -47,6 +64,8 @@
               <div><dt>Inicio</dt><dd>{{ date(reservation.startsAt) }}</dd></div>
               <div><dt>Fin</dt><dd>{{ date(reservation.endsAt) }}</dd></div>
               <div><dt>Mesa</dt><dd>{{ reservation.table }}</dd></div><div><dt>Personas</dt><dd>{{ reservation.guests }}</dd></div>
+              @if (reservation.arrivedAt) {<div><dt>Llegada registrada</dt><dd>{{ date(reservation.arrivedAt) }}</dd></div>}
+              @if (reservation.completedAt) {<div><dt>Finalización registrada</dt><dd>{{ date(reservation.completedAt) }}</dd></div>}
               @if (reservation.status === 'Expirada') {<div class="full"><dt>Expiró el</dt><dd>{{ expirationDate(reservation) }}</dd></div>}
               <div class="full"><dt>Notas</dt><dd>{{ reservation.notes || 'Sin notas registradas.' }}</dd></div>
             </dl>
