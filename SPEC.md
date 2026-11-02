@@ -1,6 +1,6 @@
 # SPEC común — RestoPilot
 
-Guía funcional y visual compartida. Actualización: 01/11/2026. Documentar el producto completo no autoriza implementar todas sus pantallas. Primera entrega: [Landing](docs/specs/landing/SPEC.md). Complementos actuales: landing, [US11 (carrito y modalidades)](docs/specs/us11/SPEC.md), US12 (detalle y pago), US13 (seguimiento), [US15 (cola y tablero de cocina)](docs/specs/us15/SPEC.md) y [US19 (preparación y entrega)](docs/specs/us19/SPEC.md), con documentos independientes.
+Guía funcional y visual compartida para todos los integrantes del equipo. Actualización: 01/11/2026. Define requisitos comunes, historias, criterios de aceptación y procedimientos aplicables a cualquier tarea asignada. Documentar el producto completo no autoriza implementar todas sus pantallas ni establece un orden de trabajo entre integrantes.
 
 ## Índice
 
@@ -19,31 +19,44 @@ Guía funcional y visual compartida. Actualización: 01/11/2026. Documentar el p
 
 ## Fuentes y alcance
 
-Leer AGENTS.md antes de modificar el proyecto. Las solicitudes expresas del usuario delimitan la tarea; el reporte define el negocio y Figma su apariencia. Ante discrepancias documentarlas; no inventar reglas.
+Leer [AGENTS.md](AGENTS.md) antes de modificar el proyecto. El alcance se determina con la tarea solicitada y los documentos de asignación del equipo; el reporte define el negocio y Figma su apariencia. Ante discrepancias, documentarlas y resolverlas con las instrucciones aplicables; no inventar reglas ni responsables.
 
 | Fuente | Uso |
 | --- | --- |
 | report_1ACC0236-20262.pdf | Historias, criterios, mockups y backlog §4.3.2, páginas físicas 215–221 |
-| Laboratorio_Generando_Interfaces_FIgma_Angular.pdf | SPEC común, base, ramas por pantalla, PR y cierre |
-| Laboratorio_Configuracion-MCP_Figma.pdf | Conexión MCP; comandos específicos de Claude, no requisito del conector de este chat |
-| [Figma vigente](https://www.figma.com/design/sRxKEwFdrMKfXPosGFvoHc/RestoPilot--Copy-?node-id=5-124) | Style 5:124; Landing 0:1; RestoPilot 5:92 |
-| src/app/screen-manifest.json | 120 escenarios, URLs y componentes existentes; no prueba funcional |
-| docs/ASIGNACION-EQUIPO.md y docs/asignacion-equipo.json | Coordinación vigente, sin reproducir nombres personales |
-| Código, package.json y configuración | Estado real que debe comprobarse antes de editar |
+| Laboratorio_Generando_Interfaces_FIgma_Angular.pdf | Referencia metodológica para especificaciones, base, ramas, PR y cierre |
+| Laboratorio_Configuracion-MCP_Figma.pdf | Referencia de conexión MCP; adaptar los comandos al entorno y agente utilizados |
+| [Figma original — única referencia autorizada](https://www.figma.com/design/wBq85sZ8G5W5RQ1RmQmdqg/RestoPilot?node-id=5-92) | Consultar pantallas y variantes desktop/mobile; verificar los IDs dentro de este archivo |
+| [Inventario de pantallas](src/app/screen-manifest.json) | 120 escenarios, URLs y componentes; no prueba funcional |
+| [Asignación del equipo](docs/ASIGNACION-EQUIPO.md) y [versión estructurada](docs/asignacion-equipo.json) | Responsables y coordinación de pantallas y archivos compartidos |
+| Código, package.json y configuración de la rama actual | Herramientas y estado real antes de editar |
 
-PDF originales: carpeta local Downloads/ing software. Las historias se recuperaron del respaldo histórico y los 198 textos de criterios se cotejaron con el reporte completo: todos coinciden al normalizar espacios y retirar encabezados de página. Los IDs USxx-CAxx conservan la numeración del catálogo: CA corresponde al escenario numerado del reporte. No se afirma ejecución de esos casos.
+Los nombres de los PDF identifican documentos de referencia, no rutas de instalación. Su ubicación compartida y versión deben acordarse y registrarse por el equipo; no depender de carpetas personales. Si una fuente no está disponible, comunicar la limitación y trabajar con las fuentes verificables. Los IDs USxx-CAxx conservan la numeración del catálogo: CA corresponde al escenario numerado del reporte. La transcripción de un criterio no demuestra su ejecución ni aceptación.
 
-Los valores etiquetados de Style se consultaron por metadatos Figma el 01/11/2026; no equivalen a verificación visual. IDs del archivo anterior no se trasladan a la copia actual sin comprobarlos. El video https://www.youtube.com/watch?v=OVrso7W1fSM no pudo recuperarse; el procedimiento se basa en los laboratorios y el diagrama compartido.
+Usar únicamente el Figma original enlazado arriba. Las referencias de frames y capturas ya documentadas deben comprobarse en ese archivo antes de implementar; no trasladar IDs entre archivos por suposición. Los valores visuales documentados constituyen el contrato de implementación, pero no sustituyen la comparación de cada pantalla con su referencia aprobada.
 
-### Etapas y estado
+### Alcance y estado de las tareas
 
-- Ahora: LP01 / S2-TSK-003 y 004, landing visual y navegación, rama propuesta feature/landing.
-- Interfaces posteriores: cada pantalla mediante una tarea acotada; no crear otros SPEC hasta solicitarlos.
-- Integración posterior: HTTP, sesión y operaciones únicamente con autorización y contrato verificado. La UI no sustituye validaciones del servidor.
-- IA: US03/US04 conservan requisitos pero sus servicios no están implementados según el estado confirmado del proyecto. No inventar respuestas ni presentarlos como operativos.
-- Backend considerado funcional salvo IA según el estado confirmado. No se ejecutaron endpoints en esta revisión; ello no prueba fallos del backend.
+- Cada integrante trabaja en las pantallas y cambios compartidos necesarios para su tarea asignada. Consultar el reparto vigente; ninguna tarea tiene prioridad por aparecer primero en este documento.
+- Distinguir implementación visual, navegación, integración con API y aceptación funcional. Confirmar qué etapas están autorizadas para la tarea; describir una funcionalidad no autoriza conectarla a servicios reales.
+- Consultar el código, el inventario y la evidencia de la rama actual para determinar avances. Este SPEC define requisitos; no es una lista de tareas terminadas ni acredita el funcionamiento del backend.
+- Antes de integrar HTTP, sesión u operaciones, verificar contratos, permisos, errores y validaciones del servidor. La UI no sustituye esas validaciones.
+- US03/US04 describen IA prevista. Verificar la disponibilidad real del servicio antes de integrarlo; no inventar respuestas ni presentar muestras como operaciones reales.
 
-No copiar ejemplos de EventSales, roles participante/organizador ni el aviso de compra segura como requisitos de RestoPilot.
+### Complementos disponibles
+
+El SPEC común contiene las 29 historias y sus criterios. No se requiere un archivo separado por cada US. Consultar un complemento solo si existe y corresponde a la tarea; su ausencia no impide trabajar con los requisitos comunes. Crear o ampliar complementos cuando la tarea lo requiera para detallar decisiones necesarias, sin duplicar ni contradecir el contrato común. Un complemento puede cubrir varias historias relacionadas.
+
+| Complemento | Alcance |
+| --- | --- |
+| [Landing](docs/specs/landing/SPEC.md) | LP01: presentación del producto y accesos |
+| [US11](docs/specs/us11/SPEC.md) | Carrito y registro del pedido por modalidad |
+| [US12](docs/specs/us12/SPEC.md) | Detalle del pedido y consulta de pago |
+| [US13](docs/specs/us13/SPEC.md) | Seguimiento del pedido |
+| [US15](docs/specs/us15/SPEC.md) | Tablero y cola priorizada de cocina |
+| [US19](docs/specs/us19/SPEC.md) | Preparación, pedido listo y entrega |
+
+Los detalles de rama, entrega y evidencia particulares se documentan en el complemento correspondiente; no establecen el flujo ni el avance de las demás tareas.
 
 ## Producto y permisos
 
@@ -139,7 +152,7 @@ En UI distinguir normal, carga, vacío, error, éxito y operación bloqueada cua
 
 ## Sistema visual
 
-Referencia Style 5:124, guía 125:3. Valores etiquetados recuperados por metadatos; falta comprobación visual/contraste de combinaciones reales.
+Referencias históricas de extracción: Style 5:124, guía 125:3. Verificar su correspondencia en el Figma original antes de utilizarlas. Los valores siguientes se conservan como contrato de implementación; falta comprobación visual/contraste de combinaciones reales y no se afirma una nueva verificación contra el original.
 
 | Rol | Valor |
 | --- | --- |
@@ -158,7 +171,7 @@ Botones default/hover/focus/disabled. Formularios con etiqueta persistente, ayud
 
 src/material-theme.scss genera Material y src/styles.css aporta tokens/base compartida; CSS locales resuelven composición. Evitar selectores internos de Material e !important para layouts; usar variables del sistema y componentes públicos. La regla global de movimiento reducido usa !important únicamente para respetar la preferencia de accesibilidad.
 
-La base anterior usaba Arial y radio 16; se actualiza la guía CSS a los tokens indicados. No hay archivo Roboto local en el inventario: se declara primero con Arial de respaldo; no afirmar instalación de fuente. No añadir dependencia de fuente remota.
+La base global declara Roboto con Arial de respaldo. Existe el recurso local public/assets/pedido/fonts/roboto.ttf, utilizado por pedidos y cocina con nombres de familia propios; su existencia no implica que la base global lo cargue. Verificar las declaraciones de fuente y el alcance antes de reutilizar recursos. No añadir dependencia de fuente remota.
 
 Colores auxiliares, sombras, anchos de contenedor y breakpoints son decisiones CSS de implementación, no valores Figma confirmados. La base usa ancho de contenido 75rem y breakpoint auxiliar 37.5rem; cada pantalla debe verificar su adaptación. Utilidades optativas: rp-container, rp-page, rp-section, rp-stack, rp-cluster, rp-grid, rp-card, rp-actions, rp-field, rp-help, rp-field-error, rp-feedback, rp-badge, rp-table, rp-sr-only y rp-skip-link. Estas clases no sustituyen semántica, roles ni mensajes accesibles. No activar oscuro sin diseño. Probar zoom, textos largos, contraste, foco y reduced-motion. No usar capturas completas como interfaz.
 
@@ -2539,7 +2552,7 @@ Probar Tab/Shift+Tab, activación por teclado, foco, labels, alt significativo o
 
 ## Verificación y entrega
 
-1. Leer AGENTS.md, SPEC común y landing.
+1. Leer AGENTS.md, memory.md y este SPEC común. Consultar los complementos disponibles que correspondan a la tarea, si existen.
 2. Confirmar tarea/historia/criterios, frames y archivos; contrato si aplica.
 3. Revisar rama y cambios sin descartar trabajo. Partir de develop actualizado para feature/<pantalla> cuando se autorice.
 4. Implementar únicamente lo pactado; coordinar archivos compartidos.
@@ -2551,20 +2564,19 @@ Interfaz: probar en navegador desktop/mobile, anchos intermedios, teclado, foco,
 
 El chequeo conserva 120 escenarios únicos, sus archivos y estados coherentes. Una interfaz declarada implementada debe tener plantilla no vacía; eso no acredita integración ni aceptación. Landing está fuera del inventario de 120.
 
-### Entrega inicial
+### Entrega de cualquier tarea
 
-- Rama: feature/landing.
-- Commit/título de PR propuesto: feat(landing): implementa la landing responsive de RestoPilot.
-- PR hacia develop, con alcance LP01/S2-TSK-003/004, capturas, pruebas realmente ejecutadas y pendientes; interfaz/navegación sin API.
-- Revisar con un compañero. Cierre del incremento: PR develop → main mediante merge commit sin squash; tag v1.0.0 opcional.
-- Commits, push, PR y despliegue requieren autorización aplicable. Redactar SPEC no los ejecuta.
+- Preparar una rama descriptiva según AGENTS.md y el acuerdo del equipo, sin imponer una rama de otra funcionalidad.
+- Entregar mediante PR hacia develop cuando esté autorizado, indicando historias/tareas cubiertas, cambios, pruebas realmente ejecutadas, evidencia y limitaciones.
+- Revisar con otro integrante los criterios aplicables y las regresiones en archivos compartidos. La integración a main y el despliegue siguen el acuerdo y la autorización del equipo.
+- No fijar versiones, etiquetas o estrategias de fusión a partir de la entrega de un solo integrante.
+- Commits, push, PR y despliegue requieren autorización aplicable. La edición de documentación no los ejecuta ni acredita que la tarea esté terminada.
 
 ## Pendientes
 
 | Tema | Confirmación requerida |
 | --- | --- |
 | Frames vigentes desktop/mobile | Resolver nombre/ID y capturas antes de cada pantalla |
-| Mobile landing y CTA principal | Confirmados: 115:781 y /auth/registro-dueno; ver ejecución en SPEC landing |
 | Roboto | Recurso local; Arial funciona como respaldo |
 | API | Contratos, enums, errores, sesión y permisos |
 | Moneda, zona horaria y formatos | Contrato/diseño; no inferir del equipo |
@@ -2573,4 +2585,4 @@ El chequeo conserva 120 escenarios únicos, sus archivos y estados coherentes. U
 | Contraste/responsive | Combinaciones y vistas reales |
 | Estado Done | Aceptación y pruebas, no solo documentación |
 
-Complementos: [Landing](docs/specs/landing/SPEC.md) y [US12: detalle y consulta de pago](docs/specs/us12/SPEC.md) y [US13: seguimiento del pedido](docs/specs/us13/SPEC.md). Cada complemento delimita su entrega.
+Consultar la tabla de complementos en Fuentes y alcance para los detalles particulares de cada tarea. Su existencia no indica prioridad ni aceptación.
