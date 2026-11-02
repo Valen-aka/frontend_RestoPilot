@@ -1,6 +1,8 @@
 # SPEC — US19: preparación, pedido listo y entrega
 
-Fecha: 01/11/2026. Entrega actual: transiciones y recorrido de muestra implementados; integración y aceptación pendientes. Rama de trabajo: feature/operacion-cocina. PR hacia develop.
+Revisión documental: 02/11/2026. Estado: frontend de muestra incorporado en develop; aceptación del equipo pendiente. Rama original: feature/operacion-cocina. Alineación documental: docs/alineacion-specs.
+
+Las secciones de ejecución fechadas conservan evidencia histórica. El estado actual se contrasta con develop, base 3685d07; no repetir como pendientes las etapas ya integradas. Referencias comprobadas: [registro Figma](../../REFERENCIAS-FIGMA.md).
 
 Leer el [SPEC común](../../../SPEC.md), [AGENTS.md](../../../AGENTS.md), [SPEC de US15](../us15/SPEC.md) y el [reparto de mantenimiento](../../ASIGNACION-EQUIPO.md). Este documento complementa la consulta de US15 con las acciones de avance del pedido; no sustituye sus reglas de prioridad.
 
@@ -33,7 +35,7 @@ Excluye crear/editar/cancelar pedidos, cobrar, reembolsar, implementar autentica
 
 Fuente funcional: report_1ACC0236-20262.pdf, US19, páginas físicas 65–66. Sus seis criterios originales se reproducen íntegros en la sección 14. Fichas de interfaz PDF-UI-069 a PDF-UI-072, páginas 149–152; el inicio de preparación también aparece en el tablero PDF-UI-068.
 
-Fuente visual: [Figma vigente](https://www.figma.com/design/sRxKEwFdrMKfXPosGFvoHc/RestoPilot--Copy-?node-id=5-92), página RestoPilot 5:92, sección Pedidos operación 95:11.
+Fuente visual: [Figma original autorizado](https://www.figma.com/design/wBq85sZ8G5W5RQ1RmQmdqg/RestoPilot?node-id=5-92), página RestoPilot 5:92, sección Pedidos operación 95:11.
 
 | Escenario | Desktop | Mobile | Estado previo de la acción |
 | --- | --- | --- | --- |
@@ -43,7 +45,7 @@ Fuente visual: [Figma vigente](https://www.figma.com/design/sRxKEwFdrMKfXPosGFvo
 | op-pedido-entregado | 89:35412 · 1440 × 900 | 89:35583 · 390 × 1264.61 | Entregado, consulta final |
 | op-cocina, entrada de acciones | 89:12661 · 1440 × 967.10 | 89:12859 · 390 × 1820.22 | Según cada comanda |
 
-En esta entrega documental se consultaron estructura, dimensiones y textos desktop de las tres variantes de US19 mediante MCP oficial de Figma. Los contextos y capturas de tablero/detalle obtenidos al implementar US15 son antecedentes. Antes de implementar US19, obtener y comparar sus propios contextos y capturas desktop/mobile; estas lecturas no son pruebas de ejecución.
+Durante la preparación inicial se consultaron estructura, dimensiones y textos desktop de las tres variantes de US19 en la copia mediante MCP. Los contextos y capturas de tablero/detalle obtenidos al implementar US15 son antecedentes. La ejecución posterior se conserva en su sección; ante cambios visuales, volver a obtener y comparar sus contextos y capturas desktop/mobile del original. Las lecturas de diseño no son pruebas de ejecución.
 
 Precisiones de interpretación:
 - op-pedido-listo representa un pedido En preparación antes de «Marcar como listo»; el nombre de carpeta no implica un estado Listo ya registrado.
@@ -157,7 +159,7 @@ US19-CA01, CA02 y CA03 exigen generar una notificación al cliente en cada cambi
 
 La fase visual comunica «Cambio de muestra aplicado; no se enviaron notificaciones» cuando corresponda. No implementar el módulo de avisos por arrastre. En integración, verificar con el backend cómo se genera el aviso correspondiente y distinguir el resultado del cambio de estado del resultado de su notificación, según contrato; no deshacer ni duplicar acciones por suponer una entrega de avisos no confirmada.
 
-La operación de muestra tampoco actualiza automáticamente la vista cliente de US13. Las pruebas de flujo integrado pertenecen a una entrega posterior; compartir el número #1042 entre muestras no demuestra conexión real ni aislamiento de cuentas.
+La operación de muestra tampoco actualiza automáticamente la vista cliente de US13. Las pruebas de recorrido local se mantienen por separado en test/flujos-integrados; compartir el número #1042 entre muestras no demuestra conexión real ni aislamiento de cuentas.
 
 ## 11. Estilo, componentes y accesibilidad
 
@@ -293,3 +295,9 @@ Las pruebas de prioridad y transiciones están versionadas en scripts/. Los guio
 | US19-CA06 | Selección validada contra colección propia de muestra | No demuestra autorización del servidor |
 
 S2-TSK-038, avisos reales y aceptación integrada siguen pendientes. No se creó commit, push, PR ni despliegue.
+
+## Alineación vigente — 02/11/2026
+
+Se verificaron en el archivo Figma original los IDs, nombres y dimensiones de las referencias de este documento. El [registro compartido](../../REFERENCIAS-FIGMA.md) identifica la única referencia histórica no verificable y delimita esta comprobación de metadatos. Las lecturas y capturas históricas obtenidas en la copia no se atribuyen retroactivamente al original.
+
+La revisión documental no vuelve a ejecutar el prototipo ni certifica equivalencia visual. Los recorridos locales se verifican por separado en test/flujos-integrados. No se implementan nuevas pantallas ni se cambian reglas de negocio por corregir estas referencias.

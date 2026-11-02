@@ -1,6 +1,8 @@
 # SPEC — US11: carrito y registro del pedido según modalidad
 
-Fecha: 01/11/2026. Entrega actual: interfaz y recorrido local implementados; integración y aceptación pendientes. Rama de trabajo: feature/cliente-pedido. PR hacia develop.
+Revisión documental: 02/11/2026. Estado: frontend de muestra incorporado en develop; aceptación del equipo pendiente. Rama original: feature/cliente-pedido. Alineación documental: docs/alineacion-specs.
+
+Las secciones de ejecución fechadas conservan evidencia histórica. El estado actual se contrasta con develop, base 3685d07; no repetir como pendientes las etapas ya integradas. Referencias comprobadas: [registro Figma](../../REFERENCIAS-FIGMA.md).
 
 Leer el [SPEC común](../../../SPEC.md), [AGENTS.md](../../../AGENTS.md), [SPEC de US12](../us12/SPEC.md) y [SPEC de US13](../us13/SPEC.md). Este documento corresponde únicamente a US11 y no sustituye las historias ya preparadas.
 
@@ -32,7 +34,7 @@ Excluye implementar carta y detalle de platos, historial completo, cocina, cambi
 
 Fuente funcional: report_1ACC0236-20262.pdf, US11, páginas físicas 50–52. Los nueve criterios completos se conservan en la sección 14; también están en el SPEC común. Fichas de interfaz PDF-UI-020 a PDF-UI-027, páginas 112–117.
 
-Fuente visual: [Figma vigente, página de aplicación](https://www.figma.com/design/sRxKEwFdrMKfXPosGFvoHc/RestoPilot--Copy-?node-id=5-92).
+Fuente visual: [Figma original autorizado, página de aplicación](https://www.figma.com/design/wBq85sZ8G5W5RQ1RmQmdqg/RestoPilot?node-id=5-92).
 
 | Escenario | Desktop | Mobile |
 | --- | --- | --- |
@@ -45,7 +47,7 @@ Fuente visual: [Figma vigente, página de aplicación](https://www.figma.com/des
 | cliente-restaurante-cerrado | 84:48380 · 1440 × 900 | 84:48448 · 390 × 909.60 |
 | cliente-pedido-creado | 84:33350 · 1440 × 900 | 84:33418 · 390 × 963 |
 
-En esta entrega se consultaron estructura, identificadores, dimensiones y textos desktop de estas ocho vistas mediante Figma. No se realizaron comparaciones visuales por captura ni pruebas de navegador de US11. Antes de implementar, obtener contexto y capturas de las referencias desktop/mobile y revisar sus controles y recursos; esta lectura documental no sustituye esa comparación.
+Durante la preparación inicial del SPEC se consultaron estructura, identificadores, dimensiones y textos desktop en la copia entonces utilizada; esa etapa documental no incluyó pruebas de aplicación. La ejecución posterior consta en la sección 15. Ante cambios visuales, obtener los contextos y capturas vigentes del original; la revisión actual de metadatos no sustituye esa comparación.
 
 Al preparar el SPEC, las ocho entradas figuraban pendientes en el manifiesto y carrito conservaba la estructura base. El avance posterior se registra en la sección 15. El código de detalle, pago y seguimiento ya existe: reutilizar lo adecuado sin declarar terminada US11 por esa existencia.
 
@@ -145,7 +147,7 @@ El borrador conserva restaurante, líneas, cantidades y modalidad al navegar ent
 
 La confirmación y «Seguir mi pedido» deben conservar el mismo snapshot y mostrar estado Pendiente y pago Pendiente. No enlazar una confirmación SALON/DELIVERY a la muestra fija RECOGER ni reutilizar el pago Yape Pagado de US12 como resultado de una compra nueva.
 
-La base actual de US12/US13 usa SAMPLE_ORDER inmutable, estado En preparación en la entrada canónica y una muestra de pago registrado. Antes de implementar la continuidad, añadir únicamente el mecanismo local necesario para transportar un contexto de muestra consistente, sin mutar esas constantes ni romper las visitas directas existentes. Si se usa history.state, validar su forma y tratarlo como presentación no confiable; nunca como prueba de identidad, autorización o creación de pedido.
+La base conserva SAMPLE_ORDER inmutable para las visitas directas sin selección. La continuidad ya utiliza PedidoDemoContext y ClientePedidosStore para consultar por ID, conservar pedidos temporales independientes y recuperar su pago. Mantener ese mecanismo y las visitas directas existentes sin mutar las constantes históricas. Si se usa history.state, validar su forma y tratarlo como presentación no confiable; nunca como prueba de identidad, autorización o creación de pedido.
 
 El snapshot confirmado debe quedar separado del borrador: editar o vaciar un nuevo carrito no modifica un pedido consultado. Mantener el contrato de OrderSnapshot y Modality existente cuando sea adecuado; separar campos del borrador, estado de consulta y datos confirmados. El retorno pago → detalle debe conservar identidad, modalidad y estado de esa misma muestra.
 
@@ -307,3 +309,11 @@ Se obtuvieron contextos de diseño y capturas de las ocho pantallas desktop/mobi
 Los guiones locales, resultados y capturas están en us11-implementation, en la carpeta local de trabajo fuera del repositorio. La regresión existente se ejecutó desde us13-implementation. No se añadieron dependencias ni herramientas de pruebas al producto.
 
 S2-TSK-032 sigue pendiente: faltan autenticación, validación autoritativa, registro real, total confirmado por API y aceptación integrada. Esta entrega no acredita cumplimiento integrado de los nueve criterios. No se creó commit, PR ni despliegue.
+
+## Alineación vigente — 02/11/2026
+
+Se verificaron en el archivo Figma original los IDs, nombres y dimensiones de las referencias de este documento. El [registro compartido](../../REFERENCIAS-FIGMA.md) identifica la única referencia histórica no verificable y delimita esta comprobación de metadatos. Las lecturas y capturas históricas obtenidas en la copia no se atribuyen retroactivamente al original.
+
+La revisión documental no vuelve a ejecutar el prototipo ni certifica equivalencia visual. Los recorridos locales se verifican por separado en test/flujos-integrados. No se implementan nuevas pantallas ni se cambian reglas de negocio por corregir estas referencias.
+
+Estado actual del recorrido: [Mis pedidos](../cliente-pedidos/SPEC.md) consulta por ID y conserva detalle, seguimiento y pago. Las confirmaciones locales del carrito tienen IDs independientes #1043, #1044, …; no reemplazar el histórico #1042. Los datos temporales se reinician al recargar.

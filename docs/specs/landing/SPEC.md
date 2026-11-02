@@ -1,6 +1,8 @@
 # SPEC — Landing de RestoPilot
 
-Fecha de revisión: 01/11/2026. Estado: interfaz visual implementada y verificada localmente; aceptación del equipo pendiente. Funcionalidad LP01, tareas S2-TSK-003 y S2-TSK-004. Rama de implementación propuesta: feature/landing.
+Revisión documental: 02/11/2026. Estado: frontend de muestra incorporado en develop; aceptación del equipo pendiente. Rama original: feature/landing. Alineación documental: docs/alineacion-specs.
+
+Las secciones de ejecución fechadas conservan evidencia histórica. El estado actual se contrasta con develop, base 3685d07; no repetir como pendientes las etapas ya integradas. Referencias comprobadas: [registro Figma](../../REFERENCIAS-FIGMA.md).
 
 Leer el [SPEC común](../../../SPEC.md) y [AGENTS.md](../../../AGENTS.md). Esta especificación detalla únicamente la landing y no autoriza implementar otras pantallas.
 
@@ -19,22 +21,22 @@ No incluye HTTP, autenticación real, registro de cuentas, pedidos/reservas oper
 
 ## 2. Fuentes y evidencia
 
-[Figma vigente: página Landing](https://www.figma.com/design/sRxKEwFdrMKfXPosGFvoHc/RestoPilot--Copy-?node-id=0-1).
+[Figma original autorizado: página Landing](https://www.figma.com/design/wBq85sZ8G5W5RQ1RmQmdqg/RestoPilot?node-id=0-1).
 
 | Referencia | ID | Medidas del nodo |
 | --- | --- | --- |
-| [RestoPilot / Landing · Escritorio](https://www.figma.com/design/sRxKEwFdrMKfXPosGFvoHc/RestoPilot--Copy-?node-id=115-144) | 115:144 | 1280 × 6278.42 px |
-| [RestoPilot — Buen servicio. Buenas historias.](https://www.figma.com/design/sRxKEwFdrMKfXPosGFvoHc/RestoPilot--Copy-?node-id=115-781) | 115:781 | 390 × 7238 px |
-| [Navbar · Estado de scroll](https://www.figma.com/design/sRxKEwFdrMKfXPosGFvoHc/RestoPilot--Copy-?node-id=115-773) | 115:773 | 263 × 101 px; contiene etiqueta explicativa y burbuja |
+| [RestoPilot / Landing · Escritorio](https://www.figma.com/design/wBq85sZ8G5W5RQ1RmQmdqg/RestoPilot?node-id=115-144) | 115:144 | 1280 × 6278.42 px |
+| [RestoPilot — Buen servicio. Buenas historias.](https://www.figma.com/design/wBq85sZ8G5W5RQ1RmQmdqg/RestoPilot?node-id=115-781) | 115:781 | 390 × 7238 px |
+| [Navbar · Estado de scroll](https://www.figma.com/design/wBq85sZ8G5W5RQ1RmQmdqg/RestoPilot?node-id=115-773) | 115:773 | 263 × 101 px; contiene etiqueta explicativa y burbuja |
 | Guía común de aplicación | 125:3 en Style 5:124 | Fundamentos compartidos, no todas las propiedades de marketing |
 
-Se consultaron estructura, textos completos, estilos de nodos seleccionados, reacciones y capturas de ambos frames el 01/11/2026. Las capturas completas sirven para composición; el texto pequeño se recuperó del modelo Figma. No se ejecutó el prototipo ni el frontend.
+Durante la preparación inicial, el 01/11/2026, se consultaron estructura, textos, estilos, reacciones y capturas en la copia entonces utilizada. La revisión del 02/11/2026 confirma los IDs, nombres y dimensiones en el original; no revalida las reacciones de aquella copia. Las capturas completas sirven para composición; el texto pequeño se recuperó del modelo Figma. No se ejecutó el prototipo ni el frontend.
 
 El render mobile incluyó contenido fuera del frame (422 × 7319 frente al nodo de 390 × 7238), entre ello el enlace «Saltar al contenido» situado por encima del frame. El Body mide aproximadamente 7241.36 px. No copiar recortes, desbordes o esas alturas como restricciones CSS: probar el contenido real dentro del viewport.
 
 ### Interacciones efectivamente recuperadas
 
-Las instancias desktop 115:154, 115:710 y 115:769 tienen ON_HOVER → CHANGE_TO hacia 115:64, y ON_CLICK sin acciones. No demuestran destino de navegación. No se recuperaron reacciones en mobile ni en la burbuja de scroll. Esto no prueba ausencia de comportamiento en cualquier otra versión.
+La lectura histórica de la copia registró ON_HOVER → CHANGE_TO hacia 115:64 para las instancias 115:154, 115:710 y 115:769, y ON_CLICK sin acciones. El destino 115:64 no pudo verificarse en el original: el MCP devolvió selección inválida. No usarlo como una referencia de interacción vigente. Las tres instancias sí existen en el original; sus reacciones no se verificaron en esta revisión documental. No demuestran destino de navegación. No se recuperaron reacciones en mobile ni en la burbuja de scroll. Esto no prueba ausencia de comportamiento en cualquier otra versión.
 
 Los destinos y comportamientos propuestos más abajo se distinguen de hechos del prototipo. No afirmar que se probaron clics ni que existe un registro funcional.
 
@@ -45,7 +47,7 @@ Los destinos y comportamientos propuestos más abajo se distinguen de hechos del
 | src/app/home/home.ts | Home standalone, imports y estados locales necesarios |
 | src/app/home/home.html | Estructura semántica y contenido |
 | src/app/home/home.css | Composición y variante visual específica de landing |
-| public/assets/landing/ | Assets exportados necesarios; crear solo cuando se implemente |
+| public/assets/landing/ | Assets locales existentes; conservar su procedencia y licencias |
 | src/app/home/README.md | Referencia local de alcance; actualizar únicamente si cambia información de implementación |
 
 La ruta / ya carga Home en src/app/app.routes.ts. No modificarla por conveniencia. No cambiar screen-manifest.json: la landing es adicional a las 120 pantallas. Conservar base global en src/styles.css y tema de aplicación en src/material-theme.scss.
@@ -377,3 +379,9 @@ Se exportó la ilustración completa 115:161 e icono original, y se incorporaron
 Verificación: estructura, build y navegador local en 320/390/768/1280/1440 px; sin desborde horizontal. FAQ, selecciones de demos, menú/Escape/foco, anclas, skip link y rutas de registro comprobados. Fuentes/assets cargan; no se observaron errores de ejecución ni solicitudes fallidas. Zoom 200 % sin desbordamiento en viewport 1280. Detalle en [README de Home](../../../src/app/home/README.md).
 
 Estos resultados actualizan la evidencia de LP-L01–20 para el alcance visual probado; no sustituyen revisión humana, documento legal definitivo ni prueba completa de accesibilidad. Los pendientes históricos anteriores quedan resueltos solo en lo descrito aquí. No se declaran operativos IA, backend ni formularios de destino, ni se creó commit o despliegue.
+
+## Alineación vigente — 02/11/2026
+
+Se verificaron en el archivo Figma original los IDs, nombres y dimensiones de las referencias de este documento. El [registro compartido](../../REFERENCIAS-FIGMA.md) identifica la única referencia histórica no verificable y delimita esta comprobación de metadatos. Las lecturas y capturas históricas obtenidas en la copia no se atribuyen retroactivamente al original.
+
+La revisión documental no vuelve a ejecutar el prototipo ni certifica equivalencia visual. Los recorridos locales se verifican por separado en test/flujos-integrados. No se implementan nuevas pantallas ni se cambian reglas de negocio por corregir estas referencias.

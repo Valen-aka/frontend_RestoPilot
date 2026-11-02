@@ -1,6 +1,8 @@
 # SPEC — US13: seguimiento del pedido
 
-Fecha: 01/11/2026. Entrega actual: seguimiento visual verificado con fixtures; integración y aceptación del equipo pendientes. Rama propuesta: feature/cliente-pedido. PR hacia develop.
+Revisión documental: 02/11/2026. Estado: frontend de muestra incorporado en develop; aceptación del equipo pendiente. Rama original: feature/cliente-pedido. Alineación documental: docs/alineacion-specs.
+
+Las secciones de ejecución fechadas conservan evidencia histórica. El estado actual se contrasta con develop, base 3685d07; no repetir como pendientes las etapas ya integradas. Referencias comprobadas: [registro Figma](../../REFERENCIAS-FIGMA.md).
 
 Leer [SPEC común](../../../SPEC.md), [AGENTS.md](../../../AGENTS.md) y [SPEC de US12](../us12/SPEC.md). Este documento no sustituye el de US12 ni reúne sus commits.
 
@@ -44,7 +46,7 @@ Excluye:
 
 Fuente funcional: US13 del reporte report_1ACC0236-20262.pdf, páginas físicas 54–55. Sus cinco criterios originales se reproducen íntegros al final.
 
-Fuente visual: [Figma vigente](https://www.figma.com/design/sRxKEwFdrMKfXPosGFvoHc/RestoPilot--Copy-?node-id=5-92), página RestoPilot 5:92.
+Fuente visual: [Figma original autorizado](https://www.figma.com/design/wBq85sZ8G5W5RQ1RmQmdqg/RestoPilot?node-id=5-92), página RestoPilot 5:92.
 
 | Escenario | Desktop | Mobile |
 | --- | --- | --- |
@@ -53,9 +55,9 @@ Fuente visual: [Figma vigente](https://www.figma.com/design/sRxKEwFdrMKfXPosGFvo
 | cliente-pedido-entregado | 84:33776, 1440 × 960.60 | 84:33929, 390 × 1483.10 |
 | cliente-pedido-cancelado | 84:33092, 1440 × 920.60 | 84:33225, 390 × 1373.70 |
 
-Referencias: [Listo](https://www.figma.com/design/sRxKEwFdrMKfXPosGFvoHc/RestoPilot--Copy-?node-id=84-39170), [Entregado](https://www.figma.com/design/sRxKEwFdrMKfXPosGFvoHc/RestoPilot--Copy-?node-id=84-33776), [Cancelado](https://www.figma.com/design/sRxKEwFdrMKfXPosGFvoHc/RestoPilot--Copy-?node-id=84-33092).
+Referencias: [Listo](https://www.figma.com/design/wBq85sZ8G5W5RQ1RmQmdqg/RestoPilot?node-id=84-39170), [Entregado](https://www.figma.com/design/wBq85sZ8G5W5RQ1RmQmdqg/RestoPilot?node-id=84-33776), [Cancelado](https://www.figma.com/design/wBq85sZ8G5W5RQ1RmQmdqg/RestoPilot?node-id=84-33092).
 
-Se reutilizan lecturas de diseño ya realizadas en esta sesión: contexto y capturas desktop de detalle/Listo/Entregado/Cancelado, detalle mobile y dimensiones de variantes mobile. No se repiten como inspecciones nuevas ni como pruebas de integración. Antes de cerrar implementación, comparar cada variante mobile con su referencia.
+La preparación inicial reutilizó lecturas de diseño disponibles entonces: contexto y capturas desktop de detalle/Listo/Entregado/Cancelado, detalle mobile y dimensiones de variantes mobile. No se repiten como inspecciones nuevas ni como pruebas de integración. La ejecución posterior se documenta en la sección 13; repetir la comparación de cada variante mobile ante cambios visuales.
 
 Pendiente no tiene un frame independiente identificado en este conjunto. Representarlo como estado de consulta del detalle con texto coherente, sin simular el alta del pedido ni reutilizar la confirmación de US11 como transacción nueva.
 
@@ -251,3 +253,11 @@ El guion de navegador, sus resultados y capturas están en la carpeta local de t
 | US13-CA05 | No encontrado sin contenido del pedido | No prueba autorización del servidor |
 
 S2-TSK-042 y la aceptación funcional integrada siguen pendientes. No se creó commit, PR ni despliegue.
+
+## Alineación vigente — 02/11/2026
+
+Se verificaron en el archivo Figma original los IDs, nombres y dimensiones de las referencias de este documento. El [registro compartido](../../REFERENCIAS-FIGMA.md) identifica la única referencia histórica no verificable y delimita esta comprobación de metadatos. Las lecturas y capturas históricas obtenidas en la copia no se atribuyen retroactivamente al original.
+
+La revisión documental no vuelve a ejecutar el prototipo ni certifica equivalencia visual. Los recorridos locales se verifican por separado en test/flujos-integrados. No se implementan nuevas pantallas ni se cambian reglas de negocio por corregir estas referencias.
+
+Estado actual del recorrido: [Mis pedidos](../cliente-pedidos/SPEC.md) consulta por ID y conserva detalle, seguimiento y pago. Las confirmaciones locales del carrito tienen IDs independientes #1043, #1044, …; no reemplazar el histórico #1042. Los datos temporales se reinician al recargar.
