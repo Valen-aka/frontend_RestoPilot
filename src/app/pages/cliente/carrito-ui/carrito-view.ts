@@ -46,7 +46,9 @@ export class CarritoView implements OnInit {
   ];
   readonly message = signal('');
   readonly isEmpty = computed(() => this.mode() === 'empty' || this.store.lines().length === 0);
-  readonly created = this.document.defaultView?.history.state?.us11Created === true ? this.demo.snapshot() : undefined;
+  private readonly creationState = this.document.defaultView?.history.state;
+  readonly created = this.creationState?.us11Created === true ?
+    (Object.hasOwn(this.creationState, 'pedidoId') ? this.demo.orders().find(order => order.id === this.creationState.pedidoId) : this.demo.snapshot()) : undefined;
   readonly title = computed(() => {
     if (this.mode() === 'closed') return 'Volvemos pronto';
     if (this.mode() === 'created') return 'Confirmación de muestra';
@@ -110,8 +112,8 @@ export class CarritoView implements OnInit {
     }
     const snapshot = this.store.snapshot(modality, table, address);
     if (!snapshot) return;
-    this.demo.snapshot.set(snapshot);
-    void this.router.navigate(['/cliente/pedido'], {queryParams: {vista: 'cliente-pedido-creado'}, state: {us11Created: true}});
+    const created = this.demo.remember(snapshot);
+    void this.router.navigate(['/cliente/pedido'], {queryParams: {vista: 'cliente-pedido-creado'}, state: {us11Created: true, pedidoId: created.id}});
   }
 
   emptyCart(): void {

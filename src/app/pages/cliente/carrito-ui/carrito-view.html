@@ -34,7 +34,7 @@
           <p>Modalidad: {{ labels[order.modality] }} · Total {{ order.total | currency:'PEN':'S/ ':'1.2-2' }}.</p>
           <p class="created-status" role="status">Pedido Pendiente · Pago Pendiente</p>
           <p>No se envió este pedido al restaurante. Esta confirmación permite recorrer la muestra.</p>
-          <a mat-flat-button routerLink="/cliente/pedido" [state]="{us11Demo: true}">Seguir mi pedido</a>
+          <a mat-flat-button routerLink="/cliente/pedido" [state]="{us11Demo: true, pedidoId: order.id}">Seguir mi pedido</a>
         } @else {
           <span class="state-symbol" aria-hidden="true">i</span><h2>No hay una confirmación en este recorrido</h2>
           <p>Revisa el carrito y elige una modalidad para abrir su confirmación de muestra. No se ha registrado ningún pedido.</p>
