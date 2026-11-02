@@ -1,0 +1,23 @@
+<a class="skip-link" href="#kitchen-content" (click)="skip($event)">Saltar al contenido</a>
+<div class="operation-shell">
+  <aside class="sidebar" aria-label="Espacio de trabajo de muestra" (keydown.escape)="closeMenu($event)">
+    <a class="brand" routerLink="/operacion" aria-label="RestoPilot, inicio de operación">
+      <span class="brand-image" aria-hidden="true"><img src="/assets/carrito/brand-reference.png" alt="" width="48" height="48"><span></span></span>
+      <span>Resto<span class="brand-green">Pilot</span><small>Tu restaurante, en piloto automático</small></span>
+    </a>
+    @if (mobile()) {<button mat-button id="kitchen-menu-toggle" type="button" [attr.aria-expanded]="menuOpen()" aria-controls="kitchen-navigation" (click)="menuOpen.set(!menuOpen())">{{ menuOpen() ? 'Ocultar navegación' : 'Mostrar navegación' }}</button>}
+    <div class="restaurant"><span class="avatar" aria-hidden="true">LM</span><div><strong>La Mesa Verde</strong><small>Lima · Restaurante de muestra</small></div></div>
+    <nav id="kitchen-navigation" aria-label="Navegación de operación" [hidden]="mobile() && !menuOpen()">
+      <p class="nav-label">TU ESPACIO DE TRABAJO</p>
+      @for (link of links; track link.path) {
+        <a [routerLink]="link.path" [class.active]="(active() === 'board' ? '/operacion/cocina' : '/operacion/pedidos') === link.path"
+          [attr.aria-current]="(active() === 'board' ? '/operacion/cocina' : '/operacion/pedidos') === link.path ? 'page' : null"><span aria-hidden="true">{{ link.icon }}</span>{{ link.label }}</a>
+      }
+    </nav>
+    <div class="sample-user"><strong>Vista de muestra</strong><small>Sin sesión conectada</small><a routerLink="/auth/login">Salir de la muestra →</a></div>
+  </aside>
+  <div class="workspace">
+    <header><p>La Mesa Verde <span aria-hidden="true">/</span> <strong>Pedidos operación</strong></p><span class="sample-badge">Datos de muestra</span></header>
+    <main id="kitchen-content" tabindex="-1"><ng-content /></main>
+  </div>
+</div>

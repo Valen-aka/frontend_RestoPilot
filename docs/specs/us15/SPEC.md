@@ -1,6 +1,6 @@
 # SPEC — US15: tablero y cola priorizada de cocina
 
-Fecha: 01/11/2026. Entrega actual: documentación. Rama de trabajo: feature/operacion-cocina. PR hacia develop.
+Fecha: 01/11/2026. Entrega actual: consulta visual y navegación implementadas; integración y aceptación pendientes. Rama de trabajo: feature/operacion-cocina. PR hacia develop.
 
 Leer el [SPEC común](../../../SPEC.md), [AGENTS.md](../../../AGENTS.md) y el [reparto de mantenimiento](../../ASIGNACION-EQUIPO.md). Este documento define US15; los cambios de estado de US19 se preparan en un documento y una implementación posteriores.
 
@@ -52,7 +52,7 @@ Fuente visual: [Figma vigente](https://www.figma.com/design/sRxKEwFdrMKfXPosGFvo
 
 En esta entrega documental se consultaron estructura, identificadores, dimensiones y textos desktop mediante MCP oficial de Figma. No se obtuvieron contextos de implementación ni se compararon capturas de aplicación. Antes de implementar, obtener contexto y capturas desktop/mobile de las tres vistas y verificar controles, composición y assets.
 
-La rama actual ya es feature/operacion-cocina y estaba limpia al iniciar este SPEC. Las tres entradas conservan su estructura pendiente. AdminLayout contiene el router-outlet y tiene pendiente su marco visual. No atribuir una interfaz terminada a la existencia del layout.
+La rama actual ya es feature/operacion-cocina y estaba limpia al iniciar este SPEC. Las tres entradas conservaban su estructura pendiente al preparar el documento; la ejecución posterior se registra en la sección 15. AdminLayout contiene el router-outlet y tiene pendiente su marco visual. No atribuir una interfaz terminada a la existencia del layout.
 
 ### Diferencias que debe resolver la implementación
 
@@ -259,3 +259,55 @@ Escenario 6: Pedido que sale de cocina Dado que un pedido pasó a Listo, Entrega
 
 Escenario 7: Cola sin pedidos Dado que el restaurante no tiene pedidos Pendientes ni En preparación. Cuando el usuario consulta la cola. Entonces el sistema informa que no hay pedidos para preparar.
 
+
+## 15. Ejecución de US15 — 01/11/2026
+
+Implementación en feature/operacion-cocina. Se mantuvieron las rutas hijas existentes bajo AdminLayout, su router-outlet, ScreenHost y cargadores. No se alteró el marco de otras páginas operativas ni las pantallas del cliente.
+
+Cambios:
+- Entradas op-pedidos, op-cocina y op-pedido-detalle con componentes standalone y .ts/.html/.css separados.
+- Área local cocina-ui con CocinaShell, CocinaView, CocinaCard, modelo de prioridad y CocinaStore de presentación.
+- Angular Material para tablas, tarjetas, botones y carga. La consulta no requiere formularios.
+- Colección única de tres pedidos de muestra; mismos estados, platos, precios, clientes y modalidades en cola, tablero y detalle.
+- Prioridad local por complejidad máxima, tiempo máximo sobre todas las líneas, antigüedad e ID numérico estable. No se muta la colección original al ordenar.
+- Tablero con solo Pendientes y En preparación, conteos derivados y todas las líneas de cada pedido. Listo, Entregado y Cancelado quedan fuera.
+- Selección mediante identificador local reconocido y origen de navegación; detalle de otro pedido no se sustituye por #1042. Retorno conserva origen y foco del enlace de consulta.
+- Carga, error inicial, datos incompletos, lectura anterior identificada, vacío por grupo/global y selección inexistente/ajena.
+- Marco operativo local con menú móvil desplegable en flujo normal, teclado, Escape y retorno del foco; corrige solapamientos del frame mobile.
+- Reutilización del recurso exacto 5815d ya disponible en public/assets/carrito/brand-reference.png y fuentes locales de pedido. Slot de marca 48 × 48 px y superposición blanca conforme al diseño.
+- Metadatos de consulta de tres escenarios actualizados; responsables, rutas, asociaciones originales y los 120 identificadores conservados.
+
+No se habilitaron botones de preparación, listo, entrega, pago, edición o cancelación. Tampoco se añadieron operaciones de autenticación, API, WebSocket o avisos. La muestra operativa se mantiene independiente del borrador del cliente.
+
+Se obtuvieron contextos y capturas desktop/mobile de las tres pantallas mediante MCP oficial de Figma. Se revisaron capturas locales de cola, tablero y detalle seleccionado. Las correcciones funcionales previstas por este SPEC y las ayudas de muestra explican las diferencias con los frames; no se afirma igualdad exacta de píxeles.
+
+### Pruebas ejecutadas
+
+- node --test scripts/cocina-priority.test.mjs: ocho pruebas correctas. Cubren las cuatro claves de prioridad, máximos de platos distintos, tiempos sin multiplicar por cantidades, IDs numéricos, instantes con offsets, nueva entrada, exclusión de estados/restaurante, agrupación estable, datos incompletos, vacío y conservación de la entrada.
+- node scripts/check-structure.mjs: correcto; 120 escenarios, 17 interfaces declaradas y 103 pendientes. El chequeo no acredita integración ni aceptación.
+- node node_modules/@angular/cli/bin/ng.js build: compilación de producción correcta.
+- git diff --check: sin errores.
+- Chrome local: 15 combinaciones de tres rutas por 1440, 390, 320, 768 y 1280 px, sin desbordamiento horizontal de página; recurso local cargado a 48 × 48 px en todas ellas.
+- Tres pedidos distintos consultados desde tablero, con identidad, contenido, modalidad, pago y total coherentes. Recarga del detalle y retorno al enlace del mismo pedido comprobados.
+- Cola → detalle → cola conserva orden. Acceso directo sin selección ofrece recuperación, sin mostrar otro pedido.
+- Nueva entrada de prueba se inserta en su prioridad; entrada de otro restaurante no se muestra. Cambiar fixtures a Listo, Entregado o Cancelado los retira del conjunto activo.
+- Vacío global y de un solo grupo, carga, error inicial, recuperación y datos incompletos comprobados sin tabla engañosa.
+- Error de actualización conserva explícitamente la lectura anterior; reabrir muestra refleja las entradas actuales locales, sin fingir una respuesta de servidor.
+- Selección inexistente/ajena sin tabla ni datos de servicio de otra comanda.
+- Menú móvil con apertura, Escape, devolución de foco y navegación a cocina. Salto al contenido, textos largos y zoom 200 % comprobados.
+- Sin errores de ejecución, solicitudes fallidas, peticiones API ni solicitudes de operaciones en la verificación.
+- Las tres rutas admiten recarga; las variantes de US19 no fueron implementadas ni declaradas terminadas.
+
+Las pruebas de prioridad están versionadas en scripts/cocina-priority.test.mjs. El guion de navegador, verification.json y capturas están en la carpeta local us15-implementation, fuera del repositorio. No se añadieron dependencias ni se cambió package.json.
+
+| Criterio | Evidencia local | Límite |
+| --- | --- | --- |
+| US15-CA01 | Solo pedidos activos propios en fixtures y navegación consistente | No acredita autorización real |
+| US15-CA02 | Complejidad máxima sobre todas las líneas | Prioridad del backend pendiente |
+| US15-CA03 | Mayor tiempo máximo, sin suma ni multiplicación | Contrato de tiempos pendiente |
+| US15-CA04 | Instante comparable e ID numérico estable | Dirección de desempate integrada pendiente |
+| US15-CA05 | Entrada nueva de prueba ocupa su prioridad | No se registra ni consulta un pedido real |
+| US15-CA06 | Fixtures finalizados salen de la consulta activa | No se ejecuta una transición |
+| US15-CA07 | Vacío global y parcial correctos | Sin respuesta real del servidor |
+
+S2-TSK-036 y la aceptación integrada siguen pendientes. En una integración futura debe conservarse el orden recibido de la API, sin aplicar el ordenamiento de fixtures sobre esa respuesta. No se creó commit, push, PR ni despliegue.

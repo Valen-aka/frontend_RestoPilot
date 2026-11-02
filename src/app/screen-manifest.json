@@ -1262,8 +1262,8 @@
     ],
     "owner": "Alexandra Fong",
     "us": "US12, US15",
-    "status": "Pendiente",
-    "contenidoImplementado": false
+    "status": "Interfaz de consulta implementada; integración y aceptación pendientes",
+    "contenidoImplementado": true
   },
   {
     "slug": "op-cocina",
@@ -1284,8 +1284,8 @@
     ],
     "owner": "Alexandra Fong",
     "us": "US15",
-    "status": "Pendiente",
-    "contenidoImplementado": false
+    "status": "Interfaz de consulta implementada; integración y aceptación pendientes",
+    "contenidoImplementado": true
   },
   {
     "slug": "op-pedido-detalle",
@@ -1306,8 +1306,8 @@
     ],
     "owner": "Alexandra Fong",
     "us": "US12, US15",
-    "status": "Pendiente",
-    "contenidoImplementado": false
+    "status": "Interfaz de consulta implementada; integración y aceptación pendientes",
+    "contenidoImplementado": true
   },
   {
     "slug": "op-pedido-listo",
