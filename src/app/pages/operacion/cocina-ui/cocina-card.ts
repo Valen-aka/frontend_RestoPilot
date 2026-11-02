@@ -2,9 +2,10 @@ import {Component, computed, input} from '@angular/core';
 import {RouterLink} from '@angular/router';
 import {MatCardModule} from '@angular/material/card';
 import {MatButtonModule} from '@angular/material/button';
+import {PedidoAction} from './pedido-action';
 import {KitchenOrder, maxComplexity, maxMinutes, sampleTime, serviceLabel} from './cocina.model';
 
-@Component({selector: 'rp-cocina-card', imports: [RouterLink, MatCardModule, MatButtonModule],
+@Component({selector: 'rp-cocina-card', imports: [RouterLink, MatCardModule, MatButtonModule, PedidoAction],
   templateUrl: './cocina-card.html', styleUrl: './cocina-card.css'})
 export class CocinaCard {
   readonly order = input.required<KitchenOrder>();

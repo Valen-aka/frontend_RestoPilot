@@ -52,7 +52,7 @@ export function validKitchenOrder(order: KitchenOrder): boolean {
     ['Pendiente', 'Pagado'].includes(order.payment) &&
     Number.isSafeInteger(order.totalCents) && order.totalCents >= 0 &&
     Array.isArray(order.lines) && order.lines.length > 0 && order.lines.every(line =>
-      typeof line.name === 'string' && !!line.name.trim() && Number.isSafeInteger(line.quantity) && line.quantity > 0 &&
+      line != null && typeof line.name === 'string' && !!line.name.trim() && Number.isSafeInteger(line.quantity) && line.quantity > 0 &&
       Number.isSafeInteger(line.unitCents) && line.unitCents >= 0 && Object.hasOwn(COMPLEXITY_RANK, line.complexity) &&
       Number.isFinite(line.preparationMinutes) && line.preparationMinutes > 0);
 }
@@ -81,4 +81,51 @@ export function sampleTime(order: KitchenOrder): string {
 export function sampleDate(order: KitchenOrder): string {
   return new Intl.DateTimeFormat('es-PE', {day: 'numeric', month: 'long', year: 'numeric', timeZone: 'America/Lima'})
     .format(new Date(order.createdAt));
+}
+
+export const NEXT_KITCHEN_STATUS: Readonly<Partial<Record<KitchenStatus, KitchenStatus>>> = {
+  Pendiente: 'En preparación', 'En preparación': 'Listo', Listo: 'Entregado'
+};
+export interface KitchenCommand {
+  readonly id: number;
+  readonly expected: KitchenStatus;
+  readonly target: KitchenStatus;
+}
+export type KitchenTransition =
+  {readonly ok: true; readonly orders: readonly KitchenOrder[]; readonly order: KitchenOrder} |
+  {readonly ok: false; readonly orders: readonly KitchenOrder[]; readonly reason: string};
+
+/** Simulación pura: no valida sesiones ni ejecuta operaciones del restaurante. */
+export function transitionSample(orders: readonly KitchenOrder[], command: KitchenCommand,
+  restaurantId: string = SAMPLE_RESTAURANT): KitchenTransition {
+  const matches = orders.filter(order => order.id === command.id && order.restaurantId === restaurantId);
+  const reject = (reason: string): KitchenTransition => ({ok: false, orders, reason});
+  if (!Number.isSafeInteger(command.id) || command.id < 1 || matches.length !== 1) {
+    return reject('No se encontró el pedido en este restaurante. No se aplicó ningún cambio.');
+  }
+  const order = matches[0];
+  if (!validKitchenOrder(order)) return reject('Los datos del pedido están incompletos. Revisa la muestra antes de continuar.');
+  if (order.status === 'Entregado' || order.status === 'Cancelado') {
+    return reject(`El pedido está ${order.status}. Su estado final se conserva.`);
+  }
+  if (order.status !== command.expected) {
+    return reject(`El pedido ahora está ${order.status}. Revisa su estado antes de iniciar otra acción.`);
+  }
+  if (NEXT_KITCHEN_STATUS[order.status] !== command.target) {
+    return reject(`No se permite pasar de ${order.status} a ${command.target}. No se aplicó ningún cambio.`);
+  }
+  const updated: KitchenOrder = {...order, status: command.target};
+  return {ok: true, order: updated, orders: orders.map(candidate => candidate === order ? updated : candidate)};
+}
+
+export function kitchenDestination(status: KitchenStatus): {path: string; vista?: string} {
+  if (status === 'En preparación') return {path: '/operacion/pedido/listo'};
+  if (status === 'Listo') return {path: '/operacion/pedido/entregar'};
+  if (status === 'Entregado') return {path: '/operacion/pedido', vista: 'op-pedido-entregado'};
+  return {path: '/operacion/pedido'};
+}
+export function sampleActionLabel(target: KitchenStatus): string {
+  if (target === 'En preparación') return 'Simular inicio de preparación';
+  if (target === 'Listo') return 'Simular pedido listo';
+  return 'Simular entrega';
 }

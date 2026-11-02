@@ -1,6 +1,6 @@
 # SPEC — US19: preparación, pedido listo y entrega
 
-Fecha: 01/11/2026. Entrega actual: documentación. Rama de trabajo: feature/operacion-cocina. PR hacia develop.
+Fecha: 01/11/2026. Entrega actual: transiciones y recorrido de muestra implementados; integración y aceptación pendientes. Rama de trabajo: feature/operacion-cocina. PR hacia develop.
 
 Leer el [SPEC común](../../../SPEC.md), [AGENTS.md](../../../AGENTS.md), [SPEC de US15](../us15/SPEC.md) y el [reparto de mantenimiento](../../ASIGNACION-EQUIPO.md). Este documento complementa la consulta de US15 con las acciones de avance del pedido; no sustituye sus reglas de prioridad.
 
@@ -75,7 +75,7 @@ En acceso directo sin selección, mostrar recuperación hacia cola/tablero. Si l
 
 Reutilizar CocinaShell, CocinaView, CocinaCard, el modelo y la colección de CocinaStore cuando sean adecuados. Mantener una única fuente local de pedidos; no duplicar una muestra por pantalla ni mutar SAMPLE_ORDERS congelado.
 
-La base actual de US15 resuelve selected desde store.displayed(), que contiene únicamente la cola activa. Esto debe adaptarse para US19: consultar el pedido seleccionado por ID dentro de la colección propia validada, independientemente de si aún está en la cola. Mantener queue/displayed con la restricción Pendiente/En preparación.
+La base actual de US15 resuelve selected desde store.displayed(), que contiene únicamente la cola activa. La implementación registrada en la sección 15 adapta este punto para US19: consultar el pedido seleccionado por ID dentro de la colección propia validada, independientemente de si aún está en la cola. Mantener queue/displayed con la restricción Pendiente/En preparación.
 
 Después de pasar a Listo o Entregado, conservar el pedido en la colección y en su consulta por selección; retirarlo solo del conjunto activo. Cancelado también conserva sus datos para verificar la protección de estados finales, pero esta historia no lo genera.
 
@@ -239,3 +239,57 @@ Escenario 5: Pedido finalizado Dado que el pedido está Entregado o Cancelado. C
 
 Escenario 6: Pedido inexistente o ajeno Dado que el pedido no existe o pertenece a otro restaurante. Cuando el usuario intenta actualizarlo. Entonces el sistema impide la operación y no modifica pedidos ajenos.
 
+
+## 15. Ejecución de US19 — 01/11/2026
+
+Implementación sobre la base de US15 en feature/operacion-cocina. Se preservaron rutas hijas bajo AdminLayout, router-outlet, ScreenHost, cargadores, responsables y los 120 identificadores.
+
+Cambios:
+- Tres entradas standalone op-pedido-listo, op-pedido-entregar y op-pedido-entregado con archivos .ts/.html/.css separados, reutilizando CocinaView y CocinaShell.
+- Máquina de estados pura para las tres transiciones válidas y rechazos de saltos, retrocesos, repetición, finales, selección ajena/inexistente y datos incompletos.
+- Componente PedidoAction reutilizable en detalle y tarjetas del tablero. Solo ofrece el siguiente avance válido de muestra.
+- PedidoStateDialog con Angular Material, estado actual/siguiente e ID; foco inicial seguro, cancelación/Escape, bloqueo compartido de diálogos y protección de doble confirmación.
+- Revalidación del estado al aceptar el diálogo; un cambio concurrente de fixture rechaza la intención anterior, sin ejecutar otra etapa.
+- CocinaStore conserva pedidos Listo/Entregado/Cancelado para consulta por selección, con validación de pertenencia, y mantiene la cola de US15 limitada a Pendiente/En preparación.
+- Los cambios locales conservan cliente, líneas, modalidad, mesa/dirección, fecha de creación, importes y pago. No se mutan los fixtures congelados ni otras comandas.
+- Navegación de preparación → entrega → consulta final con ID y origen coherentes. Se puede retomar el último pedido seleccionado tras salir de la cola, sin añadir una colección global de listos ni una tercera columna.
+- Rutas de etapa incompatibles muestran estado actual y recuperación, sin producir transiciones por visitar una URL. Recargar reinicia la muestra; atrás/adelante no revierten ni repiten cambios.
+- Lectura anterior, carga y error de consulta bloquean acciones. Error local de actualización conserva el estado; diálogo abierto se cancela si desaparece su contexto.
+- Mensajes accesibles de resultado y foco coherente tras confirmar, rechazar o volver a una cola donde el pedido ya no está.
+- Reutilización del recurso de marca 5815d y fuentes locales existentes; no se añadieron dependencias, assets remotos, autenticación, API, cobros ni servicios de avisos.
+- Metadatos de tres variantes actualizados como presentación y transiciones de muestra, con integración y aceptación pendientes.
+
+Se obtuvieron contextos y capturas desktop/mobile de las tres variantes mediante MCP oficial de Figma. Se revisaron capturas locales de preparación desktop, diálogo mobile, pedido listo mobile y consulta entregada mobile. Se conserva la composición operativa de US15, con los avisos y controles de muestra previstos; no se afirma equivalencia exacta de píxeles ni certificación de accesibilidad.
+
+### Comprobaciones ejecutadas
+
+- node --test scripts/cocina-priority.test.mjs scripts/cocina-transitions.test.mjs: 39 pruebas correctas, ocho de prioridad y 31 de transiciones.
+- La matriz de 25 combinaciones de cinco estados permite únicamente los tres avances definidos. Las demás pruebas cubren conflicto al confirmar, pedido inexistente/ajeno/ambiguo, aislamiento por restaurante con ID repetido, doble confirmación, conservación de datos y pago, e información incompleta.
+- Compilación de producción correcta con node node_modules/@angular/cli/bin/ng.js build.
+- Chequeo estructural correcto: 120 escenarios, 20 interfaces declaradas y 100 pendientes. No acredita integración ni aceptación.
+- git diff --check sin errores de formato.
+- Chrome local: 30 combinaciones de seis rutas por 1440, 390, 320, 768 y 1280 px. Sin desbordamiento de página; recurso local cargado a 48 × 48 px.
+- Quince avances visuales, tres etapas por cinco anchos, con datos intactos, cola coherente y foco en destino. Abrir, cancelar y Escape no modifican el pedido; doble activación confirma solo una etapa.
+- Dos pedidos con distintas modalidades/pagos recorridos; se preservan cliente, mesa, importes y pago. Pago Pendiente no bloquea indebidamente la entrega.
+- Inicio y pedido listo comprobados directamente desde tarjetas. Un solo diálogo habilitado y otras acciones bloqueadas mientras está abierto.
+- Conflicto entre apertura y confirmación rechazado sin saltar a Listo. Error de actualización conserva el pedido y permite recuperar el recorrido local.
+- Lectura anterior bloquea botones y solicitudes directas al estado local; carga/error no muestran acciones disponibles.
+- Listo sale de la cola pero sigue consultable para entrega. Entregado conserva información sin avances y admite retorno al pedido seleccionado. Cancelado protegido sin generar cancelaciones desde US19.
+- Selección ajena/inexistente sin mostrar datos ni modificar otro restaurante.
+- Acceso directo sin selección, URL de etapa incompatible, atrás/adelante y recarga comprobados sin actualización implícita.
+- Diálogo con confinamiento de foco, opción inicial segura, Escape y retorno; foco de rechazo y destino; zoom 200 % sin desbordamiento.
+- Desaparición del pedido o error de consulta durante un diálogo lo cierra sin transición y libera el bloqueo.
+- Sin errores de ejecución, solicitudes fallidas, llamadas API ni peticiones de operaciones en las comprobaciones de US19.
+
+Las pruebas de prioridad y transiciones están versionadas en scripts/. Los guiones de navegador, resultados y capturas están en us19-implementation, fuera del repositorio. Regresión de US15 correcta: 15 combinaciones de tres rutas por cinco anchos, selección de tres pedidos, prioridades, vacío, error, lectura anterior, menú, teclado y zoom. El guion conserva estas verificaciones, actualiza el mensaje de ausencia de pedido al nuevo alcance y espera el renderizado del menú después de Escape. Sin errores de ejecución ni solicitudes de operaciones.
+
+| Criterio | Evidencia local | Límite |
+| --- | --- | --- |
+| US19-CA01 | Inicio validado, pedido conservado y movimiento de grupo | Sin cambio ni aviso real del restaurante |
+| US19-CA02 | Listo validado, salida de cola y continuación de entrega | Sin confirmación API ni notificación |
+| US19-CA03 | Entregado y consulta final sin pérdida de datos | Entrega exclusivamente de muestra |
+| US19-CA04 | Matriz de rechazo, conflicto y repetición sin mutación | Rechazo autoritativo pendiente |
+| US19-CA05 | Estados finales protegidos por lógica e interfaz | Persistencia y permisos reales pendientes |
+| US19-CA06 | Selección validada contra colección propia de muestra | No demuestra autorización del servidor |
+
+S2-TSK-038, avisos reales y aceptación integrada siguen pendientes. No se creó commit, push, PR ni despliegue.

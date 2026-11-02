@@ -1328,8 +1328,8 @@
     ],
     "owner": "Alexandra Fong",
     "us": "US19",
-    "status": "Pendiente",
-    "contenidoImplementado": false
+    "status": "Interfaz y transiciones de muestra implementadas; integración y aceptación pendientes",
+    "contenidoImplementado": true
   },
   {
     "slug": "op-pedido-entregar",
@@ -1350,8 +1350,8 @@
     ],
     "owner": "Alexandra Fong",
     "us": "US19",
-    "status": "Pendiente",
-    "contenidoImplementado": false
+    "status": "Interfaz y transiciones de muestra implementadas; integración y aceptación pendientes",
+    "contenidoImplementado": true
   },
   {
     "slug": "op-pedido-entregado",
@@ -1372,8 +1372,8 @@
     ],
     "owner": "Alexandra Fong",
     "us": "US19",
-    "status": "Pendiente",
-    "contenidoImplementado": false
+    "status": "Interfaz y transiciones de muestra implementadas; integración y aceptación pendientes",
+    "contenidoImplementado": true
   },
   {
     "slug": "op-pedido-editar",

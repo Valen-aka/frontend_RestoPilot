@@ -1,6 +1,6 @@
 # SPEC común — RestoPilot
 
-Guía funcional y visual compartida. Actualización: 01/11/2026. Documentar el producto completo no autoriza implementar todas sus pantallas. Primera entrega: [Landing](docs/specs/landing/SPEC.md). Complementos actuales: landing, [US11 (carrito y modalidades)](docs/specs/us11/SPEC.md), US12 (detalle y pago), US13 (seguimiento) y [US15 (cola y tablero de cocina)](docs/specs/us15/SPEC.md), con documentos independientes.
+Guía funcional y visual compartida. Actualización: 01/11/2026. Documentar el producto completo no autoriza implementar todas sus pantallas. Primera entrega: [Landing](docs/specs/landing/SPEC.md). Complementos actuales: landing, [US11 (carrito y modalidades)](docs/specs/us11/SPEC.md), US12 (detalle y pago), US13 (seguimiento), [US15 (cola y tablero de cocina)](docs/specs/us15/SPEC.md) y [US19 (preparación y entrega)](docs/specs/us19/SPEC.md), con documentos independientes.
 
 ## Índice
 
