@@ -1,6 +1,6 @@
 # SPEC — US25: llegada y finalización de reservas
 
-Fecha: 01/11/2026. Entrega actual: documentación. Rama de trabajo: feature/operacion-reserva-atencion. PR hacia develop.
+Fecha: 01/11/2026. Entrega actual: llegada y finalización de muestra implementadas; integración y aceptación pendientes. Rama de trabajo: feature/operacion-reserva-atencion. PR hacia develop.
 
 Leer el [SPEC común](../../../SPEC.md), [AGENTS.md](../../../AGENTS.md) y el [reparto de mantenimiento](../../ASIGNACION-EQUIPO.md). Esta entrega define US25; no reúne su implementación con el commit documental ni implementa la expiración automática de US26.
 
@@ -37,7 +37,7 @@ Fuente visual: [Figma vigente](https://www.figma.com/design/sRxKEwFdrMKfXPosGFvo
 
 En esta entrega documental se consultaron estructura, dimensiones y textos desktop mediante MCP oficial de Figma. Antes de implementar obtener los contextos y capturas desktop/mobile; esta lectura no equivale a comparación de interfaz ni a pruebas de ejecución.
 
-Las tres entradas del manifiesto están pendientes. El marco operativo de cocina ya implementado puede aportar componentes y recursos adecuados; revisar su acoplamiento a Pedidos antes de reutilizarlo para Reservas. No copiar su máquina de estados ni su selección como lógica de reservas.
+Las tres entradas del manifiesto estaban pendientes al preparar el documento; su ejecución se registra en la sección 15. El marco operativo de cocina ya implementado puede aportar componentes y recursos adecuados; revisar su acoplamiento a Pedidos antes de reutilizarlo para Reservas. No copiar su máquina de estados ni su selección como lógica de reservas.
 
 ### Diferencias y aclaraciones del diseño
 
@@ -236,3 +236,58 @@ Escenario 6: Finalización anticipada Dado que la reserva tiene llegada registra
 
 Escenario 7: Reserva de otro local Dado que la reserva pertenece a otro restaurante. Cuando el usuario intenta registrar su llegada o completarla. Entonces el sistema impide la operación y conserva la reserva.
 
+
+## 15. Ejecución de US25 — 01/11/2026
+
+Implementación en feature/operacion-reserva-atencion. Se conservaron las rutas hijas existentes bajo AdminLayout, router-outlet, ScreenHost, cargadores, responsables y los 120 identificadores. La agenda y las demás pantallas de reservas mantienen su alcance anterior.
+
+Cambios:
+- Tres entradas standalone op-reserva-llegada, op-reserva-atendiendo y op-reserva-completada, con .ts/.html/.css separados.
+- Área local reserva-atencion-ui con modelo puro de reglas, ReservaAtencionStore, ReservaAtencionView y diálogo de confirmación Material.
+- Colección en memoria y selección explícita: referencia inicial #208; un ID ajeno/inexistente no se sustituye silenciosamente por esa muestra.
+- Reloj visible de muestra 24 oct 2026 · 19:05, comparaciones por instante y presentación en America/Lima. No depende del día real del ordenador.
+- Llegada sin enum nuevo: conserva Confirmada y registra arrivedAt una sola vez. Se rechaza el límite exacto inicio + 15 minutos y no se ejecuta la expiración automática de US26.
+- Finalización con llegada registrada desde la hora de inicio inclusive; guarda completedAt, conserva arrivedAt y cambia a Completada. No exige fin previsto, duración mínima ni cobro.
+- Confirmaciones con opción inicial segura, cancelación/Escape, confinamiento de foco y protección de doble confirmación. Se revalidan el reloj, la selección y la versión local de los datos al aceptar.
+- Fechas y resto de datos conservados ante repetición, rechazo y error. Las operaciones solo actualizan la reserva propia seleccionada, sin mutar los fixtures congelados.
+- Rutas de etapa incompatible muestran situación actual; atrás/adelante no revierten ni repiten acciones. Recargar reinicia la muestra y no restaura una finalización desde la URL.
+- Carga, error, lectura anterior, información temporal incompleta y error de actualización con controles bloqueados o recuperación apropiada.
+- Marco operativo existente configurado con contexto Reservas, encabezado y menú activo correspondientes. El ajuste se limita a CocinaShell y preserva Pedidos/Cocina.
+- Reutilización de fuentes locales y recurso exacto de marca 5815d ya disponible. Se conserva su slot de 48 × 48 px y superposición blanca del diseño.
+- Metadatos de tres pantallas actualizados como interfaz/atención de muestra, con integración y aceptación pendientes.
+
+Se obtuvieron contextos y capturas de las tres vistas desktop/mobile mediante MCP oficial de Figma. Se revisaron capturas de llegada desktop y atención/completada mobile. El horario grande mantiene 19:00/19:05 sin los saltos y recortes de la referencia. El reloj y avisos explican las diferencias funcionales de la demostración; no se afirma igualdad exacta de píxeles ni certificación de accesibilidad.
+
+### Comprobaciones ejecutadas
+
+- node --test scripts/reserva-atencion.test.mjs: 28 pruebas correctas.
+- Cobertura de reglas: llegada anterior/al inicio, un instante antes de la tolerancia, límite exacto y posterior; repetición; estados no Confirmada; finalización sin llegada/anticipada; inicio exacto; atención después de tolerancia con llegada válida; fechas coherentes; selección ajena/inexistente/ambigua; mismo ID de otro local; cambios entre apertura/confirmación; doble confirmación y offsets distintos.
+- node node_modules/@angular/cli/bin/ng.js build: compilación de producción correcta.
+- node scripts/check-structure.mjs: correcto, 120 escenarios; 23 interfaces declaradas y 97 pendientes. El chequeo no acredita integración ni aceptación.
+- git diff --check: sin errores de formato.
+- Chrome local: 15 combinaciones de tres rutas por 1440, 390, 320, 768 y 1280 px, sin desbordamiento horizontal; recurso local cargado a 48 × 48 px.
+- Cinco recorridos completos llegada → atención → completada, uno por ancho, con conservación de datos y ambas fechas. Abrir/cancelar/Escape no modifican; doble activación no duplica operaciones.
+- Llegada 18:58 permitida, finalización antes del inicio bloqueada y exactamente a las 19:00 permitida.
+- Cruce del límite de 19:14:59 a 19:15 durante el diálogo rechaza llegada; conserva el fixture Confirmada sin fabricar una transición Expirada.
+- Cambio de mesa o selección mientras está abierto el diálogo se rechaza sin aplicar el cambio de atención a otra reserva.
+- Error local de actualización conserva fechas, libera bloqueo y permite recuperar el recorrido. Repetir llegada conserva su timestamp; llegada oportuna permite completar a las 19:30.
+- Atrás/adelante mantiene Completada sin nuevos cambios; recarga vuelve a la muestra inicial y muestra incompatibilidad de etapa en lugar de afirmar una finalización inexistente.
+- Pendiente/Rechazada/Cancelada/Expirada sin acciones; reserva ajena sin datos; selección explícita de referencia disponible; fechas inválidas sin controles de atención.
+- Carga, error, lectura anterior y error de consulta durante confirmación impiden escrituras y ofrecen recuperación, sin éxito falso.
+- Teclado, salto al contenido, foco inicial/retorno/destino, notas y nombres largos, y zoom 200 % con diálogo sin desbordamiento.
+- Regresión del marco compartido: Pedidos y Cocina en 1440/390 conservan encabezado, menú activo, navegación y Escape; acción de preparación de US19 continúa funcionando.
+- Sin errores de ejecución, solicitudes fallidas, llamadas API ni peticiones de operaciones durante la verificación.
+
+Las pruebas de reglas están versionadas en scripts/reserva-atencion.test.mjs. El guion de navegador, verification.json y capturas están en us25-implementation, fuera del repositorio. No se añadieron dependencias ni se cambió package.json.
+
+| Criterio | Evidencia local | Límite |
+| --- | --- | --- |
+| US25-CA01 | Llegada válida con fecha y estado Confirmada conservado | Sin registro ni notificación real |
+| US25-CA02 | Repetición conserva el timestamp original | Concurrencia del servidor pendiente |
+| US25-CA03 | No confirmada/tolerancia vencida rechazadas | Estado y reloj autoritativos pendientes |
+| US25-CA04 | Completada y ambas fechas conservadas | Sin operación ni aviso real |
+| US25-CA05 | Sin llegada impide finalización | Validación API pendiente |
+| US25-CA06 | Antes del inicio rechaza; en inicio exacto permite | Comparación definitiva del servidor pendiente |
+| US25-CA07 | Selección/colección propia validadas localmente | No demuestra permisos reales |
+
+S2-TSK-054, notificaciones, disponibilidad real y aceptación integrada siguen pendientes. No se implementó expiración automática de US26. No se creó commit, push, PR ni despliegue.
