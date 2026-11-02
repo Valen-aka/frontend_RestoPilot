@@ -1,11 +1,12 @@
-import {Injectable, computed, signal} from '@angular/core';
+import {Injectable, computed, inject, signal} from '@angular/core';
+import {ReservaMuestraStore} from '../../reserva-muestra-ui/reserva-muestra-store';
 import {ATTENDANCE_RESTAURANT, ATTENDANCE_SAMPLE_NOW, AttendanceCommand, AttendanceReservation,
-  AttendanceResult, SAMPLE_RESERVATIONS, updateAttendanceSample, validReservation} from './reserva-atencion.model';
+  AttendanceResult, updateAttendanceSample, validReservation} from './reserva-atencion.model';
 
 /** Borrador de atención en memoria, independiente de la sesión y de los pedidos. */
 @Injectable({providedIn: 'root'})
 export class ReservaAtencionStore {
-  readonly reservations = signal<readonly AttendanceReservation[]>(SAMPLE_RESERVATIONS);
+  readonly reservations = inject(ReservaMuestraStore).reservations;
   readonly selectedId = signal<number | undefined>(208);
   readonly now = signal(ATTENDANCE_SAMPLE_NOW);
   readonly queryState = signal<'ready' | 'loading' | 'error' | 'stale'>('ready');
@@ -35,7 +36,10 @@ export class ReservaAtencionStore {
       result = updateAttendanceSample(this.reservations(), command, this.now());
     }
     if (result.ok) {
-      this.reservations.set(result.reservations);
+      const updated = result.reservation;
+      this.reservations.update(reservations => reservations.map(reservation =>
+        reservation.id === updated.id && reservation.restaurantId === updated.restaurantId ?
+          {...reservation, ...updated} : reservation));
       this.feedback.set({id: command.id, kind: 'success', text: command.action === 'arrival' ?
         'Llegada de muestra registrada. La reserva continúa Confirmada. No se enviaron avisos.' :
         'Reserva completada en la muestra. No se enviaron avisos ni se actualizó disponibilidad real.'});
