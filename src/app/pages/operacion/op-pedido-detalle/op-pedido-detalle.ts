@@ -1,6 +1,6 @@
 import {Component} from '@angular/core';
-/** Frame: op-pedido-detalle. Responsable: Alexandra Fong. Implementación pendiente. */
-@Component({selector:'rp-op-pedido-detalle',imports:[],templateUrl:'./op-pedido-detalle.html',styleUrl:'./op-pedido-detalle.css'})
-export class OpPedidoDetallePage{
+import {CocinaView} from '../cocina-ui/cocina-view';
 
-}
+/** US15: consulta de muestra, sin transiciones ni servicios. */
+@Component({selector:'rp-op-pedido-detalle',imports:[CocinaView],templateUrl:'./op-pedido-detalle.html',styleUrl:'./op-pedido-detalle.css'})
+export class OpPedidoDetallePage {}

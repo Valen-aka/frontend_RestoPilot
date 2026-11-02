@@ -1,0 +1,4 @@
+:host{display:block;margin-top:20px;--mat-button-filled-container-shape:9px;--mat-button-filled-label-text-font:'Cocina Roboto',Arial,sans-serif;--mat-button-filled-label-text-size:12px}
+button{min-height:44px;max-width:100%;height:auto;padding-block:12px;line-height:1.6}
+button:focus-visible{outline:3px solid var(--rp-navy);outline-offset:3px}
+.final-state{font-size:12px;line-height:1.8;color:var(--rp-muted)}

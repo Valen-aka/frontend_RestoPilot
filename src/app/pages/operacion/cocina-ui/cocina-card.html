@@ -1,0 +1,10 @@
+<mat-card appearance="outlined" [attr.aria-label]="'Pedido #' + order().id" [attr.data-order-id]="order().id">
+  <div class="card-heading"><h3>#{{ order().id }}</h3><span class="complexity" [class.high]="complexity() === 'Alta'">{{ complexity() }}</span></div>
+  <p class="service">{{ time() }} · {{ service() }}</p>
+  <ul>@for (line of order().lines; track $index) {
+    <li><strong>{{ line.name }}</strong><span>{{ line.quantity }} {{ line.quantity === 1 ? 'unidad' : 'unidades' }} · {{ line.preparationMinutes }} min de preparación</span></li>
+  }</ul>
+  <p class="max-time">Tiempo máximo de plato: {{ minutes() }} min</p>
+  <a mat-stroked-button routerLink="/operacion/pedido" [state]="{cocinaOrderId: order().id, cocinaOrigin: 'board'}" [attr.aria-label]="'Consultar pedido #' + order().id">Consultar pedido</a>
+  <rp-pedido-action [orderId]="order().id" origin="board" />
+</mat-card>

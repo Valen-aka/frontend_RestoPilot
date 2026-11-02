@@ -1,0 +1,10 @@
+<h2 mat-dialog-title>{{ label }}</h2>
+<mat-dialog-content>
+  <p>Pedido de muestra <strong>#{{ command.id }}</strong></p>
+  <dl><div><dt>Estado actual</dt><dd>{{ command.expected }}</dd></div><div><dt>Estado siguiente</dt><dd>{{ command.target }}</dd></div></dl>
+  <p class="notice">Esta acción solo cambia la muestra local. No actualiza al restaurante ni envía notificaciones.</p>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-stroked-button type="button" [mat-dialog-close]="false" cdkFocusInitial [disabled]="submitted()">Volver sin cambios</button>
+  <button mat-flat-button type="button" (click)="confirm()" [disabled]="submitted()">{{ label }}</button>
+</mat-dialog-actions>
