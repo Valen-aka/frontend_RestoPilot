@@ -1,0 +1,118 @@
+<a class="skip-link" href="#cart-content" (click)="skipToContent($event)">Saltar al contenido</a>
+<div class="pedido-shell">
+  <header class="client-header">
+    <a class="brand cart-brand" routerLink="/cliente" aria-label="RestoPilot, inicio de cliente">
+      <span class="brand-image" aria-hidden="true"><img src="/assets/carrito/brand-reference.png" alt="" width="43" height="43"><span></span></span>
+      <span><span>Resto<span class="brand-accent">Pilot</span></span><small>Tu restaurante, en piloto automático</small></span>
+    </a>
+    <nav aria-label="Navegación de cliente">
+      <a routerLink="/cliente">Inicio</a><a routerLink="/cliente/carta">La carta</a>
+      <a routerLink="/cliente/reservas">Mis reservas</a><a routerLink="/cliente/pedidos">Mis pedidos</a>
+      <a routerLink="/cliente/asistente">Asistente IA</a>
+    </nav>
+    <div class="sample-context"><span class="sample-avatar" aria-hidden="true">M</span><div><strong>Vista de muestra</strong><small>Sin sesión conectada</small></div></div>
+  </header>
+
+  <main id="cart-content" tabindex="-1" class="pedido-main cart-main">
+    <div class="page-heading">
+      <p class="eyebrow">PEDIDOS CLIENTE</p><h1>{{ title() }}</h1><p class="subtitle">{{ subtitle() }}</p>
+      <p class="sample-notice">Demostración visual · No se enviarán pedidos ni se procesarán cobros. El borrador se conserva durante este recorrido; al recargar se vuelve a la muestra inicial.</p>
+    </div>
+
+    @if (message()) {<p id="cart-feedback" class="cart-feedback" role="alert" tabindex="-1">{{ message() }}</p>}
+
+    @if (mode() === 'closed') {
+      <mat-card appearance="outlined" class="center-card">
+        <span class="state-symbol" aria-hidden="true">◷</span><h2>Nuestra cocina está descansando</h2>
+        <p>Horario de muestra: de 09:00 a 22:00. Puedes explorar la carta y volver durante el horario de atención.</p>
+        <a mat-flat-button routerLink="/cliente/carta">Ver la carta</a>
+      </mat-card>
+    } @else if (mode() === 'created') {
+      <mat-card appearance="outlined" class="center-card">
+        @if (created; as order) {
+          <span class="state-symbol" aria-hidden="true">✓</span><h2>Pedido de muestra #{{ order.id }}</h2>
+          <p>Modalidad: {{ labels[order.modality] }} · Total {{ order.total | currency:'PEN':'S/ ':'1.2-2' }}.</p>
+          <p class="created-status" role="status">Pedido Pendiente · Pago Pendiente</p>
+          <p>No se envió este pedido al restaurante. Esta confirmación permite recorrer la muestra.</p>
+          <a mat-flat-button routerLink="/cliente/pedido" [state]="{us11Demo: true}">Seguir mi pedido</a>
+        } @else {
+          <span class="state-symbol" aria-hidden="true">i</span><h2>No hay una confirmación en este recorrido</h2>
+          <p>Revisa el carrito y elige una modalidad para abrir su confirmación de muestra. No se ha registrado ningún pedido.</p>
+          <a mat-flat-button routerLink="/cliente/carrito">Ir al carrito</a>
+        }
+      </mat-card>
+    } @else if (store.queryState() === 'loading') {
+      <mat-card appearance="outlined" class="state-card" role="status" aria-busy="true"><mat-spinner diameter="32" aria-hidden="true"/><p>Consultando las condiciones de muestra…</p></mat-card>
+    } @else if (store.queryState() === 'error') {
+      <mat-card appearance="outlined" class="state-card" role="alert"><h2>No pudimos consultar las condiciones</h2><p>Conservamos tu selección. Puedes volver a abrir esta vista local para revisar la muestra.</p><button mat-stroked-button type="button" (click)="reopenSample()">Reabrir muestra</button></mat-card>
+    } @else if (isEmpty()) {
+      <mat-card appearance="outlined" class="center-card">
+        <span class="state-symbol" aria-hidden="true">＋</span><h2 id="cart-empty-title" tabindex="-1">Aquí empieza algo rico</h2>
+        <p>Aún no has añadido platos. Tenemos algunas buenas ideas para ti.</p><a mat-flat-button routerLink="/cliente/carta">Explorar la carta</a>
+      </mat-card>
+    } @else if (mode() === 'cart') {
+      <div class="cart-grid">
+        <mat-card appearance="outlined" class="selection-card">
+          <h2>Lo que elegiste</h2><rp-carrito-table [lines]="store.lines()" [controls]="quantities"/>
+          <div class="cart-actions"><a mat-button routerLink="/cliente/carta">Seguir explorando</a><button mat-button id="empty-cart" type="button" (click)="emptyCart()">Vaciar pedido</button></div>
+        </mat-card>
+        <mat-card appearance="outlined" class="cart-summary">
+          <h2>Resumen</h2>
+          @if (store.selectionError()) {<p class="selection-error" role="status">{{ store.selectionError() }}</p>}
+          <p class="selection-count">{{ store.count() }} {{ store.count() === 1 ? 'plato' : 'platos' }} <span>{{ store.totalCents() / 100 | currency:'PEN':'S/ ':'1.2-2' }}</span></p>
+          <p class="selection-total"><span>Total estimado</span><strong>{{ store.totalCents() / 100 | currency:'PEN':'S/ ':'1.2-2' }}</strong></p>
+          <p class="total-note">El total definitivo lo calcula el restaurante. No se cobra desde esta pantalla.</p>
+          <button mat-flat-button type="button" [disabled]="!canContinue()" (click)="continue()">Elegir cómo disfrutarlo</button>
+        </mat-card>
+      </div>
+    } @else {
+      <form [formGroup]="form" (ngSubmit)="confirm()" novalidate>
+        <mat-button-toggle-group class="modality-selector" formControlName="modality" aria-label="Modalidad del pedido" hideSingleSelectionIndicator>
+          @for (option of options; track option.value) {<mat-button-toggle [value]="option.value">{{ option.label }}</mat-button-toggle>}
+        </mat-button-toggle-group>
+        <div class="cart-grid">
+          <mat-card appearance="outlined" class="modality-card">
+            <h2>Tu modalidad: {{ labels[store.modality()] }}</h2>
+            @if (!store.conditions().active || !store.conditions().open) {
+              <p class="selection-error" role="status">{{ !store.conditions().active ? 'Este restaurante no está disponible para recibir pedidos.' : 'El restaurante está cerrado y no puede recibir pedidos.' }}</p>
+            }
+            @switch (store.modality()) {
+              @case ('SALON') {
+                @if (!store.conditions().salon) {<p class="selection-error">La atención en salón no está habilitada. Elige otra modalidad.</p>}
+                <mat-form-field appearance="outline" subscriptSizing="dynamic"><mat-label>Mesa</mat-label>
+                  <mat-select formControlName="table" aria-describedby="table-note">
+                    @for (table of store.activeTables(); track table.id) {<mat-option [value]="table.id">{{ table.label }}</mat-option>}
+                  </mat-select>
+                  @if (form.controls.table.invalid) {<mat-error>Selecciona una mesa activa de este restaurante.</mat-error>}
+                </mat-form-field>
+                <p id="table-note" class="field-note">{{ store.activeTables().length ? 'Mesas de muestra; no acredita disponibilidad real ni reserva.' : 'No hay mesas activas disponibles. Elige otra modalidad.' }}</p>
+              }
+              @case ('DELIVERY') {
+                @if (!store.conditions().delivery) {<p class="selection-error">Delivery no está habilitado. Elige otra modalidad.</p>}
+                <mat-form-field appearance="outline" subscriptSizing="dynamic"><mat-label>Dirección de entrega</mat-label>
+                  <textarea matInput formControlName="address" rows="3" maxlength="255" placeholder="Ej.: avenida, número y departamento" autocomplete="off"></textarea>
+                  <mat-hint align="end">{{ form.controls.address.value.length }}/255</mat-hint>
+                  @if (form.controls.address.invalid) {<mat-error>Indica una dirección de hasta 255 caracteres; no uses solo espacios.</mat-error>}
+                </mat-form-field>
+              }
+              @case ('LLEVAR') {<p class="modality-description">Tu pedido se prepara para llevar.</p>}
+              @case ('RECOGER') {<p class="modality-description">Recoge tu pedido en el restaurante. En la versión conectada podrás consultar el aviso cuando esté listo; esta muestra no envía notificaciones.</p>}
+            }
+            <p class="information"><span aria-hidden="true">i</span>El pago se realiza por los medios acordados con el restaurante. Esta pantalla no procesa cobros.</p>
+          </mat-card>
+          <mat-card appearance="outlined" class="cart-summary review-summary">
+            <h2>Confirma tu pedido</h2><rp-carrito-table [lines]="store.lines()"/>
+            @if (store.selectionError()) {<p class="selection-error" role="status">{{ store.selectionError() }}</p>}
+            <p class="selection-count">{{ store.count() }} {{ store.count() === 1 ? 'plato' : 'platos' }} <span>{{ store.totalCents() / 100 | currency:'PEN':'S/ ':'1.2-2' }}</span></p>
+            <p class="selection-total"><span>Total estimado</span><strong>{{ store.totalCents() / 100 | currency:'PEN':'S/ ':'1.2-2' }}</strong></p>
+            <p class="total-note">El total definitivo lo calcula el restaurante. No se cobra desde esta pantalla.</p>
+            <p class="field-note">Vista de muestra. No se enviará un pedido al restaurante.</p>
+            <button mat-flat-button type="submit" [disabled]="!canContinue() || !store.conditions().active || !store.conditions().open">Ver confirmación de muestra</button>
+          </mat-card>
+        </div>
+      </form>
+      <a class="orders-return" routerLink="/cliente/carrito">← Revisar el carrito</a>
+    }
+  </main>
+  <footer class="client-footer"><p>RestoPilot · La Mesa Verde</p><p>Tu restaurante, en piloto automático.</p><a routerLink="/auth/login">Salir de la muestra</a></footer>
+</div>
