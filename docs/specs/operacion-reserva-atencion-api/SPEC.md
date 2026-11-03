@@ -2,7 +2,7 @@
 
 Fecha: 03/11/2026. Rama: feature/operacion-reserva-atencion-api.
 Base frontend: origin/develop actualizado, 5d6383e; incluye la integración previa de pedidos y cocina.
-Estado: especificación preparada. Implementación y aceptación integrada pendientes.
+Estado: US25 implementada y verificada en entornos aislados; aceptación con el entorno compartido pendiente. Consultar la ejecución fechada al final.
 
 ## 1. Objetivo y fuentes
 
@@ -89,7 +89,7 @@ En llegada válida, conservar la marca original de llegada y estado CONFIRMADA. 
 
 ### 6.1. Controles temporales: ampliación prevista del contrato
 
-El DTO actual tiene fechas, pero no informa su reloj ni disponibilidad autoritativa de acciones. Para no depender del reloj del equipo ni del reloj fijo de muestra, la implementación incorporará estos campos aditivos a ReservaResponseDTO; todavía no existen:
+Al preparar este SPEC, el DTO tenía fechas, pero no informaba su reloj ni disponibilidad autoritativa de acciones. Para no depender del reloj del equipo ni del reloj fijo de muestra, la implementación incorpora estos campos aditivos a ReservaResponseDTO, materializados en la ejecución de esta entrega:
 
 | Campo previsto | Tipo | Significado |
 | --- | --- | --- |
@@ -161,4 +161,22 @@ Separar evidencia unitaria, simulada y backend real aislado. La aceptación fina
 - Frontend: feat(us25): integra llegada y finalización de reservas con la API.
 - Backend, si se incorporan los metadatos previstos: feat(us25): expone controles de atención basados en el reloj del servidor.
 
-Esta entrega prepara únicamente el SPEC y sus referencias. No implementa ReservaService, guard, campos nuevos, acciones HTTP ni pruebas de integración. El backend no se modifica en esta fase. No se crean commits, push o PR automáticamente.
+La entrega inicial preparó únicamente el SPEC y sus referencias. La implementación posterior se registra a continuación. No se crean commits, push o PR automáticamente.
+
+## 12. Ejecución US25 — 03/11/2026
+
+Implementada consulta por reservaId y ambos PATCH con ReservaService, modelos/validadores y ReservaAtencionStore. No usa ReservaMuestraStore, reloj fijo de muestra, apertura por defecto de #208 ni mutaciones locales. Conserva ID entre llegada, atención y completada, permite URL directa y maneja ID inválido sin consulta.
+
+El store reutiliza API_SESSION, activeOperationSession e interceptor JWT, valida pertenencia y limpia datos al cambiar sesión/selección o perder acceso. Los guards acotan llegada/atendiendo y la variante op-reserva-completada, sin apropiarse del detalle genérico de reservas ni usar el estado de cocina. Durante confirmación/envío se bloquean duplicados y salida de la ruta afectada.
+
+Confirmaciones con Material, foco al cancelar, fechas del servidor y controles puedeRegistrarLlegada/puedeCompletar. No se adelanta el resultado. Llegada conserva CONFIRMADA; completar conserva llegada y recibe COMPLETADA/completadaEn. Un 400/409 fuerza consulta; una respuesta perdida o incompatible se verifica y, si el GET falla, bloquea acciones hasta recuperación explícita. El fallo de consulta después de confirmar no vuelve a enviar PATCH.
+
+Backend: ReservaResponseDTO añade fechaHoraServidor y ambos indicadores, preservados también por conMensaje. ReservaMapper evalúa una vez el Clock y reutiliza ReglasCicloReserva; AtencionReservaService usa esas mismas condiciones, sin cambiar tolerancia ni secuencia. No se añaden endpoints, entidades ni migraciones.
+
+Se comprobó una particularidad del contrato existente: GET de una reserva de otro restaurante devuelve 400 por BusinessRuleException; los PATCH de atención ajena devuelven 403. El frontend distingue la consulta de la mutación, elimina datos ante ese rechazo de lectura y no cambia los permisos del backend para forzar un código esperado.
+
+Verificación: npm.cmd run verify correcto (120 escenarios conservados; el conteo estructural no mide aceptación). Pasaron 62 pruebas frontend de contratos/stores/infraestructura, incluidas 17 de US25; 23 recorridos Chrome contra HTTP simulado a 320/390/768/1440; 8 pruebas backend con HTTP/JWT/Clock/H2 y 19 de regresión de CicloReservaIntegrationTest. Se inspeccionaron capturas estables de confirmación mobile y reserva completada desktop, sin declarar equivalencia renovada con Figma ni auditoría completa de accesibilidad.
+
+Las pruebas HTTP verifican inicio + 15 minutos antes/exacto/después, finalización desde inicio, conservación de fechas, llegada anticipada permitida por el negocio actual, ausencia de expiración después de llegar, duplicados concurrentes, roles/local y disponibilidad. Los recorridos simulados separan esas garantías reales del comportamiento visual y de recuperación ante fallos.
+
+Reproducción y continuidad: [guía de reservas API](../../GUIA-INTEGRACION-RESERVAS.md). La integración del historial/US26 y la prueba conjunta con autenticación/PostgreSQL del equipo siguen pendientes. No se modifica el historial de muestra para aparentar persistencia. No se crearon commits, push ni PR automáticamente.

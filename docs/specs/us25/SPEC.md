@@ -312,3 +312,7 @@ Se verificaron en el archivo Figma original los IDs, nombres y dimensiones de la
 La revisión documental no vuelve a ejecutar el prototipo ni certifica equivalencia visual. Los recorridos locales se verifican por separado en test/flujos-integrados. No se implementan nuevas pantallas ni se cambian reglas de negocio por corregir estas referencias.
 
 Estado actual de reservas: llegada y finalización de #208 se conservan en la colección compartida y en el resumen de atención. El historial de expiradas contiene #190/#207, no la visita #208 completada. La agenda general mantiene alcance parcial.
+
+### Integración API — 03/11/2026
+
+Se implementaron consulta, llegada y finalización reales con ID por URL, fecha y controles del servidor, permisos por restaurante, confirmaciones y recuperación de resultados inciertos. La fase de muestras anterior se conserva como historial y ya no es la fuente del recorrido operativo US25. Consultar el [SPEC API](../operacion-reserva-atencion-api/SPEC.md) y la [guía para continuar](../../GUIA-INTEGRACION-RESERVAS.md). Aceptación en el entorno compartido e integración de US26 pendientes.
