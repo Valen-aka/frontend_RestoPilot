@@ -53,6 +53,7 @@ El SPEC común contiene las 29 historias y sus criterios. No se requiere un arch
 | [US11](docs/specs/us11/SPEC.md) | Carrito y registro del pedido por modalidad |
 | [US12](docs/specs/us12/SPEC.md) | Detalle del pedido y consulta de pago |
 | [US13](docs/specs/us13/SPEC.md) | Seguimiento del pedido |
+| [Integración API de pedidos](docs/specs/cliente-pedido-api/SPEC.md) | US11, US12 y US13: contratos, sesión, identidad, errores y aceptación integrada |
 | [Mis pedidos](docs/specs/cliente-pedidos/SPEC.md) | Listado y continuidad de selección entre detalle, seguimiento y pago |
 | [US15](docs/specs/us15/SPEC.md) | Tablero y cola priorizada de cocina |
 | [US19](docs/specs/us19/SPEC.md) | Preparación, pedido listo y entrega |

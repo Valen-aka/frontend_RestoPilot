@@ -1,5 +1,7 @@
 # SPEC — US13: seguimiento del pedido
 
+Integración API solicitada: consultar el [complemento conjunto de US11, US12 y US13](../cliente-pedido-api/SPEC.md). Define la nueva etapa; las evidencias y restricciones de muestra anteriores se conservan como historial.
+
 Revisión documental: 02/11/2026. Estado: frontend de muestra incorporado en develop; aceptación del equipo pendiente. Rama original: feature/cliente-pedido. Alineación documental: docs/alineacion-specs.
 
 Las secciones de ejecución fechadas conservan evidencia histórica. El estado actual se contrasta con develop, base 3685d07; no repetir como pendientes las etapas ya integradas. Referencias comprobadas: [registro Figma](../../REFERENCIAS-FIGMA.md).
