@@ -4,3 +4,5 @@
 .attendance-summary{margin-bottom:24px}.attendance-entry h3{margin:0}.attendance-entry{margin-top:20px}.attendance-entry+.attendance-entry{border-top:1px solid #e2e8e7;padding-top:20px}
 @media(max-width:720px){h1{font-size:29px}.detail-grid{grid-template-columns:1fr}.reservation-card,.restaurant-card,.history-card,.state-card{padding:20px}.page-heading{margin-bottom:24px}.actions{flex-direction:column}.actions a{width:100%}.restaurant-map{height:190px}}
 @media(max-width:380px){dl{grid-template-columns:1fr}.full{grid-column:auto}.reservation-card,.history-card,.state-card{padding:16px}}
+
+.availability-card{margin-block:var(--rp-space-6,24px);padding:var(--rp-space-6,24px)}

@@ -10,7 +10,7 @@
       <a routerLink="/cliente/reservas" class="active" aria-current="page">Mis reservas</a>
       <a routerLink="/cliente/pedidos">Mis pedidos</a><a routerLink="/cliente/asistente">Asistente IA</a>
     </nav>
-    <div class="sample-context"><span class="sample-avatar" aria-hidden="true">M</span><div><strong>Vista de muestra</strong><small>Sin sesión conectada</small></div></div>
+    <div class="sample-context"><span class="sample-avatar" aria-hidden="true">C</span><div><strong>Mi cuenta</strong><small>Sesión de la aplicación</small><button mat-button type="button" (click)="logout()">Cerrar sesión</button></div></div>
   </header>
   <main id="expiry-client-content" tabindex="-1" class="pedido-main"><ng-content /></main>
   <footer class="client-footer"><span>© 2026 RestoPilot</span><span>Tu restaurante, en piloto automático</span></footer>

@@ -1,0 +1,23 @@
+purpose:
+  stands_in_for: Detalle, historial de cliente/local y disponibilidad de reservas US26, junto al recorrido US25.
+  unblocks: Verificar selección, fechas, estados conservados y errores HTTP sin usar reservas del equipo.
+assumptions:
+  - id: contratos
+    status: supported
+    claim: Detalle devuelve ReservaResponseDTO, listados usan mensaje/reservas y disponibilidad mensaje/mesas.
+    reason: Código local del backend y SPEC de integración contrastados.
+    source: docs/specs/reserva-expirada-api/SPEC.md
+    updated_at: '2026-11-03'
+  - id: limites
+    status: unverified
+    claim: El mock no prueba reloj real, JWT firmado, job, notificaciones ni PostgreSQL del equipo.
+    reason: Se verifican reglas y liberación por separado con HTTP/JWT/Clock/H2 en backend.
+    source: backend Us26HttpIntegrationTest.java
+    updated_at: '2026-11-03'
+
+verification:
+  date: '2026-11-03'
+  frontend_unit: 79 pruebas compartidas correctas, incluidas 17 US26.
+  browser: 18 recorridos US26 y 23 regresiones US25 correctos contra HTTP simulado.
+  backend_separate: 11 pruebas HTTP/JWT/Clock/H2 y 53 regresiones de reservas correctas.
+  limitations: PostgreSQL, autenticación y despliegue del equipo pendientes; el mock no ejecuta la expiración productiva.
