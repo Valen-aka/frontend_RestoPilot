@@ -20,6 +20,13 @@ export class PedidoConsultaStore {
   private readonly payState=signal<QueryState>('loading');
   private readonly ownerKey=signal('');
   private version=0;
+  private mode:'order'|'payment'='order';
+  private readonly refreshingValue=signal(false);
+  private readonly staleValue=signal(false);
+  readonly refreshing=this.refreshingValue.asReadonly();
+  readonly stale=this.staleValue.asReadonly();
+  readonly refreshIssue=signal('');
+  readonly refreshStatus=signal('');
   private request?:Subscription;
   readonly issue=signal('');
   readonly paymentIssue=signal('');
@@ -34,6 +41,7 @@ export class PedidoConsultaStore {
   constructor(){inject(DestroyRef).onDestroy(()=>{this.version++;this.request?.unsubscribe();});}
   load(id:number|null,mode:'order'|'payment'):void {
     const version=++this.version;
+    this.mode=mode;this.refreshingValue.set(false);this.staleValue.set(false);this.refreshIssue.set('');this.refreshStatus.set('');
     this.request?.unsubscribe();this.orderValue.set(null);this.paymentValue.set(null);
     this.issue.set('');this.paymentIssue.set('');this.payState.set('loading');
     const session=this.session();const key=this.sessionKey();this.ownerKey.set(key);
@@ -64,7 +72,31 @@ export class PedidoConsultaStore {
       }));
     })).subscribe({error: cause=>{if(current())this.failOrder(cause);}});
   }
+  /** Solo vuelve a consultar el pedido propio; no solicita ninguna transición. */
+  refresh():void {
+    if(this.mode!=='order'||this.refreshing()||this.queryState()!=='ready')return;
+    const order=this.order(),session=this.session(),key=this.sessionKey();
+    if(!order||!activeClientSession(session))return;
+    const version=++this.version;this.request?.unsubscribe();
+    this.refreshingValue.set(true);this.refreshIssue.set('');this.refreshStatus.set('');
+    const current=()=>version===this.version&&key===this.sessionKey();
+    this.request=this.pedidos.obtener(order.id).subscribe({next:updated=>{
+      if(!current())return;
+      if(String(updated.clienteId)!==session.subject){this.failOrder(new HttpErrorResponse({status:404}));return;}
+      this.orderValue.set(updated);this.staleValue.set(false);this.refreshingValue.set(false);
+      this.refreshStatus.set('Consulta de seguimiento actualizada.');
+    },error:error=>{
+      if(!current())return;
+      this.refreshingValue.set(false);
+      if(error instanceof HttpErrorResponse&&[401,403,404].includes(error.status)){this.failOrder(error);return;}
+      // La última respuesta válida del mismo pedido no se presenta como una consulta nueva.
+      this.staleValue.set(true);
+      this.refreshIssue.set('No pudimos actualizar el seguimiento. Se muestra el último estado confirmado; vuelve a intentarlo para comprobar si cambió.');
+    },complete:()=>{if(current())this.refreshingValue.set(false);}});
+  }
+
   private failOrder(error:unknown):void {
+    this.refreshingValue.set(false);this.staleValue.set(false);this.refreshIssue.set('');this.refreshStatus.set('');
     this.orderValue.set(null);this.paymentValue.set(null);this.paymentIssue.set('');
     const status=error instanceof HttpErrorResponse?error.status:0;
     this.state.set(status===404?'not-found':status===403?'forbidden':status===401?'unauthenticated':'error');

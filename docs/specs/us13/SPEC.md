@@ -2,7 +2,7 @@
 
 Integración API solicitada: consultar el [complemento conjunto de US11, US12 y US13](../cliente-pedido-api/SPEC.md). Define la nueva etapa; las evidencias y restricciones de muestra anteriores se conservan como historial.
 
-Revisión documental: 02/11/2026. Estado: frontend de muestra incorporado en develop; aceptación del equipo pendiente. Rama original: feature/cliente-pedido. Alineación documental: docs/alineacion-specs.
+Revisión documental: 02/11/2026. Estado: integración HTTP de US13 implementada en feature/cliente-pedido-api; aceptación en el entorno del equipo pendiente. Rama visual original: feature/cliente-pedido. Alineación documental: docs/alineacion-specs.
 
 Las secciones de ejecución fechadas conservan evidencia histórica. El estado actual se contrasta con develop, base 3685d07; no repetir como pendientes las etapas ya integradas. Referencias comprobadas: [registro Figma](../../REFERENCIAS-FIGMA.md).
 
@@ -263,3 +263,32 @@ Se verificaron en el archivo Figma original los IDs, nombres y dimensiones de la
 La revisión documental no vuelve a ejecutar el prototipo ni certifica equivalencia visual. Los recorridos locales se verifican por separado en test/flujos-integrados. No se implementan nuevas pantallas ni se cambian reglas de negocio por corregir estas referencias.
 
 Estado actual del recorrido: [Mis pedidos](../cliente-pedidos/SPEC.md) consulta por ID y conserva detalle, seguimiento y pago. Las confirmaciones locales del carrito tienen IDs independientes #1043, #1044, …; no reemplazar el histórico #1042. Los datos temporales se reinician al recargar.
+
+
+## Integración API de US13 — 02/11/2026
+
+Rama feature/cliente-pedido-api. Se conserva el detalle y pago de US12 y se añade Actualizar seguimiento sobre el GET /api/pedidos/{id} ya existente. No hay endpoint nuevo, polling, WebSocket, estimaciones, avance automático ni controles de preparación/entrega en el cliente. Las secciones anteriores de fixtures corresponden a entregas históricas.
+
+PedidoConsultaStore.refresh consulta únicamente el ID propio que ya está cargado. Mientras espera, conserva la última respuesta correcta, anuncia la consulta y bloquea solicitudes duplicadas. Solo una respuesta válida del mismo pedido y sesión modifica el estado mostrado. Las variantes Listo/Entregado/Cancelado ya no construyen snapshots locales: ?vista= elige composición y nunca fuerza el estado de la API.
+
+Si falla red, servidor o validación de la respuesta, se conserva el último estado confirmado con un aviso explícito y título/resumen de información sin actualizar. No se presenta ese dato como una nueva confirmación ni se adelanta una etapa. Un reintento válido retira el aviso. 401, 403, 404 o una respuesta de otra cuenta invalidan la consulta y retiran sus detalles, sin conservarlos como información antigua accesible.
+
+Cambio de ID, navegación, destrucción de la vista y cambio/cierre de sesión cancelan o descartan respuestas anteriores. El botón conserva el foco de teclado usando la opción pública disabledInteractive de Angular Material; el store impide otro envío mientras está consultando. No se mueve el foco ni se vuelve a anunciar todo el desglose por actualizar una etiqueta.
+
+Los cinco estados, la etiqueta y el progreso proceden del DTO validado. Entregado no añade etapas; Cancelado no muestra progreso de éxito ni implica reembolso. Se conservan ID, snapshot de compra, modalidad e importes; no se consulta la carta para reemplazar precios. Pago sigue siendo una consulta independiente de US12. Al volver a Mis pedidos se vuelve a consultar la página visible para no conservar una etiqueta anterior al refresco.
+
+Figma leído por MCP en la copia sRxKEwFdrMKfXPosGFvoHc facilitada por el usuario: contexto/captura Listo desktop 84:39170 y Cancelado mobile 84:33225. Se reutilizaron componentes, estilos y recursos locales; el botón de consulta y sus mensajes son la adaptación funcional de esta etapa. Se inspeccionaron capturas de la aplicación de Listo/Cancelado mobile. No se certifica igualdad de píxeles ni se atribuye esta revisión al archivo original.
+
+Pruebas ejecutadas: siete casos nuevos del store y 116 pruebas unitarias totales correctas; 21 recorridos US13 del frontend real contra HTTP simulado y 25 regresiones de US12. Cubren cinco anchos 320/390/768/1280/1440, progreso, estados finales, invariancia del desglose, doble clic, teclado/foco, error inicial, red/servidor/respuesta incompatible, pérdida de acceso, respuesta tardía, salida durante refresco, retorno desde pago y coherencia con el listado. El cliente solo envía GET para consultar pedidos durante estos recorridos, sin transiciones operativas.
+
+Backend: Us13HttpIntegrationTest ejecutó tres pruebas HTTP reales con Spring Boot, JWT y H2 aislado. Operación cambia estados válidamente; nuevas consultas del cliente reflejan cada estado y conservan detalles/total/pago. Cancelado persiste al consultar. El cliente no puede avanzar estados y un pedido ajeno sigue siendo indistinguible de uno inexistente. También se verifican generación y consulta de notificaciones propias tras los cambios. El cliente HTTP de prueba usa la implementación JDK compatible con PATCH; no se cambió código de producción ni se añadieron dependencias.
+
+| Criterio | Evidencia de esta etapa | Pendiente de aceptación |
+| --- | --- | --- |
+| US13-CA01 | Cinco estados desde respuesta validada, con etiqueta y progreso | Recorrido del conjunto en entorno del equipo |
+| US13-CA02 | Nueva consulta refleja cambio real en H2 y simulado en frontend; notificaciones propias comprobadas en backend | Pantalla de notificaciones de su tarea y aceptación conjunta |
+| US13-CA03 | Entregado persiste sin etapa posterior | Confirmación con datos del equipo |
+| US13-CA04 | Cancelado conserva compra/pago sin progreso exitoso ni reembolso inventado | Confirmación con datos del equipo |
+| US13-CA05 | 404 ajeno/inexistente y pérdida de acceso sin datos visibles | Prueba conjunta de cuentas reales del equipo |
+
+El enlace existente a /cliente/notificaciones se conserva; esta entrega no implementa esa pantalla asignada a otra tarea. Las pruebas de mock/H2 no acreditan PostgreSQL/Supabase del equipo ni despliegue. S2-TSK-042 no se marca Done por esas pruebas parciales; la integración de código queda preparada para la aceptación conjunta. No se creó commit, push ni PR.

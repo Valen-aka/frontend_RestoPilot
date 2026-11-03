@@ -32,6 +32,13 @@ http.createServer(async(req,res)=>{
           cantidad:i===1?1:2,precioUnitario:i===1?15:14,subtotal:i===1?15:28,notas:null}]}));
       await pm.state.set('us11-orders',orders);
     }
+    if(b.tracking){
+      const orders=await pm.state.get('us11-orders')||[];
+      const allowed=['PENDIENTE','EN_PREPARACION','LISTO','ENTREGADO','CANCELADO'];
+      if(!allowed.includes(b.tracking.estado))return send(400,{mensaje:'Estado de prueba inválido.'});
+      await pm.state.set('us11-orders',orders.map(order=>order.id===b.tracking.id?{...order,estado:b.tracking.estado}:order));
+    }
+    if(b.removeId){const orders=await pm.state.get('us11-orders')||[];await pm.state.set('us11-orders',orders.filter(order=>order.id!==b.removeId));}
     return send(200,{ok:true});
   }
   if(pathname==='/__test'&&req.method==='GET')return send(200,{orders:await pm.state.get('us11-orders')||[],calls:await pm.state.get('us11-calls')||[],queries:await pm.state.get('us12-queries')||[]});

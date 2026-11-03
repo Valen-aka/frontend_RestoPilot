@@ -77,9 +77,15 @@
             <a mat-stroked-button class="back-to-order" routerLink="/cliente/pedido" [queryParams]="orderQuery()" [state]="returnState">Volver al pedido</a>
           </mat-card>
         } @else {
-          <mat-card appearance="outlined" class="tracking-card">
+          <mat-card appearance="outlined" class="tracking-card" [attr.aria-busy]="refreshing()">
             <div class="tracking-heading"><h2>Pedido #{{ order().id }}</h2><span class="current-status" [class.cancelled-status]="status() === 'Cancelado'">{{ status() }}</span></div>
-            <rp-pedido-progress [status]="status()" />
+            <rp-pedido-progress id="tracking-progress" [status]="status()" [stale]="trackingStale()" />
+            @if (trackingIssue()) {<p class="tracking-error" role="alert">{{ trackingIssue() }}</p>}
+            <div class="tracking-actions">
+              @if (integrated()) {<button mat-stroked-button type="button" aria-label="Actualizar seguimiento" aria-controls="tracking-progress" [disabled]="refreshing()" [disabledInteractive]="true" (click)="refreshRequested.emit()">{{ refreshing() ? 'Actualizando…' : 'Actualizar seguimiento' }}</button>}
+              @if (refreshing()) {<p class="refresh-message" role="status" aria-live="polite">Consultando el estado del pedido…</p>}
+              @else if (refreshStatus()) {<p class="refresh-message" role="status" aria-live="polite">{{ refreshStatus() }}</p>}
+            </div>
             <a class="tracking-notifications" routerLink="/cliente/notificaciones">Consultar notificaciones</a>
           </mat-card>
 

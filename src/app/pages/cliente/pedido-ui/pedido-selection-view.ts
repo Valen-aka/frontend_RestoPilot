@@ -7,17 +7,11 @@ import {AuthService} from '../../../core/services/auth.service';
 import {API_SESSION} from '../../../core/auth/api-session';
 import {parsePedidoId} from '../../../core/models/pedido-query.model';
 import {EMPTY_ORDER, orderSnapshot, orderStatus, paymentSnapshot} from './pedido-api.adapter';
-import {OrderSnapshot, OrderStatus, PaymentSnapshot, PaymentState, QueryState} from './pedido.model';
+import {PaymentState} from './pedido.model';
 
 @Component({selector:'rp-pedido-selection-view',imports:[PedidoView],providers:[PedidoConsultaStore],
   templateUrl:'./pedido-selection-view.html',styleUrl:'./pedido-selection-view.css'})
 export class PedidoSelectionView {
-  // Compatibilidad de las entradas visuales existentes; nunca sustituyen los datos de la API.
-  readonly order=input<OrderSnapshot>(EMPTY_ORDER);
-  readonly status=input<OrderStatus>('Pendiente');
-  readonly queryState=input<QueryState>('loading');
-  readonly payment=input<PaymentState>('missing');
-  readonly paymentRecord=input<PaymentSnapshot|undefined>();
   readonly mode=input<'order'|'payment'>('order');
   readonly store=inject(PedidoConsultaStore);
   private readonly auth=inject(AuthService);
@@ -39,6 +33,7 @@ export class PedidoSelectionView {
     const id=this.selectedId(),mode=this.mode();this.session();
     untracked(()=>this.store.load(id,mode));
   });}
+  refresh():void {this.store.refresh();}
   retry():void {this.store.load(this.selectedId(),this.mode());}
   logout():void {this.auth.logout();void this.router.navigate(['/auth/login']);}
 }

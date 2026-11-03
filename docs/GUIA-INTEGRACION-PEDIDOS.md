@@ -1,4 +1,4 @@
-# Guía compartida de conexión — US11 y US12
+# Guía compartida de conexión — US11 a US13
 
 Esta base permite continuar la integración sin duplicar sesión, HTTP ni contratos. No cambia las asignaciones del Sprint 2 ni declara terminadas las historias de acceso, carta, detalle o seguimiento.
 
@@ -18,6 +18,7 @@ Esta base permite continuar la integración sin duplicar sesión, HTTP ni contra
 | Consultar pedido propio | PedidoService.obtener(id): Observable<PedidoResponse> |
 | Listar pedidos propios | PedidoService.propios(page,size): Observable<PedidosPage> |
 | Consultar pago | PagoService.consultar(pedidoId,total): Observable<PagoResponse> |
+| Actualizar seguimiento | PedidoConsultaStore.refresh(): vuelve a consultar el mismo pedido propio sin modificarlo |
 | Solicitudes y respuestas | src/app/core/models/; respetar DTO y enums del backend |
 
 ## Conectar el acceso
@@ -89,7 +90,7 @@ Estas pruebas usan H2 aislado. Ni las pruebas con mock ni H2 certifican PostgreS
 
 - Conectar acceso/carta con estos servicios desde sus propias tareas y registrar el guard en las rutas acordadas.
 - US12 ya consulta pedido/pago y el listado mínimo con IDs reales. Mantener su contrato y probar la aceptación del conjunto con la base del equipo.
-- Integrar US13: nueva consulta del estado real, sin avances inventados ni polling no acordado.
+- US13 ya tiene actualización manual de seguimiento. Quedan aceptación con el entorno del equipo y la pantalla de notificaciones de su tarea correspondiente.
 - Probar el recorrido completo con la base y cuentas válidas del equipo antes de marcar S2-TSK-032 Done.
 
 La confirmación de US11 muestra solo la respuesta guardada de creación durante la sesión actual y conserva pedidoId en la URL. Una recarga no reconstruye esa respuesta; el enlace Ver detalle de mi pedido conduce a la consulta persistente de US12. Si falta el contexto, la pantalla no afirma que el pedido nunca se registró.
@@ -115,3 +116,27 @@ postman simulation run postman/simulations/us12.sim.yaml --port 4312 --no-histor
 Con Angular de desarrollo en 4311 y PLAYWRIGHT_MODULE configurado, ejecutar scripts/us12-api-browser.cjs. No ejecutar simultáneamente ambas suites cliente contra el mismo mock: sus escenarios reinician estado de prueba. La prueba usa HTTP real del frontend contra un stand-in local; no prueba PostgreSQL ni la firma JWT del backend real.
 
 El backend incorpora Us12HttpIntegrationTest, que se ejecuta con .\mvnw.cmd '-Dtest=Us12HttpIntegrationTest' test sobre H2 aislado. No requiere credenciales reales. No se añadieron endpoints ni se modificaron las reglas de pagos para esta historia.
+
+
+## Continuidad de US13
+
+Reutilizar PedidoConsultaStore.refresh y PedidoService.obtener. El componente del cliente no construye otro servicio de seguimiento ni llama PATCH de estados. El botón Actualizar seguimiento solo aparece al consultar un pedido válido y usa GET del mismo ID. Las modificaciones de preparación/listo/entrega corresponden a operación.
+
+Los campos refreshing, stale, refreshIssue y refreshStatus describen la consulta, no estados del negocio. No enviar estos campos al backend ni convertir un error en PENDIENTE. Si stale es true, el dato conservado es el último estado confirmado del mismo pedido: la interfaz debe decir que no se pudo verificar una actualización. Un resultado de otra cuenta o un 401/403/404 elimina los detalles.
+
+Conservar pedidoId al ir a pago y regresar. El estado del pago no determina el del pedido: Entregado puede tener pago Pendiente y Cancelado no permite deducir reembolso. Al volver al listado, su página se consulta de nuevo en lugar de copiar manualmente estados a un arreglo de muestra.
+
+No agregar timers, polling, WebSocket ni estimaciones para aparentar actualización en tiempo real. Las variantes ?vista= no son comandos ni fuente del estado: todas consultan el pedido real. El acceso a notificaciones se conserva, pero su pantalla mantiene su tarea propia; las pruebas backend de avisos no implementan su interfaz.
+
+Pruebas dirigidas:
+
+~~~powershell
+node --test scripts/us13-seguimiento.test.cjs
+postman simulation run postman/simulations/us13.sim.yaml --port 4312 --no-history --output ndjson
+~~~
+
+Con Angular de desarrollo en 4311 y PLAYWRIGHT_MODULE configurado, ejecutar scripts/us13-api-browser.cjs. La suite modifica estados únicamente en /__test del mock para representar cambios previos del restaurante; el código de producto no tiene ese endpoint ni controles de transición. No ejecutar suites cliente simultáneas contra el mismo estado de simulación.
+
+En backend, .\mvnw.cmd '-Dtest=Us13HttpIntegrationTest' test usa HTTP/JWT reales y H2 aislado. Comprueba transiciones mediante una cuenta de operación de prueba y consultas posteriores del cliente. El cliente HTTP de prueba usa JdkClientHttpRequestFactory porque el transporte HttpURLConnection no permite PATCH; no se modifica el cliente o seguridad de producción.
+
+La aceptación final requiere el recorrido con las pantallas de acceso/carta y la base del equipo. No marcar tareas Done por mock, H2 o build, ni implementar pantallas asignadas a otras tareas para ocultar una dependencia.

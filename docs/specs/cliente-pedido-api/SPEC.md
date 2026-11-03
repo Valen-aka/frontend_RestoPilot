@@ -206,3 +206,12 @@ Se integran consulta del pedido propio, pago y listado paginado mínimo de selec
 La confirmación de US11 ya enlaza al detalle real. Se preserva pedidoId entre detalle/pago/retorno, sin fallback a muestras. Carga/error de pago independiente; 404 de pago revalida el pedido antes de informar ausencia. 401/403/404 no dejan datos anteriores visibles; las respuestas fuera de orden se cancelan/descartan. El [SPEC US12](../us12/SPEC.md#integración-api-de-us12--02112026) describe la evidencia y límites.
 
 Pasaron 109 pruebas unitarias frontend, ocho nuevas de US12, y 25 recorridos HTTP simulados de esta historia. Tres pruebas HTTP backend con JWT/H2 verifican snapshots, consulta del pago y aislamiento real entre cuentas de prueba. No se modifican endpoints backend ni pantallas de acceso/carta, ni se declaran terminadas sus tareas. El mecanismo específico de actualización de US13 y la aceptación del conjunto con PostgreSQL del equipo siguen pendientes.
+
+
+## 15. Ejecución de US13 — 02/11/2026
+
+Actualizar seguimiento vuelve a consultar GET /api/pedidos/{id} a través del store y servicio existentes. Rechaza doble consulta, conserva el ID y descarta respuestas de otra selección/sesión. Solo la respuesta validada confirma un estado nuevo. Ante fallos transitorios se conserva el último estado correcto identificado como no actualizado; ante 401/403/404 u otra cuenta se retiran los datos.
+
+Se retiraron fixtures de las tres variantes finales y sus entradas visuales obsoletas. Las rutas hijas, componentes Material, detalle y pago se conservan. Mis pedidos consulta otra vez al regresar para mostrar el estado de su página actual. No se añadieron controles de cocina, polling, WebSocket, ETA, porcentajes ni cobros.
+
+Verificación: 116 pruebas unitarias frontend (siete nuevas del store), 21 recorridos HTTP simulados de US13 y 25 regresiones de US12 correctos. Tres pruebas HTTP backend reales con JWT/H2 verifican avance, estados finales, aislamiento, compra/pago conservados y notificaciones propias. Consultar el [SPEC US13](../us13/SPEC.md) para límites de aceptación; su pantalla de notificaciones y el entorno PostgreSQL del equipo permanecen como dependencias externas.

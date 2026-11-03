@@ -8,9 +8,11 @@ import {OrderStatus, stageIndex} from './pedido.model';
 })
 export class PedidoProgress {
   readonly status = input.required<OrderStatus>();
+  readonly stale=input(false);
   readonly activeIndex = computed(() => stageIndex(this.status()));
   readonly stages = ['Recibido', 'En preparación', 'Listo', 'Entregado'];
   readonly summary = computed(() => {
+    if(this.stale())return 'Último estado confirmado: '+this.status()+'. No se ha podido verificar una actualización.';
     switch (this.status()) {
       case 'Pendiente': return 'El pedido fue recibido y está pendiente de preparación.';
       case 'En preparación': return 'El restaurante está preparando tu pedido.';

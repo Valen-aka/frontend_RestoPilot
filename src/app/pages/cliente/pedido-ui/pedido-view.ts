@@ -20,17 +20,22 @@ import {MODALITY_LABELS, OrderSnapshot, OrderStatus, PaymentSnapshot, PaymentSta
 export class PedidoView {
   private readonly document = inject(DOCUMENT);
   readonly order = input<OrderSnapshot>(EMPTY_ORDER);
-  readonly status = input<OrderStatus>('En preparación');
-  readonly queryState = input<QueryState>('ready');
+  readonly status = input<OrderStatus>('Pendiente');
+  readonly queryState = input<QueryState>('loading');
   readonly mode = input<'order' | 'payment'>('order');
   readonly integrated=input(false);
   readonly sessionConnected=input(false);
   readonly paymentQueryState=input<QueryState>('ready');
   readonly issue=input('');
   readonly paymentIssue=input('');
+  readonly refreshing=input(false);
+  readonly trackingStale=input(false);
+  readonly trackingIssue=input('');
+  readonly refreshStatus=input('');
+  readonly refreshRequested=output<void>();
   readonly retryRequested=output<void>();
   readonly logoutRequested=output<void>();
-  readonly payment = input<PaymentState>('paid');
+  readonly payment = input<PaymentState>('missing');
   readonly paymentRecord = input<PaymentSnapshot | undefined>();
   readonly effectivePayment = computed(() =>
     this.payment() === 'paid' && this.paymentRecord()?.orderId !== this.order().id ? 'missing' : this.payment());
@@ -39,7 +44,7 @@ export class PedidoView {
 
   readonly receivedState = inject(Router).currentNavigation()?.extras.state ?? this.document.defaultView?.history.state ?? {};
   readonly selectionState = Object.hasOwn(this.receivedState, 'pedidoId') ? {pedidoId: this.receivedState['pedidoId']} : {};
-  readonly backVista = computed(() => Object.hasOwn(this.receivedState, 'pedidoId') ? vistaForStatus(this.status()) : validOrderVista(this.receivedState?.['pedidoVista']));
+  readonly backVista = computed(() => this.integrated() ? vistaForStatus(this.status()) : validOrderVista(this.receivedState?.['pedidoVista']));
   readonly paymentQuery = computed(() => ({
     ...(this.integrated()?{pedidoId:this.order().id}:{}),
     vista: this.payment() === 'pending' || this.status() === 'Cancelado' ? 'cliente-pago-pendiente' : 'cliente-pago'
@@ -61,6 +66,7 @@ export class PedidoView {
       return this.effectivePayment() === 'paid' ? 'El registro de tu pago' :
         this.effectivePayment() === 'pending' ? 'Tu pago está pendiente' : 'Sin registro de pago';
     }
+    if(this.trackingStale())return 'Último estado confirmado del pedido';
     switch (this.status()) {
       case 'Pendiente': return 'Tu pedido está pendiente';
       case 'Listo': return 'Tu pedido está listo';

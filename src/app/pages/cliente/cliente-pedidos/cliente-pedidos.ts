@@ -37,6 +37,8 @@ export class ClientePedidosPage {
   readonly rows = this.store.history;
 
   constructor() {
+    // Al volver desde el seguimiento, consultar de nuevo sin duplicar una carga inicial activa.
+    if(this.store.queryState()!=='loading')this.store.reload();
     afterNextRender(() => {
       const id = this.state['pedidoReturnId'];
       if (Number.isSafeInteger(id)) (this.document.getElementById(`client-order-${id}`) ?? this.document.getElementById('orders-title'))?.focus();
