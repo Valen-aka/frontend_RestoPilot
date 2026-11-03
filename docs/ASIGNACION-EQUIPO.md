@@ -299,3 +299,7 @@ Las rutas de la fuente todavía ausentes se conservan como asignaciones prevista
 - docs/QA-RESERVAS-CRISTIAN.md: Cristian Condori.
 
 Las credenciales, configuración personal y notas privadas permanecen locales. Estos documentos se comparten en Git.
+
+## Ampliaciones técnicas del frontend
+
+WorkspaceShell y workspace-pages.css, en src/app/components/workspace-shell/, y su logo optimizado public/assets/workspace-logo.webp corresponden a Francesco Meza. Proporcionan la composición visual compartida de sus pantallas sin modificar los layouts de otros integrantes. Esta ampliación técnica no cambia la asignación de las 120 pantallas.

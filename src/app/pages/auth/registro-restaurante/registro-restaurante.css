@@ -1,2 +1,3 @@
-:host{display:block}
-/* TODO: estilos responsive exclusivos de esta pantalla; utilizar variables globales. */
+:host { display: block; }
+.schedule-notice { display: flex; gap: 12px; }
+.step a { color: inherit; text-decoration: none; }

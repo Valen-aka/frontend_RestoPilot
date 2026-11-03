@@ -1,0 +1,24 @@
+<div class="workspace" [class.customer]="role==='client'" [class.account]="role==='account'">
+ @if(role!=='client' && role!=='account'){
+ <aside class="sidebar">
+  <a class="brand" [routerLink]="role==='owner'?'/dueno':'/operacion'" aria-label="RestoPilot, vista general"><span class="logo"><img src="/assets/workspace-logo.webp" width="88" height="82" alt=""></span><span><strong>Resto<span>Pilot</span></strong><small>Tu restaurante, en piloto automático</small></span></a>
+  <div class="restaurant"><span class="avatar">RP</span><div><strong>Tu restaurante</strong><small>Vista previa del panel</small></div></div>
+  <p class="nav-label">Tu espacio de trabajo</p>
+  <nav aria-label="Navegación del panel">
+   @for(item of navigation;track item.key){<a [routerLink]="item.key==='inicio' && role==='owner'?'/dueno':item.url" [class.active]="active===item.key" [attr.aria-current]="active===item.key?'page':null"><span class="nav-icon" aria-hidden="true">{{item.icon}}</span><span>{{item.label}}</span></a>}
+   @if(role==='owner'){<a routerLink="/dueno/administradores/nuevo" [class.active]="active==='administradores'" [attr.aria-current]="active==='administradores'?'page':null"><span class="nav-icon" aria-hidden="true">＋</span><span>Incorporar administrador</span></a>}
+  </nav>
+  <div class="profile"><span class="avatar">RP</span><div><strong>Mi cuenta</strong><small>{{role==='owner'?'Dueño':'Administración'}} · Vista previa</small></div></div>
+  <a class="access-link" routerLink="/auth/login">Ir al acceso</a>
+ </aside>
+ } @else {
+ <header class="public-header"><a class="public-brand" [routerLink]="role==='client'?'/cliente':'/auth/login'"><strong>Resto<span>Pilot</span></strong><small>Tu restaurante, en piloto automático</small></a>
+ @if(role==='client'){<nav aria-label="Navegación del cliente">@for(item of clientNavigation;track item.url){<a [routerLink]="item.url">{{item.label}}</a>}</nav><a class="bell" routerLink="/cliente/notificaciones" aria-label="Notificaciones">♧</a>}
+ </header>
+ }
+ <div class="workspace-body">
+ @if(role!=='client' && role!=='account'){<header class="topbar"><div><span>Tu restaurante</span><span class="separator">/</span><strong>{{breadcrumb}}</strong></div><div class="topbar-actions"><span class="preview-status">Vista previa</span><a class="bell" routerLink="/operacion/notificaciones" aria-label="Notificaciones">♧</a></div></header>}
+ <main id="workspace-content"><ng-content /></main>
+ @if(role==='client'){<footer><span>RestoPilot</span><span>Tu restaurante, en piloto automático.</span><a routerLink="/auth/login">Ir al acceso</a></footer>}
+ </div>
+</div>
