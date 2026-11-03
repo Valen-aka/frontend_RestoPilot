@@ -67,9 +67,9 @@ test('CLIENTE, local ausente y token vencido no generan consultas; DUENO es vál
  }
  assert(activeOperationSession({...session(),role:'DUENO'}));
 });
-test('detalle LISTO se consulta aunque no esté en cola y US15 no aplica transiciones de muestra',()=>{
+test('detalle LISTO se consulta fuera de cola y una transición local inválida no muta datos',async()=>{
  const f=setup();try{f.store.loadDetail(990);f.answer(0,order(990,'LISTO'));assert.equal(f.store.currentDetail().status,'Listo');
-  assert.equal(f.store.applyTransition({id:990,expected:'Listo',target:'Entregado'}).ok,false);assert.equal(f.store.currentDetail().status,'Listo');
+  assert.equal((await f.store.applyTransition({id:990,expected:'Listo',target:'Listo'})).ok,false);assert.equal(f.store.currentDetail().status,'Listo');
   f.store.loadDetail(undefined);assert.equal(f.requests.length,1);
  }finally{f.injector.destroy();}
 });

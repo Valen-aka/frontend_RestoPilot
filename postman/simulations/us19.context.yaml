@@ -1,0 +1,29 @@
+purpose:
+  stands_in_for: Consulta de cocina y PATCH de estados del backend RestoPilot.
+  unblocks: Confirmaciones, rechazos y resultado incierto del frontend sin modificar pedidos del equipo.
+assumptions:
+  - id: transiciones
+    status: supported
+    claim: PATCH /pedidos/{id}/estado usa nuevoEstado como parámetro y devuelve el pedido con estado confirmado.
+    reason: Contrato contrastado con PedidoController y PedidoService locales.
+    source: docs/specs/operacion-cocina-api/SPEC.md
+    updated_at: '2026-11-03'
+  - id: respuesta-perdida
+    status: supported
+    claim: Un error de respuesta no demuestra que la mutación no se aplicó; debe consultarse antes de otro avance.
+    reason: El mock puede guardar el cambio y luego devolver 500 o una confirmación incompatible.
+    source: postman/mocks/restopilot-us19/default.js
+    updated_at: '2026-11-03'
+  - id: limites
+    status: unverified
+    claim: No verifica JWT real, notificaciones ni PostgreSQL del equipo.
+    reason: Datos y tokens sintéticos; esas garantías se prueban separadamente con HTTP/JWT/H2 en backend.
+    source: backend Us19HttpIntegrationTest.java
+    updated_at: '2026-11-03'
+
+verification:
+  date: '2026-11-03'
+  frontend_unit: 45 pruebas de contratos, stores e infraestructura compartida correctas.
+  browser: 15 recorridos US19 y 13 de regresión US15 correctos contra HTTP simulado.
+  backend_separate: 3 pruebas HTTP US19 y 6 de regresión US15/US13 correctas con JWT/H2.
+  limitations: PostgreSQL y autenticación del equipo pendientes; el mock no valida firmas ni genera notificaciones reales.

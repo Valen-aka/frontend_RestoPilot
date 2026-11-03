@@ -1,7 +1,7 @@
 # SPEC — Integración API de cocina y estados del pedido
 
 Fecha: 02/11/2026. Rama: feature/operacion-cocina-api.
-Estado: US15 implementada y verificada en entornos aislados; US19 y aceptación con el entorno compartido pendientes. Consultar la ejecución al final.
+Estado: US15 y US19 implementadas y verificadas en entornos aislados; aceptación con el entorno compartido pendiente. Consultar las ejecuciones fechadas al final.
 
 ## 1. Objetivo y fuentes
 
@@ -194,3 +194,19 @@ US15 es de lectura: los componentes de acciones de muestra no se renderizan ni s
 Verificación y reproducción: [guía de cocina API](../../GUIA-INTEGRACION-COCINA.md). No declarar tareas Done solo por estas pruebas. La consulta sin autenticar devuelve 403 en la configuración de seguridad verificada; el frontend evita esa llamada y redirige al login. La documentación de 401 también cubre proveedores/filtros que respondan así.
 
 Limitaciones: prueba conjunta con autenticación y PostgreSQL del equipo pendiente. Figma MCP devolvió el límite del plan al consultar el original; se conservaron los componentes existentes y no se acredita una nueva comparación visual contra frames. No se crearon commits ni PR automáticamente.
+
+## 13. Ejecución US19 — 03/11/2026
+
+Implementadas las transiciones reales mediante PedidoService.cambiarEstado: PATCH con nuevoEstado como parámetro, cuerpo nulo y validación de código 200, ID y destino. CocinaStore exige sesión/local, estado confirmado y transición inmediata; no llama funciones de muestra, no reintenta PATCH ni adelanta estados.
+
+PedidoAction y PedidoStateDialog reutilizan Angular Material. La confirmación identifica pedido y etapas; cancelar devuelve el foco sin PATCH. actionBusy impide un segundo envío y cocinaPendingGuard bloquea salir de las rutas afectadas mientras se confirma/envía. El cierre de sesión invalida y cancela la operación local y descarta respuestas tardías; el servidor sigue siendo responsable de autorizar y persistir cada petición.
+
+Tras una confirmación válida se conserva el detalle y el pedido seleccionado, se refresca la cola y se navega a su etapa. Retirar una tarjeta o botón por el cambio de estado no cancela esa navegación: se comprueba que permanezcan la misma sesión y URL de origen. LISTO y ENTREGADO permanecen consultables aunque ya no pertenezcan a la cola. Las acciones terminales no se habilitan.
+
+400/409 obligan a reconsultar antes de otra acción. Red/5xx/confirmación incompatible se tratan como resultado incierto, nunca como prueba de que el servidor no guardó. Si falla también la consulta, se conserva verificationId y se bloquean los avances hasta «Verificar estado». Un refresco de cola fallido después de un cambio confirmado muestra un aviso independiente sin repetir la mutación. 401/403/404 limpian datos protegidos. No se registran cobros ni se generan notificaciones desde el frontend.
+
+Verificación: check y build correctos; 45 pruebas de contrato/store e infraestructura compartida correctas. Chrome: 15 recorridos US19 contra HTTP simulado, incluyendo secuencia completa a 320/390/768/1440, cancelar/foco, doble clic, salida durante envío, rechazo concurrente, respuesta perdida, recuperación explícita, pérdida de acceso y selección fuera de cola. Pasaron además los 13 recorridos de regresión de US15 sin mutaciones. Se inspeccionó el diálogo mobile con la animación de apertura finalizada; no se acredita auditoría completa de accesibilidad ni comparación renovada con Figma.
+
+Backend: 3 pruebas HTTP US19 con JWT/H2 correctas; cubren secuencia/notificaciones/snapshot y pago, las 22 combinaciones inválidas de la matriz de cinco estados, permisos y confirmaciones concurrentes (un éxito, un rechazo, una notificación). Se ejecutaron también 3 pruebas US15 y 3 US13, correctas. No fueron necesarios cambios de endpoints o código de producción del backend en esta entrega.
+
+Reproducción y límites: [guía de cocina](../../GUIA-INTEGRACION-COCINA.md). Pendiente aceptación conjunta con autenticación y PostgreSQL del equipo. Las pruebas de navegador usan tokens sintéticos; JWT real y notificaciones se verifican por separado en el backend aislado. No se crearon commits, push ni PR automáticamente.

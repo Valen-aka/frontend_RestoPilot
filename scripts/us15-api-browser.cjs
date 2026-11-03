@@ -27,11 +27,11 @@ async function fits(page){assert.equal(await page.evaluate(()=>document.document
   for(const width of [320,390,768,1440])await run('cola, tablero y detalle '+width,async page=>{
    await login(page);await ready(page);assert.deepEqual((await ids(page)).slice(0,2),[901,900]);assert.equal((await ids(page)).length,20);
    await page.getByRole('link',{name:'Ver tablero de cocina',exact:true}).click();await page.locator('rp-cocina-card').first().waitFor();
-   assert.equal(await page.locator('rp-pedido-action').count(),0);assert((await page.locator('.max-time').first().innerText()).includes('30 min'));
+   assert.equal((await calls()).some(r=>r.method==='PATCH'),false);assert((await page.locator('.max-time').first().innerText()).includes('30 min'));
    await fits(page);await page.screenshot({path:path.join(output,'tablero-'+width+'.png'),fullPage:true});
    await page.getByRole('link',{name:'Consultar pedido #900',exact:true}).click();await page.getByRole('heading',{name:'Pedido #900',exact:true}).waitFor();
    assert(new URL(page.url()).searchParams.get('pedidoId')==='900');assert((await page.locator('.selection-card').innerText()).includes('Plato histórico'));
-   assert.equal(await page.getByText('Pagado',{exact:true}).count(),0);assert.equal(await page.locator('rp-pedido-action').count(),0);
+   assert.equal(await page.getByText('Pagado',{exact:true}).count(),0);assert.equal((await calls()).some(r=>r.method==='PATCH'),false);
    await fits(page);await page.getByRole('link',{name:'Volver al tablero',exact:true}).click();await page.locator('rp-cocina-card').first().waitFor();
    const requests=await calls();assert(requests.length>0&&requests.every(r=>r.method==='GET'&&r.authorized));
   },width);

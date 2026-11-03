@@ -6,4 +6,5 @@
   }</ul>
   <p class="max-time">Tiempo máximo de plato: {{ minutes() === null ? 'No informado' : minutes() + ' min' }}</p>
   <a mat-stroked-button routerLink="/operacion/pedido" [queryParams]="{pedidoId: order().id, origen: 'board'}" [state]="{cocinaOrderId: order().id, cocinaOrigin: 'board'}" [attr.aria-label]="'Consultar pedido #' + order().id">Consultar pedido</a>
+  <rp-pedido-action [orderId]="order().id" origin="board"/>
 </mat-card>

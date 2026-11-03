@@ -1,8 +1,13 @@
 <rp-cocina-shell [apiMode]="true" [restaurantName]="store.restaurantName()" [restaurantId]="store.restaurantId()" [active]="mode() === 'board' ? 'board' : isDetail() ? 'detail' : 'queue'">
   <div class="heading"><p class="eyebrow">PEDIDOS OPERACIÓN</p><h1 id="kitchen-title" tabindex="-1">{{ title() }}</h1><p class="subtitle">{{ subtitle() }}</p>
     <p class="sample-notice">Consulta de pedidos del restaurante. La prioridad y los importes proceden del servidor.</p>
-    <button mat-stroked-button type="button" (click)="store.refresh()" [disabled]="!store.hasSession() || store.refreshing()">{{ store.refreshing() ? 'Actualizando…' : isDetail() ? 'Actualizar pedido' : 'Actualizar cola' }}</button>
+    <button mat-stroked-button type="button" (click)="store.refresh()" [disabled]="!store.hasSession() || store.refreshing() || store.actionBusy()">{{ store.refreshing() ? 'Actualizando…' : isDetail() ? 'Actualizar pedido' : 'Actualizar cola' }}</button>
   </div>
+  @if(store.actionBusy()) {<p class="information" role="status">Operación en curso. Espera la confirmación antes de realizar otra acción.</p>}
+  @if(store.verificationId(); as id) {
+    <div class="stale-warning" role="alert"><p>El resultado del cambio del pedido #{{ id }} necesita verificarse. Las acciones permanecen bloqueadas.</p><button mat-stroked-button type="button" [disabled]="store.actionBusy()" (click)="store.verifyPending()">Verificar estado</button></div>
+  }
+  @if(store.queueIssue()) {<div class="stale-warning" role="status"><p>{{ store.queueIssue() }}</p><a mat-stroked-button routerLink="/operacion/pedidos" [queryParams]="{page:store.page(),size:store.size()}">Consultar cola</a></div>}
   @if (feedback(); as message) {
     <p id="kitchen-action-feedback" class="action-feedback" tabindex="-1" [class.action-error]="message.kind === 'error'" [attr.role]="message.kind === 'error' ? 'alert' : 'status'" aria-live="polite">{{ message.text }}</p>
   }
@@ -49,7 +54,7 @@
             @if (order.modality === 'SALON' && order.table) {<div><dt>Mesa</dt><dd>{{ order.table }}</dd></div>}
             @if (order.modality === 'DELIVERY' && order.address) {<div><dt>Dirección de entrega</dt><dd>{{ order.address }}</dd></div>}
             <div><dt>Solicitud</dt><dd>{{ date(order) }} · {{ time(order) }} · hora de Lima</dd></div>
-          </dl><p class="read-only">Consulta de lectura. Las acciones de preparación y entrega todavía no están disponibles.</p></mat-card>
+          </dl><p class="read-only">Los cambios de estado se registran al recibir la confirmación del servidor. No se registran cobros desde esta pantalla.</p>@if(stageMatches()) {<rp-pedido-action [orderId]="order.id" [origin]="origin"/>}</mat-card>
         </div>
       } @else {
         <mat-card appearance="outlined" class="state-card" role="status"><h2>{{ selectedId() ? 'No se encontró el pedido en este restaurante' : 'Selecciona un pedido para consultarlo' }}</h2><p>No hay información disponible para esta selección. Abre la cola o el tablero para consultar una comanda.</p></mat-card>
@@ -88,6 +93,6 @@
 
   @if (!isDetail() && store.hasSession() && store.queryState() !== 'loading' && store.queryState() !== 'error') {
     <p class="information">El tablero y sus columnas corresponden a la página {{ store.page() + 1 }} de la cola priorizada.</p>
-    <mat-paginator aria-label="Páginas de la cola de cocina" [length]="store.total()" [pageIndex]="store.page()" [pageSize]="store.size()" [pageSizeOptions]="[10,20,50]" [disabled]="store.refreshing()" (page)="changePage($event)" showFirstLastButtons />
+    <mat-paginator aria-label="Páginas de la cola de cocina" [length]="store.total()" [pageIndex]="store.page()" [pageSize]="store.size()" [pageSizeOptions]="[10,20,50]" [disabled]="store.refreshing() || store.actionBusy()" (page)="changePage($event)" showFirstLastButtons />
   }
 </rp-cocina-shell>

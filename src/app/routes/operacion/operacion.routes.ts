@@ -1,5 +1,5 @@
 import {Routes} from '@angular/router';
-import {operacionCocinaGuard} from '../../core/guards/operacion-cocina.guard';
+import {operacionCocinaGuard, cocinaPendingGuard} from '../../core/guards/operacion-cocina.guard';
 import {AdminLayout} from '../../layouts/admin-layout/admin-layout';
 const children:Routes=[
 {path:"",pathMatch:'full',loadComponent:()=>import('../../screen-host').then(m=>m.ScreenHost),data:{base:"/operacion"}},
@@ -12,11 +12,11 @@ const children:Routes=[
 {path:"plato/editar",pathMatch:'full',loadComponent:()=>import('../../screen-host').then(m=>m.ScreenHost),data:{base:"/operacion/plato/editar"}},
 {path:"plato/disponibilidad",pathMatch:'full',loadComponent:()=>import('../../screen-host').then(m=>m.ScreenHost),data:{base:"/operacion/plato/disponibilidad"}},
 {path:"plato/eliminar",pathMatch:'full',loadComponent:()=>import('../../screen-host').then(m=>m.ScreenHost),data:{base:"/operacion/plato/eliminar"}},
-{path:"pedidos",canActivate:[operacionCocinaGuard],pathMatch:'full',loadComponent:()=>import('../../screen-host').then(m=>m.ScreenHost),data:{base:"/operacion/pedidos"}},
-{path:"cocina",canActivate:[operacionCocinaGuard],pathMatch:'full',loadComponent:()=>import('../../screen-host').then(m=>m.ScreenHost),data:{base:"/operacion/cocina"}},
-{path:"pedido",canActivate:[operacionCocinaGuard],pathMatch:'full',loadComponent:()=>import('../../screen-host').then(m=>m.ScreenHost),data:{base:"/operacion/pedido"}},
-{path:"pedido/listo",canActivate:[operacionCocinaGuard],pathMatch:'full',loadComponent:()=>import('../../screen-host').then(m=>m.ScreenHost),data:{base:"/operacion/pedido/listo"}},
-{path:"pedido/entregar",canActivate:[operacionCocinaGuard],pathMatch:'full',loadComponent:()=>import('../../screen-host').then(m=>m.ScreenHost),data:{base:"/operacion/pedido/entregar"}},
+{path:"pedidos",canActivate:[operacionCocinaGuard],canDeactivate:[cocinaPendingGuard],pathMatch:'full',loadComponent:()=>import('../../screen-host').then(m=>m.ScreenHost),data:{base:"/operacion/pedidos"}},
+{path:"cocina",canActivate:[operacionCocinaGuard],canDeactivate:[cocinaPendingGuard],pathMatch:'full',loadComponent:()=>import('../../screen-host').then(m=>m.ScreenHost),data:{base:"/operacion/cocina"}},
+{path:"pedido",canActivate:[operacionCocinaGuard],canDeactivate:[cocinaPendingGuard],pathMatch:'full',loadComponent:()=>import('../../screen-host').then(m=>m.ScreenHost),data:{base:"/operacion/pedido"}},
+{path:"pedido/listo",canActivate:[operacionCocinaGuard],canDeactivate:[cocinaPendingGuard],pathMatch:'full',loadComponent:()=>import('../../screen-host').then(m=>m.ScreenHost),data:{base:"/operacion/pedido/listo"}},
+{path:"pedido/entregar",canActivate:[operacionCocinaGuard],canDeactivate:[cocinaPendingGuard],pathMatch:'full',loadComponent:()=>import('../../screen-host').then(m=>m.ScreenHost),data:{base:"/operacion/pedido/entregar"}},
 {path:"pedido/editar",pathMatch:'full',loadComponent:()=>import('../../screen-host').then(m=>m.ScreenHost),data:{base:"/operacion/pedido/editar"}},
 {path:"pedido/cancelar",pathMatch:'full',loadComponent:()=>import('../../screen-host').then(m=>m.ScreenHost),data:{base:"/operacion/pedido/cancelar"}},
 {path:"pagos",pathMatch:'full',loadComponent:()=>import('../../screen-host').then(m=>m.ScreenHost),data:{base:"/operacion/pagos"}},

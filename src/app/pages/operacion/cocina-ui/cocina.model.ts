@@ -137,3 +137,8 @@ export function sampleActionLabel(target: KitchenStatus): string {
   if (target === 'Listo') return 'Simular pedido listo';
   return 'Simular entrega';
 }
+
+/** Etiquetas del recorrido real; las funciones de muestra conservan su contrato histórico. */
+export function kitchenActionLabel(target:KitchenStatus):string {
+  return target==='En preparación'?'Iniciar preparación':target==='Listo'?'Marcar listo':'Registrar entrega';
+}

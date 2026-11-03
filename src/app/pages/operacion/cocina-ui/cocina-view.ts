@@ -11,12 +11,13 @@ import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {cocinaPaginator} from './cocina-paginator';
 import {CocinaShell} from './cocina-shell';
 import {CocinaCard} from './cocina-card';
+import {PedidoAction} from './pedido-action';
 import {CocinaStore} from './cocina-store';
 import {KitchenOrder, MODALITY_LABELS, isActive, kitchenDestination, orderUnits, sampleDate, sampleTime, serviceLabel} from './cocina.model';
 
 @Component({selector: 'rp-cocina-view',
   providers:[{provide:MatPaginatorIntl,useFactory:cocinaPaginator}],
-  imports: [CurrencyPipe, RouterLink, MatButtonModule, MatCardModule, MatTableModule, MatProgressSpinnerModule, CocinaShell, CocinaCard, MatPaginatorModule],
+  imports: [CurrencyPipe, RouterLink, MatButtonModule, MatCardModule, MatTableModule, MatProgressSpinnerModule, CocinaShell, CocinaCard, MatPaginatorModule, PedidoAction],
   templateUrl: './cocina-view.html', styleUrl: './cocina-view.css'})
 export class CocinaView {
   readonly mode = input<'queue' | 'board' | 'detail' | 'preparation' | 'delivery' | 'delivered'>('queue');
