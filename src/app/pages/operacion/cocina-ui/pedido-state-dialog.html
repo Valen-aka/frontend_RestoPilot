@@ -1,8 +1,8 @@
 <h2 mat-dialog-title>{{ label }}</h2>
 <mat-dialog-content>
-  <p>Pedido de muestra <strong>#{{ command.id }}</strong></p>
+  <p>Pedido <strong>#{{ command.id }}</strong></p>
   <dl><div><dt>Estado actual</dt><dd>{{ command.expected }}</dd></div><div><dt>Estado siguiente</dt><dd>{{ command.target }}</dd></div></dl>
-  <p class="notice">Esta acción solo cambia la muestra local. No actualiza al restaurante ni envía notificaciones.</p>
+  <p class="notice">Confirma el cambio de estado de este pedido. El restaurante registrará la nueva etapa cuando el servidor la confirme.</p>
 </mat-dialog-content>
 <mat-dialog-actions align="end">
   <button mat-stroked-button type="button" [mat-dialog-close]="false" cdkFocusInitial [disabled]="submitted()">Volver sin cambios</button>

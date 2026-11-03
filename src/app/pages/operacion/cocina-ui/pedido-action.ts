@@ -1,10 +1,10 @@
-import {Component, DestroyRef, DOCUMENT, computed, inject, input} from '@angular/core';
+import {Component, DestroyRef, DOCUMENT, computed, effect, inject, input, untracked} from '@angular/core';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 import {Router} from '@angular/router';
 import {MatButtonModule} from '@angular/material/button';
 import {MatDialog, MatDialogRef} from '@angular/material/dialog';
 import {CocinaStore} from './cocina-store';
-import {KitchenCommand, NEXT_KITCHEN_STATUS, kitchenDestination, sampleActionLabel} from './cocina.model';
+import {KitchenCommand, NEXT_KITCHEN_STATUS, kitchenDestination, kitchenActionLabel} from './cocina.model';
 import {PedidoStateDialog} from './pedido-state-dialog';
 
 @Component({selector: 'rp-pedido-action', imports: [MatButtonModule],
@@ -20,10 +20,14 @@ export class PedidoAction {
   private dialogRef?: MatDialogRef<PedidoStateDialog, boolean>;
   readonly order = computed(() => this.store.findOrder(this.orderId()));
   readonly target = computed(() => {const order = this.order(); return order ? NEXT_KITCHEN_STATUS[order.status] : undefined;});
-  readonly label = computed(() => {const target = this.target(); return target ? sampleActionLabel(target) : '';});
-  readonly disabled = computed(() => this.store.queryState() !== 'ready' || !!this.store.problem() || this.store.actionBusy());
+  readonly label = computed(() => {const target = this.target(); return target ? kitchenActionLabel(target) : '';});
+  private dialogSession='';
+  readonly disabled = computed(() => !this.store.canAct(this.orderId()));
 
   constructor() {
+    effect(()=>{const key=this.store.sessionKey();untracked(()=>{
+      if(this.dialogRef && this.dialogSession!==key)this.dialogRef.close(false);
+    });});
     this.destroyRef.onDestroy(() => {
       if (this.dialogRef) {this.dialogRef.close(false); this.store.actionBusy.set(false);}
     });
@@ -35,6 +39,7 @@ export class PedidoAction {
     if (!order || !target) return;
     const trigger = event.currentTarget as HTMLButtonElement;
     const command: KitchenCommand = {id: order.id, expected: order.status, target};
+    this.dialogSession=this.store.sessionKey();
     this.store.actionBusy.set(true);
     this.dialogRef = this.dialog.open(PedidoStateDialog, {data: command, width: '480px',
       maxWidth: 'calc(100vw - 32px)', autoFocus: 'first-tabbable', restoreFocus: false});
@@ -45,15 +50,15 @@ export class PedidoAction {
         setTimeout(() => trigger.isConnected ? trigger.focus() : this.document.getElementById('kitchen-title')?.focus(), 0);
         return;
       }
-      const result = this.store.applyTransition(command);
-      this.store.actionBusy.set(false);
-      if (!result.ok) {
-        setTimeout(() => this.document.getElementById('kitchen-action-feedback')?.focus(), 0);
-        return;
-      }
-      const destination = kitchenDestination(result.order.status);
-      void this.router.navigate([destination.path], {queryParams: destination.vista ? {vista: destination.vista} : {},
-        state: {cocinaOrderId: result.order.id, cocinaOrigin: this.origin(), cocinaFocus: true}});
+      const key=this.store.sessionKey(),sourceUrl=this.router.url;
+      void this.store.applyTransition(command).then(result=>{
+        if(key!==this.store.sessionKey() || this.router.url!==sourceUrl)return;
+        if(!result.ok){setTimeout(()=>this.document.getElementById('kitchen-action-feedback')?.focus(),0);return;}
+        const destination=kitchenDestination(result.order.status);
+        void this.router.navigate([destination.path],{queryParams:{vista:destination.vista,pedidoId:result.order.id,
+          origen:this.origin(),page:this.store.page(),size:this.store.size()},
+          state:{cocinaOrderId:result.order.id,cocinaOrigin:this.origin(),cocinaFocus:true}});
+      });
     });
   }
 }

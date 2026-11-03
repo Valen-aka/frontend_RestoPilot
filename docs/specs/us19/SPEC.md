@@ -1,5 +1,7 @@
 # SPEC — US19: preparación, pedido listo y entrega
 
+Fase API — especificación 02/11/2026, implementación verificada 03/11/2026: consultar el [SPEC conjunto de integración de US15 y US19](../operacion-cocina-api/SPEC.md), rama feature/operacion-cocina-api. Esta nueva fase conserva la evidencia visual histórica y define contratos, permisos y aceptación; se implementará primero US15 y después US19.
+
 Revisión documental: 02/11/2026. Estado: frontend de muestra incorporado en develop; aceptación del equipo pendiente. Rama original: feature/operacion-cocina. Alineación documental: docs/alineacion-specs.
 
 Las secciones de ejecución fechadas conservan evidencia histórica. El estado actual se contrasta con develop, base 3685d07; no repetir como pendientes las etapas ya integradas. Referencias comprobadas: [registro Figma](../../REFERENCIAS-FIGMA.md).
@@ -301,3 +303,7 @@ S2-TSK-038, avisos reales y aceptación integrada siguen pendientes. No se creó
 Se verificaron en el archivo Figma original los IDs, nombres y dimensiones de las referencias de este documento. El [registro compartido](../../REFERENCIAS-FIGMA.md) identifica la única referencia histórica no verificable y delimita esta comprobación de metadatos. Las lecturas y capturas históricas obtenidas en la copia no se atribuyen retroactivamente al original.
 
 La revisión documental no vuelve a ejecutar el prototipo ni certifica equivalencia visual. Los recorridos locales se verifican por separado en test/flujos-integrados. No se implementan nuevas pantallas ni se cambian reglas de negocio por corregir estas referencias.
+
+### Integración API — 03/11/2026
+
+Implementadas preparación, listo y entrega con confirmación Material y PATCH real, conservación del pedido seleccionado, refresco de cola, rechazos y verificación de resultados inciertos. La evidencia anterior corresponde a la fase de muestras. Consultar el [SPEC conjunto](../operacion-cocina-api/SPEC.md) y la [guía de reproducción](../../GUIA-INTEGRACION-COCINA.md). La aceptación con el entorno compartido sigue pendiente; no se declara Done solo por la compilación o pruebas aisladas.

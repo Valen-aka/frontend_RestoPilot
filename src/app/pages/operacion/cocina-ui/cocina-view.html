@@ -1,28 +1,34 @@
-<rp-cocina-shell [active]="mode() === 'board' ? 'board' : isDetail() ? 'detail' : 'queue'">
+<rp-cocina-shell [apiMode]="true" [restaurantName]="store.restaurantName()" [restaurantId]="store.restaurantId()" [active]="mode() === 'board' ? 'board' : isDetail() ? 'detail' : 'queue'">
   <div class="heading"><p class="eyebrow">PEDIDOS OPERACIÓN</p><h1 id="kitchen-title" tabindex="-1">{{ title() }}</h1><p class="subtitle">{{ subtitle() }}</p>
-    <p class="sample-notice">Vista de muestra · Pedidos y clientes de ejemplo. Los cambios solo afectan a la muestra local y no envían avisos. Al recargar se vuelve a la muestra inicial.</p>
+    <p class="sample-notice">Consulta de pedidos del restaurante. La prioridad y los importes proceden del servidor.</p>
+    <button mat-stroked-button type="button" (click)="store.refresh()" [disabled]="!store.hasSession() || store.refreshing() || store.actionBusy()">{{ store.refreshing() ? 'Actualizando…' : isDetail() ? 'Actualizar pedido' : 'Actualizar cola' }}</button>
   </div>
+  @if(store.actionBusy()) {<p class="information" role="status">Operación en curso. Espera la confirmación antes de realizar otra acción.</p>}
+  @if(store.verificationId(); as id) {
+    <div class="stale-warning" role="alert"><p>El resultado del cambio del pedido #{{ id }} necesita verificarse. Las acciones permanecen bloqueadas.</p><button mat-stroked-button type="button" [disabled]="store.actionBusy()" (click)="store.verifyPending()">Verificar estado</button></div>
+  }
+  @if(store.queueIssue()) {<div class="stale-warning" role="status"><p>{{ store.queueIssue() }}</p><a mat-stroked-button routerLink="/operacion/pedidos" [queryParams]="{page:store.page(),size:store.size()}">Consultar cola</a></div>}
   @if (feedback(); as message) {
     <p id="kitchen-action-feedback" class="action-feedback" tabindex="-1" [class.action-error]="message.kind === 'error'" [attr.role]="message.kind === 'error' ? 'alert' : 'status'" aria-live="polite">{{ message.text }}</p>
   }
   @if (!isDetail() && retained(); as order) {
     <p class="retained-order">Pedido seleccionado #{{ order.id }} · {{ order.status }}.
-      <a [routerLink]="destination(order).path" [queryParams]="{vista: destination(order).vista}" [state]="{cocinaOrderId: order.id, cocinaOrigin: mode() === 'board' ? 'board' : 'queue'}">Consultar pedido seleccionado</a>
+      <a [routerLink]="destination(order).path" [queryParams]="{vista: destination(order).vista, pedidoId: order.id, origen: origin}" [state]="{cocinaOrderId: order.id, cocinaOrigin: mode() === 'board' ? 'board' : 'queue'}">Consultar pedido seleccionado</a>
     </p>
   }
   @if (store.queryState() === 'loading') {
-    <mat-card appearance="outlined" class="state-card" role="status" aria-busy="true"><mat-spinner diameter="32" aria-hidden="true"/><h2>Consultando la cola de muestra…</h2></mat-card>
+    <mat-card appearance="outlined" class="state-card" role="status" aria-busy="true"><mat-spinner diameter="32" aria-hidden="true"/><h2>Consultando pedidos…</h2></mat-card>
   } @else if (store.queryState() === 'error' || (store.queryState() !== 'stale' && store.problem())) {
-    <mat-card appearance="outlined" class="state-card" role="alert"><h2>No pudimos mostrar la cola</h2><p>{{ store.problem() || 'No se pudo completar la consulta local. No se modificó ningún pedido.' }}</p><button mat-stroked-button type="button" (click)="store.reopenSample()">Reabrir muestra</button></mat-card>
+    <mat-card appearance="outlined" class="state-card" role="alert"><h2>No pudimos mostrar la cola</h2><p>{{ store.problem() || 'No se pudo completar la consulta.' }}</p><button mat-stroked-button type="button" (click)="store.refresh()">Volver a consultar</button></mat-card>
   } @else {
     @if (store.queryState() === 'stale') {
-      <div class="stale-warning" role="status"><strong>No se pudo actualizar la cola.</strong><p>Se muestra la lectura anterior de ejemplo. Sus datos no están confirmados como actuales.</p><button mat-stroked-button type="button" (click)="store.reopenSample()">Reabrir muestra</button></div>
+      <div class="stale-warning" role="status"><strong>No se pudo actualizar la cola.</strong><p>Se conserva la lectura anterior. Sus datos no están confirmados como actuales.</p><button mat-stroked-button type="button" (click)="store.refresh()">Volver a consultar</button></div>
     }
     @if (isDetail()) {
       @if (selected(); as order) {
         @if (!stageMatches()) {
           <div class="stage-warning" role="status"><p>Esta vista no corresponde al estado actual: {{ order.status }}. Abrir una dirección no cambia el pedido.</p>
-            <a mat-stroked-button [routerLink]="destination(order).path" [queryParams]="{vista: destination(order).vista}" [state]="{cocinaOrderId: order.id, cocinaOrigin: origin}">Consultar estado actual</a>
+            <a mat-stroked-button [routerLink]="destination(order).path" [queryParams]="{vista: destination(order).vista, pedidoId: order.id, origen: origin}" [state]="{cocinaOrderId: order.id, cocinaOrigin: origin}">Consultar estado actual</a>
           </div>
         }
         <div class="detail-grid">
@@ -30,36 +36,35 @@
             <h2>Detalle del pedido</h2><span class="status" [class.preparing]="order.status === 'En preparación'" [class.completed]="order.status === 'Listo' || order.status === 'Entregado'" [class.cancelled]="order.status === 'Cancelado'">{{ order.status }}</span>
             <div class="table-region" tabindex="0" role="region" aria-label="Desglose del pedido; desplaza para ver todas las columnas">
               <table mat-table [dataSource]="order.lines" aria-label="Platos del pedido">
-                <ng-container matColumnDef="name"><th mat-header-cell *matHeaderCellDef scope="col">Plato</th><td mat-cell *matCellDef="let line">{{ line.name }}</td></ng-container>
+                <ng-container matColumnDef="name"><th mat-header-cell *matHeaderCellDef scope="col">Plato</th><td mat-cell *matCellDef="let line">{{ line.name }} @if (line.notes) {<small> · {{ line.notes }}</small>}</td></ng-container>
                 <ng-container matColumnDef="quantity"><th mat-header-cell *matHeaderCellDef scope="col">Cantidad</th><td mat-cell *matCellDef="let line">{{ line.quantity }}</td></ng-container>
                 <ng-container matColumnDef="unitPrice"><th mat-header-cell *matHeaderCellDef scope="col">Precio unitario</th><td mat-cell *matCellDef="let line">{{ line.unitCents / 100 | currency:'PEN':'S/ ':'1.2-2' }}</td></ng-container>
-                <ng-container matColumnDef="subtotal"><th mat-header-cell *matHeaderCellDef scope="col">Subtotal</th><td mat-cell *matCellDef="let line">{{ line.unitCents * line.quantity / 100 | currency:'PEN':'S/ ':'1.2-2' }}</td></ng-container>
+                <ng-container matColumnDef="subtotal"><th mat-header-cell *matHeaderCellDef scope="col">Subtotal</th><td mat-cell *matCellDef="let line">{{ (line.subtotalCents ?? line.unitCents * line.quantity) / 100 | currency:'PEN':'S/ ':'1.2-2' }}</td></ng-container>
                 <tr mat-header-row *matHeaderRowDef="detailColumns"></tr><tr mat-row *matRowDef="let row; columns: detailColumns"></tr>
               </table>
             </div>
             <p class="table-help">Desplaza la tabla para consultar todas las columnas.</p>
             <p class="selection-count">{{ units(order) }} {{ units(order) === 1 ? 'plato' : 'platos' }} <span>{{ order.totalCents / 100 | currency:'PEN':'S/ ':'1.2-2' }}</span></p>
             <p class="selection-total">Total del pedido <strong>{{ order.totalCents / 100 | currency:'PEN':'S/ ':'1.2-2' }}</strong></p>
-            <p class="total-note">Importe registrado en esta muestra. No se cobra desde esta pantalla.</p>
+            <p class="total-note">Importe registrado por el servidor. No se cobra desde esta pantalla.</p>
           </mat-card>
           <mat-card appearance="outlined" class="service-card"><h2>Servicio</h2><dl>
-            @if (order.customer) {<div><dt>Cliente de muestra</dt><dd>{{ order.customer }}</dd></div>}
+            @if (order.customer) {<div><dt>Cliente</dt><dd>{{ order.customer }}</dd></div>}
             <div><dt>Modalidad</dt><dd>{{ labels[order.modality] }}</dd></div>
             @if (order.modality === 'SALON' && order.table) {<div><dt>Mesa</dt><dd>{{ order.table }}</dd></div>}
-            @if (order.modality === 'DELIVERY' && order.address) {<div><dt>Dirección de entrega de muestra</dt><dd>{{ order.address }}</dd></div>}
-            <div><dt>Solicitud de muestra</dt><dd>{{ date(order) }} · {{ time(order) }} · hora de Lima</dd></div><div><dt>Pago</dt><dd>{{ order.payment }}</dd></div>
-          </dl><p class="read-only">Solo se simulan cambios en esta muestra. No se registran cobros ni se envían avisos.</p>
-            @if (stageMatches()) {<rp-pedido-action [orderId]="order.id" [origin]="origin"/>}</mat-card>
+            @if (order.modality === 'DELIVERY' && order.address) {<div><dt>Dirección de entrega</dt><dd>{{ order.address }}</dd></div>}
+            <div><dt>Solicitud</dt><dd>{{ date(order) }} · {{ time(order) }} · hora de Lima</dd></div>
+          </dl><p class="read-only">Los cambios de estado se registran al recibir la confirmación del servidor. No se registran cobros desde esta pantalla.</p>@if(stageMatches()) {<rp-pedido-action [orderId]="order.id" [origin]="origin"/>}</mat-card>
         </div>
       } @else {
-        <mat-card appearance="outlined" class="state-card" role="status"><h2>{{ selectedId() ? 'No se encontró el pedido en este restaurante' : 'Selecciona un pedido para consultarlo' }}</h2><p>No hay información disponible para esta selección. Abre la cola o el tablero para consultar una comanda de muestra.</p></mat-card>
+        <mat-card appearance="outlined" class="state-card" role="status"><h2>{{ selectedId() ? 'No se encontró el pedido en este restaurante' : 'Selecciona un pedido para consultarlo' }}</h2><p>No hay información disponible para esta selección. Abre la cola o el tablero para consultar una comanda.</p></mat-card>
       }
-      <a mat-stroked-button class="return-link" [routerLink]="returnPath" [state]="{cocinaReturnId: selectedId()}">{{ origin === 'board' ? 'Volver al tablero' : 'Volver a la cola' }}</a>
+      <a mat-stroked-button class="return-link" [routerLink]="returnPath" [queryParams]="{page: store.page(), size: store.size()}" [state]="{cocinaReturnId: selectedId()}">{{ origin === 'board' ? 'Volver al tablero' : 'Volver a la cola' }}</a>
     } @else if (!store.displayed().length) {
       <mat-card appearance="outlined" class="state-card" role="status"><h2>No hay pedidos para preparar</h2><p>La cola no contiene pedidos Pendientes ni En preparación.</p></mat-card>
     } @else if (mode() === 'queue') {
       <mat-card appearance="outlined" class="queue-card"><h2>Cola del restaurante</h2>
-        <p class="queue-count" role="status">{{ store.displayed().length }} pedidos activos de muestra</p>
+        <p class="queue-count" role="status">{{ store.displayed().length }} pedidos activos en esta página · {{ store.total() }} en total</p>
         <div class="table-region" tabindex="0" role="region" aria-label="Cola de pedidos; desplaza para ver todas las columnas">
           <table mat-table [dataSource]="store.displayed()" [trackBy]="trackOrder" aria-label="Cola del restaurante">
             <ng-container matColumnDef="id"><th mat-header-cell *matHeaderCellDef scope="col">Pedido</th><td mat-cell *matCellDef="let order" [attr.data-order-id]="order.id">#{{ order.id }}</td></ng-container>
@@ -67,13 +72,13 @@
             <ng-container matColumnDef="modality"><th mat-header-cell *matHeaderCellDef scope="col">Modalidad</th><td mat-cell *matCellDef="let order">{{ serviceLabel(order) }}</td></ng-container>
             <ng-container matColumnDef="status"><th mat-header-cell *matHeaderCellDef scope="col">Estado</th><td mat-cell *matCellDef="let order"><span class="status" [class.preparing]="order.status === 'En preparación'" [class.completed]="order.status === 'Listo' || order.status === 'Entregado'" [class.cancelled]="order.status === 'Cancelado'">{{ order.status }}</span></td></ng-container>
             <ng-container matColumnDef="total"><th mat-header-cell *matHeaderCellDef scope="col">Importe</th><td mat-cell *matCellDef="let order">{{ order.totalCents / 100 | currency:'PEN':'S/ ':'1.2-2' }}</td></ng-container>
-            <ng-container matColumnDef="action"><th mat-header-cell *matHeaderCellDef scope="col">Consulta</th><td mat-cell *matCellDef="let order"><a mat-button routerLink="/operacion/pedido" [state]="{cocinaOrderId: order.id, cocinaOrigin: 'queue'}" [attr.aria-label]="'Consultar pedido #' + order.id">Consultar</a></td></ng-container>
+            <ng-container matColumnDef="action"><th mat-header-cell *matHeaderCellDef scope="col">Consulta</th><td mat-cell *matCellDef="let order"><a mat-button routerLink="/operacion/pedido" [queryParams]="{pedidoId: order.id, origen: 'queue'}" [state]="{cocinaOrderId: order.id, cocinaOrigin: 'queue'}" [attr.aria-label]="'Consultar pedido #' + order.id">Consultar</a></td></ng-container>
             <tr mat-header-row *matHeaderRowDef="columns"></tr><tr mat-row *matRowDef="let row; columns: columns"></tr>
           </table>
         </div><p class="table-help">Desplaza la tabla para consultar todas las columnas.</p>
       </mat-card>
-      <p class="information">Se muestran únicamente los pedidos pendientes y en preparación del restaurante de muestra.</p>
-      <a mat-stroked-button class="return-link" routerLink="/operacion/cocina">Ver tablero de cocina</a>
+      <p class="information">Se muestran únicamente los pedidos pendientes y en preparación del restaurante de la sesión.</p>
+      <a mat-stroked-button class="return-link" routerLink="/operacion/cocina" [queryParams]="{page: store.page(), size: store.size()}">Ver tablero de cocina</a>
     } @else {
       <div class="board">@for (group of groups(); track group.state) {
         <section class="board-column" [attr.aria-label]="group.label"><h2>{{ group.label }} · {{ group.orders.length }}</h2>
@@ -82,7 +87,12 @@
         </section>
       }</div>
       <p class="information">Prioridad: mayor complejidad (Alta → Media → Baja); después mayor tiempo de preparación, pedido más antiguo y desempate estable por identificador.</p>
-      <a mat-stroked-button class="return-link" routerLink="/operacion/pedidos">Ver cola del restaurante</a>
+      <a mat-stroked-button class="return-link" routerLink="/operacion/pedidos" [queryParams]="{page: store.page(), size: store.size()}">Ver cola del restaurante</a>
     }
+  }
+
+  @if (!isDetail() && store.hasSession() && store.queryState() !== 'loading' && store.queryState() !== 'error') {
+    <p class="information">El tablero y sus columnas corresponden a la página {{ store.page() + 1 }} de la cola priorizada.</p>
+    <mat-paginator aria-label="Páginas de la cola de cocina" [length]="store.total()" [pageIndex]="store.page()" [pageSize]="store.size()" [pageSizeOptions]="[10,20,50]" [disabled]="store.refreshing() || store.actionBusy()" (page)="changePage($event)" showFirstLastButtons />
   }
 </rp-cocina-shell>

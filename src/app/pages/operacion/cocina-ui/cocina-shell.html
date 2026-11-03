@@ -1,12 +1,14 @@
 <a class="skip-link" href="#kitchen-content" (click)="skip($event)">Saltar al contenido</a>
 <div class="operation-shell">
-  <aside class="sidebar" aria-label="Espacio de trabajo de muestra" (keydown.escape)="closeMenu($event)">
+  <aside class="sidebar" aria-label="Espacio de trabajo" (keydown.escape)="closeMenu($event)">
     <a class="brand" routerLink="/operacion" aria-label="RestoPilot, inicio de operación">
       <span class="brand-image" aria-hidden="true"><img src="/assets/carrito/brand-reference.png" alt="" width="48" height="48"><span></span></span>
       <span>Resto<span class="brand-green">Pilot</span><small>Tu restaurante, en piloto automático</small></span>
     </a>
     @if (mobile()) {<button mat-button id="kitchen-menu-toggle" type="button" [attr.aria-expanded]="menuOpen()" aria-controls="kitchen-navigation" (click)="menuOpen.set(!menuOpen())">{{ menuOpen() ? 'Ocultar navegación' : 'Mostrar navegación' }}</button>}
+    @if(apiMode()) {<div class="restaurant"><span class="avatar" aria-hidden="true">RP</span><div><strong>{{ restaurantName() }}</strong><small>Restaurante ID {{ restaurantId() ?? 'no asignado' }}</small></div></div>} @else {
     <div class="restaurant"><span class="avatar" aria-hidden="true">LM</span><div><strong>La Mesa Verde</strong><small>Lima · Restaurante de muestra</small></div></div>
+    }
     <nav id="kitchen-navigation" aria-label="Navegación de operación" [hidden]="mobile() && !menuOpen()">
       <p class="nav-label">TU ESPACIO DE TRABAJO</p>
       @for (link of links; track link.path) {
@@ -14,10 +16,12 @@
           [attr.aria-current]="activePath() === link.path ? 'page' : null"><span aria-hidden="true">{{ link.icon }}</span>{{ link.label }}</a>
       }
     </nav>
+    @if(apiMode()) {<div class="sample-user"><strong>Operación del restaurante</strong><small>Sesión de la aplicación</small><button mat-button type="button" (click)="logout()">Cerrar sesión</button></div>} @else {
     <div class="sample-user"><strong>Vista de muestra</strong><small>Sin sesión conectada</small><a routerLink="/auth/login">Salir de la muestra →</a></div>
+    }
   </aside>
   <div class="workspace">
-    <header><p>La Mesa Verde <span aria-hidden="true">/</span> <strong>{{ sectionLabel() }}</strong></p><span class="sample-badge">Datos de muestra</span></header>
+    <header><p>{{ apiMode() ? restaurantName() : 'La Mesa Verde' }} <span aria-hidden="true">/</span> <strong>{{ sectionLabel() }}</strong></p><span class="sample-badge">{{ apiMode() ? 'Consulta API' : 'Datos de muestra' }}</span></header>
     <main id="kitchen-content" tabindex="-1"><ng-content /></main>
   </div>
 </div>
