@@ -1,3 +1,4 @@
+import {reservaConsultaGuard} from '../../core/guards/reserva-consulta.guard';
 import {reservaAtencionGuard, reservaPendingGuard} from '../../core/guards/reserva-atencion.guard';
 import {Routes} from '@angular/router';
 import {operacionCocinaGuard, cocinaPendingGuard} from '../../core/guards/operacion-cocina.guard';
@@ -27,9 +28,9 @@ const children:Routes=[
 {path:"mesa/nueva",pathMatch:'full',loadComponent:()=>import('../../screen-host').then(m=>m.ScreenHost),data:{base:"/operacion/mesa/nueva"}},
 {path:"mesa/editar",pathMatch:'full',loadComponent:()=>import('../../screen-host').then(m=>m.ScreenHost),data:{base:"/operacion/mesa/editar"}},
 {path:"mesa/desactivar",pathMatch:'full',loadComponent:()=>import('../../screen-host').then(m=>m.ScreenHost),data:{base:"/operacion/mesa/desactivar"}},
-{path:"reservas",pathMatch:'full',loadComponent:()=>import('../../screen-host').then(m=>m.ScreenHost),data:{base:"/operacion/reservas"}},
+{path:"reservas",canActivate:[reservaConsultaGuard],pathMatch:'full',loadComponent:()=>import('../../screen-host').then(m=>m.ScreenHost),data:{base:"/operacion/reservas"}},
 {path:"reserva/nueva",pathMatch:'full',loadComponent:()=>import('../../screen-host').then(m=>m.ScreenHost),data:{base:"/operacion/reserva/nueva"}},
-{path:"reserva",canActivate:[reservaAtencionGuard],canDeactivate:[reservaPendingGuard],runGuardsAndResolvers:'paramsOrQueryParamsChange',pathMatch:'full',loadComponent:()=>import('../../screen-host').then(m=>m.ScreenHost),data:{base:"/operacion/reserva"}},
+{path:"reserva",canActivate:[reservaAtencionGuard,reservaConsultaGuard],canDeactivate:[reservaPendingGuard],runGuardsAndResolvers:'paramsOrQueryParamsChange',pathMatch:'full',loadComponent:()=>import('../../screen-host').then(m=>m.ScreenHost),data:{base:"/operacion/reserva"}},
 {path:"reserva/rechazar",pathMatch:'full',loadComponent:()=>import('../../screen-host').then(m=>m.ScreenHost),data:{base:"/operacion/reserva/rechazar"}},
 {path:"reserva/llegada",canActivate:[reservaAtencionGuard],canDeactivate:[reservaPendingGuard],runGuardsAndResolvers:'paramsOrQueryParamsChange',pathMatch:'full',loadComponent:()=>import('../../screen-host').then(m=>m.ScreenHost),data:{base:"/operacion/reserva/llegada"}},
 {path:"reserva/atendiendo",canActivate:[reservaAtencionGuard],canDeactivate:[reservaPendingGuard],runGuardsAndResolvers:'paramsOrQueryParamsChange',pathMatch:'full',loadComponent:()=>import('../../screen-host').then(m=>m.ScreenHost),data:{base:"/operacion/reserva/atendiendo"}},

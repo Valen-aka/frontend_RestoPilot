@@ -2,7 +2,7 @@
 
 Fecha: 03/11/2026. Rama: feature/reserva-expirada-api.
 Base frontend: origin/develop actualizado, 5b351c7; incluye la integración API de US25.
-Estado: especificación preparada; implementación y aceptación integrada pendientes.
+Estado: US26 implementada y verificada en entornos aislados; aceptación con el entorno compartido pendiente. Consultar la ejecución al final.
 
 ## 1. Objetivo y fuentes
 
@@ -152,4 +152,22 @@ Ejecutar check/build y pruebas pertinentes al implementar. La entrega documental
 - Frontend: feat(us26): integra reservas expiradas y disponibilidad con la API.
 - Backend: feat(us26): permite verificar disponibilidad tras la expiración de reservas.
 
-Esta entrega crea únicamente el SPEC y sus referencias. No implementa listados, disponibilidad, guards o cambios del backend. No se crean commits, push ni PR automáticamente. La siguiente entrega implementará US26 con las pruebas aquí definidas.
+La entrega inicial creó únicamente el SPEC y sus referencias. La implementación posterior se registra a continuación. No se crean commits, push ni PR automáticamente.
+
+## 12. Ejecución US26 — 03/11/2026
+
+ReservaService incorpora propias, restaurante y disponibilidad con validadores de los formatos mensaje/reservas y mensaje/mesas. ReservaExpiradaStore consulta detalle/listado según perfil, valida propiedad del cliente o pertenencia al restaurante y rechaza una colección ajena sin filtrarla para aparentar éxito. No usa ReservaMuestraStore, IDs predeterminados, reloj local ni mutaciones de estado.
+
+Las rutas conservan sus componentes, variantes y reservaId. Los guards protegen historial y variantes expiradas sin bloquear el detalle genérico ajeno a esta historia. El retorno del detalle espera la carga real para devolver foco a la fila. Se conservan todos los estados recibidos, incluidas fechas de llegada/finalización, y los enlaces operativos hacia US25.
+
+Detalle e historial muestran expiradaEn guardada. Si falta, se informa sin calcular una marca alternativa. La causa permanece neutral porque el DTO no guarda estado previo ni motivo de expiración. Se retiraron mensajes, dirección y horario ficticios de restaurante; no se añadieron recursos ni un rediseño. El marco del cliente identifica la sesión de aplicación y permite salir.
+
+La consulta puntual de disponibilidad utiliza los parámetros del registro confirmado y compara mesaId con la respuesta, sin una petición por fila. Solo disponible=true produce «Mesa disponible para este horario». Mesa ausente, respuesta incompatible o error conservan el estado de reserva y dejan la disponibilidad sin verificar. Una nueva consulta de la reserva invalida disponibilidad anterior y vuelve a consultarla si el usuario ya la había solicitado y sigue EXPIRADA.
+
+Backend: se separó validarConsultaDisponibilidad de validarRestauranteYHorario. GET admite rangos ya iniciados/pasados y conserva controles de restaurante, rango comercial, horas y capacidad; registrar/reprogramar mantiene el rechazo de fechas/horas pasadas. No se añadieron endpoints, campos, entidades, migraciones o reglas nuevas de expiración. Se adaptó la prueba anterior que esperaba rechazo de una consulta pasada a la nueva semántica de lectura, conservando la comprobación de escritura rechazada.
+
+Verificación: check y build correctos; 79 pruebas frontend de contratos/stores/infraestructura correctas (17 US26); 18 recorridos US26 en Chrome y 23 de regresión US25 contra HTTP simulado. Se verificaron ambos perfiles a 320/390/768/1440, foco al regresar, fechas, rechazo de datos ajenos, recuperación y disponibilidad; no hubo mutaciones desde US26. El recorrido conjunto llegada → completar → historial → detalle conserva COMPLETADA y el ID.
+
+Backend: 11 pruebas nuevas HTTP/JWT/Clock/H2 correctas y 53 de regresión (ReglasNegocioIntegrationTest 26, CicloReservaIntegrationTest 19, Us25HttpIntegrationTest 8), total 64. Cubren límites exactos, historial, disponibilidad libre al expirar, ocupación posterior válida, llegada/completada no expirables por ausencia, concurrencia sin duplicados y solicitudes tardías que no reactivan la reserva.
+
+Reproducción y límites: [guía compartida de reservas](../../GUIA-INTEGRACION-RESERVAS.md). Las capturas inspeccionadas no acreditan una comparación nueva con Figma ni auditoría completa de accesibilidad. La aceptación con autenticación/PostgreSQL del equipo y el despliegue siguen pendientes. No se crearon commits, push ni PR automáticamente.
