@@ -2534,6 +2534,22 @@
         "src/app/layouts/cliente-layout/cliente-layout.css"
       ],
       "missingFiles": []
+    },
+    {
+      "owner": "Francesco Meza",
+      "kind": "shared",
+      "name": "workspace-shell",
+      "component": "WorkspaceShell",
+      "folder": "src/app/components/workspace-shell/",
+      "references": "Infraestructura visual común de las funcionalidades de Francesco; ampliación técnica del reparto original",
+      "files": [
+        "src/app/components/workspace-shell/workspace-shell.ts",
+        "src/app/components/workspace-shell/workspace-shell.html",
+        "src/app/components/workspace-shell/workspace-shell.css",
+        "src/app/components/workspace-shell/workspace-pages.css",
+        "public/assets/workspace-logo.webp"
+      ],
+      "missingFiles": []
     }
   ]
 }
