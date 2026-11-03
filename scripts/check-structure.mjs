@@ -1,8 +1,34 @@
 import {existsSync,readFileSync,readdirSync} from 'node:fs';
 const frames=JSON.parse(readFileSync('src/app/screen-manifest.json','utf8'));
 if(frames.length!==120||new Set(frames.map(f=>f.slug)).size!==120)throw Error('Faltan pantallas o hay identificadores repetidos');
-for(const f of frames){for(const p of f.files)if(!existsSync(p))throw Error('Falta '+p);if(typeof f.contenidoImplementado!=='boolean')throw Error('Estado visual inválido: '+f.slug);}
-const dialogs=readdirSync('src/app/dialogs',{withFileTypes:true}).filter(d=>d.isDirectory());
-if(dialogs.length!==8)throw Error('Se requieren los ocho modales de la estructura');
-for(const d of dialogs)for(const ext of ['ts','html','css'])if(!existsSync('src/app/dialogs/'+d.name+'/'+d.name+'-dialog.'+ext))throw Error('Falta archivo del modal '+d.name);
-console.log('120 pantallas y 8 modales verificados; '+frames.filter(f=>f.contenidoImplementado).length+' vistas implementadas visualmente. Integración pendiente.');
+const implemented=[];
+for(const f of frames){
+  if(typeof f.contenidoImplementado!=='boolean')throw Error('Estado de implementación inválido: '+f.slug);
+  for(const p of f.files)if(!existsSync(p))throw Error('Falta '+p);
+  if(f.contenidoImplementado){
+    const html=f.files.find(p=>p.endsWith('.html'));
+    const content=html?readFileSync(html,'utf8').replace(/<!--[\s\S]*?-->/g,'').trim():'';
+    if(!content)throw Error('Pantalla marcada como implementada sin plantilla: '+f.slug);
+    if(!f.status||/^(pendiente|to do)$/i.test(f.status.trim()))throw Error('Estado no refleja la implementación: '+f.slug);
+    implemented.push(f.slug);
+  }
+}
+console.log('120 escenarios conservados. '+implemented.length+' interfaces declaradas; '+(120-implemented.length)+' pendientes. Este chequeo estructural no valida integración ni aceptación.');
+
+const expectedDialogs = [
+  'cliente-reserva-cancelar', 'op-categoria-eliminar', 'op-mesa-desactivar',
+  'op-pedido-cancelar', 'op-plato-disponibilidad', 'op-plato-eliminar',
+  'op-reserva-cancelar', 'op-reservas-modulo-confirmar',
+];
+const dialogFolders = readdirSync('src/app/dialogs', {withFileTypes: true})
+  .filter(entry => entry.isDirectory()).map(entry => entry.name);
+if (dialogFolders.length !== expectedDialogs.length) {
+  throw Error('Deben conservarse las ocho carpetas de modales');
+}
+for (const dialog of expectedDialogs) {
+  for (const extension of ['ts', 'html', 'css']) {
+    const path = `src/app/dialogs/${dialog}/${dialog}-dialog.${extension}`;
+    if (!existsSync(path)) throw Error('Falta ' + path);
+  }
+}
+

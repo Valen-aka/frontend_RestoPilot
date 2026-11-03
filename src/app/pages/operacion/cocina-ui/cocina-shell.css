@@ -1,0 +1,37 @@
+@font-face{font-family:'Cocina Roboto';src:url('/assets/pedido/fonts/roboto.ttf') format('truetype');font-weight:100 900;font-display:swap}
+@font-face{font-family:'Cocina Open Sans';src:url('/assets/pedido/fonts/open-sans.ttf') format('truetype');font-weight:300 800;font-display:swap}
+:host{display:block;font-family:'Cocina Open Sans',Arial,sans-serif;color:var(--rp-ink)}
+*{min-width:0}
+.operation-shell{display:grid;grid-template-columns:238px minmax(0,1fr);min-height:100dvh;background:#f5f6f2}
+.sidebar{background:var(--rp-navy);padding:28px 20px;display:flex;flex-direction:column;gap:30px;color:#c4d6df}
+.brand{display:flex;gap:10px;align-items:center;text-decoration:none;color:#fff;font:700 21px/1.2 'Cocina Roboto',Arial,sans-serif;letter-spacing:-.8px}
+.brand-green{color:#58bb8d}
+.brand small{display:block;text-transform:uppercase;font:400 7px/1.6 'Cocina Open Sans',Arial,sans-serif;letter-spacing:1.5px;color:#b0c2c6;margin-top:5px}
+.brand-image{position:relative;display:block;flex:none;width:48px;height:48px;border-radius:10px;overflow:hidden}
+.brand-image img{position:absolute;inset:0;width:48px;height:48px;object-fit:contain}
+.brand-image>span{position:absolute;inset:0;background:#fff}
+.restaurant{border:1px solid #35516a;border-radius:9px;padding:12px;display:flex;align-items:center;gap:10px;font-size:12px}
+.restaurant strong,.sample-user strong{color:#fff;font-family:'Cocina Roboto',Arial,sans-serif;font-size:12px}
+.restaurant small,.sample-user small{display:block;font-size:10px;margin-top:6px;line-height:1.6}
+.avatar{background:#25465d;border-radius:6px;padding:10px 5px;color:#8cd0b3;font-size:12px;flex:none}
+.nav-label{font-size:8px;letter-spacing:2px;margin:0 10px 16px;color:#b0c2c6}
+nav{display:grid;gap:5px}
+nav[hidden]{display:none}
+nav a{display:flex;gap:14px;align-items:center;min-height:44px;text-decoration:none;padding:10px 12px;color:#c4d6df;border-left:3px solid transparent;border-radius:7px;font-size:12px;overflow-wrap:anywhere}
+nav a>span{font-size:17px;width:18px;flex:none;color:#b0c2c6}
+nav a:hover,nav a.active{background:#1b4b58;color:#a3e1bf;border-left-color:#58bb8d}
+.sample-user{margin-top:auto;padding-top:30px;border-top:1px solid #35516a}
+.sample-user a{display:inline-flex;align-items:center;min-height:44px;color:#bfe9d3;text-decoration:none;font-size:11px;margin-top:8px}
+.workspace{min-width:0}
+header{background:#fff;min-height:77px;border-bottom:1px solid #e2e8e7;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:16px 38px;font-size:11px;color:#596d77}
+header p{font-size:11px;line-height:1.6}header p>span{margin-inline:10px}header strong{color:var(--rp-navy);font-weight:600}
+.sample-badge{padding:6px 10px;background:#e6f4ed;color:var(--rp-primary);border-radius:6px;font-size:10px;white-space:nowrap}
+main{max-width:1450px;margin-inline:auto;padding:38px 38px 65px}
+main:focus{outline:none}
+.skip-link{position:fixed;left:16px;top:8px;transform:translateY(-160%);z-index:100;background:#fff;border:1px solid var(--rp-primary);padding:12px 18px;color:var(--rp-navy);border-radius:8px}
+.skip-link:focus{transform:none}
+:where(a,button):focus-visible{outline:3px solid #58bb8d;outline-offset:3px}
+#kitchen-menu-toggle{color:#c4f1d9;align-self:flex-start;min-height:44px;font-size:12px}
+@media(max-width:1100px){main{padding-inline:26px}header{padding-inline:26px}}
+@media(max-width:900px){.operation-shell{grid-template-columns:minmax(0,1fr)}.sidebar{padding:20px;gap:16px}.brand{max-width:320px}.restaurant,.sample-user{display:none}nav{grid-template-columns:1fr 1fr}.nav-label{grid-column:1/-1;margin-bottom:0}nav a{font-size:12px}header{min-height:55px;padding:14px 20px}main{padding:28px 18px 60px}}
+@media(max-width:360px){header{flex-wrap:wrap;gap:8px}nav{grid-template-columns:1fr}.brand small{font-size:6px;letter-spacing:1px}}

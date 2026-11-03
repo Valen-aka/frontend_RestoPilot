@@ -1,0 +1,14 @@
+@if (status() === 'Cancelado') {
+  <p class="cancelled">Cancelado</p>
+} @else {
+  <ol aria-label="Avance del pedido" class="progress">
+    @for (stage of stages; track stage; let i = $index) {
+      <li [class.reached]="i <= activeIndex()" [class.current]="i === activeIndex()"
+        [attr.aria-current]="i === activeIndex() ? 'step' : null">
+        <span class="step-marker" aria-hidden="true">{{ i <= activeIndex() ? '✓' : i + 1 }}</span>
+        <span>{{ stage }}<span class="sr-only">: {{ i < activeIndex() ? 'completado' : i === activeIndex() ? 'estado actual' : 'pendiente' }}</span></span>
+      </li>
+    }
+  </ol>
+}
+<p class="status-summary" role="status" aria-live="polite" aria-atomic="true">{{ summary() }}</p>

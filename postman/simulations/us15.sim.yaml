@@ -1,0 +1,6 @@
+simulation: restopilot-us15
+routing: path
+mocks:
+  - name: restopilot-us15
+    routeKey: api
+    path: postman/mocks/restopilot-us15/config.yaml
