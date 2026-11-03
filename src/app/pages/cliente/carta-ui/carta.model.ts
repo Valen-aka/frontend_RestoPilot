@@ -12,7 +12,7 @@ export function cartaContext(params: {getAll(name: string): string[]}, detail: b
     invalid: values.some((v, i) => v.length > 0 && readId(v) === null) ||
       (!!categoriaId && !restauranteId) || (detail && (!platoId || !restauranteId))};
 }
-/** Solo URL web o recurso local; nunca imÃ¡genes de muestra como respaldo. */
+/** Solo URL web o recurso local; nunca imágenes de muestra como respaldo. */
 export function dishImage(value: string | null): string | null {
   if (!value) return null;
   if (/^\/(?!\/)[^\\]*$/.test(value)) return value;

@@ -7,9 +7,9 @@ import {readCategorias, readCartaPlato} from '../models/catalogo-query.model';
 import {positiveId} from '../models/pedido-api.model';
 
 function checkedList<T>(value:unknown, valid:(item:T)=>boolean): readonly T[] {
-  if (!Array.isArray(value) || value.some(item => !item || typeof item !== 'object' || !valid(item as T))) throw new Error('Los datos del catÃ¡logo no son vÃ¡lidos.');
+  if (!Array.isArray(value) || value.some(item => !item || typeof item !== 'object' || !valid(item as T))) throw new Error('Los datos del catálogo no son válidos.');
   const ids = value.map(item => item.id);
-  if (new Set(ids).size !== ids.length) throw new Error('El catÃ¡logo contiene identificadores repetidos.');
+  if (new Set(ids).size !== ids.length) throw new Error('El catálogo contiene identificadores repetidos.');
   return value;
 }
 @Injectable({providedIn:'root'})

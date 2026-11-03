@@ -60,7 +60,7 @@ Acceso sigue asignado a otra tarea: no implementar su formulario ni introducir u
 
 ## Diseño y accesibilidad
 
-Fuente autorizada: Figma original wBq85sZ8G5W5RQ1RmQmdqg, página 5:92; aplicar tokens/Material del SPEC común. El 03/11/2026 get_design_context no entregó contexto y metadata/screenshot fueron bloqueados por límite MCP Starter. No se acredita comparación visual. La decisión de usar provisionalmente la base visual existente se consulta al usuario; no afirmar fidelidad verificada.
+Fuente autorizada: Figma original wBq85sZ8G5W5RQ1RmQmdqg, página 5:92; aplicar tokens/Material del SPEC común. El 03/11/2026 get_design_context no entregó contexto y metadata/screenshot fueron bloqueados por límite MCP Starter. No se acredita comparación visual. El usuario rechazó expresamente usar una apariencia provisional: las siete plantillas y su conexión a eventos se dejan pendientes hasta recuperar Figma. No afirmar fidelidad verificada.
 
 Mantener títulos, labels, texto de estado además del color, foco visible, teclado y mensajes aria-live. Imágenes de platos provienen del DTO; sin imagen mostrar ausencia, no una foto de otro plato. Conservar los recursos locales de marca. Verificar móvil, escritorio, zoom y ausencia de desbordamiento.
 
@@ -76,3 +76,20 @@ Mantener títulos, labels, texto de estado además del color, foco visible, tecl
 8. npm run check conserva 120 escenarios; npm run build; pruebas unitarias/contrato y navegador identifican explícitamente HTTP simulado frente a backend real.
 
 Pendiente registrar comandos/resultados ejecutados y aceptación contra el entorno compartido. No declarar Done por compilar o por mock.
+
+## Entrega parcial verificada — 03/11/2026
+
+Por instrucción expresa del usuario, no se implementó apariencia provisional. Las siete pantallas mantienen su estado pendiente y el manifiesto no se modifica. CartaStore y CartaSelection están preparados y probados, pero todavía NO son invocados desde las pantallas. US10 no está terminada ni existe un nuevo recorrido de usuario visible.
+
+Implementado: CategoriaResponse, validadores de lectura, CatalogoService.categorias/plato, CartaContext, CartaStore (consulta/filtro/errores/cancelación) y CartaSelection (adaptador a CarritoStore.prepareSelection, sin segundo carrito). La futura vista debe proveer CartaStore por instancia, interpretar queryParamMap con cartaContext, llamar load al cambiar parámetros/sesión y pasar activeClientSession(API_SESSION()) como autorización; al desmontarse se cancela la consulta. CartaSelection es compartido y cancela la preparación cuando cambia la identidad/token. La futura vista invoca add con restaurante/plato consultados y cantidad válida; el adaptador navega únicamente tras completar prepareSelection.
+
+Verificaciones ejecutadas:
+
+```powershell
+npm.cmd run verify
+node --test scripts/us10-api.test.cjs scripts/us10-carrito.test.cjs scripts/us11-api.test.cjs scripts/us11-http-infrastructure.test.cjs scripts/us12-api.test.cjs scripts/us13-seguimiento.test.cjs scripts/us15-api.test.cjs scripts/us19-api.test.cjs
+```
+
+Resultado: build correcto; 120 escenarios conservados (26 interfaces declaradas, 94 pendientes); 63 pruebas correctas, 0 fallidas: 18 nuevas de US10/continuidad y 45 regresiones existentes. Además se verificó TypeScript con los nuevos archivos como raíces explícitas porque aún no los importan las pantallas: 0 diagnósticos. Los tests usan datos sintéticos solo en scripts; la continuidad ejecuta los servicios/stores reales con HttpClient simulado. No se ejecutó navegador, comparación Figma ni backend real. No se acredita persistencia PostgreSQL ni aceptación integrada de UI.
+
+La documentación de acceso pendiente corresponde al commit base e3a0125. Durante el trabajo develop avanzó externamente a b210dc8 (incluye cambios de auth/inicio); no se integraron ni sobrescribieron esos avances en esta rama. Antes de reanudar UI, revisar ese nuevo develop y la interfaz de acceso con su mantenedor. No atribuir a la base de esta entrega los cambios de otra revisión.
