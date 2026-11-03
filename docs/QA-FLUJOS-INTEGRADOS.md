@@ -63,3 +63,21 @@ node node_modules/@angular/cli/bin/ng.js build
 - El guion bloquea solicitudes de escritura, rutas /api y orígenes externos. No ejecuta cobros, avisos ni operaciones persistentes.
 - Las capturas se usan como evidencia del caso; no son una auditoría visual exhaustiva ni certifican accesibilidad completa.
 - La revisión de referencias Figma corresponde a docs/alineacion-specs. Estas ramas pueden revisarse y guardarse en commits independientes.
+
+## Actualización por integración US11 — 02/11/2026
+
+US11 ya no crea el pedido temporal #1043. El caso cliente de scripts/flujos-integrados.cjs conserva únicamente el listado/detalle/pago de muestra de US12/US13, sin enlazarlo con una creación real. Las pruebas nuevas de registro HTTP están en scripts/us11-api-browser.cjs y la guía GUIA-INTEGRACION-PEDIDOS.md. La evidencia histórica del recorrido completo de muestra no se atribuye a la integración actual.
+
+
+## Actualización por integración US12 — 02/11/2026
+
+Los casos cliente de muestra se reemplazaron por scripts/us12-api-browser.cjs, con 25 recorridos HTTP controlados y datos sintéticos, conservando las comprobaciones de aislamiento, identidad y errores. scripts/flujos-integrados.cjs mantiene los 14 casos de cocina/reservas y sus errores locales; no simula que un pedido de la API ya alimenta cocina. Las evidencias históricas de 21 casos anteriores se conservan como historial de otra etapa, no se atribuyen a esta integración.
+
+Verificación de esta etapa: 14/14 casos locales de cocina/reservas, 25/25 recorridos HTTP simulados de US12 y 10/10 de US11 correctos. Sin errores JavaScript en esos recorridos. Las capturas de detalle desktop y pago pendiente mobile se inspeccionaron sin afirmar paridad exacta con Figma.
+
+
+## Actualización por integración US13 — 02/11/2026
+
+scripts/us13-api-browser.cjs verifica 21 recorridos de actualización de seguimiento sobre HTTP simulado, con pedidos del mismo ID/cuenta, datos históricos conservados y errores sin estados inventados. Incluye 320/390/768/1280/1440, estados finales, foco por teclado, doble clic, pérdida de acceso y respuestas anteriores. Pasaron además los 25 recorridos de regresión de US12. El seguimiento no modifica estados de cocina; los cambios de prueba proceden de controles exclusivos del mock.
+
+Se inspeccionaron las capturas mobile de Listo y Cancelado. Los resultados no certifican paridad exacta de píxeles, PostgreSQL ni la pantalla de notificaciones de otra tarea. El backend verificó por separado sus tres casos HTTP/JWT/H2 de US13.

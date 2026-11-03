@@ -1,5 +1,5 @@
 export type OrderStatus = 'Pendiente' | 'En preparación' | 'Listo' | 'Entregado' | 'Cancelado';
-export type QueryState = 'ready' | 'loading' | 'not-found' | 'error';
+export type QueryState = 'ready' | 'loading' | 'not-found' | 'error' | 'missing-id' | 'unauthenticated' | 'forbidden';
 export type PaymentState = 'paid' | 'pending' | 'missing';
 export type Modality = 'SALON' | 'LLEVAR' | 'RECOGER' | 'DELIVERY';
 
@@ -23,9 +23,9 @@ export interface OrderSnapshot {
 export interface PaymentSnapshot {
   readonly orderId: number;
   readonly amount: number;
-  readonly method: string;
+  readonly method?: string;
   readonly reference?: string;
-  readonly registeredAt: string;
+  readonly registeredAt?: string;
 }
 export const SAMPLE_PAYMENT: PaymentSnapshot = Object.freeze({
   orderId: 1042, amount: 66, method: 'Yape', reference: 'OP-204812',

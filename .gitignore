@@ -8,3 +8,9 @@ artifacts/flujos-integrados/
 !.env.example
 *.log
 .DS_Store
+
+artifacts/us11-api/
+
+artifacts/us12-api/
+
+artifacts/us13-api/

@@ -1,4 +1,5 @@
-<rp-pedido-view [mode]="mode()" [order]="fromHistory ? selected()?.order ?? order() : order()"
-  [status]="fromHistory ? selected()?.status ?? status() : status()" [queryState]="selectedQuery()"
-  [payment]="fromHistory ? selected()?.payment ?? 'missing' : payment()"
-  [paymentRecord]="fromHistory ? selected()?.paymentRecord : paymentRecord()"/>
+<rp-pedido-view [mode]="mode()" [order]="snapshot()" [status]="actualStatus()" [queryState]="store.queryState()"
+  [payment]="actualPayment()" [paymentRecord]="paymentSnapshot()" [integrated]="true" [sessionConnected]="store.hasSession()"
+  [paymentQueryState]="store.paymentQueryState()" [issue]="store.issue()" [paymentIssue]="store.paymentIssue()"
+  [refreshing]="store.refreshing()" [trackingStale]="store.stale()" [trackingIssue]="store.refreshIssue()" [refreshStatus]="store.refreshStatus()"
+  (refreshRequested)="refresh()" (retryRequested)="retry()" (logoutRequested)="logout()"/>

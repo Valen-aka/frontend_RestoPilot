@@ -31,43 +31,6 @@ async function fixture(page, selector, body) {
 }
 async function accept(page) {await page.getByRole('dialog').getByRole('button').last().click();}
 
-async function client(page) {
-  await open(page, '/cliente/carrito');
-  await page.getByLabel('Cantidad de Lomo saltado', {exact: true}).fill('2');
-  assert.match(await page.locator('.selection-total').innerText(), /104.00/);
-  await page.getByRole('button', {name: 'Elegir cómo disfrutarlo', exact: true}).click();
-  await page.getByRole('radio', {name: 'Para llevar', exact: true}).click();
-  await page.getByRole('button', {name: 'Ver confirmación de muestra', exact: true}).click();
-  await page.getByRole('heading', {name: 'Pedido de muestra #1043', exact: true}).waitFor();
-  await page.getByRole('link', {name: 'Seguir mi pedido', exact: true}).click();
-  await page.getByRole('heading', {name: 'Pedido #1043', exact: true}).waitFor();
-  assert.equal(await page.locator('.current-status').innerText(), 'Pendiente');
-  assert.match(await page.locator('.selection-total').innerText(), /104.00/);
-  assert.match(await page.locator('.order-information').innerText(), /Para llevar/);
-  await fits(page);
-  await page.getByRole('link', {name: 'Ver registro de pago', exact: true}).click();
-  await page.getByRole('heading', {name: 'Pedido #1043', exact: true}).waitFor();
-  assert.match(await page.locator('.payment-card').innerText(), /Pendiente/);
-  assert.match(await page.locator('.payment-amount').innerText(), /104.00/);
-  assert.equal(await page.locator('.payment-details').count(), 0);
-  await page.getByRole('link', {name: 'Volver al pedido', exact: true}).click();
-  await page.getByRole('heading', {name: 'Pedido #1043', exact: true}).waitFor();
-  await page.getByRole('link', {name: '← Volver a mis pedidos', exact: true}).click();
-  await page.getByRole('link', {name: 'Ver pedido 1043', exact: true}).waitFor();
-  assert.equal(await page.locator('tbody tr').count(), 4);
-  await page.getByRole('link', {name: 'Ver pedido 1034', exact: true}).click();
-  await page.getByRole('heading', {name: 'Pedido #1034', exact: true}).waitFor();
-  assert.equal(await page.locator('.current-status').innerText(), 'Entregado');
-  assert.match(await page.locator('.selection-total').innerText(), /38.00/);
-  await page.getByRole('link', {name: 'Ver registro de pago', exact: true}).click();
-  await page.getByRole('heading', {name: 'Pedido #1034', exact: true}).waitFor();
-  assert.match(await page.locator('.payment-details').innerText(), /Efectivo/);
-  await page.getByRole('link', {name: 'Volver al pedido', exact: true}).click();
-  await page.getByRole('heading', {name: 'Pedido #1034', exact: true}).waitFor();
-  assert.equal(await page.locator('.current-status').innerText(), 'Entregado');
-  await fits(page);
-}
-
 async function kitchen(page) {
   await open(page, '/operacion/pedidos');
   await page.getByRole('link', {name: 'Consultar pedido #1042', exact: true}).click();
@@ -132,23 +95,6 @@ async function reservations(page) {
   await fits(page);
 }
 
-async function clientErrors(page) {
-  await open(page, '/cliente/pedidos');
-  await fixture(page, 'rp-cliente-pedidos', "v.store.queryState.set('loading');");
-  await page.getByRole('heading', {name: 'Consultando tus pedidos…'}).waitFor();
-  assert.equal(await page.locator('table').count(), 0);
-  await fixture(page, 'rp-cliente-pedidos', "v.store.queryState.set('error');");
-  await page.getByRole('heading', {name: 'No pudimos mostrar tus pedidos'}).waitFor();
-  await page.getByRole('button', {name: 'Volver a abrir la muestra'}).click();
-  await page.getByRole('link', {name: 'Ver pedido 1042', exact: true}).click();
-  await page.getByRole('heading', {name: 'Pedido #1042', exact: true}).waitFor();
-  await fixture(page, 'rp-pedido-selection-view', "v.store.records.update(rows => rows.map(r => ({...r,clientId:'otra-cuenta'})));");
-  await page.getByRole('heading', {name: 'No se encontró el pedido', exact: true, level: 1}).waitFor();
-  assert.equal(await page.locator('table').count(), 0);
-  assert.equal(await page.locator('rp-pedido-progress').count(), 0);
-  await page.getByRole('link', {name: 'Volver a mis pedidos', exact: true}).click();
-  await page.getByRole('heading', {name: 'No tienes pedidos en esta muestra'}).waitFor();
-}
 async function kitchenErrors(page) {
   await open(page, '/operacion/pedidos');
   await page.getByRole('link', {name: 'Consultar pedido #1042', exact: true}).click();
@@ -179,8 +125,8 @@ async function reservationErrors(page) {
   const cases = [];
   try {
     const suite = [];
-    for (const width of [320, 390, 768, 1024, 1440]) for (const [name, run] of [['cliente', client], ['cocina', kitchen], ['reservas', reservations]]) suite.push({name, width, run});
-    for (const width of [390, 1440]) for (const [name, run] of [['cliente-errores', clientErrors], ['cocina-errores', kitchenErrors], ['reservas-limite', reservationErrors]]) suite.push({name, width, run});
+    for (const width of [320, 390, 768, 1024, 1440]) for (const [name, run] of [['cocina', kitchen], ['reservas', reservations]]) suite.push({name, width, run});
+    for (const width of [390, 1440]) for (const [name, run] of [['cocina-errores', kitchenErrors], ['reservas-limite', reservationErrors]]) suite.push({name, width, run});
     for (const scenario of suite) {
       const context = await browser.newContext({viewport: {width: scenario.width, height: 1000}});
       const page = await context.newPage();
@@ -209,7 +155,7 @@ async function reservationErrors(page) {
     }
   } finally {await browser.close();}
   const report = {finishedAt: new Date().toISOString(), sourceCommit: process.env.RP_QA_SOURCE_COMMIT || 'no indicado',
-    scope: 'Tres recorridos locales independientes. No acredita sincronización cliente-cocina ni operaciones reales.',
+    scope: 'Recorridos locales de cocina y reservas. Cliente se verifica por HTTP en us12-api-browser.cjs. No acredita sincronización cliente-cocina ni operaciones reales.',
     passed: cases.filter(c => c.status === 'passed').length, failed: cases.filter(c => c.status === 'failed').length, cases};
   fs.writeFileSync(path.join(output, 'results.json'), JSON.stringify(report, null, 2)+'\n');
   process.stdout.write(`${report.passed}/${cases.length} casos correctos. Resultados: ${path.relative(process.cwd(), output)}\n`);

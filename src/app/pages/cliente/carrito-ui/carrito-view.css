@@ -34,3 +34,5 @@
 @media(max-width:850px){.cart-grid{grid-template-columns:1fr;gap:28px}.center-card{margin-top:36px}}
 @media(max-width:600px){.cart-main .page-heading{margin-bottom:30px}.cart-summary,.modality-card{padding:20px}.center-card{padding:56px 24px 44px}.center-card h2{font-size:25px}.center-card p{font-size:13px}.cart-brand{font-size:21px;gap:6px}.cart-brand small{letter-spacing:.8px;font-size:7px}.modality-selector{width:100%;gap:4px;justify-content:flex-start}.modality-selector mat-button-toggle{flex:1 1 auto}.modality-card .information{margin-top:24px}.cart-summary>button{font-size:12px}}
 @media(max-width:360px){.modality-selector{display:grid;grid-template-columns:1fr 1fr}.center-card{padding-inline:20px}}
+
+.confirmed-lines{padding-inline-start:24px;text-align:left;max-width:100%;overflow-wrap:anywhere}

@@ -1,3 +1,4 @@
+import {AuthService} from '../../../core/services/auth.service';
 import {afterNextRender, Component, computed, DOCUMENT, inject} from '@angular/core';
 import {CurrencyPipe} from '@angular/common';
 import {Router, RouterLink} from '@angular/router';
@@ -18,7 +19,7 @@ function spanishPaginator(): MatPaginatorIntl {
   return intl;
 }
 
-/** Frame cliente-pedidos. Responsable: Alexandra Fong. Listado y navegación de muestra. */
+/** Frame cliente-pedidos. Responsable: Alexandra Fong. Selección de pedidos propios consultados desde la API. */
 @Component({selector: 'rp-cliente-pedidos',
   imports: [CurrencyPipe, RouterLink, MatButtonModule, MatCardModule, MatTableModule, MatProgressSpinnerModule, MatPaginatorModule],
   providers: [{provide: MatPaginatorIntl, useFactory: spanishPaginator}],
@@ -27,20 +28,24 @@ export class ClientePedidosPage {
   readonly store = inject(ClientePedidosStore);
   private readonly document = inject(DOCUMENT);
   private readonly router = inject(Router);
+  private readonly auth = inject(AuthService);
   private readonly state = this.router.currentNavigation()?.extras.state ?? this.document.defaultView?.history.state ?? {};
   readonly modalityLabel = (modality: Modality) => MODALITY_LABELS[modality];
   readonly vista = vistaForStatus;
   readonly columns = ['id', 'date', 'modality', 'status', 'total', 'action'];
-  readonly pageIndex = computed(() => Math.min(this.store.pageIndex(), Math.max(0, Math.ceil(this.store.history().length / this.store.pageSize()) - 1)));
-  readonly rows = computed(() => this.store.history().slice(this.pageIndex() * this.store.pageSize(), (this.pageIndex() + 1) * this.store.pageSize()));
+  readonly pageIndex = this.store.pageIndex;
+  readonly rows = this.store.history;
 
   constructor() {
+    // Al volver desde el seguimiento, consultar de nuevo sin duplicar una carga inicial activa.
+    if(this.store.queryState()!=='loading')this.store.reload();
     afterNextRender(() => {
       const id = this.state['pedidoReturnId'];
       if (Number.isSafeInteger(id)) (this.document.getElementById(`client-order-${id}`) ?? this.document.getElementById('orders-title'))?.focus();
     });
   }
   page(event: PageEvent): void {this.store.pageSize.set(event.pageSize); this.store.pageIndex.set(event.pageIndex);}
+  logout():void {this.auth.logout();void this.router.navigate(['/auth/login']);}
   skip(event: Event): void {
     event.preventDefault();
     const main = this.document.getElementById('orders-content');main?.focus({preventScroll:true});main?.scrollIntoView({block:'start'});

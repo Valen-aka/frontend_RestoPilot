@@ -1,6 +1,7 @@
-import {Component, DestroyRef, DOCUMENT, OnInit, computed, inject, input, signal} from '@angular/core';
+import {AuthService} from '../../../core/services/auth.service';
+import {Component, DestroyRef, DOCUMENT, OnInit, computed, effect, inject, input, signal, untracked} from '@angular/core';
 import {CurrencyPipe} from '@angular/common';
-import {Router, RouterLink} from '@angular/router';
+import {ActivatedRoute, Router, RouterLink} from '@angular/router';
 import {FormControl, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 import {MatButtonModule} from '@angular/material/button';
@@ -15,7 +16,6 @@ import {CarritoStore, validQuantity} from './carrito-store';
 import {CarritoTable} from './carrito-table';
 import {VaciarDialog} from './vaciar-dialog';
 import {MODALITY_LABELS, Modality} from '../pedido-ui/pedido.model';
-import {PedidoDemoContext} from '../pedido-ui/pedido-demo-context';
 
 export type CartMode = 'cart' | 'empty' | 'delivery' | 'closed' | 'created';
 const MODALITY_VISTAS: Record<Modality, string> = {
@@ -32,8 +32,10 @@ const MODALITY_VISTAS: Record<Modality, string> = {
 })
 export class CarritoView implements OnInit {
   readonly store = inject(CarritoStore);
-  readonly demo = inject(PedidoDemoContext);
+  private readonly auth = inject(AuthService);
+
   private readonly router = inject(Router);
+  private readonly route = inject(ActivatedRoute);
   private readonly document = inject(DOCUMENT);
   private readonly dialog = inject(MatDialog);
   private readonly destroyRef = inject(DestroyRef);
@@ -46,29 +48,53 @@ export class CarritoView implements OnInit {
   ];
   readonly message = signal('');
   readonly isEmpty = computed(() => this.mode() === 'empty' || this.store.lines().length === 0);
-  private readonly creationState = this.document.defaultView?.history.state;
-  readonly created = this.creationState?.us11Created === true ?
-    (Object.hasOwn(this.creationState, 'pedidoId') ? this.demo.orders().find(order => order.id === this.creationState.pedidoId) : this.demo.snapshot()) : undefined;
+  readonly created = computed(() => {
+    const id = Number(this.route.snapshot.queryParamMap.get('pedidoId'));
+    const order = this.store.created();
+    return order && order.id === id ? order : undefined;
+  });
   readonly title = computed(() => {
     if (this.mode() === 'closed') return 'Volvemos pronto';
-    if (this.mode() === 'created') return 'Confirmación de muestra';
+    if (this.mode() === 'created') return 'Confirmación del pedido';
     if (this.isEmpty()) return 'Tu pedido';
     return this.mode() === 'delivery' ? '¿Cómo lo vas a disfrutar?' : 'Tu pedido, a tu gusto';
   });
   readonly subtitle = computed(() => {
     if (this.mode() === 'closed') return 'Por ahora no podemos recibir pedidos.';
-    if (this.mode() === 'created') return 'Así se verá la confirmación de tu pedido.';
+    if (this.mode() === 'created') return 'Revisa la confirmación recibida del restaurante.';
     if (this.isEmpty()) return 'Encuentra tu próximo favorito.';
     return this.mode() === 'delivery' ? 'Elige la opción que va contigo.' : 'Una buena elección, dos veces.';
   });
   readonly form = new FormGroup({
     modality: new FormControl<Modality>('SALON', {nonNullable: true}),
-    table: new FormControl('', {nonNullable: true}),
+    table: new FormControl<number | null>(null),
     address: new FormControl('', {nonNullable: true})
   });
-  readonly quantities = this.store.lines().map(line => new FormControl<number | null>(line.quantity,
-    [Validators.required, control => validQuantity(control.value) ? null : {quantity: true}]));
-  readonly canContinue = computed(() => !this.store.selectionError() && this.store.queryState() === 'ready');
+  readonly quantities = signal<readonly FormControl<number | null>[]>([]);
+  private readonly lineIds = computed(() => JSON.stringify(this.store.lines().map(line => line.id)));
+  readonly canContinue = computed(() => !this.store.selectionError() && this.store.queryState() === 'ready' &&
+    this.store.hasSession() && !this.store.submitting() && !this.store.uncertain());
+
+  constructor() {
+    effect(onCleanup => {
+      this.lineIds();
+      const fields = untracked(() => this.store.lines()).map(line => new FormControl<number | null>(line.quantity,
+        [Validators.required, control => validQuantity(control.value) ? null : {quantity: true}]));
+      this.quantities.set(fields);
+      const subscriptions = fields.map((control, index) => control.valueChanges.subscribe(value => {
+        this.store.setQuantity(index, value); this.message.set('');
+      }));
+      onCleanup(() => subscriptions.forEach(subscription => subscription.unsubscribe()));
+    });
+    effect(() => {
+      const pending = this.store.submitting() || this.store.uncertain();
+      if (pending) this.form.disable({emitEvent: false}); else this.form.enable({emitEvent: false});
+      this.quantities().forEach(control => pending ? control.disable({emitEvent:false}) : control.enable({emitEvent:false}));
+      const order = this.store.created();
+      if (order && this.mode() === 'delivery') void this.router.navigate(['/cliente/pedido'],
+        {queryParams: {vista: 'cliente-pedido-creado', pedidoId: order.id}});
+    });
+  }
 
   ngOnInit(): void {
     if (this.mode() === 'delivery') this.store.modality.set(this.initialModality());
@@ -83,6 +109,7 @@ export class CarritoView implements OnInit {
     this.form.controls.modality.valueChanges.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(value => {
       if (!(value in MODALITY_VISTAS)) return;
       this.store.modality.set(value);
+      this.store.tableId.set(null); this.store.address.set('');
       void this.router.navigate(['/cliente/entrega'], {queryParams: {vista: MODALITY_VISTAS[value]}});
     });
     this.form.controls.table.valueChanges.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(value => {
@@ -91,12 +118,10 @@ export class CarritoView implements OnInit {
     this.form.controls.address.valueChanges.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(value => {
       this.store.address.set(value); this.message.set('');
     });
-    this.quantities.forEach((control, index) => control.valueChanges.pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe(value => {this.store.setQuantity(index, value); this.message.set('');}));
   }
 
   continue(): void {
-    this.quantities.forEach(control => control.markAsTouched());
+    this.quantities().forEach(control => control.markAsTouched());
     if (!this.canContinue()) {this.message.set(this.store.selectionError() || 'No pudimos consultar la selección.'); return;}
     void this.router.navigate(['/cliente/entrega'], {queryParams: {vista: MODALITY_VISTAS[this.store.modality()]}});
   }
@@ -110,10 +135,7 @@ export class CarritoView implements OnInit {
       setTimeout(() => this.document.getElementById('cart-feedback')?.focus(), 0);
       return;
     }
-    const snapshot = this.store.snapshot(modality, table, address);
-    if (!snapshot) return;
-    const created = this.demo.remember(snapshot);
-    void this.router.navigate(['/cliente/pedido'], {queryParams: {vista: 'cliente-pedido-creado'}, state: {us11Created: true, pedidoId: created.id}});
+    this.store.submit(modality, table, address);
   }
 
   emptyCart(): void {
@@ -122,7 +144,7 @@ export class CarritoView implements OnInit {
       .afterClosed().pipe(takeUntilDestroyed(this.destroyRef)).subscribe(confirmed => {
         if (!confirmed) {this.document.getElementById('empty-cart')?.focus(); return;}
         this.store.clear();
-        this.message.set('Se vació el carrito de muestra.');
+        this.message.set('Se vació el carrito.');
         setTimeout(() => this.document.getElementById('cart-empty-title')?.focus(), 0);
       });
   }
@@ -134,8 +156,9 @@ export class CarritoView implements OnInit {
     main?.scrollIntoView({block: 'start'});
   }
 
-  reopenSample(): void {
-    this.store.queryState.set('ready');
-    this.message.set('Se reabrió la vista local de muestra. No se consultó ningún servicio.');
+  logout(): void {this.auth.logout(); void this.router.navigate(['/auth/login']);}
+
+  retryConditions(): void {
+    this.message.set('Vuelve a la carta para actualizar la selección y sus condiciones.');
   }
 }
