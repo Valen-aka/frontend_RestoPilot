@@ -1,32 +1,39 @@
 import {DestroyRef, Injectable, effect, inject, signal, untracked} from '@angular/core';
-import {Router} from '@angular/router';
+import {NavigationStart, Router} from '@angular/router';
 import {Subscription} from 'rxjs';
 import {API_SESSION, activeClientSession} from '../../../core/auth/api-session';
 import type {PlatoResponse, RestauranteResponse} from '../../../core/models/catalogo-api.model';
 import {validQuantity} from '../../../core/models/pedido-api.model';
+import {cartaSessionKey} from './carta.model';
 import {CarritoStore} from '../carrito-ui/carrito-store';
 
 /** Adaptador US10 → US11. No almacena una segunda selección ni registra pedidos. */
-@Injectable({providedIn: 'root'})
+@Injectable()
 export class CartaSelection {
   private readonly session = inject(API_SESSION);
   private readonly cart = inject(CarritoStore);
   private readonly router = inject(Router);
   private request?: Subscription;
   private generation = 0;
+  private destroyed = false;
   readonly preparing = signal(false);
   readonly error = signal('');
   constructor() {
-    let identity: string | null = null;
+    let identity = cartaSessionKey(this.session());
     effect(() => {
-      const s = this.session();
-      const next = activeClientSession(s) ? s.subject + ':' + s.accessToken : null;
+      const next = cartaSessionKey(this.session());
       if (next !== identity) {identity = next; untracked(() => this.cancel());}
     });
-    inject(DestroyRef).onDestroy(() => this.cancel());
+    // También cancela cambios de query, atrás/adelante y navegaciones luego rechazadas.
+    const navigation = this.router.events.subscribe(event => {
+      if (event instanceof NavigationStart) this.cancel();
+    });
+    inject(DestroyRef).onDestroy(() => {
+      this.destroyed = true; navigation.unsubscribe(); this.cancel();
+    });
   }
   add(restaurant: RestauranteResponse, dish: PlatoResponse, quantity: number): void {
-    if (this.preparing()) return;
+    if (this.destroyed || this.preparing() || this.router.currentNavigation()) return;
     this.error.set('');
     const session = this.session();
     if (!activeClientSession(session)) {this.error.set('Inicia sesión como cliente para añadir platos.'); return;}
@@ -47,12 +54,15 @@ export class CartaSelection {
     }
     const details = lines.filter(l => l.id !== dish.id).map(l => ({platoId: l.id, cantidad: l.quantity!, notas: l.notes ?? null}));
     details.push({platoId: dish.id, cantidad: total, notas: existing?.notes ?? null});
+    const origin = this.router.url;
+    const identity = cartaSessionKey(session);
     const generation = ++this.generation;
     this.preparing.set(true);
     this.request = this.cart.prepareSelection(restaurant.id, details).subscribe({
       next: () => {
         const current = this.session();
-        if (generation !== this.generation || !activeClientSession(current) || current.subject !== session.subject || current.accessToken !== session.accessToken) return;
+        if (this.destroyed || generation !== this.generation || cartaSessionKey(current) !== identity ||
+            this.router.url !== origin || this.router.currentNavigation()) {this.cancel(); return;}
         this.preparing.set(false);
         void this.router.navigate(['/cliente/carrito']).then(ok => {
           if (!ok && generation === this.generation) this.error.set('La selección está en el carrito. Abre el carrito para continuar.');
@@ -60,11 +70,13 @@ export class CartaSelection {
       },
       error: () => {
         if (generation !== this.generation) return;
+        if (cartaSessionKey(this.session()) !== identity) {this.cancel(); return;}
         this.preparing.set(false);
         this.error.set('No pudimos preparar la selección. Revisa disponibilidad, cantidades y sesión antes de reintentar.');
       },
       complete: () => {if (generation === this.generation) this.preparing.set(false);}
     });
   }
-  private cancel(): void {++this.generation; this.request?.unsubscribe(); this.preparing.set(false); this.error.set('');}
+  /** La vista también puede invalidar un cambio de contexto que no navega. */
+  cancel(): void {++this.generation; this.request?.unsubscribe(); this.preparing.set(false); this.error.set('');}
 }

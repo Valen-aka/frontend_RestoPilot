@@ -1,3 +1,4 @@
+import {activeClientSession, type ApiSession} from '../../../core/auth/api-session';
 import {positiveId} from '../../../core/models/pedido-api.model';
 
 export interface CartaContext {restauranteId: number | null; categoriaId: number | null; platoId: number | null; detail: boolean; invalid: boolean;}
@@ -17,4 +18,9 @@ export function dishImage(value: string | null): string | null {
   if (!value) return null;
   if (/^\/(?!\/)[^\\]*$/.test(value)) return value;
   try {const url = new URL(value); return ['https:', 'http:'].includes(url.protocol) && !url.username && !url.password ? url.href : null;} catch {return null;}
+}
+
+/** Identidad completa del contexto autenticado; nunca se persiste ni se registra. */
+export function cartaSessionKey(session: ApiSession | null): string | null {
+  return activeClientSession(session) ? JSON.stringify([session.subject, session.role, session.accessToken, session.expiresAt]) : null;
 }

@@ -66,7 +66,7 @@ export class CarritoStore {
       this.queryState.set('loading'); this.errorState.set('');
       return forkJoin({restaurant: this.catalogo.restaurante(restauranteId), dishes: this.catalogo.platos(restauranteId),
         tables: this.catalogo.mesas(restauranteId)}).pipe(map(data => {
-          if (selectionAttempt !== this.selectionAttempt || this.session()?.subject !== session.subject || !activeClientSession(this.session())) throw new Error('La sesión cambió; vuelve a seleccionar tu pedido.');
+          if (selectionAttempt !== this.selectionAttempt || this.session()?.subject !== session.subject || this.session()?.accessToken !== session.accessToken || this.session()?.expiresAt !== session.expiresAt || !activeClientSession(this.session())) throw new Error('La sesión cambió; vuelve a seleccionar tu pedido.');
           const lines = detalles.map(detail => {
             const dish = data.dishes.find(d => d.id === detail.platoId);
             if (!dish) throw new Error('Un plato ya no pertenece a la carta del restaurante.');
