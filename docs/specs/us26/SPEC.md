@@ -1,5 +1,8 @@
 # SPEC — US26: consulta de reservas expiradas
 
+Fase API — 03/11/2026: consultar el [SPEC de integración de reservas expiradas](../reserva-expirada-api/SPEC.md), rama feature/reserva-expirada-api. Esta fase conserva las evidencias de muestra y especifica S2-TSK-056 antes de implementar su conexión real.
+
+
 Revisión documental: 02/11/2026. Estado: frontend de muestra incorporado en develop; aceptación del equipo pendiente. Rama original: feature/reserva-expirada. Alineación documental: docs/alineacion-specs.
 
 Las secciones de ejecución fechadas conservan evidencia histórica. El estado actual se contrasta con develop, base 3685d07; no repetir como pendientes las etapas ya integradas. Referencias comprobadas: [registro Figma](../../REFERENCIAS-FIGMA.md).

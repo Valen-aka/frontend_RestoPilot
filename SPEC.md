@@ -61,6 +61,7 @@ El SPEC común contiene las 29 historias y sus criterios. No se requiere un arch
 | [US25](docs/specs/us25/SPEC.md) | Llegada y finalización de reservas |
 | [Integración API de atención de reservas](docs/specs/operacion-reserva-atencion-api/SPEC.md) | US25: llegada, finalización, fechas, reglas temporales y recuperación |
 | [US26](docs/specs/us26/SPEC.md) | Consulta de reservas expiradas en detalle e historial |
+| [Integración API de reservas expiradas](docs/specs/reserva-expirada-api/SPEC.md) | US26: detalle, historial, fecha de expiración y disponibilidad autoritativa |
 
 Los detalles de rama, entrega y evidencia particulares se documentan en el complemento correspondiente; no establecen el flujo ni el avance de las demás tareas.
 
