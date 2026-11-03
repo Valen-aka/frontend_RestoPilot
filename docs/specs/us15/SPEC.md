@@ -1,5 +1,7 @@
 # SPEC — US15: tablero y cola priorizada de cocina
 
+Fase API — 02/11/2026: consultar el [SPEC conjunto de integración de US15 y US19](../operacion-cocina-api/SPEC.md), rama feature/operacion-cocina-api. Esta nueva fase conserva la evidencia visual histórica y define contratos, permisos y aceptación; se implementará primero US15 y después US19.
+
 Revisión documental: 02/11/2026. Estado: frontend de muestra incorporado en develop; aceptación del equipo pendiente. Rama original: feature/operacion-cocina. Alineación documental: docs/alineacion-specs.
 
 Las secciones de ejecución fechadas conservan evidencia histórica. El estado actual se contrasta con develop, base 3685d07; no repetir como pendientes las etapas ya integradas. Referencias comprobadas: [registro Figma](../../REFERENCIAS-FIGMA.md).
