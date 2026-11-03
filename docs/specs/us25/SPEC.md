@@ -1,5 +1,8 @@
 # SPEC — US25: llegada y finalización de reservas
 
+Fase API — 03/11/2026: consultar el [SPEC de integración de atención de reservas](../operacion-reserva-atencion-api/SPEC.md), rama feature/operacion-reserva-atencion-api. La implementación visual anterior se conserva como evidencia histórica; S2-TSK-054 se especifica antes de implementar sus operaciones reales.
+
+
 Revisión documental: 02/11/2026. Estado: frontend de muestra incorporado en develop; aceptación del equipo pendiente. Rama original: feature/operacion-reserva-atencion. Alineación documental: docs/alineacion-specs.
 
 Las secciones de ejecución fechadas conservan evidencia histórica. El estado actual se contrasta con develop, base 3685d07; no repetir como pendientes las etapas ya integradas. Referencias comprobadas: [registro Figma](../../REFERENCIAS-FIGMA.md).
