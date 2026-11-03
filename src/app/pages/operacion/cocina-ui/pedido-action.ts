@@ -21,7 +21,8 @@ export class PedidoAction {
   readonly order = computed(() => this.store.findOrder(this.orderId()));
   readonly target = computed(() => {const order = this.order(); return order ? NEXT_KITCHEN_STATUS[order.status] : undefined;});
   readonly label = computed(() => {const target = this.target(); return target ? sampleActionLabel(target) : '';});
-  readonly disabled = computed(() => this.store.queryState() !== 'ready' || !!this.store.problem() || this.store.actionBusy());
+  // Acciones de muestra bloqueadas durante la fase API de lectura (US15).
+  readonly disabled = computed(() => true);
 
   constructor() {
     this.destroyRef.onDestroy(() => {

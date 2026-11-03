@@ -1,7 +1,7 @@
 # SPEC — Integración API de cocina y estados del pedido
 
 Fecha: 02/11/2026. Rama: feature/operacion-cocina-api.
-Estado: especificación preparada; implementación por historia y aceptación integrada pendientes.
+Estado: US15 implementada y verificada en entornos aislados; US19 y aceptación con el entorno compartido pendientes. Consultar la ejecución al final.
 
 ## 1. Objetivo y fuentes
 
@@ -90,7 +90,7 @@ Actualizar vuelve a consultar al servidor e incorpora nuevas entradas y salidas.
 
 ### 6.1. Brecha de metadatos y cambio previsto del backend
 
-La interfaz de US15 requiere explicar complejidad y minutos, pero el DTO actual no los incluye. Para conservar esa información, US15 contempla una ampliación aditiva de PedidoResponseDTO con estos campos derivados; todavía no existen en el contrato revisado:
+Al preparar el SPEC, la interfaz de US15 requería explicar complejidad y minutos y el DTO no los incluía. Para conservar esa información, US15 contempla una ampliación aditiva de PedidoResponseDTO con estos campos derivados; no existían en el contrato inicial y se incorporaron en la ejecución de US15:
 
 | Campo previsto | Tipo JSON | Fuente |
 | --- | --- | --- |
@@ -177,4 +177,20 @@ Para cerrar S2-TSK-036 y S2-TSK-038 se exige evidencia de sus consultas/transici
 
 Preparar primero el contrato y después implementar cada historia. Los nombres anteriores son propuestas; no crean commits automáticamente. Al finalizar la rama, el PR hacia develop debe explicar cambios, pruebas y pendientes reales, incluyendo dependencias del backend.
 
-Esta entrega es documental: define contratos actuales y cambios previstos, y enlaza los SPEC existentes. No implementa consultas, guard, ampliación del DTO ni transiciones; tampoco acredita pruebas HTTP, de base de datos o de interfaz ejecutadas para esta nueva fase.
+La entrega inicial del SPEC fue exclusivamente documental. La ejecución de US15 y sus verificaciones se registran en la sección siguiente; US19 continúa pendiente.
+
+## 12. Ejecución US15 — 02/11/2026
+
+Implementada la consulta HTTP de cola y detalle operativo en la rama feature/operacion-cocina-api. Se conserva el orden recibido sin ordenar fixtures, se pagina el conjunto y se mantienen ID, página, tamaño y origen entre tabla, tablero y detalle. Actualización manual, carga, vacío, error y lectura anterior visible; 401/403/404 y local ajeno eliminan datos protegidos. Cambiar cuenta/expirar sesión invalida respuestas anteriores.
+
+La sesión compartida conserva restauranteId validado frente al DTO/JWT; el perfil CLIENTE continúa admitiendo local nulo. Las rutas de cocina verifican sesión y el store exige ADMINISTRADOR/DUENO con local. No se alteran permisos del recorrido de cliente ni se crea otro servicio de autenticación. La aplicación aún necesita que el módulo de acceso del equipo invoque AuthService; no se implementó su pantalla como parte de cocina.
+
+Se mantienen componentes y estilos existentes, Angular Material y rutas hijas. Paginación traducida al español. La consulta no inventa estado de pago ni número de mesa. Los metadatos ausentes se muestran como No informado; la hora local del backend se representa en Lima sin interpretarla como UTC.
+
+El backend incorpora complejidadMaxima y tiempoPreparacionMaximoMinutos al DTO existente mediante PedidoPrioridad, compartido con el comparador de la cola. Los máximos siguen siendo independientes; cero minutos se conserva y ausencia de datos devuelve null. Los tiempos negativos inválidos se descartan. No hay endpoints nuevos, cambios de permisos ni migración. Los precios y nombres históricos permanecen intactos.
+
+US15 es de lectura: los componentes de acciones de muestra no se renderizan ni se pueden ejecutar desde la API. Los PATCH y confirmaciones reales corresponden al siguiente commit de US19. Un pedido LISTO puede consultarse por su ID aunque no pertenezca a la cola activa.
+
+Verificación y reproducción: [guía de cocina API](../../GUIA-INTEGRACION-COCINA.md). No declarar tareas Done solo por estas pruebas. La consulta sin autenticar devuelve 403 en la configuración de seguridad verificada; el frontend evita esa llamada y redirige al login. La documentación de 401 también cubre proveedores/filtros que respondan así.
+
+Limitaciones: prueba conjunta con autenticación y PostgreSQL del equipo pendiente. Figma MCP devolvió el límite del plan al consultar el original; se conservaron los componentes existentes y no se acredita una nueva comparación visual contra frames. No se crearon commits ni PR automáticamente.

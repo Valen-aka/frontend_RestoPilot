@@ -35,9 +35,14 @@ export class AuthService {
           const expiresAt = typeof claims['exp'] === 'number' ? claims['exp'] * 1000 : 0;
           if (!Number.isFinite(expiresAt) || expiresAt <= Date.now() || claims['userId'] !== response.id ||
               claims['sub'] !== response.correo || claims['rol'] !== response.rol) throw new Error('La sesión recibida no es válida o ya expiró.');
+          const restaurant = response.restauranteId ?? null;
+          const claimRestaurant = claims['restauranteId'] ?? null;
+          if ((restaurant !== null && !positiveId(restaurant)) || restaurant !== claimRestaurant) {
+            throw new Error('El restaurante de la sesión no es válido.');
+          }
           // Se obtiene solo del login HTTP. Leer claims no verifica la firma; el backend autoriza cada petición.
           this.current.set(Object.freeze({subject: String(response.id), role: response.rol,
-            accessToken: response.token, expiresAt}));
+            accessToken: response.token, expiresAt, restauranteId: restaurant}));
           this.scheduleExpiry(expiresAt);
           return response;
         }));

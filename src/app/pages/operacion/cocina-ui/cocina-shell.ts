@@ -1,7 +1,8 @@
 import {Component, DOCUMENT, computed, inject, input, signal} from '@angular/core';
 import {BreakpointObserver} from '@angular/cdk/layout';
 import {toSignal} from '@angular/core/rxjs-interop';
-import {RouterLink} from '@angular/router';
+import {Router, RouterLink} from '@angular/router';
+import {AuthService} from '../../../core/services/auth.service';
 import {MatButtonModule} from '@angular/material/button';
 
 @Component({
@@ -11,6 +12,12 @@ import {MatButtonModule} from '@angular/material/button';
 export class CocinaShell {
   private readonly document = inject(DOCUMENT);
   private readonly breakpoint = toSignal(inject(BreakpointObserver).observe('(max-width: 900px)'));
+  readonly apiMode=input(false);
+  readonly restaurantName=input('Restaurante de la sesión');
+  readonly restaurantId=input<number|null>(null);
+  private readonly auth=inject(AuthService);
+  private readonly router=inject(Router);
+  logout():void {this.auth.logout();void this.router.navigate(['/auth/login']);}
   readonly mobile = computed(() => this.breakpoint()?.matches ?? false);
   readonly menuOpen = signal(false);
   readonly active = input<'queue' | 'board' | 'detail' | 'reservations'>('queue');

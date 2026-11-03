@@ -5,8 +5,10 @@ export interface KitchenLine {
   readonly name: string;
   readonly quantity: number;
   readonly unitCents: number;
-  readonly complexity: Complexity;
-  readonly preparationMinutes: number;
+  readonly subtotalCents?: number;
+  readonly notes?: string | null;
+  readonly complexity: Complexity | null;
+  readonly preparationMinutes: number | null;
 }
 export interface KitchenOrder {
   readonly id: number;
@@ -17,7 +19,11 @@ export interface KitchenOrder {
   readonly modality: KitchenModality;
   readonly table?: string;
   readonly address?: string;
-  readonly payment: 'Pendiente' | 'Pagado';
+  readonly payment: 'Pendiente' | 'Pagado' | null;
+  readonly source?: 'api';
+  readonly restaurantName?: string;
+  readonly complexity?: Complexity | null;
+  readonly preparationMinutes?: number | null;
   readonly totalCents: number;
   readonly lines: readonly KitchenLine[];
 }
@@ -49,24 +55,26 @@ export function validKitchenOrder(order: KitchenOrder): boolean {
     ['Pendiente', 'En preparación', 'Listo', 'Entregado', 'Cancelado'].includes(order.status) &&
     Object.hasOwn(MODALITY_LABELS, order.modality) &&
     Number.isFinite(Date.parse(order.createdAt)) &&
-    ['Pendiente', 'Pagado'].includes(order.payment) &&
+    order.payment !== null && ['Pendiente', 'Pagado'].includes(order.payment) &&
     Number.isSafeInteger(order.totalCents) && order.totalCents >= 0 &&
     Array.isArray(order.lines) && order.lines.length > 0 && order.lines.every(line =>
       line != null && typeof line.name === 'string' && !!line.name.trim() && Number.isSafeInteger(line.quantity) && line.quantity > 0 &&
-      Number.isSafeInteger(line.unitCents) && line.unitCents >= 0 && Object.hasOwn(COMPLEXITY_RANK, line.complexity) &&
-      Number.isFinite(line.preparationMinutes) && line.preparationMinutes > 0);
+      Number.isSafeInteger(line.unitCents) && line.unitCents >= 0 && line.complexity !== null && Object.hasOwn(COMPLEXITY_RANK, line.complexity) &&
+      Number.isFinite(line.preparationMinutes) && line.preparationMinutes !== null && line.preparationMinutes > 0);
 }
-export function maxComplexity(order: KitchenOrder): Complexity {
+export function maxComplexity(order: KitchenOrder): Complexity | null {
+  if(order.source === 'api') return order.complexity ?? null;
   return order.lines.reduce<Complexity>((max, line) =>
-    COMPLEXITY_RANK[line.complexity] > COMPLEXITY_RANK[max] ? line.complexity : max, 'Baja');
+    (line.complexity ? COMPLEXITY_RANK[line.complexity] : 0) > COMPLEXITY_RANK[max] ? line.complexity! : max, 'Baja');
 }
-export function maxMinutes(order: KitchenOrder): number {
-  return order.lines.reduce((max, line) => Math.max(max, line.preparationMinutes), 0);
+export function maxMinutes(order: KitchenOrder): number | null {
+  if(order.source === 'api') return order.preparationMinutes ?? null;
+  return order.lines.reduce((max, line) => Math.max(max, line.preparationMinutes ?? 0), 0);
 }
 /** Orden exclusivo de fixtures locales. Una integración futura conserva el orden de la API. */
 export function prioritizeSample(orders: readonly KitchenOrder[]): KitchenOrder[] {
-  return [...orders].sort((a, b) => COMPLEXITY_RANK[maxComplexity(b)] - COMPLEXITY_RANK[maxComplexity(a)] ||
-    maxMinutes(b) - maxMinutes(a) || Date.parse(a.createdAt) - Date.parse(b.createdAt) || a.id - b.id);
+  return [...orders].sort((a, b) => COMPLEXITY_RANK[maxComplexity(b)!] - COMPLEXITY_RANK[maxComplexity(a)!] ||
+    (maxMinutes(b) ?? 0) - (maxMinutes(a) ?? 0) || Date.parse(a.createdAt) - Date.parse(b.createdAt) || a.id - b.id);
 }
 export function orderUnits(order: KitchenOrder): number {
   return order.lines.reduce((sum, line) => sum + line.quantity, 0);
@@ -76,7 +84,7 @@ export function serviceLabel(order: KitchenOrder): string {
 }
 export function sampleTime(order: KitchenOrder): string {
   return new Intl.DateTimeFormat('es-PE', {hour: '2-digit', minute: '2-digit', hour12: false, timeZone: 'America/Lima'})
-    .format(new Date(order.createdAt));
+    .format(new Date(order.source === 'api' ? order.createdAt + '-05:00' : order.createdAt));
 }
 export function sampleDate(order: KitchenOrder): string {
   return new Intl.DateTimeFormat('es-PE', {day: 'numeric', month: 'long', year: 'numeric', timeZone: 'America/Lima'})
