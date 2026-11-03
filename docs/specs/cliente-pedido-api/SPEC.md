@@ -176,3 +176,24 @@ PR hacia develop: alcance, pruebas efectivamente realizadas, dependencias y pend
 ## 12. Estado de esta entrega
 
 Solo documentación. Se revisaron reglas, complementos, configuración, stores locales y contratos del backend. No se modificaron componentes, servicios, HTTP, seguridad ni backend. No se ejecutaron solicitudes reales ni pruebas de navegador. No se marcaron tareas Done. Informar comprobaciones documentales sin atribuirles aceptación de integración.
+
+
+## 13. Ejecución acotada de US11 — 02/11/2026
+
+Autorización vigente: implementar US11, la base compartida necesaria no asignada por tarea visual y la dependencia faltante del backend. Las pantallas de acceso/carta y las rutas del cliente conservan su contenido anterior; no se reasignan historias del Sprint 2. No se implementan todavía las consultas reales de US12/US13.
+
+Se añaden AuthService (login HTTP y sesión en memoria), API_SESSION, interceptor Bearer limitado a apiUrl, modelos de contrato, CatalogoService, PedidoService y un guard reutilizable aún no registrado en las rutas asignadas a otra tarea. No hay usuarios de muestra ni un campo para pegar tokens en la aplicación. El módulo de acceso debe consumir AuthService; la carta debe llamar prepareSelection. La [guía compartida](../../GUIA-INTEGRACION-PEDIDOS.md) contiene ejemplos.
+
+CarritoStore comienza vacío y obtiene IDs, precios estimados, condiciones y mesas mediante prepareSelection. El POST no envía precios, total ni cliente. Confirma únicamente una respuesta 201 válida del usuario actual; preserva total y snapshots retornados, evita doble envío, conserva el borrador ante rechazos y bloquea repetición ante un resultado incierto. La confirmación mantiene pedidoId en la URL, muestra el desglose recibido y permite volver a la carta; no enlaza hacia una consulta de muestra como si fuera seguimiento real. El acceso a detalle/seguimiento reales se incorporará con US12/US13.
+
+Backend, rama feature/restaurantes-consulta: GET /api/restaurantes (lista de activos) y GET /api/restaurantes/{id} (detalle), autenticados. RestauranteResponseDTO incluye id, nombre, direccion, activo, abierto, tieneAtencionFisica, aceptaDelivery, horaApertura y horaCierre. El cálculo abierto usa el Clock del negocio y la misma ventana que valida PedidoService. No se modifica la base ni CORS ni las reglas de creación existentes.
+
+Figma: el archivo original devolvió límite de llamadas. El usuario proporcionó expresamente la copia sRxKEwFdrMKfXPosGFvoHc para esta revisión; se consultaron metadatos de páginas Style/RestoPilot y contextos/capturas de acceso 84:17154 y carta 84:18200. Esta excepción es de esta tarea y no reemplaza globalmente la referencia original. No se implementaron esas pantallas a partir de la lectura, ni se certificó equivalencia visual.
+
+Evidencia: cinco pruebas dirigidas de payload/validaciones/adaptación; diez recorridos del frontend real contra Postman local (cuatro modalidades, doble clic, rechazo, respuesta incompleta, error HTML 500, sesión 401 y limpieza al salir/recargar). El harness invoca AuthService y prepareSelection mediante Angular de desarrollo, sin modificar acceso/carta ni incluir un acceso de pruebas en producción. Son pruebas simuladas del frontend, no una ejecución del recorrido completo desde las pantallas aún pendientes.
+
+Backend: cuatro pruebas unitarias de consulta/horario y una prueba HTTP real Spring Boot/JWT sobre H2 aislado que cubre login, consultas, cuatro modalidades, pago inicial y rechazos de mesa faltante/plato agotado. Esto no certifica PostgreSQL/Supabase ni el entorno configurado del equipo.
+
+Pendientes de aceptación: conexión de las pantallas de acceso/carta por sus tareas, registro del guard al integrar autenticación, recorrido real del conjunto sobre la base del equipo, consulta real de detalle/pago US12 y actualización US13. S2-TSK-032 no se marca Done por estas pruebas parciales. No se creó commit, push, PR ni despliegue.
+
+Verificación final de la rama: check estructural y build de producción correctos; 98 pruebas unitarias previas/de payload más tres pruebas dirigidas del interceptor/guard (101 en total), diez recorridos HTTP simulados US11 y 21/21 regresiones locales de US12/US13, cocina y reservas. Las regresiones de US12/US13 siguen siendo de muestra, separadas de la creación HTTP de US11. Sin cambios en pantallas de acceso/carta ni rutas de cliente.

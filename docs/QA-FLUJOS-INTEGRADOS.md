@@ -63,3 +63,7 @@ node node_modules/@angular/cli/bin/ng.js build
 - El guion bloquea solicitudes de escritura, rutas /api y orígenes externos. No ejecuta cobros, avisos ni operaciones persistentes.
 - Las capturas se usan como evidencia del caso; no son una auditoría visual exhaustiva ni certifican accesibilidad completa.
 - La revisión de referencias Figma corresponde a docs/alineacion-specs. Estas ramas pueden revisarse y guardarse en commits independientes.
+
+## Actualización por integración US11 — 02/11/2026
+
+US11 ya no crea el pedido temporal #1043. El caso cliente de scripts/flujos-integrados.cjs conserva únicamente el listado/detalle/pago de muestra de US12/US13, sin enlazarlo con una creación real. Las pruebas nuevas de registro HTTP están en scripts/us11-api-browser.cjs y la guía GUIA-INTEGRACION-PEDIDOS.md. La evidencia histórica del recorrido completo de muestra no se atribuye a la integración actual.

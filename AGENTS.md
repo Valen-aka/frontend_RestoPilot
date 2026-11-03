@@ -132,3 +132,7 @@ Al implementar una pantalla, comprobar además:
 Una compilación correcta no demuestra que las 120 pantallas estén implementadas ni que la integración funcione. Registrar únicamente pruebas realmente ejecutadas. Al entregar, resumir cambios, verificaciones, limitaciones y trabajo pendiente; no marcar tareas como Done sin aceptación real.
 
 El estado de una rama puede diferir de otra. Consultar el código y el inventario de la rama actual; no asumir que una implementación de otra rama ya está integrada en `develop`.
+
+## Base compartida para integrar pedidos
+
+Consultar [la guía de conexión](docs/GUIA-INTEGRACION-PEDIDOS.md) antes de añadir otra sesión, interceptor o servicio de pedidos. app.config.ts registra HTTP y apiAuthInterceptor una sola vez. Reutilizar AuthService, API_SESSION, CatalogoService y PedidoService cuando la tarea autorice la integración; no copiar credenciales, crear sesiones de muestra ni duplicar stores. La guía delimita los puntos que deben conectar las pantallas de acceso y carta, sin reasignar sus tareas ni declararlas terminadas.

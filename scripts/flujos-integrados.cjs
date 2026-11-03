@@ -32,29 +32,9 @@ async function fixture(page, selector, body) {
 async function accept(page) {await page.getByRole('dialog').getByRole('button').last().click();}
 
 async function client(page) {
-  await open(page, '/cliente/carrito');
-  await page.getByLabel('Cantidad de Lomo saltado', {exact: true}).fill('2');
-  assert.match(await page.locator('.selection-total').innerText(), /104.00/);
-  await page.getByRole('button', {name: 'Elegir cómo disfrutarlo', exact: true}).click();
-  await page.getByRole('radio', {name: 'Para llevar', exact: true}).click();
-  await page.getByRole('button', {name: 'Ver confirmación de muestra', exact: true}).click();
-  await page.getByRole('heading', {name: 'Pedido de muestra #1043', exact: true}).waitFor();
-  await page.getByRole('link', {name: 'Seguir mi pedido', exact: true}).click();
-  await page.getByRole('heading', {name: 'Pedido #1043', exact: true}).waitFor();
-  assert.equal(await page.locator('.current-status').innerText(), 'Pendiente');
-  assert.match(await page.locator('.selection-total').innerText(), /104.00/);
-  assert.match(await page.locator('.order-information').innerText(), /Para llevar/);
-  await fits(page);
-  await page.getByRole('link', {name: 'Ver registro de pago', exact: true}).click();
-  await page.getByRole('heading', {name: 'Pedido #1043', exact: true}).waitFor();
-  assert.match(await page.locator('.payment-card').innerText(), /Pendiente/);
-  assert.match(await page.locator('.payment-amount').innerText(), /104.00/);
-  assert.equal(await page.locator('.payment-details').count(), 0);
-  await page.getByRole('link', {name: 'Volver al pedido', exact: true}).click();
-  await page.getByRole('heading', {name: 'Pedido #1043', exact: true}).waitFor();
-  await page.getByRole('link', {name: '← Volver a mis pedidos', exact: true}).click();
-  await page.getByRole('link', {name: 'Ver pedido 1043', exact: true}).waitFor();
-  assert.equal(await page.locator('tbody tr').count(), 4);
+  // US11 se verifica por HTTP en us11-api-browser.cjs; este caso conserva US12/US13 de muestra.
+  await open(page, '/cliente/pedidos');
+  assert.equal(await page.locator('tbody tr').count(), 3);
   await page.getByRole('link', {name: 'Ver pedido 1034', exact: true}).click();
   await page.getByRole('heading', {name: 'Pedido #1034', exact: true}).waitFor();
   assert.equal(await page.locator('.current-status').innerText(), 'Entregado');

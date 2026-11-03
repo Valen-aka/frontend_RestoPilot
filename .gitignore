@@ -8,3 +8,5 @@ artifacts/flujos-integrados/
 !.env.example
 *.log
 .DS_Store
+
+artifacts/us11-api/

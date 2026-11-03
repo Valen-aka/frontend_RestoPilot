@@ -319,3 +319,7 @@ Se verificaron en el archivo Figma original los IDs, nombres y dimensiones de la
 La revisión documental no vuelve a ejecutar el prototipo ni certifica equivalencia visual. Los recorridos locales se verifican por separado en test/flujos-integrados. No se implementan nuevas pantallas ni se cambian reglas de negocio por corregir estas referencias.
 
 Estado actual del recorrido: [Mis pedidos](../cliente-pedidos/SPEC.md) consulta por ID y conserva detalle, seguimiento y pago. Las confirmaciones locales del carrito tienen IDs independientes #1043, #1044, …; no reemplazar el histórico #1042. Los datos temporales se reinician al recargar.
+
+## Integración API — 02/11/2026
+
+El código de registro usa ahora HTTP y datos reales; la evidencia local anterior se conserva como historial. Consultar la ejecución de US11 en el [complemento de integración](../cliente-pedido-api/SPEC.md#13-ejecución-acotada-de-us11--02112026) y la [guía compartida](../../GUIA-INTEGRACION-PEDIDOS.md). S2-TSK-032 conserva pendiente la aceptación del recorrido con las pantallas de acceso/carta y la base del equipo.
