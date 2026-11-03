@@ -1,4 +1,4 @@
-import {existsSync,readFileSync} from 'node:fs';
+import {existsSync,readFileSync,readdirSync} from 'node:fs';
 const frames=JSON.parse(readFileSync('src/app/screen-manifest.json','utf8'));
 if(frames.length!==120||new Set(frames.map(f=>f.slug)).size!==120)throw Error('Faltan pantallas o hay identificadores repetidos');
 const implemented=[];
@@ -14,3 +14,21 @@ for(const f of frames){
   }
 }
 console.log('120 escenarios conservados. '+implemented.length+' interfaces declaradas; '+(120-implemented.length)+' pendientes. Este chequeo estructural no valida integración ni aceptación.');
+
+const expectedDialogs = [
+  'cliente-reserva-cancelar', 'op-categoria-eliminar', 'op-mesa-desactivar',
+  'op-pedido-cancelar', 'op-plato-disponibilidad', 'op-plato-eliminar',
+  'op-reserva-cancelar', 'op-reservas-modulo-confirmar',
+];
+const dialogFolders = readdirSync('src/app/dialogs', {withFileTypes: true})
+  .filter(entry => entry.isDirectory()).map(entry => entry.name);
+if (dialogFolders.length !== expectedDialogs.length) {
+  throw Error('Deben conservarse las ocho carpetas de modales');
+}
+for (const dialog of expectedDialogs) {
+  for (const extension of ['ts', 'html', 'css']) {
+    const path = `src/app/dialogs/${dialog}/${dialog}-dialog.${extension}`;
+    if (!existsSync(path)) throw Error('Falta ' + path);
+  }
+}
+

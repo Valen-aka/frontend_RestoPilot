@@ -1,2 +1,2 @@
-:host{display:block}
-/* TODO: layout responsive. */
+:host{display:block;background:#fff;color:#18334a}.auth-shell{display:grid;grid-template-columns:42% minmax(0,1fr);min-height:100vh}main{min-width:0;padding:40px 6vw 60px;background:white}@media(max-width:900px){.auth-shell{grid-template-columns:minmax(0,1fr)}main{padding:48px 22px}}@media(min-width:901px) and (max-width:1150px){main{padding:40px}}@media(max-width:900px){.auth-shell{grid-template-rows:auto 1fr}.auth-shell:has(rp-acceso) rp-auth-story,.auth-shell:has(rp-acceso-error) rp-auth-story,.auth-shell:has(rp-registro-duplicado) rp-auth-story{min-height:155px;background:#18334a}.auth-shell:has(rp-acceso) main,.auth-shell:has(rp-acceso-error) main,.auth-shell:has(rp-registro-duplicado) main{padding-top:63px}}
+@media(max-width:900px){.auth-shell:has(rp-registro-dueno) main,.auth-shell:has(rp-registro-restaurante) main{padding-top:34px}}
