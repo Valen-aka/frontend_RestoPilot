@@ -1,0 +1,10 @@
+version: 1
+name: RestoPilot US19 local
+slug: restopilot-us19
+protocol: http
+port: 4504
+interceptRequests: true
+scenarios:
+  - name: default
+    path: ./default.js
+    default: true

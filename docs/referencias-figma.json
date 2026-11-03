@@ -1,0 +1,1019 @@
+{
+  "checkedAt": "2026-11-02",
+  "fileKey": "wBq85sZ8G5W5RQ1RmQmdqg",
+  "method": "MCP get_metadata en páginas originales 0:1, 5:92 y 5:124; consulta individual de 115:64.",
+  "scope": "Identificadores, nombres y dimensiones. No certifica estilos, recursos, interacciones ni equivalencia visual de la aplicación.",
+  "nodes": [
+    {
+      "id": "115:144",
+      "verified": true,
+      "type": "frame",
+      "name": "RestoPilot / Landing · Escritorio",
+      "width": 1280,
+      "height": 6278.421875,
+      "specs": [
+        "landing"
+      ]
+    },
+    {
+      "id": "115:781",
+      "verified": true,
+      "type": "frame",
+      "name": "RestoPilot — Buen servicio. Buenas historias.",
+      "width": 390,
+      "height": 7238,
+      "specs": [
+        "landing"
+      ]
+    },
+    {
+      "id": "115:773",
+      "verified": true,
+      "type": "frame",
+      "name": "Navbar · Estado de scroll",
+      "width": 263,
+      "height": 101,
+      "specs": [
+        "landing"
+      ]
+    },
+    {
+      "id": "125:3",
+      "verified": true,
+      "type": "frame",
+      "name": "Style Guide",
+      "width": 1440,
+      "height": 2082.956298828125,
+      "specs": [
+        "landing"
+      ]
+    },
+    {
+      "id": "5:124",
+      "verified": true,
+      "type": "canvas",
+      "name": "Style",
+      "width": 0,
+      "height": 0,
+      "specs": [
+        "landing"
+      ]
+    },
+    {
+      "id": "115:64",
+      "verified": false,
+      "reason": "El MCP devolvió selección inválida en el archivo original. Referencia histórica de hover; no usar como destino vigente.",
+      "specs": [
+        "landing"
+      ]
+    },
+    {
+      "id": "115:154",
+      "verified": true,
+      "type": "instance",
+      "name": "CTA · Empieza con RestoPilot",
+      "width": 227.765625,
+      "height": 56,
+      "specs": [
+        "landing"
+      ]
+    },
+    {
+      "id": "115:710",
+      "verified": true,
+      "type": "instance",
+      "name": "CTA · Empieza con RestoPilot",
+      "width": 223.765625,
+      "height": 58,
+      "specs": [
+        "landing"
+      ]
+    },
+    {
+      "id": "115:769",
+      "verified": true,
+      "type": "instance",
+      "name": "CTA · Empieza con RestoPilot",
+      "width": 182,
+      "height": 44,
+      "specs": [
+        "landing"
+      ]
+    },
+    {
+      "id": "115:753",
+      "verified": true,
+      "type": "frame",
+      "name": "Navbar · Cristal / estado inicial",
+      "width": 1000,
+      "height": 70,
+      "specs": [
+        "landing"
+      ]
+    },
+    {
+      "id": "115:1382",
+      "verified": true,
+      "type": "frame",
+      "name": "Header",
+      "width": 358,
+      "height": 64,
+      "specs": [
+        "landing"
+      ]
+    },
+    {
+      "id": "115:145",
+      "verified": true,
+      "type": "frame",
+      "name": "01 · Hero",
+      "width": 1280,
+      "height": 720,
+      "specs": [
+        "landing"
+      ]
+    },
+    {
+      "id": "115:784",
+      "verified": true,
+      "type": "frame",
+      "name": "Section",
+      "width": 390,
+      "height": 844,
+      "specs": [
+        "landing"
+      ]
+    },
+    {
+      "id": "115:393",
+      "verified": true,
+      "type": "frame",
+      "name": "02 · La experiencia",
+      "width": 1280,
+      "height": 522.359375,
+      "specs": [
+        "landing"
+      ]
+    },
+    {
+      "id": "115:1031",
+      "verified": true,
+      "type": "frame",
+      "name": "Section",
+      "width": 390,
+      "height": 669.7977905273438,
+      "specs": [
+        "landing"
+      ]
+    },
+    {
+      "id": "115:414",
+      "verified": true,
+      "type": "frame",
+      "name": "03 · Soluciones",
+      "width": 1280,
+      "height": 874.546875,
+      "specs": [
+        "landing"
+      ]
+    },
+    {
+      "id": "115:1054",
+      "verified": true,
+      "type": "frame",
+      "name": "Section",
+      "width": 390,
+      "height": 1133.56298828125,
+      "specs": [
+        "landing"
+      ]
+    },
+    {
+      "id": "115:491",
+      "verified": true,
+      "type": "frame",
+      "name": "04 · Clientes y equipo",
+      "width": 1280,
+      "height": 1161.375,
+      "specs": [
+        "landing"
+      ]
+    },
+    {
+      "id": "115:1125",
+      "verified": true,
+      "type": "frame",
+      "name": "Section",
+      "width": 390,
+      "height": 1487.75,
+      "specs": [
+        "landing"
+      ]
+    },
+    {
+      "id": "115:574",
+      "verified": true,
+      "type": "frame",
+      "name": "05 · Asistente IA",
+      "width": 1280,
+      "height": 736.140625,
+      "specs": [
+        "landing"
+      ]
+    },
+    {
+      "id": "115:1208",
+      "verified": true,
+      "type": "frame",
+      "name": "Section",
+      "width": 390,
+      "height": 935.921875,
+      "specs": [
+        "landing"
+      ]
+    },
+    {
+      "id": "115:629",
+      "verified": true,
+      "type": "frame",
+      "name": "06 · Empieza a tu ritmo",
+      "width": 1280,
+      "height": 561.5625,
+      "specs": [
+        "landing"
+      ]
+    },
+    {
+      "id": "115:1263",
+      "verified": true,
+      "type": "frame",
+      "name": "Section",
+      "width": 390,
+      "height": 650.406005859375,
+      "specs": [
+        "landing"
+      ]
+    },
+    {
+      "id": "115:659",
+      "verified": true,
+      "type": "frame",
+      "name": "07 · Preguntas frecuentes",
+      "width": 1280,
+      "height": 555.984375,
+      "specs": [
+        "landing"
+      ]
+    },
+    {
+      "id": "115:1290",
+      "verified": true,
+      "type": "frame",
+      "name": "Section",
+      "width": 390,
+      "height": 582.4528198242188,
+      "specs": [
+        "landing"
+      ]
+    },
+    {
+      "id": "115:704",
+      "verified": true,
+      "type": "frame",
+      "name": "08 · Cierre",
+      "width": 1280,
+      "height": 526,
+      "specs": [
+        "landing"
+      ]
+    },
+    {
+      "id": "115:1335",
+      "verified": true,
+      "type": "frame",
+      "name": "Section",
+      "width": 390,
+      "height": 376,
+      "specs": [
+        "landing"
+      ]
+    },
+    {
+      "id": "115:715",
+      "verified": true,
+      "type": "frame",
+      "name": "09 · Footer y enlaces legales",
+      "width": 1280,
+      "height": 620.453125,
+      "specs": [
+        "landing"
+      ]
+    },
+    {
+      "id": "115:1344",
+      "verified": true,
+      "type": "frame",
+      "name": "Footer",
+      "width": 390,
+      "height": 561.46875,
+      "specs": [
+        "landing"
+      ]
+    },
+    {
+      "id": "115:161",
+      "verified": true,
+      "type": "frame",
+      "name": "Icon",
+      "width": 582.3909912109375,
+      "height": 340,
+      "specs": [
+        "landing"
+      ]
+    },
+    {
+      "id": "0:1",
+      "verified": true,
+      "type": "canvas",
+      "name": "Landing",
+      "width": 0,
+      "height": 0,
+      "specs": [
+        "landing"
+      ]
+    },
+    {
+      "id": "84:17424",
+      "verified": true,
+      "type": "frame",
+      "name": "1440w en-US light",
+      "width": 1440,
+      "height": 900,
+      "specs": [
+        "us11"
+      ]
+    },
+    {
+      "id": "84:17538",
+      "verified": true,
+      "type": "frame",
+      "name": "390w en-US light",
+      "width": 390,
+      "height": 1087,
+      "specs": [
+        "us11"
+      ]
+    },
+    {
+      "id": "84:17296",
+      "verified": true,
+      "type": "frame",
+      "name": "1440w en-US light",
+      "width": 1440,
+      "height": 900,
+      "specs": [
+        "us11"
+      ]
+    },
+    {
+      "id": "84:17364",
+      "verified": true,
+      "type": "frame",
+      "name": "390w en-US light",
+      "width": 390,
+      "height": 880.5999755859375,
+      "specs": [
+        "us11"
+      ]
+    },
+    {
+      "id": "84:24109",
+      "verified": true,
+      "type": "frame",
+      "name": "1440w en-US light",
+      "width": 1440,
+      "height": 907.2999877929688,
+      "specs": [
+        "us11"
+      ]
+    },
+    {
+      "id": "84:24241",
+      "verified": true,
+      "type": "frame",
+      "name": "390w en-US light",
+      "width": 390,
+      "height": 1281.0999755859375,
+      "specs": [
+        "us11"
+      ]
+    },
+    {
+      "id": "84:18632",
+      "verified": true,
+      "type": "frame",
+      "name": "1440w en-US light",
+      "width": 1440,
+      "height": 907.2999877929688,
+      "specs": [
+        "us11"
+      ]
+    },
+    {
+      "id": "84:18764",
+      "verified": true,
+      "type": "frame",
+      "name": "390w en-US light",
+      "width": 390,
+      "height": 1332.0999755859375,
+      "specs": [
+        "us11"
+      ]
+    },
+    {
+      "id": "84:18888",
+      "verified": true,
+      "type": "frame",
+      "name": "1440w en-US light",
+      "width": 1440,
+      "height": 907.2999877929688,
+      "specs": [
+        "us11"
+      ]
+    },
+    {
+      "id": "84:19016",
+      "verified": true,
+      "type": "frame",
+      "name": "390w en-US light",
+      "width": 390,
+      "height": 1232.5999755859375,
+      "specs": [
+        "us11"
+      ]
+    },
+    {
+      "id": "84:19136",
+      "verified": true,
+      "type": "frame",
+      "name": "1440w en-US light",
+      "width": 1440,
+      "height": 907.2999877929688,
+      "specs": [
+        "us11"
+      ]
+    },
+    {
+      "id": "84:19264",
+      "verified": true,
+      "type": "frame",
+      "name": "390w en-US light",
+      "width": 390,
+      "height": 1257.0999755859375,
+      "specs": [
+        "us11"
+      ]
+    },
+    {
+      "id": "84:48380",
+      "verified": true,
+      "type": "frame",
+      "name": "1440w en-US light",
+      "width": 1440,
+      "height": 900,
+      "specs": [
+        "us11"
+      ]
+    },
+    {
+      "id": "84:48448",
+      "verified": true,
+      "type": "frame",
+      "name": "390w en-US light",
+      "width": 390,
+      "height": 909.5999755859375,
+      "specs": [
+        "us11"
+      ]
+    },
+    {
+      "id": "84:33350",
+      "verified": true,
+      "type": "frame",
+      "name": "1440w en-US light",
+      "width": 1440,
+      "height": 900,
+      "specs": [
+        "us11"
+      ]
+    },
+    {
+      "id": "84:33418",
+      "verified": true,
+      "type": "frame",
+      "name": "390w en-US light",
+      "width": 390,
+      "height": 963,
+      "specs": [
+        "us11"
+      ]
+    },
+    {
+      "id": "5:92",
+      "verified": true,
+      "type": "canvas",
+      "name": "RestoPilot",
+      "width": 0,
+      "height": 0,
+      "specs": [
+        "us11",
+        "us12",
+        "us13",
+        "us15",
+        "us19",
+        "us25",
+        "us26"
+      ]
+    },
+    {
+      "id": "84:33478",
+      "verified": true,
+      "type": "frame",
+      "name": "1440w en-US light",
+      "width": 1440,
+      "height": 960.5999755859375,
+      "specs": [
+        "us12",
+        "us13"
+      ]
+    },
+    {
+      "id": "84:33631",
+      "verified": true,
+      "type": "frame",
+      "name": "390w en-US light",
+      "width": 390,
+      "height": 1483.0999755859375,
+      "specs": [
+        "us12",
+        "us13"
+      ]
+    },
+    {
+      "id": "84:32934",
+      "verified": true,
+      "type": "frame",
+      "name": "1440w en-US light",
+      "width": 1440,
+      "height": 900,
+      "specs": [
+        "us12"
+      ]
+    },
+    {
+      "id": "84:33017",
+      "verified": true,
+      "type": "frame",
+      "name": "390w en-US light",
+      "width": 390,
+      "height": 918.2000122070312,
+      "specs": [
+        "us12"
+      ]
+    },
+    {
+      "id": "84:32798",
+      "verified": true,
+      "type": "frame",
+      "name": "1440w en-US light",
+      "width": 1440,
+      "height": 900,
+      "specs": [
+        "us12"
+      ]
+    },
+    {
+      "id": "84:32870",
+      "verified": true,
+      "type": "frame",
+      "name": "390w en-US light",
+      "width": 390,
+      "height": 817.2000122070312,
+      "specs": [
+        "us12"
+      ]
+    },
+    {
+      "id": "84:39170",
+      "verified": true,
+      "type": "frame",
+      "name": "1440w en-US light",
+      "width": 1440,
+      "height": 960.5999755859375,
+      "specs": [
+        "us13"
+      ]
+    },
+    {
+      "id": "84:39323",
+      "verified": true,
+      "type": "frame",
+      "name": "390w en-US light",
+      "width": 390,
+      "height": 1450.699951171875,
+      "specs": [
+        "us13"
+      ]
+    },
+    {
+      "id": "84:33776",
+      "verified": true,
+      "type": "frame",
+      "name": "1440w en-US light",
+      "width": 1440,
+      "height": 960.5999755859375,
+      "specs": [
+        "us13"
+      ]
+    },
+    {
+      "id": "84:33929",
+      "verified": true,
+      "type": "frame",
+      "name": "390w en-US light",
+      "width": 390,
+      "height": 1483.0999755859375,
+      "specs": [
+        "us13"
+      ]
+    },
+    {
+      "id": "84:33092",
+      "verified": true,
+      "type": "frame",
+      "name": "1440w en-US light",
+      "width": 1440,
+      "height": 920.5999755859375,
+      "specs": [
+        "us13"
+      ]
+    },
+    {
+      "id": "84:33225",
+      "verified": true,
+      "type": "frame",
+      "name": "390w en-US light",
+      "width": 390,
+      "height": 1373.699951171875,
+      "specs": [
+        "us13"
+      ]
+    },
+    {
+      "id": "95:11",
+      "verified": true,
+      "type": "section",
+      "name": "10 · Pedidos operación",
+      "width": 9140,
+      "height": 5428.828125,
+      "specs": [
+        "us15",
+        "us19"
+      ]
+    },
+    {
+      "id": "89:36315",
+      "verified": true,
+      "type": "frame",
+      "name": "1440w en-US light",
+      "width": 1440,
+      "height": 900,
+      "specs": [
+        "us15"
+      ]
+    },
+    {
+      "id": "89:36485",
+      "verified": true,
+      "type": "frame",
+      "name": "390w en-US light",
+      "width": 390,
+      "height": 1004,
+      "specs": [
+        "us15"
+      ]
+    },
+    {
+      "id": "89:12661",
+      "verified": true,
+      "type": "frame",
+      "name": "1440w en-US light",
+      "width": 1440,
+      "height": 967.0999755859375,
+      "specs": [
+        "us15",
+        "us19"
+      ]
+    },
+    {
+      "id": "89:12859",
+      "verified": true,
+      "type": "frame",
+      "name": "390w en-US light",
+      "width": 390,
+      "height": 1820.21875,
+      "specs": [
+        "us15",
+        "us19"
+      ]
+    },
+    {
+      "id": "89:29812",
+      "verified": true,
+      "type": "frame",
+      "name": "1440w en-US light",
+      "width": 1440,
+      "height": 900,
+      "specs": [
+        "us15",
+        "us19"
+      ]
+    },
+    {
+      "id": "89:29989",
+      "verified": true,
+      "type": "frame",
+      "name": "390w en-US light",
+      "width": 390,
+      "height": 1318,
+      "specs": [
+        "us15",
+        "us19"
+      ]
+    },
+    {
+      "id": "89:36014",
+      "verified": true,
+      "type": "frame",
+      "name": "1440w en-US light",
+      "width": 1440,
+      "height": 900,
+      "specs": [
+        "us19"
+      ]
+    },
+    {
+      "id": "89:36185",
+      "verified": true,
+      "type": "frame",
+      "name": "390w en-US light",
+      "width": 390,
+      "height": 1297.078125,
+      "specs": [
+        "us19"
+      ]
+    },
+    {
+      "id": "89:35713",
+      "verified": true,
+      "type": "frame",
+      "name": "1440w en-US light",
+      "width": 1440,
+      "height": 900,
+      "specs": [
+        "us19"
+      ]
+    },
+    {
+      "id": "89:35884",
+      "verified": true,
+      "type": "frame",
+      "name": "390w en-US light",
+      "width": 390,
+      "height": 1264.609375,
+      "specs": [
+        "us19"
+      ]
+    },
+    {
+      "id": "89:35412",
+      "verified": true,
+      "type": "frame",
+      "name": "1440w en-US light",
+      "width": 1440,
+      "height": 900,
+      "specs": [
+        "us19"
+      ]
+    },
+    {
+      "id": "89:35583",
+      "verified": true,
+      "type": "frame",
+      "name": "390w en-US light",
+      "width": 390,
+      "height": 1264.609375,
+      "specs": [
+        "us19"
+      ]
+    },
+    {
+      "id": "95:13",
+      "verified": true,
+      "type": "section",
+      "name": "12 · Reservas operación",
+      "width": 9140,
+      "height": 6565.359375,
+      "specs": [
+        "us25"
+      ]
+    },
+    {
+      "id": "89:45459",
+      "verified": true,
+      "type": "frame",
+      "name": "1440w en-US light",
+      "width": 1440,
+      "height": 900,
+      "specs": [
+        "us25"
+      ]
+    },
+    {
+      "id": "89:45606",
+      "verified": true,
+      "type": "frame",
+      "name": "390w en-US light",
+      "width": 390,
+      "height": 1263.359375,
+      "specs": [
+        "us25"
+      ]
+    },
+    {
+      "id": "89:44067",
+      "verified": true,
+      "type": "frame",
+      "name": "1440w en-US light",
+      "width": 1440,
+      "height": 900,
+      "specs": [
+        "us25"
+      ]
+    },
+    {
+      "id": "89:44206",
+      "verified": true,
+      "type": "frame",
+      "name": "390w en-US light",
+      "width": 390,
+      "height": 1218.859375,
+      "specs": [
+        "us25"
+      ]
+    },
+    {
+      "id": "89:44503",
+      "verified": true,
+      "type": "frame",
+      "name": "1440w en-US light",
+      "width": 1440,
+      "height": 900,
+      "specs": [
+        "us25"
+      ]
+    },
+    {
+      "id": "89:44635",
+      "verified": true,
+      "type": "frame",
+      "name": "390w en-US light",
+      "width": 390,
+      "height": 1004,
+      "specs": [
+        "us25"
+      ]
+    },
+    {
+      "id": "84:46814",
+      "verified": true,
+      "type": "frame",
+      "name": "1440w en-US light",
+      "width": 1440,
+      "height": 864.7000122070312,
+      "specs": [
+        "us26"
+      ]
+    },
+    {
+      "id": "84:46918",
+      "verified": true,
+      "type": "frame",
+      "name": "390w en-US light",
+      "width": 390,
+      "height": 1395.9000244140625,
+      "specs": [
+        "us26"
+      ]
+    },
+    {
+      "id": "89:45236",
+      "verified": true,
+      "type": "frame",
+      "name": "1440w en-US light",
+      "width": 1440,
+      "height": 900,
+      "specs": [
+        "us26"
+      ]
+    },
+    {
+      "id": "89:45368",
+      "verified": true,
+      "type": "frame",
+      "name": "390w en-US light",
+      "width": 390,
+      "height": 1004,
+      "specs": [
+        "us26"
+      ]
+    },
+    {
+      "id": "84:48114",
+      "verified": true,
+      "type": "frame",
+      "name": "1440w en-US light",
+      "width": 1440,
+      "height": 900,
+      "specs": [
+        "us26"
+      ]
+    },
+    {
+      "id": "84:48251",
+      "verified": true,
+      "type": "frame",
+      "name": "390w en-US light",
+      "width": 390,
+      "height": 822.5,
+      "specs": [
+        "us26"
+      ]
+    },
+    {
+      "id": "91:51761",
+      "verified": true,
+      "type": "frame",
+      "name": "1440w en-US light",
+      "width": 1440,
+      "height": 900,
+      "specs": [
+        "us26"
+      ]
+    },
+    {
+      "id": "91:51957",
+      "verified": true,
+      "type": "frame",
+      "name": "390w en-US light",
+      "width": 390,
+      "height": 1097,
+      "specs": [
+        "us26"
+      ]
+    },
+    {
+      "id": "84:39468",
+      "verified": true,
+      "type": "frame",
+      "name": "1440w en-US light",
+      "width": 1440,
+      "height": 900,
+      "specs": [
+        "cliente-pedidos"
+      ]
+    },
+    {
+      "id": "84:39590",
+      "verified": true,
+      "type": "frame",
+      "name": "390w en-US light",
+      "width": 390,
+      "height": 844,
+      "specs": [
+        "cliente-pedidos"
+      ]
+    },
+    {
+      "id": "84:39467",
+      "verified": true,
+      "type": "section",
+      "name": "09 · cliente-pedidos",
+      "width": 2130,
+      "height": 1100,
+      "specs": [
+        "cliente-pedidos"
+      ]
+    }
+  ]
+}

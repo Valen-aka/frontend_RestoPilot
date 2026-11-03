@@ -1,0 +1,61 @@
+<rp-cocina-shell active="reservations" [apiMode]="true" [restaurantName]="store.restaurantName()" [restaurantId]="store.restaurantId()">
+  <div class="heading"><p class="eyebrow">RESERVAS OPERACIÓN</p><h1 id="attendance-title" tabindex="-1">{{ title() }}</h1>
+    <p class="subtitle">{{ !stageMatches() ? 'Revisa la visita y sus fechas.' : mode() === 'arrival' ? 'El registro de llegada conserva la reserva durante su atención.' : mode() === 'attending' ? 'La llegada está registrada; completa la visita cuando corresponda.' : 'Cada buena visita cuenta.' }}</p>
+    <p class="sample-notice">Las fechas y la disponibilidad de las acciones se consultan al restaurante.</p>
+    @if(store.now(); as now) {<p class="clock">Última evaluación del servidor: <strong>{{ date(now) }}</strong> · Lima</p>}
+    <button mat-stroked-button type="button" (click)="store.refresh()" [disabled]="!store.hasSession() || store.busy() || store.refreshing()">{{ store.refreshing() ? 'Actualizando…' : 'Actualizar reserva' }}</button>
+  </div>
+  @if(store.busy()) {<p class="information" role="status">Operación en curso. Espera la confirmación antes de realizar otra acción.</p>}
+  @if(store.verificationId(); as id) {<div class="warning" role="alert"><p>El resultado de la operación de la reserva #{{ id }} necesita verificarse. Las acciones permanecen bloqueadas.</p><button mat-stroked-button type="button" (click)="store.verifyPending()" [disabled]="store.busy()">Verificar situación</button></div>}
+  @if (feedback(); as message) {
+    <p id="attendance-feedback" class="feedback" tabindex="-1" [class.error]="message.kind === 'error'" [attr.role]="message.kind === 'error' ? 'alert' : 'status'" aria-live="polite">{{ message.text }}</p>
+  }
+  @if (store.queryState() === 'loading') {
+    <mat-card appearance="outlined" class="state-card" role="status" aria-busy="true"><mat-spinner diameter="32" aria-hidden="true"/><h2>Consultando la reserva…</h2></mat-card>
+  } @else if (store.queryState() === 'error' || store.problem()) {
+    <mat-card appearance="outlined" class="state-card" role="alert"><h2>No pudimos mostrar la reserva</h2><p>{{ store.problem() || 'No se pudo completar la consulta.' }}</p><button mat-stroked-button type="button" (click)="store.refresh()">Volver a consultar</button></mat-card>
+  } @else {
+    @if (store.queryState() === 'stale') {<div class="warning" role="status"><strong>No se pudo actualizar la reserva.</strong><p>Se conserva la lectura anterior; las acciones están bloqueadas hasta actualizarla.</p><button mat-stroked-button type="button" (click)="store.refresh()">Volver a consultar</button></div>}
+    @if (reservation(); as current) {
+      @if (!stageMatches()) {
+        <div class="warning stage-warning" role="status"><p>Esta vista no corresponde a la situación actual: {{ current.status }}{{ current.arrivedAt ? ', con llegada registrada' : ', sin llegada registrada' }}. Abrir una dirección no modifica la reserva.</p>
+          @if (current.status === 'Confirmada' || current.status === 'Completada') {<a mat-stroked-button [routerLink]="destination(current).path" [queryParams]="{vista: destination(current).vista, reservaId: current.id}" [state]="{us25ReservationId: current.id}">Consultar situación actual</a>}
+        </div>
+      }
+      <div class="reservation-grid" [class.completed-grid]="current.status === 'Completada' && stageMatches()">
+        <mat-card appearance="outlined" class="reservation-card">
+          <h2>Reserva #{{ current.id }}</h2><div class="badges"><span class="status" [class.completed]="current.status === 'Completada'" [class.inactive]="current.status !== 'Confirmada' && current.status !== 'Completada'">{{ current.status }}</span>
+            @if (current.arrivedAt && current.status === 'Confirmada') {<span class="arrival-badge">Llegada registrada</span>}
+          </div>
+          <dl class="reservation-details">
+            <div><dt>Reserva</dt><dd>#{{ current.id }}</dd></div>
+            <div><dt>Cliente</dt><dd>{{ current.customer }}</dd></div>
+            <div><dt>Inicio previsto · Lima</dt><dd>{{ date(current.startsAt) }}</dd></div>
+            <div><dt>Fin previsto · Lima</dt><dd>{{ date(current.endsAt) }}</dd></div>
+            <div><dt>Mesa y comensales</dt><dd>{{ current.table }} · {{ current.guests }} {{ current.guests === 1 ? 'comensal' : 'comensales' }}</dd></div>
+            @if (current.notes) {<div><dt>Notas</dt><dd>{{ current.notes }}</dd></div>}
+            @if (current.arrivedAt) {<div><dt>Llegada registrada · Lima</dt><dd class="arrival-date">{{ date(current.arrivedAt) }}</dd></div>}
+            @if (store.current()?.expiradaEn; as expired) {<div><dt>Expiración registrada · Lima</dt><dd>{{ date(expired + '-05:00') }}</dd></div>}
+            @if (current.completedAt) {<div><dt>Finalización registrada · Lima</dt><dd class="completion-date">{{ date(current.completedAt) }}</dd></div>}
+          </dl>
+          @if (current.status === 'Completada') {<p class="information">La atención figura Completada en el restaurante. Las fechas registradas se conservan.</p><a mat-flat-button class="agenda-link" routerLink="/operacion/reservas">Volver a la agenda</a>}
+        </mat-card>
+        @if (current.status !== 'Completada') {
+          <mat-card appearance="outlined" class="attendance-card">
+            <h2>{{ current.arrivedAt ? 'Atención en curso' : 'Recibir a los comensales' }}</h2>
+            <p class="time-value">{{ time(current.arrivedAt || current.startsAt) }}</p><p class="time-label">{{ current.arrivedAt ? 'Llegada registrada · Lima' : 'Inicio de la reserva · Lima' }}</p>
+            @if (!current.arrivedAt) {<p class="warning">Sin llegada registrada, la tolerancia termina al cumplirse 15 minutos desde el inicio.</p>}
+            @else {<p class="help">Completa la atención cuando haya terminado. No se puede completar antes de la hora de inicio.</p>}
+            @if (stageMatches()) {
+              @if (actionProblem()) {<p class="action-problem" role="status">{{ actionProblem() }}</p>}
+              <button mat-flat-button class="attendance-action" type="button" (click)="request($event)" [disabled]="store.busy() || store.refreshing() || store.verificationId() !== null || store.queryState() !== 'ready' || !!actionProblem()" [attr.aria-label]="actionLabel() + ' de la reserva #' + current.id">{{ actionLabel() }}</button>
+            }
+          </mat-card>
+        }
+      </div>
+      @if (current.status !== 'Completada') {<a mat-stroked-button class="agenda-link" routerLink="/operacion/reservas">Volver a la agenda</a>}
+    } @else {
+      <mat-card appearance="outlined" class="state-card" role="status"><h2>No se encontró la reserva en este restaurante</h2><p>Abre una reserva válida de tu restaurante para consultarla.</p><a routerLink="/operacion/reservas">Volver a la agenda</a></mat-card>
+    }
+  }
+</rp-cocina-shell>

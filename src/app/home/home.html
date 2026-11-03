@@ -1,5 +1,229 @@
-<!-- Landing Page pública de RestoPilot, integrada en este frontend. -->
-<!-- Ruta: / | Componente: Home | Responsable: Alexandra Fong. -->
-<!-- S2-TSK-003: cabecera, contenido, CTA, pie y diseño responsive. -->
-<!-- S2-TSK-004: accesos con routerLink, verificación y despliegue de la landing. -->
-<!-- TODO: implementar el frame aprobado. Esta plantilla se deja vacía por alcance. -->
+<a class="skip-link" href="#contenido" (click)="goTo($event, 'contenido')">Saltar al contenido</a>
+<header class="site-header" [class.compact]="compactNav()">
+  <a class="brand" href="#inicio" aria-label="RestoPilot, inicio" (click)="goTo($event, 'inicio')">
+    <img src="assets/landing/brand-icon.svg" width="25" height="30" alt="">
+    <span>Resto<span class="brand-pilot">Pilot</span></span>
+  </a>
+  <nav class="desktop-navigation" aria-label="Navegación principal">
+    @for (link of navigation; track link.id) {
+      <a [href]="'#' + link.id" (click)="goTo($event, link.id)">{{ link.label }}</a>
+    }
+    <a mat-flat-button class="cta nav-cta" routerLink="/auth/registro-dueno">Empieza con RestoPilot</a>
+  </nav>
+  <button mat-icon-button class="menu-trigger" [matMenuTriggerFor]="mobileMenu" aria-label="Abrir menú">
+    <span class="menu-lines" aria-hidden="true"><span></span><span></span></span>
+  </button>
+  <mat-menu #mobileMenu="matMenu">
+    @for (link of navigation; track link.id) {
+      <a mat-menu-item [href]="'#' + link.id" (click)="goTo($event, link.id)">{{ link.label }}</a>
+    }
+    <a mat-menu-item routerLink="/auth/registro-dueno">Empieza con RestoPilot</a>
+    <a mat-menu-item routerLink="/auth/login">Iniciar sesión</a>
+  </mat-menu>
+</header>
+
+<main id="contenido" tabindex="-1">
+  <section #hero class="hero dark-section" id="inicio" tabindex="-1" aria-labelledby="hero-title">
+    <div class="section-inner hero-grid">
+      <h1 id="hero-title">Que fluya<br>el servicio.</h1>
+      <div class="hero-intro">
+        <p>Una mesa se reserva. Un pedido llega a cocina. Alguien vuelve por su plato favorito.</p>
+        <p class="intro-emphasis">RestoPilot conecta cada momento.</p>
+        <a mat-flat-button class="cta light-cta" routerLink="/auth/registro-dueno">Empieza con RestoPilot</a>
+      </div>
+      <div class="restaurant-art">
+        <img src="assets/landing/restaurant.png" width="583" height="340"
+          alt="Ilustración de un restaurante con mesas, cocina y equipo conectados" fetchpriority="high">
+      </div>
+      <div class="journey">
+        <div class="journey-heading"><span>Una noche en la mesa 04</span><span class="sample-dot" aria-hidden="true"><img src="assets/landing/pause.svg" width="18" height="18" alt=""></span></div>
+        <div class="reservation-card" aria-live="polite" aria-atomic="true">
+          <div class="card-topline"><span>RestoPilot</span><span>Mesa 04</span></div>
+          <p class="card-eyebrow">{{ moments[selectedMoment()].time }}</p>
+          <h2>{{ moments[selectedMoment()].title }}</h2>
+          <p>{{ moments[selectedMoment()].detail }}</p>
+          <div class="reservation-state"><span>{{ moments[selectedMoment()].area }}</span><span>{{ moments[selectedMoment()].state }}</span></div>
+        </div>
+        <div class="journey-controls" role="group" aria-label="Momento del recorrido ilustrativo">
+          @for (moment of moments; track moment.label; let i = $index) {
+            <button mat-button [class.selected]="selectedMoment() === i"
+              [attr.aria-pressed]="selectedMoment() === i" (click)="selectedMoment.set(i)">{{ moment.label }}</button>
+          }
+        </div>
+        <p class="journey-note">Un recorrido ilustrativo. Puedes cambiar de momento.</p>
+      </div>
+      <div class="hero-bottom"><p>Del primer «hola» al próximo «nos vemos».</p>
+        <a href="#experiencia" (click)="goTo($event, 'experiencia')"><span class="scroll-icon" aria-hidden="true"></span>Sigue el recorrido</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="experience light-section" id="experiencia" tabindex="-1" aria-labelledby="experience-title">
+    <div class="section-inner">
+      <div class="section-heading experience-heading">
+        <h2 id="experience-title">Menos «¿ya sale?».<br>Más «buen provecho».</h2>
+        <p>Una reserva que llega a tiempo. Un pedido que cocina entiende. Un equipo que sabe qué sigue. RestoPilot reúne los detalles para que tú te concentres en lo que importa: <strong>hacer que quieran volver.</strong></p>
+      </div>
+      <div class="benefits">
+        <div><h3>Todo a la vista.</h3><p>La operación, organizada y a mano.</p></div>
+        <div><h3>Un espacio para cada uno.</h3><p>Experiencias para clientes, dueños y administradores.</p></div>
+        <div><h3>Del salón a cocina.</h3><p>Del salón a cocina, sin perder el hilo.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="solutions" id="soluciones" tabindex="-1" aria-labelledby="solutions-title">
+    <div class="section-inner">
+      <div class="section-heading"><h2 id="solutions-title">El salón y la cocina.<br>En la misma página.</h2>
+        <p>Todo lo que hace fluir tu servicio.<br>Sin ir de una herramienta a otra.</p></div>
+      <div class="solutions-grid">
+        <div class="operation-preview" aria-live="polite" aria-atomic="true">
+          <div class="preview-brand"><strong>RestoPilot</strong><span>Tu operación</span></div>
+          <div class="preview-body">
+            <p class="card-eyebrow">Servicio de hoy</p>
+            @switch (selectedSolution()) {
+              @case (0) {
+                <h3>Pedidos en curso</h3>
+                <div class="order-row"><span class="order-id">#1042</span><span>Mesa 04</span><span class="mini-badge">En preparación</span></div>
+                <div class="order-row"><span class="order-id">#1041</span><span>Para recoger</span><span class="mini-badge">Listo</span></div>
+                <div class="order-row"><span class="order-id">#1040</span><span>Delivery</span><span class="mini-badge pending">Pendiente</span></div>
+              }
+              @case (1) {
+                <h3>Reservas en orden</h3>
+                <div class="sample-reservation"><span>Mesa 04</span><strong>19:30</strong><p>Dos personas. Una mesa lista.</p><span class="mini-badge">Confirmada</span></div>
+              }
+              @case (2) {
+                <h3>Tu carta, siempre a mano</h3>
+                <div class="dish-row"><span class="dish-initial">L</span><span>Lomo saltado<small>Un clásico de la casa</small></span></div>
+                <div class="dish-row"><span class="dish-initial">A</span><span>Ají de gallina<small>El sabor de siempre</small></span></div>
+              }
+              @case (3) {
+                <h3>Los favoritos del período</h3>
+                <ol class="mini-ranking"><li>Lomo saltado</li><li>Ají de gallina</li><li>Bowl de la huerta</li></ol>
+              }
+            }
+          </div>
+          <div class="preview-footer"><span>La Mesa Verde</span><span>Vista de ejemplo</span></div>
+        </div>
+        <div class="solution-options" role="group" aria-label="Vistas ilustrativas del restaurante">
+          @for (solution of solutions; track solution.title; let i = $index) {
+            <button class="solution-option" [class.active]="selectedSolution() === i"
+              [attr.aria-pressed]="selectedSolution() === i" (click)="selectedSolution.set(i)">
+              <span><span class="solution-name">{{ solution.title }}</span>
+                @if (selectedSolution() === i) { <span class="solution-description">{{ solution.description }}</span> }
+              </span>
+              <span class="solution-number">{{ (i + 1).toString().padStart(2, '0') }}</span>
+            </button>
+          }
+        </div>
+        <p class="preview-caption">Explora las cuatro vistas del restaurante</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="audiences" id="clientes-equipo" tabindex="-1" aria-labelledby="audiences-title">
+    <div class="section-inner">
+      <h2 id="audiences-title">A ambos lados<br>de la mesa.</h2>
+      <div class="audience-grid">
+        <article class="audience-client" id="demo-clientes" tabindex="-1">
+          <div class="client-illustration">
+            <div class="menu-card">
+              <div class="card-topline"><span>La Mesa Verde</span><span>Mesa 04</span></div>
+              <h3>¿Qué se te antoja?</h3><p class="card-eyebrow">Hecho para disfrutar, a tu ritmo.</p>
+              <div class="dish-row"><span class="dish-initial">L</span><span>Lomo saltado<small>Un clásico de la casa</small></span></div>
+              <div class="dish-row"><span class="dish-initial">A</span><span>Ají de gallina<small>El sabor de siempre</small></span></div>
+              <div class="menu-card-bottom"><span>Tu carta, siempre a mano</span><img src="assets/landing/arrow-up-right.svg" width="22" height="22" alt=""></div>
+              <small>Carta ilustrativa</small>
+            </div>
+          </div>
+          <p class="eyebrow">Para tus clientes</p><h3>Elegir y disfrutar.</h3>
+          <p>Descubrir la carta, seguir un pedido y reservar su próxima mesa. Todo a su ritmo.</p>
+          <a class="text-link" routerLink="/auth/registro">Sentarme a la mesa</a>
+        </article>
+        <article class="audience-team" id="demo-equipo" tabindex="-1">
+          <div class="team-illustration">
+            <div class="ticket-card"><small>Pedido #1042</small><h3>Mesa 04<br>En preparación</h3>
+              <p>2 × Lomo saltado</p><p>1 × Limonada</p>
+              <div class="ticket-bottom"><span>Listo para cocina</span><img src="assets/landing/ticket-arrow.svg" width="22" height="22" alt=""></div>
+            </div>
+            <p>Del pedido al siguiente paso.</p>
+          </div>
+          <p class="eyebrow">Para tu equipo y para ti</p><h3>Coordinar y crecer.</h3>
+          <p>Organiza el servicio, gestiona tu equipo y encuentra perspectiva en los resultados de tu restaurante.</p>
+          <a class="text-link" href="#soluciones" (click)="goTo($event, 'soluciones')">Conocer el lado del equipo</a>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="assistant dark-section" id="asistente-ia" tabindex="-1" aria-labelledby="assistant-title">
+    <div class="section-inner assistant-grid">
+      <div><h2 id="assistant-title">Tu operación.<br>Una conversación.</h2>
+        <p>Un asistente para explorar la carta y consultar tu operación en lenguaje natural. Porque a veces, lo único que necesitas es preguntar.</p>
+        <a class="text-link" href="#demo-ia" (click)="goTo($event, 'demo-ia')">Preguntarle al copiloto</a>
+        <span class="planned-label">Funcionalidad prevista</span>
+      </div>
+      <div class="chat-card" id="demo-ia" tabindex="-1" aria-label="Ejemplo ilustrativo de una consulta de IA">
+        <div class="card-topline"><strong>RestoPilot IA</strong><span>Reportes</span></div>
+        <div class="chat-question">¿Cuáles fueron los platos más vendidos?</div>
+        <div class="chat-response"><span class="avatar" aria-hidden="true">R</span><p>Estos son los favoritos del período:</p></div>
+        <ol class="ranking"><li><span>Lomo saltado</span><span aria-hidden="true">1</span></li><li><span>Ají de gallina</span><span aria-hidden="true">2</span></li><li><span>Bowl de la huerta</span><span aria-hidden="true">3</span></li></ol>
+        <a class="text-link" href="#demo-clientes" (click)="goTo($event, 'demo-clientes')">Ver los favoritos de la casa</a>
+        <p class="illustration-note">Ejemplo ilustrativo de una consulta. Los resultados dependen de los datos de tu restaurante. El asistente todavía no está conectado.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="start" id="como-empezar" tabindex="-1" aria-labelledby="start-title">
+    <div class="section-inner start-grid">
+      <div><h2 id="start-title">Empieza aquí.<br>A tu ritmo.</h2>
+        <a class="text-link" routerLink="/auth/registro-dueno">Empieza con RestoPilot</a></div>
+      <ol class="steps">
+        @for (step of steps; track step.title; let i = $index) {
+          <li><span class="step-number" aria-hidden="true">{{ i + 1 }}</span><div><h3>{{ step.title }}</h3><p>{{ step.text }}</p></div></li>
+        }
+      </ol>
+    </div>
+  </section>
+
+  <section class="faq light-section" id="preguntas" tabindex="-1" aria-labelledby="faq-title">
+    <div class="section-inner faq-grid"><h2 id="faq-title">Preguntas<br class="desktop-break"> frecuentes.</h2>
+      <mat-accordion class="faq-list">
+        @for (faq of faqs; track faq.question) {
+          <mat-expansion-panel #faqPanel class="faq-panel" hideToggle>
+            <mat-expansion-panel-header><mat-panel-title>{{ faq.question }}</mat-panel-title><img class="faq-symbol" [class.open]="faqPanel.expanded" src="assets/landing/plus.svg" width="22" height="22" alt=""></mat-expansion-panel-header>
+            <p>{{ faq.answer }}</p>
+            @if ($index === 4) { <a class="text-link" href="#soluciones" (click)="goTo($event, 'soluciones')">Explorar la demostración</a> }
+          </mat-expansion-panel>
+        }
+      </mat-accordion>
+    </div>
+  </section>
+
+  <section class="closing dark-section" aria-labelledby="closing-title">
+    <div class="section-inner"><h2 id="closing-title">Buen servicio.<br>Buenas historias.</h2>
+      <div class="closing-bottom"><p>Deja que todo conecte.<br>Y vuelve a disfrutar de lo que haces.</p>
+        <a mat-flat-button class="cta light-cta" routerLink="/auth/registro-dueno">Empieza con RestoPilot</a></div>
+    </div>
+  </section>
+</main>
+
+<footer class="footer">
+  <div class="section-inner">
+    <div class="footer-grid"><div class="footer-about"><a class="footer-brand" href="#inicio" (click)="goTo($event, 'inicio')">Resto<span>Pilot</span></a>
+      <p>Para quienes hacen<br>que una mesa sea mucho más.</p></div>
+      <nav aria-label="Explorar RestoPilot"><h2>El restaurante</h2>
+        <a href="#soluciones" (click)="goTo($event, 'soluciones')">Soluciones</a>
+        <a href="#clientes-equipo" (click)="goTo($event, 'clientes-equipo')">Clientes y equipo</a>
+        <a href="#asistente-ia" (click)="goTo($event, 'asistente-ia')">Asistente IA</a>
+      </nav>
+      <nav aria-label="Información del proyecto"><h2>Antes de empezar</h2>
+        <a href="#preguntas" (click)="goTo($event, 'preguntas')">Preguntas frecuentes (FAQ)</a>
+        <span class="pending-terms">Términos y condiciones<small>Pendientes de publicación</small></span>
+        <a href="#soluciones" (click)="goTo($event, 'soluciones')">Explorar el prototipo</a>
+      </nav>
+    </div>
+    <p class="footer-wordmark" aria-hidden="true">RestoPilot</p>
+    <div class="footer-bottom"><small>© 2026 RestoPilot · Prototipo académico</small><a href="#inicio" (click)="goTo($event, 'inicio')">Volver al inicio<img class="back-arrow" src="assets/landing/arrow-right.svg" width="18" height="18" alt=""></a></div>
+  </div>
+</footer>

@@ -1,0 +1,21 @@
+:host{display:block;color:var(--rp-ink);--mat-card-outlined-container-color:#fff;--mat-card-outlined-outline-color:#e2e8e7;--mat-card-outlined-container-shape:15px;--mat-button-filled-container-shape:9px;--mat-button-outlined-container-shape:9px;--mat-sys-label-large-font:'Cocina Roboto',Arial,sans-serif;--mat-button-filled-label-text-size:12px}
+*{min-width:0}.heading{margin-bottom:34px}.eyebrow{font:700 10px/1.5 'Cocina Roboto',Arial,sans-serif;letter-spacing:2.1px;color:var(--rp-primary);margin-bottom:4px}
+h1{font:700 36px/1.18 'Cocina Roboto',Arial,sans-serif;letter-spacing:-1.3px;color:var(--rp-navy);margin:0;text-wrap:balance}
+.subtitle{font-size:12px;color:var(--rp-muted);line-height:1.8;margin-top:12px}.sample-notice{font-size:11px;line-height:1.8;color:var(--rp-muted);margin-top:12px}.clock{font-size:12px;line-height:1.8;color:var(--rp-navy);margin-top:12px}
+h2{font:700 16px/1.5 'Cocina Roboto',Arial,sans-serif;letter-spacing:-.4px;color:var(--rp-navy);margin:0}
+.reservation-grid{display:grid;grid-template-columns:minmax(0,1.55fr) minmax(0,1fr);gap:24px;align-items:start}.reservation-grid.completed-grid{grid-template-columns:1fr}
+.reservation-card,.attendance-card{padding:24px}.badges{display:flex;gap:10px;flex-wrap:wrap;margin-top:20px}
+.status,.arrival-badge{display:inline-block;align-self:flex-start;font:600 11px/1.5 'Cocina Open Sans',Arial,sans-serif;padding:5px 10px;border-radius:5px;background:#e6f4ed;color:var(--rp-primary)}
+.status.completed{background:#e6f0fa;color:#315e87}.status.inactive{background:var(--rp-error-container);color:var(--rp-error)}.arrival-badge{background:var(--rp-container);color:var(--rp-on-container)}
+dl{display:grid;gap:22px;margin:28px 0 0}dt{font-size:11px;line-height:1.6;color:var(--rp-muted);margin-bottom:4px}dd{font-size:13px;line-height:1.8;color:var(--rp-navy);margin:0;overflow-wrap:anywhere}
+.time-value{font:700 52px/1.25 'Cocina Roboto',Arial,sans-serif;letter-spacing:-1px;color:var(--rp-navy);margin:24px 0 8px;white-space:nowrap}
+.time-label{font-size:11px;line-height:1.8;color:var(--rp-muted);margin-bottom:28px}.help{font-size:13px;line-height:1.8;color:var(--rp-muted);margin-block:24px}
+.warning{background:#fff7e7;border:1px solid #f0dab0;color:#775500;padding:16px;border-radius:9px;font-size:12px;line-height:1.8;margin-bottom:24px}.warning p{margin-bottom:12px}.warning :where(a,button){min-height:44px;height:auto;padding-block:12px;margin-top:12px}
+.action-problem{font-size:12px;line-height:1.8;color:var(--rp-error);margin:18px 0}
+.attendance-action,.agenda-link{min-height:44px;height:auto;max-width:100%;padding-block:12px;font-size:12px;line-height:1.6;align-self:flex-start}.agenda-link{display:inline-flex;margin-top:24px}
+.information{padding:16px;background:#edf6fa;border:1px solid #d9e9f2;border-radius:9px;color:#355c70;font-size:12px;line-height:1.8;margin-top:28px}
+.feedback{padding:16px;border:1px solid var(--rp-primary);background:var(--rp-container);color:var(--rp-on-container);border-radius:9px;font-size:13px;line-height:1.8;margin-bottom:24px}.feedback.error{border-color:var(--rp-error);background:var(--rp-error-container);color:var(--rp-error)}
+.state-card{padding:32px;min-height:220px;display:flex;align-items:flex-start;justify-content:center;gap:20px}.state-card p{font-size:13px;color:var(--rp-muted);line-height:1.8;max-width:65ch}.state-card :where(a,button){min-height:44px}
+:where(a,button):focus-visible,.feedback:focus-visible,h1:focus-visible{outline:3px solid var(--rp-navy);outline-offset:4px}
+@media(max-width:1100px){.reservation-grid{grid-template-columns:1fr}}
+@media(max-width:600px){h1{font-size:28px;letter-spacing:-.8px}.heading{margin-bottom:30px}.reservation-card,.attendance-card{padding:20px}.reservation-grid{gap:28px}.state-card{padding:24px}.time-value{font-size:46px}.sample-notice{font-size:10px}}

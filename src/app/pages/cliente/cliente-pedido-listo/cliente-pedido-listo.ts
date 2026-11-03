@@ -1,6 +1,6 @@
 import {Component} from '@angular/core';
-/** Frame: cliente-pedido-listo. Responsable: Alexandra Fong. Implementación pendiente. */
-@Component({selector:'rp-cliente-pedido-listo',imports:[],templateUrl:'./cliente-pedido-listo.html',styleUrl:'./cliente-pedido-listo.css'})
-export class ClientePedidoListoPage{
+import {PedidoSelectionView} from '../pedido-ui/pedido-selection-view';
 
-}
+/** Variante visual; el estado y los datos proceden de la consulta del pedido propio. */
+@Component({selector:'rp-cliente-pedido-listo',imports:[PedidoSelectionView],templateUrl:'./cliente-pedido-listo.html',styleUrl:'./cliente-pedido-listo.css'})
+export class ClientePedidoListoPage {}

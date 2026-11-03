@@ -1,0 +1,5 @@
+@if (target()) {
+  <button mat-flat-button type="button" [disabled]="disabled()" (click)="request($event)" [attr.aria-label]="label() + ' del pedido #' + orderId()">{{ label() }}</button>
+} @else if (order(); as current) {
+  <p class="final-state">Estado final: {{ current.status }}. No hay acciones de avance.</p>
+}

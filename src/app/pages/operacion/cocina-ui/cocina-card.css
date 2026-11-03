@@ -1,0 +1,13 @@
+:host{display:block;min-width:0}
+mat-card{padding:18px;border-radius:10px;background:#fff;border-color:#e2e8e7;--mat-button-outlined-container-shape:9px;--mat-button-outlined-label-text-color:var(--rp-navy)}
+.card-heading{display:flex;gap:12px;align-items:center;justify-content:space-between}
+h3{font:700 18px/1.4 'Cocina Roboto',Arial,sans-serif;color:var(--rp-navy);margin:0;overflow-wrap:anywhere}
+.complexity{font:600 11px/1.5 'Cocina Open Sans',Arial,sans-serif;padding:5px 10px;background:#e6f0fa;color:#315e87;border-radius:5px;flex:none}
+.complexity.high{background:#fff1d5;color:#775500}
+.service{font-size:11px;line-height:1.8;color:var(--rp-muted);margin:12px 0 26px;overflow-wrap:anywhere}
+ul{list-style:none;padding:0;margin:0;display:grid;gap:20px}
+li{min-width:0}li strong{display:block;font:700 13px/1.6 'Cocina Roboto',Arial,sans-serif;color:var(--rp-navy);overflow-wrap:anywhere}
+li span{display:block;font-size:11px;line-height:1.8;color:var(--rp-muted);margin-top:12px}
+.max-time{font-size:11px;color:var(--rp-muted);line-height:1.7;border-bottom:1px dashed #e2e8e7;margin:20px 0 14px;padding-bottom:14px}
+a{width:100%;min-height:44px;max-width:100%;height:auto;padding:12px;font:700 12px/1.5 'Cocina Roboto',Arial,sans-serif}
+a:focus-visible{outline:3px solid var(--rp-navy);outline-offset:3px}
