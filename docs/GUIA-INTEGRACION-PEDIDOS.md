@@ -1,4 +1,4 @@
-# Guía compartida de conexión — US11
+# Guía compartida de conexión — US11 y US12
 
 Esta base permite continuar la integración sin duplicar sesión, HTTP ni contratos. No cambia las asignaciones del Sprint 2 ni declara terminadas las historias de acceso, carta, detalle o seguimiento.
 
@@ -15,6 +15,9 @@ Esta base permite continuar la integración sin duplicar sesión, HTTP ni contra
 | Consultar catálogo | src/app/core/services/catalogo.service.ts: restaurantes(), restaurante(id), platos(id), mesas(id) |
 | Preparar carrito desde selección | CarritoStore.prepareSelection(restauranteId, detalles): Observable<void> |
 | Registrar pedido | PedidoService.crear(request): Observable<PedidoResponse>; lo consume CarritoStore.submit |
+| Consultar pedido propio | PedidoService.obtener(id): Observable<PedidoResponse> |
+| Listar pedidos propios | PedidoService.propios(page,size): Observable<PedidosPage> |
+| Consultar pago | PagoService.consultar(pedidoId,total): Observable<PagoResponse> |
 | Solicitudes y respuestas | src/app/core/models/; respetar DTO y enums del backend |
 
 ## Conectar el acceso
@@ -85,8 +88,30 @@ Estas pruebas usan H2 aislado. Ni las pruebas con mock ni H2 certifican PostgreS
 ## Qué sigue pendiente
 
 - Conectar acceso/carta con estos servicios desde sus propias tareas y registrar el guard en las rutas acordadas.
-- Integrar US12: GET del pedido propio y consulta de pago. No enviar un pedido real hacia las vistas de muestra como si ya lo consultaran.
+- US12 ya consulta pedido/pago y el listado mínimo con IDs reales. Mantener su contrato y probar la aceptación del conjunto con la base del equipo.
 - Integrar US13: nueva consulta del estado real, sin avances inventados ni polling no acordado.
 - Probar el recorrido completo con la base y cuentas válidas del equipo antes de marcar S2-TSK-032 Done.
 
-La confirmación de US11 muestra solo la respuesta guardada de creación durante la sesión actual y conserva pedidoId en la URL. Una recarga no reconstruye esa respuesta; la consulta persistente corresponde a US12. Si falta el contexto, la pantalla no afirma que el pedido nunca se registró.
+La confirmación de US11 muestra solo la respuesta guardada de creación durante la sesión actual y conserva pedidoId en la URL. Una recarga no reconstruye esa respuesta; el enlace Ver detalle de mi pedido conduce a la consulta persistente de US12. Si falta el contexto, la pantalla no afirma que el pedido nunca se registró.
+
+
+## Continuidad de US12
+
+Usar /cliente/pedido?pedidoId=<id> y /cliente/pago?pedidoId=<id>. PedidoSelectionView/PedidoConsultaStore leen la identidad y consultan los servicios, sin que el componente de otra pantalla tenga que construir HTTP. Conservar el parámetro al enlazar de vuelta; history.state solo es compatibilidad cuando el parámetro no existe. Un ID faltante/incorrecto nunca se sustituye por una muestra.
+
+El listado de soporte usa el objeto {mensaje,pedidos,totalElementos,totalPaginas}, no una página con content. Sus datos ya son la página del servidor: no volver a paginarlos ni mezclar fixtures. No buscar un pago por índice de fila; siempre consultar el pedidoId seleccionado.
+
+PagoService devuelve un objeto con estado PENDIENTE/PAGADO; monto debe corresponder al total del pedido consultado. No deducir pago desde ENTREGADO ni forzar pendiente por error. El componente ya distingue carga/error propios de pago y revalida el pedido tras 404 antes de anunciar ausencia de registro.
+
+Mantener estos tres elementos separados: borrador del carrito (editable), DTO de pedido (respuesta validada), snapshot visual (adaptación de solo lectura). No recalcular nombres/precios con la carta actual ni serializar datos de cuenta en localStorage para conservar una selección. El ID permanece en la URL y el backend vuelve a validar propiedad.
+
+Pruebas de US12:
+
+~~~powershell
+node --test scripts/us12-api.test.cjs
+postman simulation run postman/simulations/us12.sim.yaml --port 4312 --no-history --output ndjson
+~~~
+
+Con Angular de desarrollo en 4311 y PLAYWRIGHT_MODULE configurado, ejecutar scripts/us12-api-browser.cjs. No ejecutar simultáneamente ambas suites cliente contra el mismo mock: sus escenarios reinician estado de prueba. La prueba usa HTTP real del frontend contra un stand-in local; no prueba PostgreSQL ni la firma JWT del backend real.
+
+El backend incorpora Us12HttpIntegrationTest, que se ejecuta con .\mvnw.cmd '-Dtest=Us12HttpIntegrationTest' test sobre H2 aislado. No requiere credenciales reales. No se añadieron endpoints ni se modificaron las reglas de pagos para esta historia.

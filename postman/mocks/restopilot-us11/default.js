@@ -19,9 +19,22 @@ http.createServer(async(req,res)=>{
   if(pathname==='/__test'&&req.method==='POST'){
     const b=await bodyPromise;
     if(b.reset){await pm.state.set('us11-orders',[]);await pm.state.set('us11-calls',[]);}
-    await pm.state.set('us11-mode',b.mode||'success');return send(200,{ok:true});
+    await pm.state.set('us11-mode',b.mode||'success');
+    if(b.reset){await pm.state.set('us12-queries',[]);await pm.state.set('us12-disappeared',null);}
+    await pm.state.set('us12-mode',b.readMode||'success');
+    if(b.seed){
+      const orders=Array.from({length:7},(_,i)=>({id:900+i,restauranteId:7,restauranteNombre:'Restaurante de prueba',clienteId:i===4?52:51,
+        clienteNombre:i===4?'Otra cuenta de prueba':'Cliente de prueba',mesaId:i===0?19:null,
+        estado:i===1?'ENTREGADO':'PENDIENTE',tipoEntrega:i===0?'SALON':i===1?'DELIVERY':'LLEVAR',
+        direccionEntrega:i===1?'Calle de prueba 456':null,total:i===1?15:28,
+        fechaCreacion:'2026-11-02T14:0'+i+':00',limiteCancelacion:null,
+        detalles:[{id:1000+i,platoId:31,nombrePlatoSnapshot:i===1?'Segundo plato histórico':'Plato histórico',
+          cantidad:i===1?1:2,precioUnitario:i===1?15:14,subtotal:i===1?15:28,notas:null}]}));
+      await pm.state.set('us11-orders',orders);
+    }
+    return send(200,{ok:true});
   }
-  if(pathname==='/__test'&&req.method==='GET')return send(200,{orders:await pm.state.get('us11-orders')||[],calls:await pm.state.get('us11-calls')||[]});
+  if(pathname==='/__test'&&req.method==='GET')return send(200,{orders:await pm.state.get('us11-orders')||[],calls:await pm.state.get('us11-calls')||[],queries:await pm.state.get('us12-queries')||[]});
   if(pathname==='/auth/login'&&req.method==='POST'){
     const b=await bodyPromise;
     if(b.correo!=='cliente@example.test'||b.password!=='solo-pruebas')return send(403,{mensaje:'Credenciales incorrectas.'});
@@ -35,6 +48,47 @@ http.createServer(async(req,res)=>{
   if(req.method==='GET'&&pathname==='/restaurantes/7')return send(200,restaurant);
   if(req.method==='GET'&&pathname==='/platos/restaurante/7')return send(200,[dish]);
   if(req.method==='GET'&&pathname==='/mesas/restaurante/7')return send(200,[table]);
+
+  if(req.method==='GET'&&pathname.startsWith('/pedidos')){
+    const queries=await pm.state.get('us12-queries')||[];queries.push(req.url);await pm.state.set('us12-queries',queries);
+    const mode=await pm.state.get('us12-mode')||'success';
+    const orders=await pm.state.get('us11-orders')||[];
+    if(pathname==='/pedidos/me'){
+      if(mode==='list-error')return send(500,{mensaje:'Error de prueba.'});
+      const params=new URL(req.url,'http://localhost').searchParams;
+      const page=Number(params.get('page')||0),size=Number(params.get('size')||5);
+      let own=orders.filter(p=>p.clienteId===51).sort((a,b)=>b.fechaCreacion.localeCompare(a.fechaCreacion)||b.id-a.id);
+      if(mode==='list-empty')own=[];
+      if(mode==='list-foreign')own=[orders.find(p=>p.clienteId===52)];
+      return send(200,{mensaje:'Consulta de prueba',pedidos:own.slice(page*size,(page+1)*size),totalElementos:own.length,totalPaginas:Math.ceil(own.length/size)});
+    }
+    const match=/^\/pedidos\/(\d+)(\/pagos)?$/.exec(pathname);
+    if(!match)return send(501,{mensaje:'Consulta no incluida en la simulación.'});
+    const id=Number(match[1]),order=orders.find(p=>p.id===id&&p.clienteId===51);
+    if(!order)return send(404,{mensaje:'Pedido no encontrado.'});
+    if(match[2]){
+      if(mode==='pay-error')return send(500,{mensaje:'Error de prueba.'});
+      if(mode==='pay-forbidden')return send(403,{mensaje:'Acceso restringido.'});
+      if(mode==='pay-unauthorized')return send(401,{mensaje:'Sesión no válida.'});
+      if(mode==='disappear-after-payment'){await pm.state.set('us12-disappeared',id);return send(404,{mensaje:'Pedido no encontrado.'});}
+      if(id===903||mode==='pay-missing')return send(404,{mensaje:'No existe registro de pago para el pedido.'});
+      if(mode==='pay-slow')await new Promise(r=>setTimeout(r,900));
+      const paid=id===901;
+      return send(200,{mensaje:'Detalle de pago consultado.',id:2000+id,pedidoId:mode==='pay-wrong-order'?901:id,
+        monto:mode==='pay-malformed'?order.total+5:order.total,metodo:paid?'TARJETA':id===902?'EFECTIVO':null,
+        estado:paid?'PAGADO':'PENDIENTE',codigoReferencia:paid?'REF-PRUEBA':null,
+        fechaPago:paid?'2026-11-02T15:00:00':null,creadoEn:'2026-11-02T14:00:00'});
+    }
+    if(await pm.state.get('us12-disappeared')===id)return send(404,{mensaje:'Pedido no encontrado.'});
+    if(mode==='order-error')return send(500,{mensaje:'Error de prueba.'});
+    if(mode==='order-forbidden')return send(403,{mensaje:'Acceso restringido.'});
+    if(mode==='order-unauthorized')return send(401,{mensaje:'Sesión no válida.'});
+    if(mode==='order-slow'&&id===900)await new Promise(r=>setTimeout(r,900));
+    if(mode==='order-malformed')return send(200,{...order,estado:'INVENTADO'});
+    if(mode==='foreign-body')return send(200,{...order,clienteId:52,clienteNombre:'Otra cuenta de prueba'});
+    return send(200,order);
+  }
+
   if(req.method==='POST'&&pathname==='/pedidos'){
     const b=await bodyPromise;
     const calls=await pm.state.get('us11-calls')||[];calls.push(b);await pm.state.set('us11-calls',calls);

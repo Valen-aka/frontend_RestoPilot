@@ -197,3 +197,12 @@ Backend: cuatro pruebas unitarias de consulta/horario y una prueba HTTP real Spr
 Pendientes de aceptación: conexión de las pantallas de acceso/carta por sus tareas, registro del guard al integrar autenticación, recorrido real del conjunto sobre la base del equipo, consulta real de detalle/pago US12 y actualización US13. S2-TSK-032 no se marca Done por estas pruebas parciales. No se creó commit, push, PR ni despliegue.
 
 Verificación final de la rama: check estructural y build de producción correctos; 98 pruebas unitarias previas/de payload más tres pruebas dirigidas del interceptor/guard (101 en total), diez recorridos HTTP simulados US11 y 21/21 regresiones locales de US12/US13, cocina y reservas. Las regresiones de US12/US13 siguen siendo de muestra, separadas de la creación HTTP de US11. Sin cambios en pantallas de acceso/carta ni rutas de cliente.
+
+
+## 14. Ejecución de US12 — 02/11/2026
+
+Se integran consulta del pedido propio, pago y listado paginado mínimo de selección, con PedidoService.obtener/propios y PagoService.consultar. Se reutilizan AuthService, API_SESSION y el interceptor de US11. El detalle y pago dejan de consultar fixtures; todas las entradas existentes resuelven el ID real y la API determina los datos/estado, no ?vista=.
+
+La confirmación de US11 ya enlaza al detalle real. Se preserva pedidoId entre detalle/pago/retorno, sin fallback a muestras. Carga/error de pago independiente; 404 de pago revalida el pedido antes de informar ausencia. 401/403/404 no dejan datos anteriores visibles; las respuestas fuera de orden se cancelan/descartan. El [SPEC US12](../us12/SPEC.md#integración-api-de-us12--02112026) describe la evidencia y límites.
+
+Pasaron 109 pruebas unitarias frontend, ocho nuevas de US12, y 25 recorridos HTTP simulados de esta historia. Tres pruebas HTTP backend con JWT/H2 verifican snapshots, consulta del pago y aislamiento real entre cuentas de prueba. No se modifican endpoints backend ni pantallas de acceso/carta, ni se declaran terminadas sus tareas. El mecanismo específico de actualización de US13 y la aceptación del conjunto con PostgreSQL del equipo siguen pendientes.

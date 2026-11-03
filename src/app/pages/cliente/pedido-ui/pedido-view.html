@@ -10,7 +10,7 @@
       <a routerLink="/cliente/reservas">Mis reservas</a><a routerLink="/cliente/pedidos" class="active" aria-current="page">Mis pedidos</a>
       <a routerLink="/cliente/asistente">Asistente IA</a>
     </nav>
-    <div class="sample-context"><span class="sample-avatar" aria-hidden="true">M</span><div><strong>Vista de muestra</strong><small>Sin sesión conectada</small></div></div>
+    <div class="sample-context"><span class="sample-avatar" aria-hidden="true">M</span><div><strong>{{ integrated() ? 'Mi cuenta' : 'Vista de muestra' }}</strong><small>{{ sessionConnected() ? 'Sesión de cliente' : 'Sin sesión conectada' }}</small></div></div>
   </header>
 
   <main id="pedido-contenido" tabindex="-1" class="pedido-main">
@@ -18,10 +18,13 @@
       <p class="eyebrow">{{ mode() === 'payment' ? 'PAGOS' : 'PEDIDOS CLIENTE' }}</p>
       <h1 id="pedido-title" tabindex="-1">{{ title() }}</h1>
       <p class="subtitle">{{ mode() === 'payment' ? 'Tu información, en un solo lugar.' : 'Cada paso, sin perderte nada.' }}</p>
-      <p class="sample-notice">Demostración visual · Los datos son de ejemplo y no se guardan operaciones.</p>
+      @if (!integrated()) {<p class="sample-notice">Demostración visual · Los datos son de ejemplo y no se guardan operaciones.</p>}
     </div>
 
     @switch (queryState()) {
+      @case ('missing-id') {<mat-card appearance="outlined" class="state-card" role="status"><h2>Elige el pedido que deseas consultar</h2><p>Abre un pedido desde tu listado para ver su detalle y pago.</p><a mat-stroked-button routerLink="/cliente/pedidos">Ver mis pedidos</a></mat-card>}
+      @case ('unauthenticated') {<mat-card appearance="outlined" class="state-card" role="status"><h2>Necesitas una sesión de cliente</h2><p>Inicia sesión para acceder a tus pedidos.</p><a mat-stroked-button routerLink="/auth/login">Ir al inicio de sesión</a></mat-card>}
+      @case ('forbidden') {<mat-card appearance="outlined" class="state-card" role="alert"><h2>No tienes permiso para esta consulta</h2><p>No podemos mostrar la información de este pedido.</p><a mat-stroked-button routerLink="/cliente/pedidos">Volver a mis pedidos</a></mat-card>}
       @case ('loading') {
         <mat-card appearance="outlined" class="state-card" role="status" aria-live="polite" aria-busy="true">
           <mat-spinner diameter="32" aria-hidden="true"></mat-spinner>
@@ -38,36 +41,40 @@
       @case ('error') {
         <mat-card appearance="outlined" class="state-card" role="alert">
           <h2>No pudimos completar la consulta</h2>
-          <p>Vuelve a abrir la vista de muestra. No se ha modificado ningún pedido.</p>
-          <a mat-stroked-button routerLink="/cliente/pedido">Volver al pedido de muestra</a>
+          <p>{{ issue() || 'No pudimos consultar el pedido. Intenta nuevamente.' }}</p>
+          <button mat-stroked-button type="button" (click)="retryRequested.emit()">Reintentar consulta</button>
         </mat-card>
       }
       @default {
         @if (mode() === 'payment') {
           <mat-card appearance="outlined" class="payment-card">
             <h2>Pedido #{{ order().id }}</h2>
-            @switch (effectivePayment()) {
+            @if (paymentQueryState() === 'loading') {<div role="status" aria-live="polite" aria-busy="true"><mat-spinner diameter="32" aria-hidden="true"/><p>Consultando el registro de pago…</p></div>}
+            @else if (paymentQueryState() === 'error') {<div role="alert"><p>{{ paymentIssue() }}</p><button mat-stroked-button type="button" (click)="retryRequested.emit()">Reintentar consulta de pago</button></div>}
+            @else { @switch (effectivePayment()) {
               @case ('missing') {
                 <p class="no-payment" role="status">No existe un registro de pago para este pedido.</p>
               }
               @case ('pending') {
                 <span class="status-badge pending">Pendiente</span>
-                <p class="payment-amount">{{ order().total | currency:'PEN':'S/ ':'1.2-2' }}</p>
+                <p class="payment-amount">{{ (paymentRecord()?.amount ?? order().total) | currency:'PEN':'S/ ':'1.2-2' }}</p>
                 <p class="payment-description">Aún no hay un pago confirmado por el restaurante. Consulta con el personal cómo realizarlo.</p>
-                <p class="information"><span aria-hidden="true">i</span>No se ha elegido un método de pago. No hay pasarela ni captura de tarjeta.</p>
+                @if (paymentRecord()?.method || paymentRecord()?.reference) {<dl class="payment-details">@if (paymentRecord()?.method) {<div><dt>Método</dt><dd>{{ paymentRecord()?.method }}</dd></div>}@if (paymentRecord()?.reference) {<div><dt>Referencia</dt><dd>{{ paymentRecord()?.reference }}</dd></div>}</dl>}
+                @else {<p class="information"><span aria-hidden="true">i</span>No se ha elegido un método de pago. No hay pasarela ni captura de tarjeta.</p>}
               }
               @case ('paid') {
                 <span class="status-badge">Pagado</span>
                 <p class="payment-amount">{{ paymentRecord()?.amount | currency:'PEN':'S/ ':'1.2-2' }}</p>
                 <dl class="payment-details">
-                  <div><dt>Método</dt><dd>{{ paymentRecord()?.method }}</dd></div>
+                  @if (paymentRecord()?.method) {<div><dt>Método</dt><dd>{{ paymentRecord()?.method }}</dd></div>}
                   @if (paymentRecord()?.reference) {<div><dt>Referencia</dt><dd>{{ paymentRecord()?.reference }}</dd></div>}
-                  <div><dt>Registrado</dt><dd>{{ paymentRecord()?.registeredAt }}</dd></div>
+                  @if (paymentRecord()?.registeredAt) {<div><dt>Registrado</dt><dd>{{ paymentRecord()?.registeredAt }}</dd></div>}
                 </dl>
                 <p class="information"><span aria-hidden="true">i</span>El restaurante registró este pago recibido por un medio externo. RestoPilot no procesa el cobro.</p>
               }
             }
-            <a mat-stroked-button class="back-to-order" routerLink="/cliente/pedido" [queryParams]="{vista: backVista()}" [state]="returnState">Volver al pedido</a>
+            }
+            <a mat-stroked-button class="back-to-order" routerLink="/cliente/pedido" [queryParams]="orderQuery()" [state]="returnState">Volver al pedido</a>
           </mat-card>
         } @else {
           <mat-card appearance="outlined" class="tracking-card">
@@ -113,5 +120,5 @@
       }
     }
   </main>
-  <footer class="client-footer"><p>RestoPilot · La Mesa Verde</p><p>Tu restaurante, en piloto automático.</p><a routerLink="/auth/login">Salir de la muestra</a></footer>
+  <footer class="client-footer"><p>RestoPilot{{ queryState() === 'ready' ? ' · ' + order().restaurant : '' }}</p><p>Tu restaurante, en piloto automático.</p>@if (integrated() && sessionConnected()) {<button mat-button type="button" (click)="logoutRequested.emit()">Cerrar sesión</button>}</footer>
 </div>

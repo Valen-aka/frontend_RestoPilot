@@ -2,7 +2,7 @@
 
 Integración API solicitada: consultar el [complemento conjunto de US11, US12 y US13](../cliente-pedido-api/SPEC.md). Define la nueva etapa; las evidencias y restricciones de muestra anteriores se conservan como historial.
 
-Revisión documental: 02/11/2026. Estado: frontend de muestra incorporado en develop; aceptación del equipo pendiente. Rama original: feature/cliente-pedido. Alineación documental: docs/alineacion-specs.
+Revisión documental: 02/11/2026. Estado: integración HTTP de US12 implementada en feature/cliente-pedido-api; aceptación en el entorno del equipo pendiente. Rama visual original: feature/cliente-pedido. Alineación documental: docs/alineacion-specs.
 
 Las secciones de ejecución fechadas conservan evidencia histórica. El estado actual se contrasta con develop, base 3685d07; no repetir como pendientes las etapas ya integradas. Referencias comprobadas: [registro Figma](../../REFERENCIAS-FIGMA.md).
 
@@ -220,3 +220,30 @@ Se verificaron en el archivo Figma original los IDs, nombres y dimensiones de la
 La revisión documental no vuelve a ejecutar el prototipo ni certifica equivalencia visual. Los recorridos locales se verifican por separado en test/flujos-integrados. No se implementan nuevas pantallas ni se cambian reglas de negocio por corregir estas referencias.
 
 Estado actual del recorrido: [Mis pedidos](../cliente-pedidos/SPEC.md) consulta por ID y conserva detalle, seguimiento y pago. Las confirmaciones locales del carrito tienen IDs independientes #1043, #1044, …; no reemplazar el histórico #1042. Los datos temporales se reinician al recargar.
+
+
+## Integración API de US12 — 02/11/2026
+
+Rama feature/cliente-pedido-api. Nueva etapa posterior al registro HTTP de US11; las secciones de muestra anteriores son evidencia histórica, no el comportamiento actual de esta rama.
+
+Se conectan GET /api/pedidos/{id} y GET /api/pedidos/{id}/pagos mediante PedidoService/PagoService, conservando componentes standalone, rutas hijas, Material y la composición de detalle/pago. El listado mínimo de soporte usa GET /api/pedidos/me con paginación del servidor para seleccionar IDs reales. No completa el historial de reservas US07 ni tareas de acceso/carta asignadas a otros módulos.
+
+Identidad canónica: ?pedidoId=<id> se conserva entre confirmación US11, detalle, pago y retorno. Si existe ese parámetro, prevalece sobre history.state incluso cuando es inválido; se rechazan parámetros duplicados, IDs ambiguos y valores fuera de rango seguro. Se admite el ID del estado de navegación anterior solo si no hay parámetro. Sin selección se muestra un aviso, sin consultar #1042 ni una muestra. Abrir una URL nunca concede permisos.
+
+El servicio valida DTO y campos críticos antes de adaptar el desglose. Conserva nombrePlatoSnapshot, cantidades, precios unitarios, subtotales y total de la compra sin consultar precios actuales. Fechas LocalDateTime se muestran sin inventar zona. El contrato solo devuelve mesaId: se identifica explícitamente como ID de mesa, sin presentarlo como su número físico ni fabricar un nombre. No se añade una dirección del restaurante ausente de la respuesta.
+
+La consulta de pago tiene carga/error propios: Pendiente y Pagado proceden exclusivamente del DTO; método, referencia y fecha solo se muestran si existen. Un pendiente con método previamente registrado conserva ese dato, sin fecha de confirmación. Una respuesta incompatible o un error HTTP no se convierte en pendiente, pagado ni ausencia de registro.
+
+Si el pago devuelve 404, se vuelve a consultar el mismo pedido antes de mostrar ausencia de registro. Un pedido que desapareció o ya no pertenece al cliente muestra No encontrado sin detalles. 403 retira información y comunica acceso restringido; 401/cierre de sesión limpia datos. Cada consulta cancela la anterior y verifica sesión/versión antes de presentar respuestas; no se mezclan pedidos ni cuentas.
+
+Se mantiene la representación de progreso que ya existía, alimentada por el estado consultado para este detalle. No se implementa en esta entrega un nuevo mecanismo de actualización de US13, polling, notificaciones reales, cobros ni transiciones operativas. Las variantes ?vista= no fuerzan estados ajenos a la respuesta.
+
+Figma consultado por MCP: copia sRxKEwFdrMKfXPosGFvoHc facilitada expresamente por el usuario; contextos/capturas de detalle desktop 84:33478, pago desktop 84:32934 y pago pendiente mobile 84:32870. Se conservaron estilos y assets existentes, sin reconstruir acceso/carta, añadir recursos externos ni atribuir esta consulta al original. Inspección de capturas de la aplicación de detalle desktop y pago pendiente mobile; no se certifica igualdad de píxeles.
+
+Verificación ejecutada: ocho pruebas nuevas de contratos/adaptadores y 109 pruebas unitarias totales correctas; 25 recorridos del frontend real contra HTTP simulado, incluidos continuidad desde US11, pendiente/pagado/ausente, carga, 403/404, fallo y reintento, respuesta de otra cuenta, ID inválido, paginación, selección nueva frente a respuesta anterior y limpieza al salir/recargar. El harness llama al servicio de sesión desde Angular de desarrollo mientras acceso/carta siguen en sus propias tareas; no se agregó un acceso de pruebas al producto. La simulación reutiliza el mock local de US11.
+
+Backend: los endpoints ya existían y no requirieron cambios de producción. Se añadieron tres pruebas HTTP reales con Spring Boot/JWT y H2 aislado: snapshot tras cambiar carta, estados/ausencia del pago e indistinguibilidad de pedido/pago ajeno frente a inexistente. No se probó PostgreSQL/Supabase del equipo ni se desplegó.
+
+Aceptar S2-TSK-034 requiere además el recorrido conjunto con la sesión/pantallas y la base reales del equipo; no se marca Done solo por mocks o H2. Consultar la [guía compartida](../../GUIA-INTEGRACION-PEDIDOS.md) y el [complemento conjunto](../cliente-pedido-api/SPEC.md). No se creó commit, push ni PR.
+
+Cierre de verificación: check estructural y build de producción correctos, 109/109 pruebas unitarias, 25/25 recorridos HTTP simulados de US12, 10/10 regresiones HTTP de registro US11 y 14/14 casos locales de cocina/reservas. Las tres pruebas HTTP backend de US12 sobre H2 pasaron. No se cambiaron las pantallas de acceso/carta ni las rutas compartidas.

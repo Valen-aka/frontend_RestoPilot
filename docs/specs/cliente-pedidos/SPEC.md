@@ -77,3 +77,10 @@ No se crean commits ni PR automáticamente. Mensaje propuesto: feat(pedidos): co
 Se verificaron en el archivo Figma original los IDs, nombres y dimensiones de las referencias de este documento. El [registro compartido](../../REFERENCIAS-FIGMA.md) identifica la única referencia histórica no verificable y delimita esta comprobación de metadatos. Las lecturas y capturas históricas obtenidas en la copia no se atribuyen retroactivamente al original.
 
 La revisión documental no vuelve a ejecutar el prototipo ni certifica equivalencia visual. Los recorridos locales se verifican por separado en test/flujos-integrados. No se implementan nuevas pantallas ni se cambian reglas de negocio por corregir estas referencias.
+
+
+## Selección API como soporte de US12 — 02/11/2026
+
+En feature/cliente-pedido-api el listado consulta GET /api/pedidos/me y usa pedidos/totalElementos/totalPaginas, con página/tamaño y orden solicitados al servidor. No combina datos temporales ni históricos de muestra. Sus enlaces a detalle/pago incluyen pedidoId en la URL y no deducen el pago desde el estado del pedido.
+
+Hay carga, listado vacío, error recuperable, sesión requerida y acceso restringido. Se limpia información al cambiar/cerrar sesión y se rechazan respuestas con otra cuenta. La paginación es del servidor; no se vuelve a recortar una página localmente. Este soporte permite seleccionar pedidos propios para US12 y no completa el historial de reservas US07 ni acredita actualización específica de US13. Las pruebas cliente históricas de muestra se sustituyen por scripts/us12-api-browser.cjs.

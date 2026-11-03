@@ -39,7 +39,8 @@
           <p class="created-status" role="status">Pedido Pendiente</p>
           <p>Pedido registrado. Total confirmado por el restaurante.</p>
           <ul class="confirmed-lines">@for (line of order.detalles; track line.id) {<li>{{ line.cantidad }} × {{ line.nombrePlatoSnapshot }} · {{ line.subtotal | currency:'PEN':'S/ ':'1.2-2' }}</li>}</ul>
-          <a mat-flat-button routerLink="/cliente/carta">Volver a la carta</a>
+          <a mat-flat-button routerLink="/cliente/pedido" [queryParams]="{pedidoId: order.id}">Ver detalle de mi pedido</a>
+          <a mat-stroked-button routerLink="/cliente/carta">Volver a la carta</a>
         } @else {
           <span class="state-symbol" aria-hidden="true">i</span><h2>No hay una confirmación en este recorrido</h2>
           <p>Esta confirmación ya no está disponible en este recorrido. Si enviaste un pedido, verifica su registro con el restaurante antes de repetirlo.</p>
