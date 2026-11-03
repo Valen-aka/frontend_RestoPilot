@@ -1,6 +1,8 @@
 # SPEC — US25: llegada y finalización de reservas
 
-Fecha: 01/11/2026. Entrega actual: llegada y finalización de muestra implementadas; integración y aceptación pendientes. Rama de trabajo: feature/operacion-reserva-atencion. PR hacia develop.
+Revisión documental: 02/11/2026. Estado: frontend de muestra incorporado en develop; aceptación del equipo pendiente. Rama original: feature/operacion-reserva-atencion. Alineación documental: docs/alineacion-specs.
+
+Las secciones de ejecución fechadas conservan evidencia histórica. El estado actual se contrasta con develop, base 3685d07; no repetir como pendientes las etapas ya integradas. Referencias comprobadas: [registro Figma](../../REFERENCIAS-FIGMA.md).
 
 Leer el [SPEC común](../../../SPEC.md), [AGENTS.md](../../../AGENTS.md) y el [reparto de mantenimiento](../../ASIGNACION-EQUIPO.md). Esta entrega define US25; no reúne su implementación con el commit documental ni implementa la expiración automática de US26.
 
@@ -27,7 +29,7 @@ Excluye crear, confirmar, rechazar, editar o cancelar reservas; agenda completa;
 
 Fuente funcional: report_1ACC0236-20262.pdf, US25, páginas físicas 75–76. Siete criterios originales completos en la sección 14. Fichas PDF-UI-087 a PDF-UI-089, páginas 161–163.
 
-Fuente visual: [Figma vigente](https://www.figma.com/design/sRxKEwFdrMKfXPosGFvoHc/RestoPilot--Copy-?node-id=5-92), página RestoPilot 5:92, sección Reservas operación 95:13.
+Fuente visual: [Figma original autorizado](https://www.figma.com/design/wBq85sZ8G5W5RQ1RmQmdqg/RestoPilot?node-id=5-92), página RestoPilot 5:92, sección Reservas operación 95:13.
 
 | Vista | Desktop | Mobile |
 | --- | --- | --- |
@@ -35,7 +37,7 @@ Fuente visual: [Figma vigente](https://www.figma.com/design/sRxKEwFdrMKfXPosGFvo
 | op-reserva-atendiendo | 89:44067 · 1440 × 900 | 89:44206 · 390 × 1218.86 |
 | op-reserva-completada | 89:44503 · 1440 × 900 | 89:44635 · 390 × 1004 |
 
-En esta entrega documental se consultaron estructura, dimensiones y textos desktop mediante MCP oficial de Figma. Antes de implementar obtener los contextos y capturas desktop/mobile; esta lectura no equivale a comparación de interfaz ni a pruebas de ejecución.
+Durante la preparación inicial del SPEC se consultaron estructura, dimensiones y textos desktop en la copia mediante MCP. La sección 15 registra la ejecución posterior y la sección 16 la consistencia con US26. Ante cambios visuales, contrastar contextos y capturas desktop/mobile del original; esta revisión de metadatos no equivale a una comparación de interfaz.
 
 Las tres entradas del manifiesto estaban pendientes al preparar el documento; su ejecución se registra en la sección 15. El marco operativo de cocina ya implementado puede aportar componentes y recursos adecuados; revisar su acoplamiento a Pedidos antes de reutilizarlo para Reservas. No copiar su máquina de estados ni su selección como lógica de reservas.
 
@@ -299,3 +301,11 @@ En fix/reservas-consistencia, ReservaAtencionStore comparte la colección de Res
 Verificación conjunta: 48 pruebas de reservas correctas, chequeo y build correctos, cinco recorridos de llegada/finalización/retorno en 320/390/768/1024/1440 px, cancelación de confirmación, atrás/adelante, límite de tolerancia y reinicio explícito de muestra al recargar. Detalle del alcance y resultados en la [sección 16 de US26](../us26/SPEC.md#16-corrección-conjunta-de-muestras-us25us26--01112026).
 
 La agenda permanece parcial; se conserva el marco, Angular Material y las rutas hijas existentes. No se crean operaciones persistentes.
+
+## Alineación vigente — 02/11/2026
+
+Se verificaron en el archivo Figma original los IDs, nombres y dimensiones de las referencias de este documento. El [registro compartido](../../REFERENCIAS-FIGMA.md) identifica la única referencia histórica no verificable y delimita esta comprobación de metadatos. Las lecturas y capturas históricas obtenidas en la copia no se atribuyen retroactivamente al original.
+
+La revisión documental no vuelve a ejecutar el prototipo ni certifica equivalencia visual. Los recorridos locales se verifican por separado en test/flujos-integrados. No se implementan nuevas pantallas ni se cambian reglas de negocio por corregir estas referencias.
+
+Estado actual de reservas: llegada y finalización de #208 se conservan en la colección compartida y en el resumen de atención. El historial de expiradas contiene #190/#207, no la visita #208 completada. La agenda general mantiene alcance parcial.

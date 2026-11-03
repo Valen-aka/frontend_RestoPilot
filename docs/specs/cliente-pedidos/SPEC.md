@@ -1,6 +1,8 @@
 # SPEC — Mis pedidos: listado y continuidad de consulta
 
-Fecha: 01/11/2026. Rama: feature/cliente-pedidos. Alcance: frontend de muestra y navegación.
+Revisión documental: 02/11/2026. Estado: frontend de muestra incorporado en develop; aceptación del equipo pendiente. Rama original: feature/cliente-pedidos. Alineación documental: docs/alineacion-specs.
+
+Las secciones de ejecución fechadas conservan evidencia histórica. El estado actual se contrasta con develop, base 3685d07; no repetir como pendientes las etapas ya integradas. Referencias comprobadas: [registro Figma](../../REFERENCIAS-FIGMA.md).
 
 Leer [AGENTS.md](../../../AGENTS.md), el [SPEC común](../../../SPEC.md), [US12](../us12/SPEC.md), [US13](../us13/SPEC.md) y la [asignación del equipo](../../ASIGNACION-EQUIPO.md). La pantalla cliente-pedidos está asignada a Alexandra y asociada a US12/US13. El historial se cruza con US07; esta entrega se limita a pedidos y no completa el historial de reservas.
 
@@ -69,3 +71,9 @@ Se implementa presentación y navegación. Los criterios que requieren respuesta
 - Regresión de las cuatro variantes existentes de detalle/seguimiento y retorno desde pago correcta. Sin errores JavaScript ni solicitudes de escritura en los recorridos comprobados.
 
 No se crean commits ni PR automáticamente. Mensaje propuesto: feat(pedidos): completa el listado y conserva la selección.
+
+## Alineación vigente — 02/11/2026
+
+Se verificaron en el archivo Figma original los IDs, nombres y dimensiones de las referencias de este documento. El [registro compartido](../../REFERENCIAS-FIGMA.md) identifica la única referencia histórica no verificable y delimita esta comprobación de metadatos. Las lecturas y capturas históricas obtenidas en la copia no se atribuyen retroactivamente al original.
+
+La revisión documental no vuelve a ejecutar el prototipo ni certifica equivalencia visual. Los recorridos locales se verifican por separado en test/flujos-integrados. No se implementan nuevas pantallas ni se cambian reglas de negocio por corregir estas referencias.

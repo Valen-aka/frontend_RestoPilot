@@ -1,14 +1,16 @@
 # SPEC — US15: tablero y cola priorizada de cocina
 
-Fecha: 01/11/2026. Entrega actual: consulta visual y navegación implementadas; integración y aceptación pendientes. Rama de trabajo: feature/operacion-cocina. PR hacia develop.
+Revisión documental: 02/11/2026. Estado: frontend de muestra incorporado en develop; aceptación del equipo pendiente. Rama original: feature/operacion-cocina. Alineación documental: docs/alineacion-specs.
 
-Leer el [SPEC común](../../../SPEC.md), [AGENTS.md](../../../AGENTS.md) y el [reparto de mantenimiento](../../ASIGNACION-EQUIPO.md). Este documento define US15; los cambios de estado de US19 se preparan en un documento y una implementación posteriores.
+Las secciones de ejecución fechadas conservan evidencia histórica. El estado actual se contrasta con develop, base 3685d07; no repetir como pendientes las etapas ya integradas. Referencias comprobadas: [registro Figma](../../REFERENCIAS-FIGMA.md).
+
+Leer el [SPEC común](../../../SPEC.md), [AGENTS.md](../../../AGENTS.md) y el [reparto de mantenimiento](../../ASIGNACION-EQUIPO.md). Este documento define US15. Los cambios de estado de [US19](../us19/SPEC.md) ya están integrados; conservar la consulta activa de cocina al verificar sus transiciones.
 
 ## 1. Objetivo y secuencia
 
 Como dueño o administrador del restaurante, quiero consultar los pedidos pendientes y en preparación ordenados por prioridad para coordinar el trabajo de cocina según su complejidad y tiempo requerido.
 
-Secuencia acordada en esta rama:
+Secuencia histórica de la primera entrega:
 1. SPEC de US15 y commit documental.
 2. Implementación de US15 y commit de código.
 3. SPEC independiente de US19 y commit documental.
@@ -42,7 +44,7 @@ No añadir polling, WebSocket, drag and drop, búsqueda, filtros, paginación o 
 
 Fuente funcional: report_1ACC0236-20262.pdf, US15, páginas físicas 57–59. Los siete criterios originales se reproducen íntegros en la sección 14. Fichas PDF-UI-067 a PDF-UI-069, páginas 147–150.
 
-Fuente visual: [Figma vigente](https://www.figma.com/design/sRxKEwFdrMKfXPosGFvoHc/RestoPilot--Copy-?node-id=5-92), página RestoPilot 5:92, sección Pedidos operación 95:11.
+Fuente visual: [Figma original autorizado](https://www.figma.com/design/wBq85sZ8G5W5RQ1RmQmdqg/RestoPilot?node-id=5-92), página RestoPilot 5:92, sección Pedidos operación 95:11.
 
 | Pantalla | Desktop | Mobile |
 | --- | --- | --- |
@@ -50,7 +52,7 @@ Fuente visual: [Figma vigente](https://www.figma.com/design/sRxKEwFdrMKfXPosGFvo
 | op-cocina | 89:12661 · 1440 × 967.10 | 89:12859 · 390 × 1820.22 |
 | op-pedido-detalle, apoyo de lectura | 89:29812 · 1440 × 900 | 89:29989 · 390 × 1318 |
 
-En esta entrega documental se consultaron estructura, identificadores, dimensiones y textos desktop mediante MCP oficial de Figma. No se obtuvieron contextos de implementación ni se compararon capturas de aplicación. Antes de implementar, obtener contexto y capturas desktop/mobile de las tres vistas y verificar controles, composición y assets.
+La preparación inicial del SPEC consultó estructura, identificadores, dimensiones y textos desktop en la copia mediante MCP; esa etapa no comparó la aplicación. La sección 15 registra la implementación posterior. Ante cambios visuales, volver a contrastar controles, composición y recursos desktop/mobile con el original.
 
 La rama actual ya es feature/operacion-cocina y estaba limpia al iniciar este SPEC. Las tres entradas conservaban su estructura pendiente al preparar el documento; la ejecución posterior se registra en la sección 15. AdminLayout contiene el router-outlet y tiene pendiente su marco visual. No atribuir una interfaz terminada a la existencia del layout.
 
@@ -170,7 +172,7 @@ Mantener el identificador y el origen al volver a la cola o tablero. Datos de mu
 
 En esta historia no habilitar «Iniciar preparación», «Marcar listo», «Registrar entrega», «Registrar pago», «Editar contenido» o «Cancelar pedido». Las tres primeras corresponden a US19; las restantes a otras historias. Evitar botones sin respuesta: usar consulta y retornos reales dentro del alcance.
 
-La implementación de US15 debe compilar sin importar un componente o servicio de US19 todavía inexistente. El SPEC posterior añadirá transiciones válidas Pendiente → En preparación → Listo → Entregado, confirmaciones y rechazos sin redefinir las reglas de la cola. La columna de Listo y los pedidos finalizados no pasan a pertenecer a la consulta activa de US15 por esa ampliación.
+Durante la primera entrega, US15 debía compilar sin dependencias de US19 todavía ausentes. Actualmente ambas están integradas: US19 aporta transiciones válidas Pendiente → En preparación → Listo → Entregado, confirmaciones y rechazos sin redefinir las reglas de la cola. La columna de Listo y los pedidos finalizados no pasan a pertenecer a la consulta activa de US15 por esa ampliación.
 
 ## 11. Estilo, componentes y accesibilidad
 
@@ -311,3 +313,9 @@ Las pruebas de prioridad están versionadas en scripts/cocina-priority.test.mjs.
 | US15-CA07 | Vacío global y parcial correctos | Sin respuesta real del servidor |
 
 S2-TSK-036 y la aceptación integrada siguen pendientes. En una integración futura debe conservarse el orden recibido de la API, sin aplicar el ordenamiento de fixtures sobre esa respuesta. No se creó commit, push, PR ni despliegue.
+
+## Alineación vigente — 02/11/2026
+
+Se verificaron en el archivo Figma original los IDs, nombres y dimensiones de las referencias de este documento. El [registro compartido](../../REFERENCIAS-FIGMA.md) identifica la única referencia histórica no verificable y delimita esta comprobación de metadatos. Las lecturas y capturas históricas obtenidas en la copia no se atribuyen retroactivamente al original.
+
+La revisión documental no vuelve a ejecutar el prototipo ni certifica equivalencia visual. Los recorridos locales se verifican por separado en test/flujos-integrados. No se implementan nuevas pantallas ni se cambian reglas de negocio por corregir estas referencias.

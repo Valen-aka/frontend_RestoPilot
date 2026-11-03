@@ -1,6 +1,8 @@
 # SPEC — US26: consulta de reservas expiradas
 
-Fecha: 01/11/2026. Entrega actual: implementación frontend de muestra. Rama: feature/reserva-expirada. PR hacia develop.
+Revisión documental: 02/11/2026. Estado: frontend de muestra incorporado en develop; aceptación del equipo pendiente. Rama original: feature/reserva-expirada. Alineación documental: docs/alineacion-specs.
+
+Las secciones de ejecución fechadas conservan evidencia histórica. El estado actual se contrasta con develop, base 3685d07; no repetir como pendientes las etapas ya integradas. Referencias comprobadas: [registro Figma](../../REFERENCIAS-FIGMA.md).
 
 Leer [SPEC común](../../../SPEC.md), [AGENTS.md](../../../AGENTS.md) y [reparto de mantenimiento](../../ASIGNACION-EQUIPO.md). Consultar también [US25](../us25/SPEC.md), integrado en develop junto con US26. La corrección conjunta se documenta en la sección 16. Este documento conserva los requisitos completos de US26 y separa su presentación frontend del vencimiento automático del servidor.
 
@@ -12,7 +14,7 @@ Entrega frontend: mostrar el estado Expirada, fecha de vencimiento y datos conse
 
 Secuencia: SPEC → commit documental → implementación frontend → commit de código → integración API autorizada y aceptación. No crear commits automáticamente ni reunir implementación con documentación.
 
-La implementación se realiza en feature/reserva-expirada, creada por el usuario. La base anterior a esta implementación conserva 20 interfaces declaradas y todavía no incluye el SPEC ni la implementación de US25. Consultar sus reglas en el SPEC común y comprobar su integración antes de reutilizar sus componentes; no importar archivos ausentes. No se crean commits automáticamente; el mensaje se entrega para revisión.
+La implementación inicial se realizó en feature/reserva-expirada sobre una base de 20 interfaces declaradas sin US25. Ambas historias y la corrección fix/reservas-consistencia ya están incorporadas en develop. La colección compartida conserva #208 para atención y #190/#207 para expiración; consultar la sección 16 y [US25](../us25/SPEC.md). No se crean commits automáticamente; el mensaje se entrega para revisión.
 
 ## 2. Tareas y alcance
 
@@ -114,7 +116,7 @@ Una reserva ajena/inexistente no revela cliente, notas, mesa ni fechas. En integ
 
 Cuando exista el listado completo, añadir estado Expirada, fecha de vencimiento y enlace al mismo registro en detalle. Conservar las filas expiradas y su identidad; no ocultarlas porque dejaron de bloquear una mesa.
 
-En esta rama los listados cliente-reservas y op-reservas todavía están pendientes. La implementación US26 puede construir el soporte mínimo de consulta de filas expiradas, identificado como «Reservas expiradas de muestra», con los datos y navegación necesarios. No declarar que eso completa la agenda US29, el historial general US07, sus filtros, búsqueda, creación o gestión de otros estados.
+Los listados cliente-reservas y op-reservas cuentan con soporte parcial de consulta de expiradas. La vista operativa incluye además el resumen de atención compartido con US25. Conservar ese alcance y los mensajes de muestra. No declarar que eso completa la agenda US29, el historial general US07, sus filtros, búsqueda, creación o gestión de otros estados.
 
 Si se modifica una entrada canónica de listado, registrar el alcance parcial en su estado documental. No marcar todo el módulo o su boolean de contenido completo como terminado por añadir únicamente la sección de expiradas; distinguir los dos detalles implementados del soporte parcial de los listados. Mantener las comprobaciones de inventario.
 
@@ -250,7 +252,7 @@ Resultados ejecutados:
 
 Pendientes: S2-TSK-056, autenticación/permisos reales, consulta autoritativa, expiración atómica del servidor, liberación de horario, notificaciones y rechazo real de escrituras tardías. S2-TSK-055 tiene presentación de muestra verificada, no aceptación integrada. US07/US29 conservan alcance parcial.
 
-Durante la entrega inicial de US26, su rama todavía no contenía US25: no se ejecutaron entonces sus flujos de llegada y finalización ni se afirmó compatibilidad integrada entre ambas historias. Repetir esos recorridos al incorporar ambas implementaciones en develop, incluyendo llegada antes de +15, cruce del límite sin expiración indebida y finalización posterior. La regla temporal pura probada aquí no escribe estado ni sustituye esa prueba conjunta.
+Durante la entrega inicial de US26, su rama todavía no contenía US25: no se ejecutaron entonces sus flujos de llegada y finalización ni se afirmó compatibilidad integrada entre ambas historias. La comprobación conjunta posterior a la integración se registra en la sección 16. Repetirla cuando cambien la fuente compartida o sus consumidores, incluyendo llegada antes de +15, cruce del límite y finalización posterior. La regla temporal pura probada aquí no escribe estado ni sustituye esa prueba conjunta.
 
 ## 16. Corrección conjunta de muestras US25–US26 — 01/11/2026
 
@@ -276,3 +278,11 @@ Verificaciones:
 - Sin desbordamiento de página en los cinco anchos; capturas desktop/mobile inspeccionadas. Sin errores JavaScript ni solicitudes de escritura en los recorridos comprobados.
 
 Esta corrección corresponde exclusivamente al frontend de muestra. Los resultados de las secciones anteriores permanecen como evidencia histórica de entregas anteriores.
+
+## Alineación vigente — 02/11/2026
+
+Se verificaron en el archivo Figma original los IDs, nombres y dimensiones de las referencias de este documento. El [registro compartido](../../REFERENCIAS-FIGMA.md) identifica la única referencia histórica no verificable y delimita esta comprobación de metadatos. Las lecturas y capturas históricas obtenidas en la copia no se atribuyen retroactivamente al original.
+
+La revisión documental no vuelve a ejecutar el prototipo ni certifica equivalencia visual. Los recorridos locales se verifican por separado en test/flujos-integrados. No se implementan nuevas pantallas ni se cambian reglas de negocio por corregir estas referencias.
+
+Estado actual de reservas: llegada y finalización de #208 se conservan en la colección compartida y en el resumen de atención. El historial de expiradas contiene #190/#207, no la visita #208 completada. La agenda general mantiene alcance parcial.

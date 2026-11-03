@@ -1,6 +1,6 @@
 # SPEC común — RestoPilot
 
-Guía funcional y visual compartida. Actualización: 01/11/2026. Documentar el producto completo no autoriza implementar todas sus pantallas. Primera entrega: [Landing](docs/specs/landing/SPEC.md). Complementos actuales: landing, [US11 (carrito y modalidades)](docs/specs/us11/SPEC.md), US12 (detalle y pago), US13 (seguimiento), [US15 (cola y tablero de cocina)](docs/specs/us15/SPEC.md), [US19 (preparación y entrega)](docs/specs/us19/SPEC.md) y [US25 (atención de reservas)](docs/specs/us25/SPEC.md), con documentos independientes.
+Guía funcional y visual compartida para todo el equipo. Revisión documental: 02/11/2026. Define requisitos, historias, criterios y procedimientos comunes; no establece prioridad entre integrantes ni acredita aceptación por documentar una funcionalidad.
 
 ## Índice
 
@@ -56,6 +56,7 @@ El SPEC común contiene las 29 historias y sus criterios. No se requiere un arch
 | [Mis pedidos](docs/specs/cliente-pedidos/SPEC.md) | Listado y continuidad de selección entre detalle, seguimiento y pago |
 | [US15](docs/specs/us15/SPEC.md) | Tablero y cola priorizada de cocina |
 | [US19](docs/specs/us19/SPEC.md) | Preparación, pedido listo y entrega |
+| [US25](docs/specs/us25/SPEC.md) | Llegada y finalización de reservas |
 | [US26](docs/specs/us26/SPEC.md) | Consulta de reservas expiradas en detalle e historial |
 
 Los detalles de rama, entrega y evidencia particulares se documentan en el complemento correspondiente; no establecen el flujo ni el avance de las demás tareas.
@@ -154,7 +155,7 @@ En UI distinguir normal, carga, vacío, error, éxito y operación bloqueada cua
 
 ## Sistema visual
 
-Referencias históricas de extracción: Style 5:124, guía 125:3. Verificar su correspondencia en el Figma original antes de utilizarlas. Los valores siguientes se conservan como contrato de implementación; falta comprobación visual/contraste de combinaciones reales y no se afirma una nueva verificación contra el original.
+Los IDs de Style 5:124 y la guía 125:3 se comprobaron en el Figma original el 02/11/2026; ver [registro de referencias](docs/REFERENCIAS-FIGMA.md). Esta comprobación de identidad y dimensiones no revalida todos sus estilos. Los valores siguientes se conservan como contrato de implementación; falta comprobación visual/contraste de combinaciones reales y no se afirma una nueva verificación contra el original.
 
 | Rol | Valor |
 | --- | --- |
@@ -2463,7 +2464,7 @@ IA prevista; no acredita asistente operativo.
 
 ## Backlog del Sprint 2
 
-61 tareas oficiales; asignación en sus documentos de coordinación. API conserva alcance futuro; no se implementa durante landing.
+61 tareas oficiales; asignación en sus documentos de coordinación. Consultar el alcance autorizado y el estado de la rama para cada tarea. La existencia de interfaz o de un complemento no acredita integración ni aceptación.
 
 | Historia | Tarea | Descripción |
 | --- | --- | --- |

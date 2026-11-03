@@ -1,20 +1,22 @@
 # SPEC — US12: detalle del pedido y consulta de pago
 
-Fecha: 01/11/2026. Entrega actual: documentación de US12. Rama de trabajo: feature/cliente-pedido. PR hacia develop.
+Revisión documental: 02/11/2026. Estado: frontend de muestra incorporado en develop; aceptación del equipo pendiente. Rama original: feature/cliente-pedido. Alineación documental: docs/alineacion-specs.
 
-Leer [SPEC común](../../../SPEC.md) y [AGENTS.md](../../../AGENTS.md). Este documento sustituye el SPEC conjunto anterior. La siguiente implementación se revisa únicamente contra US12; el seguimiento se prepara después, mediante otro SPEC y otro commit.
+Las secciones de ejecución fechadas conservan evidencia histórica. El estado actual se contrasta con develop, base 3685d07; no repetir como pendientes las etapas ya integradas. Referencias comprobadas: [registro Figma](../../REFERENCIAS-FIGMA.md).
+
+Leer [SPEC común](../../../SPEC.md) y [AGENTS.md](../../../AGENTS.md). Este documento sustituyó el SPEC conjunto inicial. US12 y US13 ya están incorporadas; el listado y la continuidad por ID se describen en [Mis pedidos](../cliente-pedidos/SPEC.md). Mantener sus responsabilidades sin reiniciar la secuencia histórica.
 
 ## 1. Objetivo y secuencia
 
 Permitir al cliente consultar el detalle de un pedido propio y el registro de su pago para revisar lo comprado, su importe y los datos disponibles de la operación.
 
-Secuencia acordada:
+Secuencia histórica acordada para la primera entrega:
 1. Preparar y revisar este SPEC de US12; commit documental.
 2. Implementar/revisar únicamente US12; commit de implementación.
 3. Preparar el SPEC de la siguiente historia en una entrega posterior.
 4. Implementar esa historia en otro commit.
 
-Hay modificaciones de implementación pendientes en el directorio de trabajo procedentes del intento conjunto anterior. Este documento no las elimina, no las incorpora automáticamente al commit documental y no las declara aceptadas. No usar git add . para este commit; seleccionar únicamente sus archivos documentales.
+La advertencia sobre modificaciones pendientes correspondía al directorio de trabajo de la preparación inicial. No describe el estado actual: comprobar la rama y el diff antes de cada entrega y seleccionar los archivos correspondientes a su alcance.
 
 ## 2. Alcance de US12
 
@@ -41,7 +43,7 @@ También quedan fuera cobros, formularios de tarjeta, registro administrativo de
 
 Fuente funcional: reporte report_1ACC0236-20262.pdf, US12, páginas físicas 52–54; sus seis criterios completos se conservan al final.
 
-Fuente visual: [Figma vigente](https://www.figma.com/design/sRxKEwFdrMKfXPosGFvoHc/RestoPilot--Copy-?node-id=5-92), página RestoPilot 5:92.
+Fuente visual: [Figma original autorizado](https://www.figma.com/design/wBq85sZ8G5W5RQ1RmQmdqg/RestoPilot?node-id=5-92), página RestoPilot 5:92.
 
 | Pantalla | Desktop | Mobile |
 | --- | --- | --- |
@@ -49,9 +51,9 @@ Fuente visual: [Figma vigente](https://www.figma.com/design/sRxKEwFdrMKfXPosGFvo
 | cliente-pago | 84:32934, 1440 × 900 | 84:33017, 390 × 918.20 |
 | cliente-pago-pendiente | 84:32798, 1440 × 900 | 84:32870, 390 × 817.20 |
 
-Se reutilizan las consultas de Figma realizadas en esta sesión: contextos de detalle desktop/mobile y de pago desktop; composición y textos disponibles en el SPEC común. La captura de detalle mobile fue inspeccionada. No se atribuyen a estas lecturas pruebas de aplicación ni autorización real.
+La preparación inicial reutilizó las consultas de Figma disponibles entonces: contextos de detalle desktop/mobile y de pago desktop; composición y textos disponibles en el SPEC común. La captura de detalle mobile fue inspeccionada. No se atribuyen a estas lecturas pruebas de aplicación ni autorización real.
 
-El frame de detalle incluye un progreso de preparación compartido con otra historia. Para US12 implementar la información del pedido y su etiqueta de estado; reservar el progreso para su entrega posterior.
+El frame de detalle incluye un progreso de preparación compartido con otra historia. US12 aporta información y etiqueta de estado; US13 ya aporta el progreso integrado. Conservar ambos al revisar las vistas actuales.
 
 ## 4. Rutas y archivos
 
@@ -208,3 +210,11 @@ Escenario 5: Pedido inexistente o ajeno Dado que el pedido no existe o pertenece
 #### US12-CA06 — Conservación del precio de compra
 
 Escenario 6: Conservación del precio de compra Dado que un pedido fue registrado con nombres y precios determinados y la carta cambió después. Cuando el cliente consulta su pedido. Entonces el sistema conserva los nombres y precios registrados para esa compra, sin reemplazarlos por los actuales.
+
+## Alineación vigente — 02/11/2026
+
+Se verificaron en el archivo Figma original los IDs, nombres y dimensiones de las referencias de este documento. El [registro compartido](../../REFERENCIAS-FIGMA.md) identifica la única referencia histórica no verificable y delimita esta comprobación de metadatos. Las lecturas y capturas históricas obtenidas en la copia no se atribuyen retroactivamente al original.
+
+La revisión documental no vuelve a ejecutar el prototipo ni certifica equivalencia visual. Los recorridos locales se verifican por separado en test/flujos-integrados. No se implementan nuevas pantallas ni se cambian reglas de negocio por corregir estas referencias.
+
+Estado actual del recorrido: [Mis pedidos](../cliente-pedidos/SPEC.md) consulta por ID y conserva detalle, seguimiento y pago. Las confirmaciones locales del carrito tienen IDs independientes #1043, #1044, …; no reemplazar el histórico #1042. Los datos temporales se reinician al recargar.
