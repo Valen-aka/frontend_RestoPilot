@@ -1,9 +1,9 @@
 <h2 mat-dialog-title>{{ label }}</h2>
 <mat-dialog-content>
-  <p>Reserva de muestra <strong>#{{ data.command.id }}</strong></p>
-  <dl><div><dt>Estado actual</dt><dd>{{ data.status }}</dd></div><div><dt>Reloj de muestra al abrir</dt><dd>{{ date(data.now) }} · Lima</dd></div></dl>
+  <p>Reserva <strong>#{{ data.command.id }}</strong></p>
+  <dl><div><dt>Estado actual</dt><dd>{{ data.status }}</dd></div><div><dt>Mesa</dt><dd>{{ data.table }}</dd></div><div><dt>Inicio</dt><dd>{{ date(data.startsAt) }} · Lima</dd></div><div><dt>Fin previsto</dt><dd>{{ date(data.endsAt) }} · Lima</dd></div></dl>
   <p>Se comprobarán de nuevo los datos y el horario al confirmar.</p>
-  <p class="notice">Solo se modifica la muestra local. No se registran operaciones en el restaurante ni se envían avisos.</p>
+  <p class="notice">El restaurante volverá a comprobar el estado y las condiciones antes de registrar la operación.</p>
 </mat-dialog-content>
 <mat-dialog-actions align="end">
   <button mat-stroked-button type="button" [mat-dialog-close]="false" cdkFocusInitial [disabled]="submitted()">Volver sin cambios</button>
