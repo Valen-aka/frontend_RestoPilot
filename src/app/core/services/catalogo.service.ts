@@ -2,13 +2,14 @@ import {inject, Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {map, Observable} from 'rxjs';
 import {environment} from '../../../environments/environment';
-import {MesaResponse, PlatoResponse, RestauranteResponse} from '../models/catalogo-api.model';
+import {CategoriaResponse, MesaResponse, PlatoResponse, RestauranteResponse} from '../models/catalogo-api.model';
+import {readCategorias, readCartaPlato} from '../models/catalogo-query.model';
 import {positiveId} from '../models/pedido-api.model';
 
 function checkedList<T>(value:unknown, valid:(item:T)=>boolean): readonly T[] {
-  if (!Array.isArray(value) || value.some(item => !item || typeof item !== 'object' || !valid(item as T))) throw new Error('Los datos del catálogo no son válidos.');
+  if (!Array.isArray(value) || value.some(item => !item || typeof item !== 'object' || !valid(item as T))) throw new Error('Los datos del catÃ¡logo no son vÃ¡lidos.');
   const ids = value.map(item => item.id);
-  if (new Set(ids).size !== ids.length) throw new Error('El catálogo contiene identificadores repetidos.');
+  if (new Set(ids).size !== ids.length) throw new Error('El catÃ¡logo contiene identificadores repetidos.');
   return value;
 }
 @Injectable({providedIn:'root'})
@@ -28,6 +29,14 @@ export class CatalogoService {
   platos(restauranteId:number):Observable<readonly PlatoResponse[]> {
     return this.http.get<unknown>(this.base+'/platos/restaurante/'+restauranteId,{timeout:20000}).pipe(map(data=>checkedList<PlatoResponse>(data,
       p=>positiveId(p.id)&&p.restauranteId===restauranteId&&typeof p.nombre==='string'&&typeof p.precio==='number'&&Number.isFinite(p.precio)&&p.precio>=0&&typeof p.disponible==='boolean')));
+  }
+  categorias(restauranteId:number):Observable<readonly CategoriaResponse[]> {
+    return this.http.get<unknown>(this.base+'/categorias/restaurante/'+restauranteId,{timeout:20000})
+      .pipe(map(data=>readCategorias(data,restauranteId)));
+  }
+  plato(id:number,restauranteId:number):Observable<PlatoResponse> {
+    return this.http.get<unknown>(this.base+'/platos/'+id,{timeout:20000})
+      .pipe(map(data=>readCartaPlato(data,restauranteId,id)));
   }
   mesas(restauranteId:number):Observable<readonly MesaResponse[]> {
     return this.http.get<unknown>(this.base+'/mesas/restaurante/'+restauranteId,{timeout:20000}).pipe(map(data=>checkedList<MesaResponse>(data,
