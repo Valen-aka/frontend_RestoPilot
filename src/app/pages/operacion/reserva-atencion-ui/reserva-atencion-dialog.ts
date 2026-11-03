@@ -7,7 +7,10 @@ import {AttendanceCommand, ReservationStatus, attendanceDate} from './reserva-at
 export interface AttendanceDialogData {
   readonly command: AttendanceCommand;
   readonly status: ReservationStatus;
-  readonly now: string;
+  readonly now?: string;
+  readonly table:string;
+  readonly startsAt:string;
+  readonly endsAt:string;
 }
 @Component({selector: 'rp-reserva-atencion-dialog', imports: [A11yModule, MatButtonModule, MatDialogModule],
   templateUrl: './reserva-atencion-dialog.html', styleUrl: './reserva-atencion-dialog.css'})
@@ -15,7 +18,7 @@ export class ReservaAtencionDialog {
   readonly data = inject<AttendanceDialogData>(MAT_DIALOG_DATA);
   private readonly dialog = inject(MatDialogRef<ReservaAtencionDialog, boolean>);
   readonly submitted = signal(false);
-  readonly label = this.data.command.action === 'arrival' ? 'Simular llegada' : 'Simular finalización';
+  readonly label = this.data.command.action === 'arrival' ? 'Registrar llegada' : 'Completar atención';
   readonly date = attendanceDate;
   confirm(): void {
     if (this.submitted()) return;
