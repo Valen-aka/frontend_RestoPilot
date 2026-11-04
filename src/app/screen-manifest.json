@@ -634,8 +634,8 @@
     ],
     "owner": "Cristian Condori",
     "us": "US05",
-    "status": "Pendiente",
-    "contenidoImplementado": false
+    "status": "Implementada",
+    "contenidoImplementado": true
   },
   {
     "slug": "cliente-plano",
@@ -656,8 +656,8 @@
     ],
     "owner": "Cristian Condori",
     "us": "US05",
-    "status": "Pendiente",
-    "contenidoImplementado": false
+    "status": "Implementada",
+    "contenidoImplementado": true
   },
   {
     "slug": "cliente-sin-disponibilidad",
@@ -678,8 +678,8 @@
     ],
     "owner": "Cristian Condori",
     "us": "US05",
-    "status": "Pendiente",
-    "contenidoImplementado": false
+    "status": "Implementada",
+    "contenidoImplementado": true
   },
   {
     "slug": "cliente-reservas-deshabilitadas",
@@ -722,8 +722,8 @@
     ],
     "owner": "Cristian Condori",
     "us": "US06",
-    "status": "Pendiente",
-    "contenidoImplementado": false
+    "status": "Implementada",
+    "contenidoImplementado": true
   },
   {
     "slug": "cliente-reservas",

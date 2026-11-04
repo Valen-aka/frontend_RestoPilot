@@ -1,3 +1,83 @@
-<!-- FRAME: cliente-sin-disponibilidad | Probemos otro momento -->
-<!-- TODO: implementar Desktop y Mobile con Angular Material. -->
-<!-- No hay campos, datos ni contenido visual implementados. -->
+<a class="skip-link" href="#sin-disp-content">Saltar al contenido</a>
+
+<div class="reserva-shell">
+  <!-- Cabecera de Cliente -->
+  <header class="client-header">
+    <a class="brand" routerLink="/cliente" aria-label="RestoPilot, inicio de cliente">
+      <div class="brand-icon" aria-hidden="true">RP</div>
+      <span>Resto<span class="brand-accent">Pilot</span><small>Tu restaurante, en piloto automático</small></span>
+    </a>
+    <nav aria-label="Navegación de cliente">
+      <a routerLink="/cliente">Inicio</a>
+      <a routerLink="/cliente/carta">La carta</a>
+      <a routerLink="/cliente/reservas" class="active" aria-current="page">Mis reservas</a>
+      <a routerLink="/cliente/pedidos">Mis pedidos</a>
+      <a routerLink="/cliente/asistente">Asistente IA</a>
+    </nav>
+    <div class="sample-context">
+      <span class="sample-avatar" aria-hidden="true">CC</span>
+      <div>
+        <strong>Cristian Condori</strong>
+        <small>Módulo de Reservas</small>
+      </div>
+    </div>
+  </header>
+
+  <!-- Contenido Principal -->
+  <main id="sin-disp-content" tabindex="-1" class="reserva-main">
+    <div class="page-heading">
+      <p class="eyebrow">RESERVAS CLIENTE</p>
+      <h1>Probemos otro momento</h1>
+      <p class="subtitle">No encontramos mesas libres para la capacidad o turno que seleccionaste.</p>
+    </div>
+
+    <!-- Tarjeta de estado y sugerencias -->
+    <div class="reserva-card no-disp-card" role="alert">
+      <div class="no-disp-badge">
+        <span class="badge-icon" aria-hidden="true">⏳</span>
+        <h2>Horario sin disponibilidad actual</h2>
+      </div>
+
+      <p class="no-disp-desc">
+        Para el <strong>{{ store.draft().fecha }}</strong> entre las
+        <strong>{{ store.draft().horaInicio }} y {{ store.draft().horaFin }}</strong>
+        para <strong>{{ store.draft().comensales }} comensales</strong>, todas las mesas se encuentran reservadas o sobrepasan el aforo de seguridad.
+      </p>
+
+      <!-- Horarios alternativos recomendados -->
+      <section class="suggestions-section" aria-label="Horarios sugeridos">
+        <h3 class="suggestions-title">Horarios alternativos con mesas libres hoy:</h3>
+        <div class="suggestions-grid">
+          @for (turno of turnosSugeridos; track turno.inicio) {
+            <button
+              type="button"
+              class="suggested-slot-card"
+              (click)="elegirTurnoSugerido(turno)"
+              [attr.aria-label]="'Elegir horario ' + turno.label">
+              <span class="slot-time">{{ turno.inicio }} - {{ turno.fin }}</span>
+              <span class="slot-label">{{ turno.label }}</span>
+              <span class="slot-action">Elegir este turno →</span>
+            </button>
+          }
+        </div>
+      </section>
+
+      <!-- Botones de navegación -->
+      <div class="form-actions">
+        <a mat-stroked-button routerLink="/cliente/carta" class="btn-secondary">
+          Explorar la carta mientras tanto
+        </a>
+        <a mat-flat-button routerLink="/cliente/reservar" class="btn-primary">
+          Cambiar fecha o comensales
+        </a>
+      </div>
+    </div>
+  </main>
+
+  <!-- Pie de Página -->
+  <footer class="client-footer">
+    <p>RestoPilot · La Mesa Verde (Lima - Miraflores)</p>
+    <p>Tu restaurante, en piloto automático.</p>
+    <a routerLink="/cliente">Volver al inicio</a>
+  </footer>
+</div>
