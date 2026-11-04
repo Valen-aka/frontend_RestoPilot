@@ -1,1 +1,4 @@
-<!-- TODO: componente reutilizable client-footer. Sin contenido implementado. -->
+<footer><span>RestoPilot{{restaurant()?' · '+restaurant():''}}</span><span>Tu restaurante, en piloto automático.</span>
+ @if(signedIn()){<button mat-button (click)="logout.emit()">Cerrar sesión</button>}
+ @else{<a routerLink="/auth/login">Iniciar sesión</a>}
+</footer>

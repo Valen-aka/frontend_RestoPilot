@@ -1,1 +1,16 @@
-<!-- TODO: componente reutilizable client-header. Sin contenido implementado. -->
+<header>
+ <a class="brand" routerLink="/cliente" [queryParams]="{restauranteId:restaurantId()}" aria-label="RestoPilot, inicio">
+  <span class="brand-image" aria-hidden="true"><img src="/assets/carrito/brand-reference.png" width="43" height="43" alt=""><span></span></span>
+  <span><strong>Resto<span>Pilot</span></strong><small>Tu restaurante, en piloto automático</small></span>
+ </a>
+ <nav aria-label="Navegación del cliente">
+  @for (link of links; track link.key) {
+   <a [routerLink]="link.url" [queryParams]="{restauranteId:restaurantId()}" [class.active]="active()===link.key" [attr.aria-current]="active()===link.key?'page':null">{{link.label}}</a>
+  }
+ </nav>
+ <div class="account">
+  <a mat-button class="symbol" routerLink="/cliente/notificaciones" aria-label="Notificaciones">♧</a>
+  <a mat-button class="symbol" routerLink="/cliente/carrito" aria-label="Carrito">▤</a>
+  <div class="profile"><span class="avatar" aria-hidden="true">C</span><span><strong>{{signedIn()?'Cliente':'Visitante'}}</strong><small>{{signedIn()?'Mi cuenta de cliente':'Sin sesión activa'}}</small></span></div>
+ </div>
+</header>

@@ -1,2 +1,165 @@
-:host{display:block}
-/* TODO: estilos del componente. */
+:host{
+  display:block
+}
+header{
+  background:white;
+  border-bottom:1px solid #e2e8e7;
+  padding:15px max(18px,calc((100% - 1180px)/2));
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:30px;
+  color:#18334a
+}
+a{
+  color:inherit;
+  text-decoration:none
+}
+.brand{
+  line-height:0;
+  display:flex;
+  align-items:center;
+  gap:10px;
+  flex:none
+}
+.brand-image{
+  position:relative;
+  width:43px;
+  height:43px;
+  overflow:hidden;
+  border-radius:10px
+}
+.brand-image img{
+  object-fit:contain
+}
+.brand-image>span{
+  position:absolute;
+  inset:0;
+  background:white
+}
+.brand strong{
+  font:700 21px/25px 'Carta Roboto',Arial,sans-serif;
+  letter-spacing:-.8px;
+  color:var(--rp-navy)
+}
+.brand strong span{
+  color:#58bb8d
+}
+.brand small{
+  display:block;
+  margin-top:4px;
+  text-transform:uppercase;
+  letter-spacing:1.6px;
+  color:#799185;
+  font-size:8px;
+  line-height:12px
+}
+nav{
+  display:flex;
+  gap:25px;
+  align-items:center;
+  flex-wrap:wrap
+}
+nav a{
+  line-height:12px;
+  font-size:11px;
+  color:#71817e;
+  padding-block:14px
+}
+nav .active{
+  font-weight:700;
+  color:var(--rp-brand-green)
+}
+.account{
+  display:flex;
+  gap:18px;
+  align-items:center
+}
+.symbol{
+  min-width:33px;
+  width:33px;
+  height:33px;
+  padding:0;
+  border:1px solid #e2e8e7;
+  border-radius:9px;
+  font-size:10px;
+  color:#18334a
+}
+.profile{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  min-width:126px;
+  font-size:11px
+}
+.avatar{
+  display:grid;
+  place-items:center;
+  background:#e6f4ed;
+  color:#217854;
+  border-radius:50%;
+  width:36px;
+  height:36px;
+  flex:none
+}
+.profile small{
+  line-height:13.5px;
+  display:block;
+  font-size:9px;
+  color:#8f9f96;
+  margin-top:4px
+}
+a:focus-visible{
+  outline:3px solid var(--rp-primary);
+  outline-offset:3px
+}
+@media(max-width:1100px){
+  header{
+    flex-wrap:wrap;
+    gap:4px 20px
+  }
+  .profile{
+    display:none
+  }
+}
+@media(max-width:600px){
+  header{
+    box-sizing:border-box;
+    min-height:155px;
+    padding:15px 18px;
+    display:block
+  }
+  .brand{
+    width:max-content;
+    max-width:100%
+  }
+  .brand small{
+    font-size:8px;
+    letter-spacing:1.6px
+  }
+  nav{
+    gap:19px;
+    margin-top:4px
+  }
+  nav a{
+    padding-block:14px
+  }
+  .account{
+    gap:8px;
+    margin-top:0
+  }
+  .symbol{
+    height:33px
+  }
+  .profile{
+    display:none
+  }
+}
+@media(max-width:360px){
+  nav{
+    gap:8px 15px
+  }
+  .brand small{
+    letter-spacing:1px
+  }
+}

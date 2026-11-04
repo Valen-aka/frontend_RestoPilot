@@ -1,2 +1,46 @@
-:host{display:block}
-/* TODO: estilos del componente. */
+:host{
+  display:block
+}
+footer{
+  border-top:1px solid #e2e8e7;
+  max-width:1160px;
+  margin:auto;
+  padding:25px 0 45px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:13px;
+  color:#9aa7a0;
+  font-size:10px;
+  overflow-wrap:anywhere
+}
+a,button{
+  font:inherit;
+  color:var(--rp-brand-green);
+  text-decoration:none
+}
+button{
+  min-height:44px;
+  margin-block:-16px
+}
+@media(max-width:1200px){
+  footer{
+    margin-inline:38px
+  }
+}
+@media(max-width:600px){
+  footer{
+    margin:0;
+    padding:20px;
+    display:flex;
+    flex-direction:column;
+    align-items:flex-start;
+    gap:0;
+    line-height:14px
+  }
+  button{
+    padding:0;
+    min-width:0;
+    margin:0
+  }
+}

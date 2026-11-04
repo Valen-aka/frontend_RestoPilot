@@ -1,0 +1,78 @@
+@let p = page();
+<rp-client-header [active]="mode()==='inicio'?'inicio':'carta'" [restaurantId]="p.store.restaurant()?.id??null" [signedIn]="signedIn()" />
+<main id="carta-main">
+ <div class="page-heading"><p class="eyebrow">CLIENTE</p><h1>{{title()}}</h1><p class="subtitle">{{subtitle()}}</p></div>
+ @if(p.navigationError()){<p role="alert" class="feedback">{{p.navigationError()}}</p>}
+ @if(p.selection.error()){<p role="alert" class="feedback">{{p.selection.error()}} <a routerLink="/cliente/carrito">Revisar carrito</a></p>}
+ @if(p.selection.preparing()){<p role="status" class="notice">Preparando tu selección…</p>}
+ @switch(p.store.state()){
+  @case('session'){
+   <section class="state-card" aria-labelledby="session-title"><h2 id="session-title">Inicia sesión para consultar la carta</h2><p>Necesitas una sesión de cliente vigente.</p><a mat-flat-button routerLink="/auth/login">Ir al inicio de sesión</a></section>
+  }
+  @case('loading'){
+   <section class="state-card" role="status" aria-live="polite"><mat-spinner diameter="36" aria-label="Consultando la carta"/><p>Cargando la carta…</p></section>
+  }
+  @case('error'){
+   <section class="state-card"><h2>No pudimos consultar la carta</h2><p role="alert">{{p.store.error()}}</p><div class="actions"><button mat-flat-button (click)="p.retry()">Reintentar</button><a mat-stroked-button routerLink="/cliente">Elegir restaurante</a></div></section>
+  }
+  @case('ready'){
+   @if(mode()==='inicio'){
+    <section class="hero" aria-labelledby="hero-title">
+     <div class="hero-copy"><p class="eyebrow">{{p.store.restaurant()?.nombre??'RESTOPILOT'}}</p><h2 id="hero-title">Lo de siempre.<br>Como nunca.</h2><p>Sabores que te reúnen. Una mesa que te espera.</p><div class="actions"><a mat-flat-button routerLink="/cliente/carta" [queryParams]="query()">Explorar la carta</a><a mat-stroked-button routerLink="/cliente/reservar" [queryParams]="query()">Reservar una mesa</a></div></div>
+     <picture class="hero-art"><source media="(max-width:600px)" srcset="/assets/carta/inicio-mobile.svg"><img src="/assets/carta/inicio-desktop.svg" alt="Ilustración de un plato de la casa"></picture>
+    </section>
+   }
+   @if(!p.store.restaurant()){
+    <section class="state-card restaurant-picker">
+     @if(p.store.restaurants().length){
+      <h2>Elige un restaurante</h2><p>Selecciona el local cuya carta quieres consultar.</p>
+      <form [formGroup]="restaurantForm" (ngSubmit)="chooseRestaurant()"><mat-form-field appearance="outline"><mat-label>Restaurante</mat-label><mat-select [formControl]="restaurantControl">@for(r of p.store.restaurants();track r.id){<mat-option [value]="r.id">{{r.nombre}}</mat-option>}</mat-select>@if(restaurantControl.touched&&restaurantControl.invalid){<mat-error>Selecciona un restaurante.</mat-error>}</mat-form-field><button mat-flat-button type="submit">Consultar carta</button></form>
+     }@else{<h2>No hay restaurantes disponibles</h2><p>No recibimos restaurantes para consultar.</p><button mat-flat-button (click)="p.retry()">Actualizar</button>}
+    </section>
+   }@else{
+    @if(!p.store.restaurant()!.activo||!p.store.restaurant()!.abierto){<p class="notice" role="status">Este restaurante no está recibiendo pedidos. Puedes consultar su carta.</p>}
+    @if(mode()==='detalle'||mode()==='bowl'){
+     @if(p.store.detail();as dish){
+      <div class="detail-grid" [class.sold-out]="!dish.disponible" [class.bowl]="mode()==='bowl'">
+       <div class="detail-image">@if(p.imageFor(dish);as url){<img [src]="url" [alt]="dish.nombre" (error)="p.imageFailed(url)">}@else{<p class="no-image">Imagen no disponible</p>}</div>
+       <section class="detail-card" aria-label="Información del plato">
+        <h2>{{dish.nombre}}</h2><span class="availability" [class.unavailable]="!dish.disponible">{{dish.disponible?'Disponible':'No disponible'}}</span>
+        <p class="detail-price">S/ {{dish.precio | number:'1.2-2'}}</p>
+        @if(!dish.disponible&&mode()!=='bowl'){
+         <p class="description">Este plato está agotado por el momento.</p><button mat-flat-button disabled>No disponible</button><button mat-button class="back" (click)="p.backToMenu()">Descubrir otros platos</button>
+        }@else{
+         <p class="description">{{dish.descripcion||'Descripción no informada.'}}</p>
+         <dl><dt>Ingredientes{{mode()==='bowl'?' registrados':''}}</dt><dd>{{dish.ingredientes||'No informados.'}}</dd><dt>Alérgenos{{mode()==='bowl'?' registrados':''}}</dt><dd>{{dish.alergenos||'No informados.'}}</dd><dt>Preparación estimada</dt><dd>{{dish.tiempoPreparacionMinutos===null?'No informada.':dish.tiempoPreparacionMinutos+' minutos'}}</dd></dl>
+         @if(mode()==='bowl'){
+          <p class="notice"><span aria-hidden="true">ⓘ</span> No hay información registrada sobre contaminación cruzada.</p><button mat-stroked-button (click)="p.backToRecommendation()">Volver a la recomendación</button>
+         }@else{
+          <form [formGroup]="quantityForm()" (ngSubmit)="p.addDish(dish.id)"><mat-form-field appearance="outline" subscriptSizing="dynamic"><mat-label>Cantidad</mat-label><input matInput type="number" min="1" max="2147483647" step="1" [formControl]="p.quantity" [readonly]="p.selection.preparing()">@if(p.quantity.invalid){<mat-error>Ingresa una cantidad entera entre 1 y 2147483647.</mat-error>}</mat-form-field>
+           <button mat-flat-button type="submit" [disabled]="p.selection.preparing()||p.quantity.invalid||!p.store.restaurant()!.activo||!p.store.restaurant()!.abierto">{{p.selection.preparing()?'Preparando selección…':'Añadir al pedido'}}@if(p.quantity.valid){ · S/ {{dish.precio*p.quantity.value | number:'1.2-2'}}}</button>
+          </form><button mat-button class="back" (click)="p.backToMenu()">Volver a la carta</button>
+         }
+        }
+       </section>
+      </div>
+     }
+    }@else{
+     @if(mode()==='inicio'){<div class="section-heading"><div><p class="eyebrow">ELIGE TU PRÓXIMO FAVORITO</p><h2>Hecho para disfrutar</h2></div><a routerLink="/cliente/carta" [queryParams]="query()">Ver toda la carta →</a></div>}
+     @if(!p.store.empty()&&mode()!=='inicio'){
+      <nav class="categories" aria-label="Categorías"><button mat-button [class.selected]="p.store.categoryId()===null" [attr.aria-pressed]="p.store.categoryId()===null" (click)="p.chooseCategory(null)">Todos</button>@for(c of p.store.categories();track c.id){<button mat-button [class.selected]="p.store.categoryId()===c.id" [attr.aria-pressed]="p.store.categoryId()===c.id" (click)="p.chooseCategory(c.id)">{{c.nombre}}</button>}</nav>
+     }
+     @if(p.store.empty()){
+      <section class="state-card empty" aria-labelledby="empty-title"><span class="state-symbol" aria-hidden="true">◎</span><h2 id="empty-title">{{p.store.categoryId()===null?'Estamos preparando nuestra carta':'Estamos preparando esta categoría'}}</h2><p>Todavía no hay platos disponibles aquí. Explora el resto de nuestra carta.</p><button mat-flat-button (click)="p.chooseCategory(null)">Ver toda la carta</button></section>
+     }@else{
+      <div class="dish-grid">@for(dish of (mode()==='inicio'?p.store.visibleDishes().slice(0,4):p.store.visibleDishes());track dish.id){
+       <article class="dish-card"><a class="dish-image" routerLink="/cliente/plato" [queryParams]="{restauranteId:dish.restauranteId,platoId:dish.id,categoriaId:p.store.categoryId()}" [attr.aria-label]="'Ver detalle de '+dish.nombre">
+        @if(p.imageFor(dish);as url){<img [src]="url" alt="" (error)="p.imageFailed(url)" loading="lazy">}@else{<span class="no-image">Imagen no disponible</span>}
+        <span class="availability" [class.unavailable]="!dish.disponible">{{dish.disponible?'Disponible':'Agotado'}}</span></a>
+        <div class="dish-body"><p class="dish-meta">{{dish.categoriaNombre}}@if(dish.tiempoPreparacionMinutos!==null){ · {{dish.tiempoPreparacionMinutos}} MIN}</p><h2><a routerLink="/cliente/plato" [queryParams]="{restauranteId:dish.restauranteId,platoId:dish.id,categoriaId:p.store.categoryId()}">{{dish.nombre}}</a></h2><p class="dish-description">{{dish.descripcion||'Descripción no informada.'}}</p><div class="dish-actions"><strong>S/ {{dish.precio | number:'1.2-2'}}</strong><button mat-flat-button class="add" [attr.aria-label]="'Añadir '+dish.nombre+' al pedido'" [disabled]="p.selection.preparing()||!dish.disponible||!p.store.restaurant()!.activo||!p.store.restaurant()!.abierto" (click)="p.addDish(dish.id)">+</button></div></div>
+       </article>
+      }</div>
+     }
+    }
+   }
+  }
+ }
+</main>
+<rp-client-footer [restaurant]="p.store.restaurant()?.nombre??null" [signedIn]="signedIn()" (logout)="auth.logout()" />
