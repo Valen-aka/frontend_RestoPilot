@@ -250,4 +250,71 @@ export class ReservaStore {
     );
     return cancelada;
   }
+
+  crearReservaOperativa(datos: {
+    nombreCliente: string;
+    telefonoCliente: string;
+    fecha: string;
+    horaInicio: string;
+    horaFin: string;
+    comensales: number;
+    mesaId: number;
+    mesaNumero: string;
+    zona: string;
+    notas?: string;
+  }): ReservaItem {
+    const newId = Math.max(200, ...this.reservas().map(r => r.id)) + 1;
+    const now = new Date();
+    const nueva: ReservaItem = {
+      id: newId,
+      codigo: `RES-${newId}`,
+      fecha: datos.fecha,
+      horaInicio: datos.horaInicio,
+      horaFin: datos.horaFin,
+      comensales: datos.comensales,
+      mesaId: datos.mesaId,
+      mesaNumero: datos.mesaNumero,
+      zona: datos.zona,
+      estado: 'PENDIENTE',
+      solicitadaEn: `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')} ${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`,
+      notas: datos.notas || '',
+      nombreCliente: datos.nombreCliente,
+      telefonoCliente: datos.telefonoCliente
+    };
+
+    this.reservas.update(list => [nueva, ...list]);
+    return nueva;
+  }
+
+  confirmarReservaOperativa(id: number): boolean {
+    let confirmada = false;
+    this.reservas.update(list =>
+      list.map(r => {
+        if (r.id === id) {
+          confirmada = true;
+          return { ...r, estado: 'CONFIRMADA' };
+        }
+        return r;
+      })
+    );
+    return confirmada;
+  }
+
+  rechazarReservaOperativa(id: number, motivo: string): boolean {
+    let rechazada = false;
+    this.reservas.update(list =>
+      list.map(r => {
+        if (r.id === id) {
+          rechazada = true;
+          return {
+            ...r,
+            estado: 'RECHAZADA',
+            motivoRechazo: motivo
+          };
+        }
+        return r;
+      })
+    );
+    return rechazada;
+  }
 }

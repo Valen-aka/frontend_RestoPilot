@@ -1708,8 +1708,8 @@
     ],
     "owner": "Cristian Condori",
     "us": "US06, US29",
-    "status": "Pendiente",
-    "contenidoImplementado": false
+    "status": "Implementada",
+    "contenidoImplementado": true
   },
   {
     "slug": "op-reserva-detalle",
@@ -1730,8 +1730,8 @@
     ],
     "owner": "Cristian Condori",
     "us": "US17, US29",
-    "status": "Pendiente",
-    "contenidoImplementado": false
+    "status": "Implementada",
+    "contenidoImplementado": true
   },
   {
     "slug": "op-reserva-rechazar",
@@ -1752,8 +1752,8 @@
     ],
     "owner": "Cristian Condori",
     "us": "US17, US29",
-    "status": "Pendiente",
-    "contenidoImplementado": false
+    "status": "Implementada",
+    "contenidoImplementado": true
   },
   {
     "slug": "op-reserva-rechazada",
@@ -1774,8 +1774,8 @@
     ],
     "owner": "Cristian Condori",
     "us": "US17, US29",
-    "status": "Pendiente",
-    "contenidoImplementado": false
+    "status": "Implementada",
+    "contenidoImplementado": true
   },
   {
     "slug": "op-reserva-llegada",

@@ -1,3 +1,126 @@
-<!-- FRAME: op-reserva-detalle | Una solicitud por confirmar -->
-<!-- TODO: implementar Desktop y Mobile con Angular Material. -->
-<!-- No hay campos, datos ni contenido visual implementados. -->
+<rp-cocina-shell active="reservations">
+  <div class="heading">
+    <p class="eyebrow">RESERVAS OPERACIÓN · US17, US29</p>
+    <h1>Auditoría y detalle de reserva</h1>
+    <p class="subtitle">Audita los datos de la solicitud, evalúa la disponibilidad del salón y define la resolución de la cita.</p>
+  </div>
+
+  @if (mensajeExito()) {
+    <div class="success-banner" role="status">
+      {{ mensajeExito() }}
+    </div>
+  }
+
+  @if (reserva(); as r) {
+    <div class="reservation-grid">
+      <!-- Ficha Principal de la Reserva -->
+      <mat-card appearance="outlined" class="detail-card">
+        <div class="card-header">
+          <div>
+            <span class="code-badge">#{{ r.codigo }}</span>
+            <h2>Solicitud de Mesa en Salón</h2>
+          </div>
+          <span class="status-chip" [attr.data-estado]="r.estado">
+            {{ r.estado }}
+          </span>
+        </div>
+
+        <div class="details-list">
+          <div class="detail-item">
+            <span class="label">Titular de la reserva</span>
+            <span class="value strong">{{ r.nombreCliente }}</span>
+          </div>
+
+          <div class="detail-item">
+            <span class="label">Teléfono de contacto</span>
+            <span class="value">{{ r.telefonoCliente }}</span>
+          </div>
+
+          <div class="detail-item">
+            <span class="label">Fecha programada</span>
+            <span class="value">{{ r.fecha }}</span>
+          </div>
+
+          <div class="detail-item">
+            <span class="label">Turno y horario</span>
+            <span class="value">{{ r.horaInicio }} a {{ r.horaFin }}</span>
+          </div>
+
+          <div class="detail-item">
+            <span class="label">Mesa y ubicación</span>
+            <span class="value">{{ r.mesaNumero }} · {{ r.zona }}</span>
+          </div>
+
+          <div class="detail-item">
+            <span class="label">Comensales registrados</span>
+            <span class="value">{{ r.comensales }} personas</span>
+          </div>
+
+          <div class="detail-item">
+            <span class="label">Registrada en sistema</span>
+            <span class="value">{{ r.solicitadaEn }}</span>
+          </div>
+
+          @if (r.notas) {
+            <div class="detail-item full">
+              <span class="label">Notas y observaciones especiales</span>
+              <p class="notes-quote">"{{ r.notas }}"</p>
+            </div>
+          }
+
+          @if (r.motivoRechazo) {
+            <div class="detail-item full">
+              <span class="label">Motivo de resolución</span>
+              <p class="reason-quote">{{ r.motivoRechazo }}</p>
+            </div>
+          }
+        </div>
+
+        <!-- Acciones Operativas -->
+        <div class="card-actions">
+          <a mat-stroked-button routerLink="/operacion/reservas" class="btn-back">
+            ← Volver a reservas
+          </a>
+
+          <div class="action-buttons">
+            @if (r.estado === 'PENDIENTE') {
+              <button mat-stroked-button class="btn-reject" (click)="irARechazar(r.id)">
+                Rechazar reserva
+              </button>
+              <a mat-stroked-button [routerLink]="['/operacion/reserva/editar']" [queryParams]="{ id: r.id }" class="btn-reschedule">
+                Reprogramar
+              </a>
+              <button mat-flat-button class="btn-confirm" (click)="confirmarReserva(r.id)">
+                Confirmar reserva ✓
+              </button>
+            } @else {
+              <a mat-flat-button routerLink="/operacion/reservas" class="btn-confirm">
+                Ver agenda general →
+              </a>
+            }
+          </div>
+        </div>
+      </mat-card>
+
+      <!-- Panel Lateral: Disponibilidad del Salón -->
+      <mat-card appearance="outlined" class="side-card">
+        <h3>Control de Capacidad</h3>
+        <p class="side-desc">Estado actual de la mesa asignada en la agenda del salón:</p>
+
+        <div class="table-info-box">
+          <div class="table-icon" aria-hidden="true">🪑</div>
+          <div>
+            <strong>{{ r.mesaNumero }}</strong>
+            <small>{{ r.zona }}</small>
+          </div>
+        </div>
+
+        <ul class="policy-list">
+          <li>Al <strong>confirmar</strong>, la mesa queda bloqueada en el plano para este turno.</li>
+          <li>Al <strong>rechazar</strong>, se debe consignar el motivo obligatorio para el cliente.</li>
+          <li>Tolerancia máxima de llegada: 15 minutos desde {{ r.horaInicio }}.</li>
+        </ul>
+      </mat-card>
+    </div>
+  }
+</rp-cocina-shell>
