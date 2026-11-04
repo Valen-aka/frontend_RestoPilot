@@ -119,3 +119,38 @@ Se añadió una comprobación mínima en CarritoStore.prepareSelection: además 
 - Nuevos casos: salida de carta, cambio de query y retorno al origen, destrucción de solo la vista con carrito conservado, navegación en curso, cancelación explícita, token/usuario/vencimiento cambiados antes del efecto, datos ocultos inmediatamente, respuestas obsoletas, carga/vacío/agotado y doble envío.
 
 Estas pruebas ejecutan stores/servicios con transporte HTTP simulado y eventos de Router simulados. No son pruebas de navegador ni contra backend real. Permanecen pendientes el diseño autorizado, las siete interfaces, su conexión a eventos, la autenticación integrada y aceptación visual/funcional conjunta. US10 no está terminada.
+
+
+## Controladores de las siete pantallas — 04/11/2026
+
+Estado actual: US10 parcialmente completada, con presentación bloqueada. Esta sección actualiza el estado histórico anterior: las siete clases Angular ahora heredan CartaPage, proveen CartaStore/CartaSelection por instancia y leen queryParamMap en ngOnInit. Sus HTML/CSS siguen pendientes: todavía no existen controles visibles ni eventos de plantilla conectados. contenidoImplementado permanece false en las siete entradas del manifiesto.
+
+CartaPage concentra el enlace entre ruta y stores sin duplicar HTTP ni carrito. Cancela al cambiar parámetros, iniciar navegación o destruir la vista; reinicia cantidad e imágenes fallidas al cambiar contexto. Reintenta la consulta del contexto actual. Ofrece selección de restaurante y categoría solo entre los datos consultados, navegación a detalle con IDs reales y retorno a carta. Sustituye los parámetros en vez de arrastrar IDs de otro restaurante. Ante navegación rechazada/error recupera la consulta e informa el fallo. No se cambiaron ScreenHost, rutas, tema, autenticación ni CarritoStore.
+
+La cantidad utiliza FormControl con validQuantity (entero 1..2147483647); detalle pasa su valor al adaptador y listado pasa una unidad. Solo se aceptan platos presentes en los datos de la vista. CartaSelection mantiene todas las validaciones definitivas de sesión/restaurante/disponibilidad/borrador. La variante bowl bloquea addDish y retorna a la ruta existente /cliente/asistente?vista=cliente-ia-recomendaciones con restauranteId; no implementa US03 ni garantiza que esa pantalla esté integrada. Estas son decisiones funcionales del controlador; el comportamiento visual de + sigue pendiente de contrastar.
+
+imageFor utiliza dishImage y devuelve null si la URL falla; no sustituye fotografías ni inventa información alimentaria. El futuro template deberá invocar imageFailed desde error y mostrar ausencia explícita. Falta conectar todos estos métodos a controles y enlaces Material cuando se recupere el diseño.
+
+### Referencias y bloqueo visual verificado
+
+Se revisaron las siete exportaciones originales de referencias/figma/US10 (cada una contiene escritorio y móvil). No equivalen a respuestas MCP. get_design_context del original wBq85sZ8G5W5RQ1RmQmdqg, página 5:92, devolvió ausencia de selección; get_metadata y get_screenshot confirmaron nuevamente límite Starter. No se obtuvieron IDs de los siete frames ni contexto de alta fidelidad.
+
+La skill figma-design-to-code exige implementar exclusivamente desde respuestas de alta fidelidad de get_design_context. Se conserva ese requisito y no se modifica la skill. Permanecen bloqueados cabecera/pie, bloque promocional, tarjetas, pestañas, ficha, estados visuales, recursos exactos, CSS responsive y comparación de las siete interfaces. Los PNG sirven para análisis, no se incorporan como interfaz ni fondo. La selección visual de restaurante tampoco aparece en las exportaciones y requiere resolver su composición con las referencias autorizadas.
+
+### Git y dependencias
+
+Base conservada: 9c153b7 en feature/carta-api. Tras fetch, origin/develop está en 6381fb3; sus avances posteriores a b210dc8 afectan reservas US05/US06, reserva-ui y cuatro entradas de su manifiesto. No modifican catálogo, sesión, carrito, rutas ni componentes compartidos. No se fusionaron ni se cambió el historial. El manifiesto de este trabajo modifica únicamente los estados de las siete entradas US10.
+
+La copia original local del backend está en fix/cambios y contiene RestauranteController.java vacío, además de un cambio local preexistente en .idea/compiler.xml; no se tocó. La copia backend_RestoPilot de RestoPilot-Trabajo sí contiene GET /api/restaurantes y /api/restaurantes/{id}, para CLIENTE/ADMINISTRADOR/DUENO. No asumir que esos endpoints existen en la rama activa del backend. Los controladores de platos/categorías y PlatoResponseDTO se revisaron; no se añadieron endpoints ni propiedades.
+
+La consulta real a http://localhost:8081/api/restaurantes terminó en conexión rechazada. No se dispone de backend ejecutándose para aceptación autenticada. Sigue pendiente el acceso integrado de su tarea correspondiente; no se crean credenciales ni sesiones de producto ficticias.
+
+### Verificación ejecutada
+
+- npm.cmd run verify: correcto; 120 escenarios conservados, 34 interfaces declaradas y 86 pendientes; build Angular correcto.
+- node node_modules/typescript/bin/tsc --noEmit -p tsconfig.app.json: sin diagnósticos. Ahora los controladores y stores forman parte del grafo compilado de las pantallas.
+- node --test scripts/us10-api.test.cjs scripts/us10-carrito.test.cjs scripts/us10-components.test.cjs scripts/us11-api.test.cjs scripts/us11-http-infrastructure.test.cjs scripts/us12-api.test.cjs scripts/us13-seguimiento.test.cjs scripts/us15-api.test.cjs scripts/us19-api.test.cjs: 84 correctas, 0 fallidas.
+- Nueve pruebas nuevas de clases de componente y navegación con ActivatedRoute/Router/stores controlados: siete clases, cambios de query/destrucción, navegación saliente, IDs, cantidad, bowl, sesión, imágenes y navegación rechazada. No son pruebas DOM ni clics de navegador.
+- Las 75 pruebas anteriores incluyen stores/servicios reales con transporte simulado y continuidad US11–13/regresión US15/US19. No certifican el backend real.
+
+Pendiente: presentación y enlaces/eventos HTML de las siete pantallas; DOM/navegador, responsive, teclado/zoom, fidelidad visual, recorrido autenticado y aceptación contra backend compatible. No se generan capturas de pantallas terminadas porque no existen aún. No se declara US10 Done.
