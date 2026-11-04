@@ -2,7 +2,7 @@
 
 ## Alcance y base
 
-S2-TSK-017/018. Permitir al cliente consultar restaurantes, categorías, carta y detalle de platos, conocer disponibilidad y preparar una selección real en el carrito existente. Base frontend: e3a0125 (develop, 03/11/2026). Rama: feature/carta-api. No implementar autenticación, pedidos, pagos, administración ni IA.
+S2-TSK-017/018. Permitir al cliente consultar restaurantes, categorías, carta y detalle de platos, conocer disponibilidad y preparar una selección real en el carrito existente. Base histórica: e3a0125; presentación implementada sobre d13a814 (04/11/2026), conservando el merge 5dec04c y todos los commits previos. Rama: feature/carta-api. No implementar autenticación, pedidos, pagos, administración ni IA.
 
 Reutilizar [SPEC común](../../../SPEC.md), [guía de pedidos](../../GUIA-INTEGRACION-PEDIDOS.md) y [contrato US11–13](../cliente-pedido-api/SPEC.md). Los criterios US10-CA01 a CA06 del SPEC común siguen vigentes.
 
@@ -10,7 +10,7 @@ Reutilizar [SPEC común](../../../SPEC.md), [guía de pedidos](../../GUIA-INTEGR
 
 Conservar los siete componentes y sus archivos .ts/.html/.css en src/app/pages/cliente: cliente-inicio, cliente-carta, cliente-carta-categoria, cliente-carta-vacia, cliente-plato, cliente-plato-agotado y cliente-plato-bowl. Compartir presentación y consulta en carta-ui, sin duplicar lógica en cada variante ni cambiar rutas, loaders o los 120 identificadores.
 
-Rutas existentes: /cliente, /cliente/carta, /cliente/plato. Parámetros de identidad propuestos: restauranteId, categoriaId y platoId, enteros positivos seguros. Parámetros repetidos o inválidos no se sustituyen por IDs de muestra. vista conserva el escenario visual, nunca fuerza vacío, agotado o una identidad contraria a la API. cliente-plato-bowl presenta el plato identificado, no presupone una recomendación de IA ni un nombre fijo.
+Rutas existentes: /cliente, /cliente/carta, /cliente/plato. Parámetros de identidad: restauranteId, categoriaId y platoId, enteros positivos seguros. Parámetros repetidos o inválidos no se sustituyen por IDs de muestra. vista conserva el escenario visual, nunca fuerza vacío, agotado o una identidad contraria a la API. cliente-plato-bowl presenta el plato identificado, no presupone una recomendación de IA ni un nombre fijo.
 
 ## Contratos verificados
 
@@ -58,99 +58,74 @@ Las consultas requieren autenticación según SecurityConfig. La interfaz US10 e
 
 Acceso sigue asignado a otra tarea: no implementar su formulario ni introducir un login de prueba en producto. La aceptación conjunta requiere acceso conectado, backend compatible y datos reales. Las pruebas aisladas pueden inyectar una sesión sintética exclusivamente en el harness.
 
-## Diseño y accesibilidad
+## Fuente visual recuperada — 04/11/2026
 
-Fuente autorizada: Figma original wBq85sZ8G5W5RQ1RmQmdqg, página 5:92; aplicar tokens/Material del SPEC común. El 03/11/2026 get_design_context no entregó contexto y metadata/screenshot fueron bloqueados por límite MCP Starter. No se acredita comparación visual. El usuario rechazó expresamente usar una apariencia provisional: las siete plantillas y su conexión a eventos se dejan pendientes hasta recuperar Figma. No afirmar fidelidad verificada.
+El usuario autorizó expresamente el [duplicado de RestoPilot](https://www.figma.com/design/6dDJNh7MMb3pU1UbL8sb2r/RestoPilot--copia-?node-id=5-92) para continuar esta tarea. Es una excepción específica de US10, no un cambio de AGENTS.md ni de la skill global. MCP verificó la cuenta institucional solicitada; get_design_context devolvió código de alta fidelidad y capturas de los catorce frames siguientes. Se contrastaron con las siete exportaciones originales, con la misma composición escritorio/móvil. El bloqueo del archivo original no se considera resuelto por disponer del duplicado.
 
-Mantener títulos, labels, texto de estado además del color, foco visible, teclado y mensajes aria-live. Imágenes de platos provienen del DTO; sin imagen mostrar ausencia, no una foto de otro plato. Conservar los recursos locales de marca. Verificar móvil, escritorio, zoom y ausencia de desbordamiento.
+| Pantalla | Frame escritorio (1440 px) | Frame móvil (390 px) | Composición |
+| --- | --- | --- | --- |
+| cliente-inicio | 84:31980 | 84:32241 | Hero original, navegación, hasta cuatro platos de la consulta; sin restaurante, selector explícito |
+| cliente-carta | 84:18200 | 84:18420 | Categorías reales y tarjetas |
+| cliente-carta-categoria | 84:17644 | 84:17860 | Misma lista, filtrada por categoriaId |
+| cliente-carta-vacia | 84:18072 | 84:18140 | Vacío solo cuando la consulta devuelve cero resultados |
+| cliente-plato | 84:40442 | 84:40554 | Detalle, cantidad y selección |
+| cliente-plato-agotado | 84:40038 | 84:40135 | Compra deshabilitada solo si disponible=false |
+| cliente-plato-bowl | 84:40224 | 84:40337 | Información y retorno; nunca cantidad ni compra |
 
-## Aceptación y pruebas
+## Composición y recursos
 
-1. US10-CA01/02: restaurante y categorías reales; filtros correctos, incluida categoría vacía.
-2. US10-CA03: detalle completo de identidad correcta, campos ausentes explícitos y precio del DTO.
-3. US10-CA04: agotado no admite inclusión aunque se use otra variante visual.
-4. US10-CA05/06: vacío e inexistente distinguibles de fallo de red.
-5. Cantidades válidas, acumulación sin duplicados, separación entre restaurantes, cancelación de consultas obsoletas y protección de sesión.
-6. prepareSelection real conserva selección previa ante error, evita doble envío y navega únicamente tras éxito; sin POST desde carta.
-7. Continuidad con US11/12/13 y regresión US15/19; no recrear estos contratos.
-8. npm run check conserva 120 escenarios; npm run build; pruebas unitarias/contrato y navegador identifican explícitamente HTTP simulado frente a backend real.
+- Los siete componentes conservan providers [CartaStore, CartaSelection] y heredan CartaPage. Sus HTML importan CartaView y pasan el controlador y modo. No existen nuevos stores, endpoints ni datos de muestra en producto.
+- CartaView (.ts/.html/.css en pages/cliente/carta-ui) compone listas, ficha y estados. Reutiliza client-header/client-footer, antes pendientes, implementados exclusivamente para esta composición. No se modificaron cliente-layout, workspace-shell, ScreenHost, rutas, loaders, tema global ni otras US.
+- Inicio muestra hasta los primeros cuatro platos de la consulta; no presupone que el backend ofrezca ranking ni destacados. Todas las categorías y textos de platos proceden de los DTO. La promoción conserva textos de diseño, sin fijar el restaurante de ejemplo.
+- Cabecera y pie conservan geometría y enlaces del diseño. La identidad visible es «Cliente»: API_SESSION no conserva nombre/avatar. No se muestra Ana Pérez ni se inventa un usuario. Cerrar sesión llama AuthService.logout.
+- Hero: assets/carta/inicio-desktop.svg (340 × 289) e inicio-mobile.svg (210 × 178.5), descargados literalmente con curl desde get_design_context, sin editar rutas SVG ni dimensiones raíz. Se usa picture para la variante móvil. No se incorporaron capturas como interfaz.
+- Marca: reutiliza assets/carrito/brand-reference.png, idéntico byte a byte al PNG de Figma (SHA-256 10c26dd4ac9f2eb0f83d849a284f29c7cc3a5185f5854fb75d9cd5327144a325); conserva el overlay blanco original. No se duplica el archivo.
+- Fuentes: Roboto y Open Sans locales ya existentes en assets/pedido/fonts, declaradas con familias Carta Roboto/Carta Open Sans. Colores de marca reutilizan --rp-navy y --rp-brand-green. Superficies/espaciados propios del frame se limitan a CSS local; no cambian el contrato global.
+- Las imágenes de platos siguen siendo imagenUrl del DTO. URL ausente, no segura o error de carga muestra «Imagen no disponible»; no hay fallback de otro plato. Los SVG en scripts/fixtures/us10 son exclusivos del harness y no se publican como datos de catálogo.
+- Cabecera, tarjetas y ficha usan flex/grid adaptativo; cuatro columnas en escritorio y dos en móvil. Los títulos y descripciones pueden crecer sin recortarse. Se verificaron también anchos 320, 720, 768 y 1024.
 
-Pendiente registrar comandos/resultados ejecutados y aceptación contra el entorno compartido. No declarar Done por compilar o por mock.
+### Adaptaciones funcionales y accesibles del prototipo
 
-## Entrega parcial verificada — 03/11/2026
+Se omiten las etiquetas internas RP/xxx y textos «de muestra». Precio, disponibilidad, tiempos, ingredientes y alérgenos son dinámicos. El subtítulo editorial del detalle se sustituye por el nombre real porque el DTO no ofrece ese campo. Los campos ausentes se identifican como no informados. Bowl informa que no hay datos de contaminación cruzada: no garantiza su ausencia ni implementa IA.
 
-Por instrucción expresa del usuario, no se implementó apariencia provisional. Las siete pantallas mantienen su estado pendiente y el manifiesto no se modifica. CartaStore y CartaSelection están preparados y probados, pero todavía NO son invocados desde las pantallas. US10 no está terminada ni existe un nuevo recorrido de usuario visible.
+Los botones y formularios son Material; los dos formularios utilizan FormGroup con los FormControl existentes para impedir un submit nativo que recargue la página. El detalle conserva el enlace de regreso solicitado. Las categorías tienen altura táctil de 44 px; el + mantiene su apariencia de 30 px con área extendida. Estas adaptaciones y los textos dinámicos impiden afirmar igualdad píxel a píxel para cualquier dato real. No se cambian los SVG originales para compensar diferencias de contenido.
 
-Implementado: CategoriaResponse, validadores de lectura, CatalogoService.categorias/plato, CartaContext, CartaStore (consulta/filtro/errores/cancelación) y CartaSelection (adaptador a CarritoStore.prepareSelection, sin segundo carrito). La futura vista debe proveer CartaStore y CartaSelection por instancia, interpretar queryParamMap con cartaContext y llamar load(context) al cambiar parámetros. CartaStore observa API_SESSION directamente; no recibe un booleano de autorización. Al desmontarse se cancelan consultas y preparación. CarritoStore sigue siendo la única instancia compartida del borrador. La futura vista invoca add con restaurante/plato consultados y cantidad válida; el adaptador navega únicamente tras completar prepareSelection.
+Los estados de sesión/carga/error y selector de restaurante componen los controles Material y el patrón de estado ya utilizado en el proyecto; no existen frames específicos de estos estados en las siete referencias. Hay etiquetas accesibles, mensajes status/alert, disponibilidad textual y foco visible. No se oculta overflow global para disimular desbordamientos. La prueba de reflujo a 720 px no equivale a certificación de zoom nativo ni de lector de pantalla.
 
-Verificaciones ejecutadas:
+## Navegación, sesión y selección
+
+CartaPage lee queryParamMap con cartaContext, cancela selección/consulta en NavigationStart y reinicia cantidad e imágenes fallidas al cambiar parámetros. CartaStore y CartaSelection mantienen sus protecciones previas de generación, identidad completa de sesión, expiración y destrucción. No se modificaron en esta entrega.
+
+Los enlaces a detalle incluyen restauranteId/platoId/categoriaId. Todos elimina categoriaId. Volver a carta conserva restauranteId. Bowl retorna a /cliente/asistente?vista=cliente-ia-recomendaciones con restauranteId: no garantiza que la pantalla de recomendaciones de otra tarea esté integrada. Los enlaces de cabecera conservan el restaurante, sin arrastrar vista ni IDs de platos a otros módulos.
+
+El botón + añade una unidad; la ficha usa quantity del controlador. La preparación llama CartaSelection.add y el único CarritoStore.prepareSelection. Se conservan líneas y notas previas, se impide mezclar restaurantes y se navega solo tras preparar correctamente. No se ejecuta POST de pedido ni pago desde US10. Doble clic, cambio de contexto, logout o respuesta tardía no crean otra selección ni provocan navegación posterior.
+
+## Criterios y evidencia
+
+US10-CA01/02: consulta de restaurante y categorías; CA03: detalle e identidad; CA04: indisponible bloquea compra; CA05: vacío verdadero; CA06: inexistente se informa sin inventar un plato. Se cubren además cantidades, acumulación, aislamiento de sesión, errores, cancelación y continuidad con carrito.
+
+Comandos desde la raíz:
 
 ```powershell
 npm.cmd run verify
-node --test scripts/us10-api.test.cjs scripts/us10-carrito.test.cjs scripts/us11-api.test.cjs scripts/us11-http-infrastructure.test.cjs scripts/us12-api.test.cjs scripts/us13-seguimiento.test.cjs scripts/us15-api.test.cjs scripts/us19-api.test.cjs
+node node_modules/typescript/bin/tsc --noEmit -p tsconfig.app.json
+node --test scripts/us10-api.test.cjs scripts/us10-carrito.test.cjs scripts/us10-components.test.cjs scripts/us11-api.test.cjs scripts/us11-http-infrastructure.test.cjs scripts/us12-api.test.cjs scripts/us13-seguimiento.test.cjs scripts/us15-api.test.cjs scripts/us19-api.test.cjs
+node scripts/us10-ui-browser.cjs
 ```
 
-Resultado: build correcto; 120 escenarios conservados (26 interfaces declaradas, 94 pendientes); 63 pruebas correctas, 0 fallidas: 18 nuevas de US10/continuidad y 45 regresiones existentes. Además se verificó TypeScript con los nuevos archivos como raíces explícitas porque aún no los importan las pantallas: 0 diagnósticos. Los tests usan datos sintéticos solo en scripts; la continuidad ejecuta los servicios/stores reales con HttpClient simulado. No se ejecutó navegador, comparación Figma ni backend real. No se acredita persistencia PostgreSQL ni aceptación integrada de UI.
+El harness requiere Playwright ya disponible (PLAYWRIGHT_MODULE permite señalar la instalación existente), Chrome en Windows o BROWSER_EXECUTABLE y ng serve --host 127.0.0.1 --port 4310. RP_QA_URL debe ser local; RP_QA_OUTPUT permite elegir la carpeta de evidencia (por defecto, directorio temporal/restopilot-us10-qa). No requiere instalar dependencias ni modificar environment. Intercepta únicamente el navegador de prueba; AuthService real recibe un login sintético. La aplicación no contiene acceso de prueba.
 
-La documentación de acceso pendiente corresponde al commit base e3a0125. Durante el trabajo develop avanzó externamente a b210dc8 (incluye cambios de auth/inicio); no se integraron ni sobrescribieron esos avances en esta rama. Antes de reanudar UI, revisar ese nuevo develop y la interfaz de acceso con su mantenedor. No atribuir a la base de esta entrega los cambios de otra revisión.
+- Angular y TypeScript: compilación sin errores.
+- Estructura: 120 escenarios, 41 interfaces declaradas y 79 pendientes; solo cambian estados de las siete entradas US10. El conteo no certifica integración.
+- 84 pruebas preexistentes conservadas, 0 fallos; incluyen continuidad US11–13 y regresión US15/19 con transporte controlado.
+- 38 recorridos nuevos DOM/HTTP simulados, 0 fallos: siete variantes en dos anchos, selección/filtro, detalle/cantidad, carrito y doble clic, salida durante preparación, logout, expiración/cambio de identidad, consulta obsoleta, 401/403/404/500, reintento, imágenes fallidas, campos ausentes, IDs inválidos, teclado/foco, textos largos y restaurante cerrado.
+- Catorce capturas de página completa y archivos de geometría de imágenes; todos los slots de imagen visibles cargan. Hero conserva medidas originales en ambos anchos y marca conserva slot de 43 × 43. Revisión visual frente a las capturas MCP; sin sustituciones de assets estáticos.
+- La aceptación visual usa fixtures identificados en el harness; no prueba PostgreSQL, persistencia ni la autorización del servidor.
 
-## Revisión de navegación y sesión — 03/11/2026
+## Dependencias y aceptación real pendiente
 
-Se integró origin/develop b210dc8 mediante merge normal 5dec04c, conservando los cuatro commits iniciales y el historial del equipo. No hubo conflictos. El acceso incorporado sigue siendo visual: no llama AuthService.login. No se implementaron las siete pantallas ni se modificaron ScreenHost, rutas, estilos o manifiesto para US10.
+El 04/11/2026 localhost:8081/api/restaurantes no respondió (HTTP 000, conexión no disponible). No se ejecutó un recorrido autenticado contra backend real. La copia backend original contiene RestauranteController.java vacío; la copia de referencia de RestoPilot-Trabajo sí incluye los GET de restaurantes. El equipo debe ejecutar una revisión compatible antes de aceptar el flujo real.
 
-### Contrato técnico para los futuros componentes
+La pantalla de acceso aún no llama AuthService.login en esta rama. Corresponde a su mantenedor conectarla a la infraestructura existente; no se implementa US02 dentro de US10. Sin esa conexión, el producto muestra correctamente acceso requerido; las pruebas de UI autentican exclusivamente en el harness.
 
-- Declarar providers: [CartaStore, CartaSelection] en la vista compartida de US10. No proveer otro CarritoStore, CatalogoService, API_SESSION ni autenticación. CartaSelection ya no tiene providedIn root: su vida corresponde a la vista.
-- Convertir queryParamMap con cartaContext(params, esDetalle) y llamar store.load(context). La vista solo controla el contexto; no decide la autenticación. Cada nueva carga cancela la anterior. Conservar restauranteId/categoriaId/platoId válidos en los enlaces; vista no cambia estados reales.
-- CartaStore observa identidad, rol, token y vencimiento de API_SESSION. Oculta datos de una identidad anterior desde sus señales públicas, antes de ejecutar el efecto; cancela y vuelve a consultar el último contexto al cambiar sesión. Sin sesión válida no consulta. AuthService sigue siendo responsable del temporizador de expiración; no se añade otra sesión ni persistencia.
-- Cada respuesta comprueba generación e identidad vigente antes de aceptarse. Destruir la vista cancela las suscripciones, elimina los datos y evita cargas posteriores. store.cancel() invalida explícitamente un contexto sin navegación y no lo reactiva al cambiar sesión.
-- state distingue loading, ready, error y session. empty solo es true tras lectura exitosa de una lista vacía (restaurantes/carta/categoría). soldOut solo es true para detalle confirmado no disponible. No usar vacío para errores o carga.
-- selection.add(restaurante, plato, cantidad) conserva las validaciones y el único borrador de US11. Ignora dobles envíos mientras prepara y llamadas durante una navegación pendiente. Captura URL de origen e identidad; solo navega si ambas siguen vigentes.
-- NavigationStart cancela la preparación, incluso al cambiar query, volver atrás o iniciar una navegación que luego sea rechazada. Es una cancelación conservadora: en ese último caso el usuario puede reintentar. Destruir la vista o cambiar sesión también cancela. selection.cancel() sirve para invalidar cambios de contexto que no actualicen la URL.
-- Cancelar preparación no vacía el carrito previo. Una respuesta HTTP cancelada no lo reemplaza ni navega. Si la preparación ya concluyó, el borrador válido permanece en el carrito.
-
-Se añadió una comprobación mínima en CarritoStore.prepareSelection: además del usuario/generación/sesión vigente, exige que token y expiresAt coincidan antes de loadDraft. Es necesaria porque ese método modifica el borrador antes del callback del adaptador; una respuesta del token anterior podría llegar antes de los efectos de Angular. No se cambió registro de pedidos, pagos, modalidades ni totales.
-
-### Evidencia de esta revisión
-
-- TypeScript con carta-store.ts, carta-selection.ts y carta.model.ts como raíces explícitas: 0 diagnósticos. Siguen sin estar conectados a las pantallas.
-- npm.cmd run verify: compilación Angular correcta y 120 escenarios conservados; 34 interfaces declaradas y 86 pendientes. El incremento corresponde a las pantallas incorporadas de develop, no a US10. Se conserva el nuevo chequeo de ocho diálogos.
-- Comando de suites de la entrega anterior: 75 pruebas correctas, 0 fallidas (30 US10/continuidad y 45 regresiones US11/12/13/15/19).
-- Nuevos casos: salida de carta, cambio de query y retorno al origen, destrucción de solo la vista con carrito conservado, navegación en curso, cancelación explícita, token/usuario/vencimiento cambiados antes del efecto, datos ocultos inmediatamente, respuestas obsoletas, carga/vacío/agotado y doble envío.
-
-Estas pruebas ejecutan stores/servicios con transporte HTTP simulado y eventos de Router simulados. No son pruebas de navegador ni contra backend real. Permanecen pendientes el diseño autorizado, las siete interfaces, su conexión a eventos, la autenticación integrada y aceptación visual/funcional conjunta. US10 no está terminada.
-
-
-## Controladores de las siete pantallas — 04/11/2026
-
-Estado actual: US10 parcialmente completada, con presentación bloqueada. Esta sección actualiza el estado histórico anterior: las siete clases Angular ahora heredan CartaPage, proveen CartaStore/CartaSelection por instancia y leen queryParamMap en ngOnInit. Sus HTML/CSS siguen pendientes: todavía no existen controles visibles ni eventos de plantilla conectados. contenidoImplementado permanece false en las siete entradas del manifiesto.
-
-CartaPage concentra el enlace entre ruta y stores sin duplicar HTTP ni carrito. Cancela al cambiar parámetros, iniciar navegación o destruir la vista; reinicia cantidad e imágenes fallidas al cambiar contexto. Reintenta la consulta del contexto actual. Ofrece selección de restaurante y categoría solo entre los datos consultados, navegación a detalle con IDs reales y retorno a carta. Sustituye los parámetros en vez de arrastrar IDs de otro restaurante. Ante navegación rechazada/error recupera la consulta e informa el fallo. No se cambiaron ScreenHost, rutas, tema, autenticación ni CarritoStore.
-
-La cantidad utiliza FormControl con validQuantity (entero 1..2147483647); detalle pasa su valor al adaptador y listado pasa una unidad. Solo se aceptan platos presentes en los datos de la vista. CartaSelection mantiene todas las validaciones definitivas de sesión/restaurante/disponibilidad/borrador. La variante bowl bloquea addDish y retorna a la ruta existente /cliente/asistente?vista=cliente-ia-recomendaciones con restauranteId; no implementa US03 ni garantiza que esa pantalla esté integrada. Estas son decisiones funcionales del controlador; el comportamiento visual de + sigue pendiente de contrastar.
-
-imageFor utiliza dishImage y devuelve null si la URL falla; no sustituye fotografías ni inventa información alimentaria. El futuro template deberá invocar imageFailed desde error y mostrar ausencia explícita. Falta conectar todos estos métodos a controles y enlaces Material cuando se recupere el diseño.
-
-### Referencias y bloqueo visual verificado
-
-Se revisaron las siete exportaciones originales de referencias/figma/US10 (cada una contiene escritorio y móvil). No equivalen a respuestas MCP. get_design_context del original wBq85sZ8G5W5RQ1RmQmdqg, página 5:92, devolvió ausencia de selección; get_metadata y get_screenshot confirmaron nuevamente límite Starter. No se obtuvieron IDs de los siete frames ni contexto de alta fidelidad.
-
-La skill figma-design-to-code exige implementar exclusivamente desde respuestas de alta fidelidad de get_design_context. Se conserva ese requisito y no se modifica la skill. Permanecen bloqueados cabecera/pie, bloque promocional, tarjetas, pestañas, ficha, estados visuales, recursos exactos, CSS responsive y comparación de las siete interfaces. Los PNG sirven para análisis, no se incorporan como interfaz ni fondo. La selección visual de restaurante tampoco aparece en las exportaciones y requiere resolver su composición con las referencias autorizadas.
-
-### Git y dependencias
-
-Base conservada: 9c153b7 en feature/carta-api. Tras fetch, origin/develop está en 6381fb3; sus avances posteriores a b210dc8 afectan reservas US05/US06, reserva-ui y cuatro entradas de su manifiesto. No modifican catálogo, sesión, carrito, rutas ni componentes compartidos. No se fusionaron ni se cambió el historial. El manifiesto de este trabajo modifica únicamente los estados de las siete entradas US10.
-
-La copia original local del backend está en fix/cambios y contiene RestauranteController.java vacío, además de un cambio local preexistente en .idea/compiler.xml; no se tocó. La copia backend_RestoPilot de RestoPilot-Trabajo sí contiene GET /api/restaurantes y /api/restaurantes/{id}, para CLIENTE/ADMINISTRADOR/DUENO. No asumir que esos endpoints existen en la rama activa del backend. Los controladores de platos/categorías y PlatoResponseDTO se revisaron; no se añadieron endpoints ni propiedades.
-
-La consulta real a http://localhost:8081/api/restaurantes terminó en conexión rechazada. No se dispone de backend ejecutándose para aceptación autenticada. Sigue pendiente el acceso integrado de su tarea correspondiente; no se crean credenciales ni sesiones de producto ficticias.
-
-### Verificación ejecutada
-
-- npm.cmd run verify: correcto; 120 escenarios conservados, 34 interfaces declaradas y 86 pendientes; build Angular correcto.
-- node node_modules/typescript/bin/tsc --noEmit -p tsconfig.app.json: sin diagnósticos. Ahora los controladores y stores forman parte del grafo compilado de las pantallas.
-- node --test scripts/us10-api.test.cjs scripts/us10-carrito.test.cjs scripts/us10-components.test.cjs scripts/us11-api.test.cjs scripts/us11-http-infrastructure.test.cjs scripts/us12-api.test.cjs scripts/us13-seguimiento.test.cjs scripts/us15-api.test.cjs scripts/us19-api.test.cjs: 84 correctas, 0 fallidas.
-- Nueve pruebas nuevas de clases de componente y navegación con ActivatedRoute/Router/stores controlados: siete clases, cambios de query/destrucción, navegación saliente, IDs, cantidad, bowl, sesión, imágenes y navegación rechazada. No son pruebas DOM ni clics de navegador.
-- Las 75 pruebas anteriores incluyen stores/servicios reales con transporte simulado y continuidad US11–13/regresión US15/US19. No certifican el backend real.
-
-Pendiente: presentación y enlaces/eventos HTML de las siete pantallas; DOM/navegador, responsive, teclado/zoom, fidelidad visual, recorrido autenticado y aceptación contra backend compatible. No se generan capturas de pantallas terminadas porque no existen aún. No se declara US10 Done.
+La implementación de las siete interfaces y eventos queda disponible para revisión, no se declara US10 aceptada de extremo a extremo. Antes de integrar: revisar visualmente con el equipo, resolver login/backend compatible y ejecutar con sesión real los seis criterios. origin/develop 6381fb3 contiene avances de reservas separados; no se fusionó ni se hizo push/PR en esta entrega.
