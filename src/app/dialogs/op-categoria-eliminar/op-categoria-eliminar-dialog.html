@@ -1,3 +1,49 @@
-<h2 mat-dialog-title><!-- TODO: título --></h2>
-<mat-dialog-content><!-- TODO: mensaje y campos si corresponden --></mat-dialog-content>
-<mat-dialog-actions><!-- TODO: botones de volver y confirmar --></mat-dialog-actions>
+
+<div class="confirmation">
+  <div class="warning" aria-hidden="true">!</div>
+
+  <p class="eyebrow">Confirmar acción</p>
+
+  <h2 id="categoria-delete-title">
+    ¿Eliminar {{ store.selected()?.nombre }}?
+  </h2>
+
+  <p class="description">
+    Esta acción eliminará la categoría seleccionada.
+    No podrás eliminarla si tiene platos u otros datos asociados.
+  </p>
+
+  @if (store.issue()) {
+  <p role="alert" class="error">
+    {{ store.issue() }}
+  </p>
+  }
+
+  @if (store.uncertain()) {
+  <p class="description" role="status">
+    No se pudo confirmar el resultado de la operación.
+    Regresa al listado y verifica si la categoría todavía existe.
+  </p>
+  }
+
+  <div class="actions">
+    <button
+      mat-stroked-button
+      type="button"
+      (click)="back()"
+      [disabled]="store.busy()"
+    >
+      Volver
+    </button>
+
+    <button
+      mat-flat-button
+      class="danger"
+      type="button"
+      (click)="confirm()"
+      [disabled]="store.busy() || store.uncertain() || !store.selected()"
+    >
+      {{ store.busy() ? 'Eliminando…' : 'Eliminar categoría' }}
+    </button>
+  </div>
+</div>
