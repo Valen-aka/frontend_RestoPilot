@@ -1,3 +1,109 @@
-<!-- FRAME: cliente-reserva-cancelar | ¿Cancelamos tu reserva? -->
-<!-- TODO: implementar Desktop y Mobile con Angular Material. -->
-<!-- No hay campos, datos ni contenido visual implementados. -->
+<a class="skip-link" href="#reserva-cancel-content">Saltar al contenido</a>
+
+<div class="reserva-shell">
+  <!-- Cabecera de Cliente -->
+  <header class="client-header">
+    <a class="brand" routerLink="/cliente" aria-label="RestoPilot, inicio de cliente">
+      <div class="brand-icon" aria-hidden="true">RP</div>
+      <span>Resto<span class="brand-accent">Pilot</span><small>Tu restaurante, en piloto automático</small></span>
+    </a>
+    <nav aria-label="Navegación de cliente">
+      <a routerLink="/cliente">Inicio</a>
+      <a routerLink="/cliente/carta">La carta</a>
+      <a routerLink="/cliente/reservas" class="active" aria-current="page">Mis reservas</a>
+      <a routerLink="/cliente/pedidos">Mis pedidos</a>
+      <a routerLink="/cliente/asistente">Asistente IA</a>
+    </nav>
+    <div class="sample-context">
+      <span class="sample-avatar" aria-hidden="true">AP</span>
+      <div>
+        <strong>Ana Pérez</strong>
+        <small>Mi cuenta de cliente</small>
+      </div>
+    </div>
+  </header>
+
+  <!-- Contenido Principal -->
+  <main id="reserva-cancel-content" tabindex="-1" class="reserva-main">
+    <div class="page-heading">
+      <p class="eyebrow">RESERVAS CLIENTE · US09</p>
+      <h1>¿Deseas cancelar tu reserva?</h1>
+      <p class="subtitle">Lamentamos que no puedas acompañarnos. Tu mesa quedará disponible para otros clientes.</p>
+    </div>
+
+    @if (reserva(); as r) {
+    <div class="reserva-card cancel-card">
+      <!-- Banner de política de anticipación -->
+      <div class="status-callout alert" role="status">
+        <div class="callout-icon" aria-hidden="true">⚠️</div>
+        <div class="callout-content">
+          <h2>Política de anulación autónoma</h2>
+          <p>
+            Conforme a la política de La Mesa Verde, puedes cancelar tu reserva de forma autónoma siempre que falten
+            <strong>más de 2 horas</strong> para la hora de inicio.
+            Si faltan 2 horas o menos, la cancelación autónoma se bloquea y deberás llamar directamente a recepción.
+          </p>
+        </div>
+      </div>
+
+      <!-- Resumen de la reserva a cancelar -->
+      <div class="detail-section">
+        <h3>Detalle de la reserva a anular</h3>
+        <dl class="detail-dl">
+          <div>
+            <dt>Código de reserva</dt>
+            <dd><strong>#{{ r.codigo }}</strong></dd>
+          </div>
+          <div>
+            <dt>Fecha y hora</dt>
+            <dd>{{ r.fecha }} · {{ r.horaInicio }} a {{ r.horaFin }}</dd>
+          </div>
+          <div>
+            <dt>Mesa y ubicación</dt>
+            <dd>{{ r.mesaNumero }} ({{ r.zona }})</dd>
+          </div>
+          <div>
+            <dt>Comensales</dt>
+            <dd>{{ r.comensales }} personas</dd>
+          </div>
+        </dl>
+      </div>
+
+      <!-- Formulario de motivo -->
+      <form [formGroup]="form0" class="cancel-form">
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Motivo de la cancelación (opcional)</mat-label>
+          <textarea matInput formControlName="motivo" rows="3" maxlength="300"
+            placeholder="Ej: Cambio de planes imprevisto, viaje de trabajo..."></textarea>
+          <mat-hint align="end">{{ form0.controls.motivo.value.length || 0 }} / 300 caracteres</mat-hint>
+        </mat-form-field>
+
+        <div class="policy-note">
+          <p>Al confirmar la cancelación, el estado de tu reserva pasará a <strong>CANCELADA</strong> y se notificará al
+            salón para liberar tu mesa asignada.</p>
+        </div>
+
+        <!-- Acciones -->
+        <div class="form-actions border-top">
+          <a mat-stroked-button routerLink="/cliente/reservas" class="btn-secondary">
+            ← Conservar mi reserva
+          </a>
+          <button mat-button type="button" class="btn-simulate" (click)="simularBloqueo2Horas()">
+            Simular regla &le; 2 horas
+          </button>
+          <button mat-flat-button color="warn" type="button" class="btn-danger" (click)="abrirDialogoCancelacion()">
+            Sí, cancelar reserva
+          </button>
+        </div>
+      </form>
+    </div>
+    }
+  </main>
+
+  <!-- Pie de Página -->
+  <footer class="client-footer">
+    <p>RestoPilot · La Mesa Verde (Lima - Miraflores)</p>
+    <p>Tu restaurante, en piloto automático.</p>
+    <a routerLink="/cliente">Volver al inicio</a>
+  </footer>
+</div>

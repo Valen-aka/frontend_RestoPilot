@@ -744,8 +744,8 @@
     ],
     "owner": "Cristian Condori",
     "us": "US07",
-    "status": "Parcial US26: historial de expiradas de muestra; módulo general US07/US29 pendiente",
-    "contenidoImplementado": false
+    "status": "Implementada",
+    "contenidoImplementado": true
   },
   {
     "slug": "cliente-reserva-pendiente",
@@ -766,8 +766,8 @@
     ],
     "owner": "Cristian Condori",
     "us": "US07",
-    "status": "Pendiente",
-    "contenidoImplementado": false
+    "status": "Implementada",
+    "contenidoImplementado": true
   },
   {
     "slug": "cliente-reserva-confirmada",
@@ -788,8 +788,8 @@
     ],
     "owner": "Cristian Condori",
     "us": "US07",
-    "status": "Pendiente",
-    "contenidoImplementado": false
+    "status": "Implementada",
+    "contenidoImplementado": true
   },
   {
     "slug": "cliente-reserva-rechazada",
@@ -810,8 +810,8 @@
     ],
     "owner": "Cristian Condori",
     "us": "US07",
-    "status": "Pendiente",
-    "contenidoImplementado": false
+    "status": "Implementada",
+    "contenidoImplementado": true
   },
   {
     "slug": "cliente-reserva-cancelada",
@@ -832,8 +832,8 @@
     ],
     "owner": "Cristian Condori",
     "us": "US07",
-    "status": "Pendiente",
-    "contenidoImplementado": false
+    "status": "Implementada",
+    "contenidoImplementado": true
   },
   {
     "slug": "cliente-reserva-expirada",
@@ -854,7 +854,7 @@
     ],
     "owner": "Cristian Condori",
     "us": "US07, US26",
-    "status": "US26: detalle visual de muestra; integración con API pendiente",
+    "status": "Implementada",
     "contenidoImplementado": true
   },
   {
@@ -876,8 +876,8 @@
     ],
     "owner": "Cristian Condori",
     "us": "US07, US25",
-    "status": "Pendiente",
-    "contenidoImplementado": false
+    "status": "Implementada",
+    "contenidoImplementado": true
   },
   {
     "slug": "cliente-reserva-editar",
@@ -898,8 +898,8 @@
     ],
     "owner": "Cristian Condori",
     "us": "US08",
-    "status": "Pendiente",
-    "contenidoImplementado": false
+    "status": "Implementada",
+    "contenidoImplementado": true
   },
   {
     "slug": "cliente-reserva-cancelar",
@@ -923,8 +923,8 @@
     ],
     "owner": "Cristian Condori",
     "us": "US09",
-    "status": "Pendiente",
-    "contenidoImplementado": false
+    "status": "Implementada",
+    "contenidoImplementado": true
   },
   {
     "slug": "cliente-reserva-cancelacion-bloqueada",
@@ -945,8 +945,8 @@
     ],
     "owner": "Cristian Condori",
     "us": "US09",
-    "status": "Pendiente",
-    "contenidoImplementado": false
+    "status": "Implementada",
+    "contenidoImplementado": true
   },
   {
     "slug": "cliente-notificaciones",
