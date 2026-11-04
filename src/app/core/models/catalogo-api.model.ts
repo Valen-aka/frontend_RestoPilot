@@ -17,3 +17,9 @@ export interface MesaResponse {
   readonly numero:number; readonly capacidad:number; readonly coordenadaX:number|null; readonly coordenadaY:number|null;
   readonly activo:boolean; readonly creadoEn:string; readonly actualizadoEn:string|null; readonly mensaje?:string;
 }
+
+/** Lectura de la entidad Categoria serializada por CategoriaController. */
+export interface CategoriaResponse {
+  readonly id: number; readonly restauranteId: number; readonly nombre: string;
+  readonly descripcion: string | null; readonly creadoEn: string; readonly actualizadoEn: string | null;
+}
