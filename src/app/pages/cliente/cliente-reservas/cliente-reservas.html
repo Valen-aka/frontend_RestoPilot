@@ -1,1 +1,131 @@
-<rp-reserva-expirada-view context="client" mode="history"/>
+<a class="skip-link" href="#reservas-content">Saltar al contenido</a>
+
+<div class="reserva-shell">
+  <!-- Cabecera de Cliente -->
+  <header class="client-header">
+    <a class="brand" routerLink="/cliente" aria-label="RestoPilot, inicio de cliente">
+      <div class="brand-icon" aria-hidden="true">RP</div>
+      <span>Resto<span class="brand-accent">Pilot</span><small>Tu restaurante, en piloto automático</small></span>
+    </a>
+    <nav aria-label="Navegación de cliente">
+      <a routerLink="/cliente">Inicio</a>
+      <a routerLink="/cliente/carta">La carta</a>
+      <a routerLink="/cliente/reservas" class="active" aria-current="page">Mis reservas</a>
+      <a routerLink="/cliente/pedidos">Mis pedidos</a>
+      <a routerLink="/cliente/asistente">Asistente IA</a>
+    </nav>
+    <div class="sample-context">
+      <span class="sample-avatar" aria-hidden="true">AP</span>
+      <div>
+        <strong>Ana Pérez</strong>
+        <small>Mi cuenta de cliente</small>
+      </div>
+    </div>
+  </header>
+
+  <!-- Contenido Principal -->
+  <main id="reservas-content" tabindex="-1" class="reserva-main">
+    <div class="page-heading-row">
+      <div class="page-heading">
+        <p class="eyebrow">RESERVAS CLIENTE</p>
+        <h1>Tus reservas</h1>
+        <p class="subtitle">Consulta tus próximas visitas, estados y solicitudes históricas en La Mesa Verde.</p>
+      </div>
+      <a mat-flat-button routerLink="/cliente/reservar" class="btn-primary new-reserva-btn">
+        + Nueva reserva
+      </a>
+    </div>
+
+    <!-- Barra de Filtros -->
+    <div class="filters-bar" role="region" aria-label="Filtros de estado">
+      @for (f of filtros; track f.valor) {
+        <button
+          type="button"
+          class="filter-chip"
+          [class.is-active]="store.filtroEstado() === f.valor"
+          (click)="cambiarFiltro(f.valor)">
+          {{ f.label }}
+        </button>
+      }
+    </div>
+
+    <!-- Listado de Reservas -->
+    @if (store.reservasFiltradas().length === 0) {
+      <div class="reserva-card empty-card" role="status">
+        <p class="empty-icon" aria-hidden="true">📅</p>
+        <h2>No hay reservas en esta categoría</h2>
+        <p>No se encontraron registros bajo el filtro seleccionado.</p>
+        <button mat-stroked-button (click)="cambiarFiltro('TODAS')" class="btn-secondary">
+          Ver todas las reservas
+        </button>
+      </div>
+    } @else {
+      <div class="reservas-grid">
+        @for (r of store.reservasFiltradas(); track r.id) {
+          <article class="reserva-card item-card" [class.is-pending]="r.estado === 'PENDIENTE'">
+            <div class="item-header">
+              <div>
+                <span class="reserva-code">#{{ r.codigo }}</span>
+                <span class="reserva-date">{{ r.fecha }}</span>
+              </div>
+              <span class="state-badge" [attr.data-estado]="r.estado">
+                {{ labelPorEstado(r.estado) }}
+              </span>
+            </div>
+
+            <div class="item-body">
+              <div class="item-meta">
+                <span class="meta-icon" aria-hidden="true">⏰</span>
+                <span><strong>{{ r.horaInicio }} - {{ r.horaFin }}</strong></span>
+              </div>
+              <div class="item-meta">
+                <span class="meta-icon" aria-hidden="true">📍</span>
+                <span>{{ r.mesaNumero }} ({{ r.zona }}) · {{ r.comensales }} comensales</span>
+              </div>
+              @if (r.notas) {
+                <p class="item-notes">"{{ r.notas }}"</p>
+              }
+              @if (r.motivoRechazo) {
+                <p class="item-reason"><strong>Motivo:</strong> {{ r.motivoRechazo }}</p>
+              }
+            </div>
+
+            <div class="item-footer">
+              <a mat-stroked-button
+                class="btn-detail"
+                routerLink="/cliente/reserva"
+                [queryParams]="{ vista: vistaPorEstado(r.estado), id: r.id }"
+                [state]="{ reservaId: r.id }">
+                Ver detalle
+              </a>
+
+              @if (r.estado === 'PENDIENTE' || r.estado === 'CONFIRMADA') {
+                <a mat-button
+                  class="btn-edit"
+                  routerLink="/cliente/reserva/editar"
+                  [queryParams]="{ id: r.id }"
+                  [state]="{ reservaId: r.id }">
+                  Reprogramar
+                </a>
+                <a mat-button
+                  class="btn-cancel"
+                  routerLink="/cliente/reserva/cancelar"
+                  [queryParams]="{ id: r.id }"
+                  [state]="{ reservaId: r.id }">
+                  Cancelar
+                </a>
+              }
+            </div>
+          </article>
+        }
+      </div>
+    }
+  </main>
+
+  <!-- Pie de Página -->
+  <footer class="client-footer">
+    <p>RestoPilot · La Mesa Verde (Lima - Miraflores)</p>
+    <p>Tu restaurante, en piloto automático.</p>
+    <a routerLink="/cliente">Volver al inicio</a>
+  </footer>
+</div>
