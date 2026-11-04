@@ -1,6 +1,6 @@
 import {Component, input, inject, computed} from '@angular/core';
 import {DecimalPipe} from '@angular/common';
-import {RouterLink} from '@angular/router';
+import {Router, RouterLink} from '@angular/router';
 import {FormControl, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
 import {MatButtonModule} from '@angular/material/button';
 import {MatFormFieldModule} from '@angular/material/form-field';
@@ -17,6 +17,7 @@ import {CartaPage} from './carta-page';
 export class CartaView {
  readonly page = input.required<CartaPage>();
  readonly mode = input<'inicio'|'lista'|'detalle'|'bowl'>('lista');
+ readonly router = inject(Router);
  readonly auth = inject(AuthService);
  readonly signedIn = computed(()=>activeClientSession(this.auth.session()));
  readonly restaurantControl = new FormControl<number|null>(null,Validators.required);

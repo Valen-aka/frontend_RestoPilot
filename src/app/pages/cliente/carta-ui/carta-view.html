@@ -7,7 +7,7 @@
  @if(p.selection.preparing()){<p role="status" class="notice">Preparando tu selección…</p>}
  @switch(p.store.state()){
   @case('session'){
-   <section class="state-card" aria-labelledby="session-title"><h2 id="session-title">Inicia sesión para consultar la carta</h2><p>Necesitas una sesión de cliente vigente.</p><a mat-flat-button routerLink="/auth/login">Ir al inicio de sesión</a></section>
+   <section class="state-card" aria-labelledby="session-title"><h2 id="session-title">Inicia sesión para consultar la carta</h2><p>Necesitas una sesión de cliente vigente.</p><a mat-flat-button routerLink="/auth/login" [queryParams]="{returnUrl:router.url}">Ir al inicio de sesión</a></section>
   }
   @case('loading'){
    <section class="state-card" role="status" aria-live="polite"><mat-spinner diameter="36" aria-label="Consultando la carta"/><p>Cargando la carta…</p></section>
