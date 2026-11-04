@@ -172,7 +172,7 @@
     ],
     "owner": "Valentina Montenegro",
     "us": "US10",
-    "status": "Interfaz Figma y eventos API implementados; DOM simulado verificado; aceptación con login/backend real pendiente",
+    "status": "Interfaz y login integrados; E2E Spring Boot/H2 verificado; validación PostgreSQL pendiente",
     "contenidoImplementado": true
   },
   {
@@ -194,7 +194,7 @@
     ],
     "owner": "Valentina Montenegro",
     "us": "US10",
-    "status": "Interfaz Figma y eventos API implementados; DOM simulado verificado; aceptación con login/backend real pendiente",
+    "status": "Interfaz y login integrados; E2E Spring Boot/H2 verificado; validación PostgreSQL pendiente",
     "contenidoImplementado": true
   },
   {
@@ -216,7 +216,7 @@
     ],
     "owner": "Valentina Montenegro",
     "us": "US10",
-    "status": "Interfaz Figma y eventos API implementados; DOM simulado verificado; aceptación con login/backend real pendiente",
+    "status": "Interfaz y login integrados; E2E Spring Boot/H2 verificado; validación PostgreSQL pendiente",
     "contenidoImplementado": true
   },
   {
@@ -238,7 +238,7 @@
     ],
     "owner": "Valentina Montenegro",
     "us": "US10",
-    "status": "Interfaz Figma y eventos API implementados; DOM simulado verificado; aceptación con login/backend real pendiente",
+    "status": "Interfaz y login integrados; E2E Spring Boot/H2 verificado; validación PostgreSQL pendiente",
     "contenidoImplementado": true
   },
   {
@@ -260,7 +260,7 @@
     ],
     "owner": "Valentina Montenegro",
     "us": "US10",
-    "status": "Interfaz Figma y eventos API implementados; DOM simulado verificado; aceptación con login/backend real pendiente",
+    "status": "Interfaz y login integrados; E2E Spring Boot/H2 verificado; validación PostgreSQL pendiente",
     "contenidoImplementado": true
   },
   {
@@ -282,7 +282,7 @@
     ],
     "owner": "Valentina Montenegro",
     "us": "US10",
-    "status": "Interfaz Figma y eventos API implementados; DOM simulado verificado; aceptación con login/backend real pendiente",
+    "status": "Interfaz y login integrados; E2E Spring Boot/H2 verificado; validación PostgreSQL pendiente",
     "contenidoImplementado": true
   },
   {
@@ -2286,7 +2286,7 @@
     ],
     "owner": "Valentina Montenegro",
     "us": "US10",
-    "status": "Interfaz Figma y eventos API implementados; DOM simulado verificado; aceptación con login/backend real pendiente",
+    "status": "Interfaz y login integrados; E2E Spring Boot/H2 verificado; validación PostgreSQL pendiente",
     "contenidoImplementado": true
   },
   {

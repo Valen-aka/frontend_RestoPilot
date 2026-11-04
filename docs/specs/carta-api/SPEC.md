@@ -122,10 +122,56 @@ El harness requiere Playwright ya disponible (PLAYWRIGHT_MODULE permite señalar
 - Catorce capturas de página completa y archivos de geometría de imágenes; todos los slots de imagen visibles cargan. Hero conserva medidas originales en ambos anchos y marca conserva slot de 43 × 43. Revisión visual frente a las capturas MCP; sin sustituciones de assets estáticos.
 - La aceptación visual usa fixtures identificados en el harness; no prueba PostgreSQL, persistencia ni la autorización del servidor.
 
-## Dependencias y aceptación real pendiente
+## Integración con backend real — 04/11/2026
 
-El 04/11/2026 localhost:8081/api/restaurantes no respondió (HTTP 000, conexión no disponible). No se ejecutó un recorrido autenticado contra backend real. La copia backend original contiene RestauranteController.java vacío; la copia de referencia de RestoPilot-Trabajo sí incluye los GET de restaurantes. El equipo debe ejecutar una revisión compatible antes de aceptar el flujo real.
+Se revisó el backend original actualizado en develop 734bc95, igual a origin/develop tras fetch, limpio antes de trabajar. El hallazgo anterior de RestauranteController vacío quedó obsoleto: ahora ya existen ConsultaRestauranteService, repositorio, DTO y controlador funcionales. La rama backend feature/us10-catalogo-integracion parte de esa base; no se fusionó ninguna rama.
 
-La pantalla de acceso aún no llama AuthService.login en esta rama. Corresponde a su mantenedor conectarla a la infraestructura existente; no se implementa US02 dentro de US10. Sin esa conexión, el producto muestra correctamente acceso requerido; las pruebas de UI autentican exclusivamente en el harness.
+### Cambios aplicados
 
-La implementación de las siete interfaces y eventos queda disponible para revisión, no se declara US10 aceptada de extremo a extremo. Antes de integrar: revisar visualmente con el equipo, resolver login/backend compatible y ejecutar con sesión real los seis criterios. origin/develop 6381fb3 contiene avances de reservas separados; no se fusionó ni se hizo push/PR en esta entrega.
+- acceso.ts/acceso.html: el formulario existente llama AuthService.login, bloquea doble envío y edición durante la consulta, muestra errores 401/403/red, limpia contraseña y cancela al destruirse. No se rehízo la apariencia ni se implementó registro.
+- Tras login se usa el destino existente del rol; returnUrl solo admite rutas internas del mismo rol, sin URL externa, traversal ni outlets secundarios. La carta conserva su URL completa al enlazar al acceso, incluidos restaurante/plato/categoría.
+- CartaView solo añade el enlace de retorno. CatalogoService, CartaStore, CartaSelection, CartaPage, CarritoStore, ScreenHost, guards, interceptores y las siete interfaces conservan su implementación.
+- Sesión única en memoria de AuthService: JWT real, validación de claims, temporizador de expiración y logout existentes. Recargar exige iniciar sesión nuevamente. No se añadieron tokens a localStorage/sessionStorage ni una segunda autenticación.
+- Las rutas de carta conservan la pantalla explicativa de acceso requerido, sin consultar HTTP ni exponer datos cuando falta sesión. El servidor mantiene autenticación obligatoria. No se retiraron guards ni se debilitaron reglas de seguridad.
+- Backend: no hubo que modificar controladores ni servicios de producción. Se añadió Us10HttpIntegrationTest para verificar contratos, aislamiento, disponibilidad, errores y CORS; opcionalmente lanza el navegador contra el servidor real de esa prueba.
+
+### HTTP real comprobado
+
+Servidor Spring Boot real, filtro JWT, BCrypt, servicios, repositorios JPA y base H2 en memoria aislada en modo PostgreSQL. No es un mock HTTP; tampoco acredita PostgreSQL o Supabase.
+
+| Endpoint | Resultado verificado |
+| --- | --- |
+| POST /api/auth/login | 200 con JWT válido; 401 con contraseña incorrecta; login por formulario |
+| OPTIONS /api/auth/login | 200 y Access-Control-Allow-Origin para localhost:4200 |
+| GET /api/restaurantes | 200 lista autenticada; 403 sin sesión |
+| GET /api/restaurantes/{id} | 200 DTO real; 404 inexistente |
+| GET /api/categorias/restaurante/{id} | 200 categorías del restaurante, incluida categoría sin platos |
+| GET /api/platos/restaurante/{id} | 200 lista con disponible=false conservado; [] para local vacío |
+| GET /api/platos/{id} | 200 detalle, precio, categoría, campos null; 404 inexistente; 400 ID no numérico |
+| GET /api/platos?restauranteId=…&categoriaId=… | 200 con lista vacía para categoría vacía o de otro restaurante, sin mezclar locales |
+| GET /api/mesas/restaurante/{id} | Consulta real desde prepareSelection, respuesta vacía válida |
+
+Restaurantes y mesas permiten CLIENTE/ADMINISTRADOR/DUENO. Lecturas de categorías/platos requieren autenticación global; escrituras conservan permisos administrativos y validación de pertenencia. No hay endpoint de carrito: el borrador del frontend usa prepareSelection; no se registra pedido ni pago al añadir.
+
+### Verificaciones de esta entrega
+
+- Todas las pruebas frontend disponibles: 217 correctas, incluidas las 84 exigidas y 6 nuevas de login/retorno/cancelación; sin fallos.
+- Se repitieron los 38 recorridos DOM/HTTP simulados existentes: correctos.
+- Backend: 105 pruebas previas correctas; se añadieron 2 pruebas HTTP de US10. Suite completa: 107 correctas, 0 fallidas.
+- E2E real con navegador: dos recorridos, 1440 y 390 px, Angular → formulario de login → Spring Boot/JWT → JPA/H2 → restaurante → categoría → detalle/cantidad → carrito. También contraseña incorrecta, doble clic, vacío, agotado, cambio de local, bowl, 404 y logout. No se generó POST /pedidos ni cobro.
+- El harness real solo redirige el puerto configurado 8081 hacia el puerto aleatorio del servidor de prueba; no usa route.fulfill ni devuelve respuestas sintéticas. Los registros de prueba se crean mediante repositorios del backend en H2 aislado; no se alteran bases existentes.
+- Capturas reales de carta, detalle y carrito en ambos anchos: sin desbordamiento horizontal, datos persistidos y fallback cuando imagenUrl es null. Las otras variantes conservan las capturas y pruebas visuales de la suite de 38 recorridos.
+
+### Ejecución reproducible
+
+Frontend: Node compatible con package.json; npm.cmd run verify, TypeScript y node --test con los scripts *.test.cjs/*.test.mjs. Ejecutar ng serve --host 127.0.0.1 --port 4310 para los harnesses.
+
+Backend: Java 21 existente (no Java 25 predeterminado, incompatible con el procesador Lombok de esta revisión), Maven Wrapper y .\mvnw.cmd '-DforkCount=0' test. Para incluir E2E real, definir RP_US10_BROWSER con la ruta absoluta a scripts/us10-real-browser.cjs del frontend y RP_NODE con node.exe; PLAYWRIGHT_MODULE señala la instalación existente de Playwright si no está en resolución normal. El test inicia Spring Boot en un puerto aleatorio, pasa IDs y credenciales exclusivamente de prueba al proceso hijo y cierra el servidor. RP_REAL_OUTPUT permite guardar las capturas y results.json. No se imprime ni persiste el JWT.
+
+Para ejecución normal con PostgreSQL, proporcionar mediante la configuración local existente DB_URL (JDBC), DB_USERNAME, DB_PASSWORD y JWT_SECRET válido en Base64. No copiar credenciales de pruebas. Revisar docs/sql/actualizacion_tb2.sql antes de usar una base antigua; no se ejecutaron migraciones ni ddl sobre una base existente. El perfil supabase exige esquema validado y SSL; no se activó ni modificó.
+
+### Bloqueo externo y clasificación
+
+PostgreSQL 18 está ejecutándose en localhost:5432 y pg_isready informa que acepta conexiones (cliente psql 18.6). No existe .env en el backend original ni variables DB_URL/DB_PASSWORD/JWT_SECRET en el proceso; no hay pgpass configurado. Se intentó spring-boot:run con Java 21 y la configuración existente: falló por el placeholder JWT_SECRET no resuelto. No se inventaron contraseñas ni se cambiaron configuraciones de producción. La existencia, esquema y datos de la base de destino todavía no pueden comprobarse sin esa configuración.
+
+**IMPLEMENTADA, PENDIENTE DE VALIDACIÓN** en PostgreSQL y en el entorno compartido. La funcionalidad ya tiene evidencia E2E con backend HTTP/JWT/JPA real sobre H2; falta repetirla con la configuración PostgreSQL autorizada. No se declara aceptación final ni autorización para integrar develop. Se mantienen las siete interfaces, 120 escenarios y contratos de US11–13/US15/US19. No se hizo push, PR ni merge.
