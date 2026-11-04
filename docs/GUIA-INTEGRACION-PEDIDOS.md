@@ -1,5 +1,29 @@
 # Guía compartida de conexión — US11 a US13
 
+## Conexión con Supabase
+
+El flujo conserva Angular → API Spring Boot → PostgreSQL de Supabase. El frontend
+usa `environment.apiUrl` y la sesión de `AuthService`; las credenciales PostgreSQL,
+`JWT_SECRET` y cualquier clave privada permanecen exclusivamente en el backend.
+No hace falta añadir una clave de Supabase al frontend para este flujo.
+
+El backend dispone del perfil `supabase`, con SSL obligatorio y validación del
+esquema sin modificación automática. Consultar `docs/SUPABASE.md` y
+`.env.supabase.example` en el repositorio backend. La contraseña PostgreSQL debe
+configurarse localmente: la conexión MCP no permite recuperarla.
+
+La migración `docs/sql/supabase_esquema_inicial_20261103.sql` del backend se aplicó
+por MCP tras eliminar, con autorización explícita, únicamente el pago de prueba
+`id=1` que referenciaba un pedido inexistente. Hay 10 tablas y Spring Boot arrancó
+en el puerto 8081 con el perfil `supabase` y `ddl-auto=validate` correctamente.
+
+Se verificaron por HTTP: login vacío (400), login con correo inexistente (401),
+ruta de pedidos sin sesión (403) y preflight CORS desde localhost:4200 (200).
+Estas pruebas no crean cuentas ni certifican el recorrido con una cuenta real.
+Las siete tablas nuevas tienen RLS habilitado sin políticas de acceso directo.
+`pagos`, `restaurantes` y `usuarios` continúan sin RLS; su protección queda
+pendiente de autorización. No conectar clientes directos de Supabase al frontend.
+
 Esta base permite continuar la integración sin duplicar sesión, HTTP ni contratos. No cambia las asignaciones del Sprint 2 ni declara terminadas las historias de acceso, carta, detalle o seguimiento.
 
 ## Qué reutilizar
