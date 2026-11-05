@@ -1,4 +1,4 @@
-import {afterNextRender, Component, computed, DestroyRef, DOCUMENT, effect, inject, input, untracked} from '@angular/core';
+import {afterNextRender, Component, computed, DestroyRef, DOCUMENT, effect, inject, input, signal, untracked} from '@angular/core';
 import {toSignal} from '@angular/core/rxjs-interop';
 import {NgTemplateOutlet} from '@angular/common';
 import {ActivatedRoute, Router, RouterLink} from '@angular/router';
@@ -9,12 +9,13 @@ import {MatTableModule} from '@angular/material/table';
 import {CocinaShell} from '../operacion/cocina-ui/cocina-shell';
 import {ExpiredClientShell} from './expired-client-shell';
 import {ReservaExpiradaStore} from './reserva-expirada-store';
-import {parseReservaId} from '../../core/models/reserva-api.model';
+import {reservaSelection} from './reserva-selection';
+import {MatChipsModule} from '@angular/material/chips';
 import {attendanceDestination} from '../operacion/reserva-atencion-ui/reserva-atencion.model';
 import {ExpiryContext, expirationDate, expirationIssue, expirationReason, formatExpiryDate} from './reserva-expirada.model';
 
 @Component({selector:'rp-reserva-expirada-view',
-  imports:[NgTemplateOutlet,RouterLink,MatButtonModule,MatCardModule,MatProgressSpinnerModule,MatTableModule,CocinaShell,ExpiredClientShell],
+  imports:[NgTemplateOutlet,RouterLink,MatButtonModule,MatCardModule,MatProgressSpinnerModule,MatTableModule,MatChipsModule,CocinaShell,ExpiredClientShell],
   templateUrl:'./reserva-expirada-view.html',styleUrls:['./reserva-expirada-view.css','./restaurant-map.css']})
 export class ReservaExpiradaView {
   readonly context=input<ExpiryContext>('client');
@@ -27,9 +28,11 @@ export class ReservaExpiradaView {
   private readonly route=inject(ActivatedRoute);
   private readonly params=toSignal(this.route.queryParamMap,{initialValue:this.route.snapshot.queryParamMap});
   private readonly navigationState=this.document.defaultView?.history.state??{};
-  readonly selectedId=computed(()=>this.params().has('reservaId')?parseReservaId(this.params().get('reservaId')):parseReservaId(this.navigationState.expiredReservationId));
+  readonly selectedId=computed(()=>reservaSelection(this.params(),this.navigationState));
   readonly selected=this.store.selected;
-  readonly rows=this.store.rows;
+  readonly filter=signal('Todas');
+  readonly filters=['Todas','Pendiente','Confirmada','Rechazada','Cancelada','Completada','Expirada'];
+  readonly rows=computed(()=>this.store.rows().filter(row=>this.filter()==='Todas'||row.status===this.filter()));
   readonly attendanceRows=computed(()=>this.context()==='operation'?this.rows().filter(r=>['Confirmada','Completada'].includes(r.status)):[]);
   readonly attendanceDestination=attendanceDestination;
   readonly problem=this.store.problem;

@@ -52,7 +52,7 @@ async function fits(page){assert.equal(await page.evaluate(()=>document.document
    await login(page);await ready(page);await control(mode);await refresh(page);await page.getByText('No tienes acceso a los pedidos de este restaurante.',{exact:true}).waitFor();assert.equal((await ids(page)).length,0);
   });
   await run('vacío real y metadatos ausentes sin valores inventados',async page=>{
-   await login(page);await ready(page);await control('missing');await go(page,'/operacion/cocina');await page.locator('rp-cocina-card').first().waitFor();
+   await login(page);await ready(page);await control('missing');await go(page,'/operacion/cocina');await page.waitForFunction(()=>document.querySelector('.max-time')?.textContent?.trim()==='Tiempo máximo de plato: No informado');
    assert.equal(await page.locator('.max-time').first().innerText(),'Tiempo máximo de plato: No informado');
    await control('empty');await refresh(page);await page.getByRole('heading',{name:'No hay pedidos para preparar',exact:true}).waitFor();
   },390);
