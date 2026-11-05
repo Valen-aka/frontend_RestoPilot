@@ -42,3 +42,9 @@ Conservar aprendizajes verificables que ayuden a evitar errores repetidos en est
 - Contexto/evidencia: la prueba conjunta US25 → historial US26 mostraba #208 Completada y luego Expirada por colecciones independientes, aunque las pruebas aisladas pasaban.
 - Aprendizaje: los recorridos que representan la misma entidad deben consultar una fuente coherente de muestra. Distinguir los IDs de casos alternativos y conservar metadatos al actualizar; pasar pruebas de cada módulo no acredita la coherencia entre pantallas.
 - Comprobación: recorrer llegada → finalización → historial → detalle sin recargar; verificar ID, estado y fechas, además de comprobar que el reinicio explícito al recargar no se confunda con persistencia.
+
+### 2026-11-05 — Verificar las entradas de las integraciones
+
+- Evidencia: tras una integración de interfaces, el historial y detalle cliente volvieron a usar un store de muestra mientras 189 pruebas de contratos/stores seguían pasando. El navegador detectó la desconexión.
+- Aprendizaje: comprobar también componentes de entrada, parámetros de URL y recorrido entre pantallas. Conservar las consultas existentes al integrar cambios visuales; un ID inválido explícito no se reemplaza por selección previa.
+- Comprobación: ejecutar las regresiones DOM/HTTP de US26 y US25, además de las pruebas unitarias. El renderizado por sí solo tampoco acredita consulta real.

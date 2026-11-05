@@ -1,10 +1,16 @@
-import {Component,Input} from '@angular/core';
+import {Component,EventEmitter,Input,Output} from '@angular/core';
 import {RouterLink} from '@angular/router';
 @Component({selector:'rp-workspace-shell',imports:[RouterLink],templateUrl:'./workspace-shell.html',styleUrl:'./workspace-shell.css'})
 export class WorkspaceShell{
  @Input() role:'owner'|'operation'|'client'|'account'='operation';
  @Input() breadcrumb='Operación';
  @Input() active='inicio';
+ @Input() live=false;
+ @Input() restaurantName='Tu restaurante';
+ @Input() restaurantId:number|null=null;
+ @Input() restaurantActive:boolean|null=null;
+ @Output() readonly signOut=new EventEmitter<void>();
+ readonly currentDate=new Intl.DateTimeFormat('es-PE',{dateStyle:'long',timeZone:'America/Lima'}).format(new Date());
  readonly navigation=[
  {key:'inicio',label:'Vista general',icon:'▥',url:'/operacion'},
  {key:'pedidos',label:'Pedidos',icon:'▤',url:'/operacion/pedidos'},

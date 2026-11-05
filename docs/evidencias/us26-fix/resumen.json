@@ -1,0 +1,201 @@
+{
+  "date": "2026-11-05",
+  "branch": "fix/us26-reservas-expiradas",
+  "base": "2bb4a2b0d14740ef2d160a89f76c3c00dd02b5bb",
+  "workingTreeChanges": true,
+  "frontend": {
+    "unitPassed": 191,
+    "build": "passed (NG_BUILD_SASS_EMBEDDED=0)",
+    "browserHttpSimulated": [
+      {
+        "us": "US11",
+        "cases": 10,
+        "passed": true
+      },
+      {
+        "us": "US12",
+        "cases": 25,
+        "passed": true
+      },
+      {
+        "us": "US13",
+        "cases": 21,
+        "passed": true
+      },
+      {
+        "us": "US15",
+        "cases": 13,
+        "passed": true
+      },
+      {
+        "us": "US19",
+        "cases": 15,
+        "passed": true
+      },
+      {
+        "us": "US25",
+        "cases": 23,
+        "passed": true
+      },
+      {
+        "us": "US26",
+        "cases": 19,
+        "passed": true
+      }
+    ],
+    "visualForms": 14,
+    "landingWidths": [
+      320,
+      390,
+      768,
+      1440
+    ],
+    "basicRender": {
+      "screens": 74,
+      "cases": 148,
+      "passed": 136,
+      "issues": [
+        {
+          "slug": "cliente-reservar",
+          "url": "/cliente/reservar",
+          "width": 390,
+          "owner": "Cristian Condori",
+          "rendered": true,
+          "overflow": true,
+          "errors": [],
+          "passed": false
+        },
+        {
+          "slug": "cliente-plano",
+          "url": "/cliente/plano",
+          "width": 390,
+          "owner": "Cristian Condori",
+          "rendered": true,
+          "overflow": true,
+          "errors": [],
+          "passed": false
+        },
+        {
+          "slug": "cliente-sin-disponibilidad",
+          "url": "/cliente/reservar?vista=cliente-sin-disponibilidad",
+          "width": 390,
+          "owner": "Cristian Condori",
+          "rendered": true,
+          "overflow": true,
+          "errors": [],
+          "passed": false
+        },
+        {
+          "slug": "cliente-reserva-revisar",
+          "url": "/cliente/reserva/revisar",
+          "width": 390,
+          "owner": "Cristian Condori",
+          "rendered": true,
+          "overflow": true,
+          "errors": [],
+          "passed": false
+        },
+        {
+          "slug": "cliente-reserva-pendiente",
+          "url": "/cliente/reserva",
+          "width": 390,
+          "owner": "Cristian Condori",
+          "rendered": true,
+          "overflow": true,
+          "errors": [],
+          "passed": false
+        },
+        {
+          "slug": "cliente-reserva-confirmada",
+          "url": "/cliente/reserva?vista=cliente-reserva-confirmada",
+          "width": 390,
+          "owner": "Cristian Condori",
+          "rendered": true,
+          "overflow": true,
+          "errors": [],
+          "passed": false
+        },
+        {
+          "slug": "cliente-reserva-rechazada",
+          "url": "/cliente/reserva?vista=cliente-reserva-rechazada",
+          "width": 390,
+          "owner": "Cristian Condori",
+          "rendered": true,
+          "overflow": true,
+          "errors": [],
+          "passed": false
+        },
+        {
+          "slug": "cliente-reserva-cancelada",
+          "url": "/cliente/reserva?vista=cliente-reserva-cancelada",
+          "width": 390,
+          "owner": "Cristian Condori",
+          "rendered": true,
+          "overflow": true,
+          "errors": [],
+          "passed": false
+        },
+        {
+          "slug": "cliente-reserva-editar",
+          "url": "/cliente/reserva/editar",
+          "width": 390,
+          "owner": "Cristian Condori",
+          "rendered": true,
+          "overflow": true,
+          "errors": [],
+          "passed": false
+        },
+        {
+          "slug": "cliente-reserva-cancelar",
+          "url": "/cliente/reserva/cancelar",
+          "width": 390,
+          "owner": "Cristian Condori",
+          "rendered": true,
+          "overflow": true,
+          "errors": [],
+          "passed": false
+        },
+        {
+          "slug": "cliente-reserva-cancelacion-bloqueada",
+          "url": "/cliente/reserva/cancelar?vista=cliente-reserva-cancelacion-bloqueada",
+          "width": 390,
+          "owner": "Cristian Condori",
+          "rendered": true,
+          "overflow": true,
+          "errors": [],
+          "passed": false
+        },
+        {
+          "slug": "op-reserva-detalle",
+          "url": "/operacion/reserva",
+          "width": 390,
+          "owner": "Cristian Condori",
+          "rendered": true,
+          "overflow": true,
+          "errors": [],
+          "passed": false
+        }
+      ]
+    }
+  },
+  "backend": {
+    "source": "origin/develop 85353b7 (copia aislada)",
+    "tests": 115,
+    "passed": 114,
+    "skipped": 1,
+    "failures": 0,
+    "errors": 0,
+    "database": "H2 aislado"
+  },
+  "liveBackend": {
+    "port": 8081,
+    "unauthenticatedReservation": 403,
+    "invalidLogin": 401,
+    "corsPreflight": 200,
+    "apiDocs": 500,
+    "authenticatedFlows": "No ejecutados: no se proporcionaron cuentas de prueba; inicializador demo desactivado."
+  },
+  "otherFindings": [
+    "US23 bloquea Escape por disableClose=true; cancelación por Volver y otras 13 verificaciones DOM correctas."
+  ]
+}
