@@ -1,3 +1,10 @@
-<!-- FRAME: op-notificaciones | La actividad de tu cuenta -->
-<!-- TODO: implementar Desktop y Mobile con Angular Material. -->
-<!-- No hay campos, datos ni contenido visual implementados. -->
+<rp-workspace-shell [role]="'operation'" breadcrumb="Notificaciones" active="notificaciones">
+  <header class="page-heading"><p class="eyebrow">Notificaciones</p><h1>La actividad de tu cuenta</h1><p class="subtitle">Solo mensajes destinados al usuario autenticado.</p></header>
+  <section class="panel empty-result notifications-empty" aria-labelledby="empty-notifications">
+    <div class="result-icon" aria-hidden="true">◎</div>
+    <h2 id="empty-notifications">No tienes notificaciones personales</h2>
+    <p>Aquí solo aparecen mensajes dirigidos a tu cuenta. No es un registro global de actividad del restaurante.</p>
+    <a mat-flat-button class="primary" routerLink="/operacion">Volver al inicio</a>
+  </section>
+  <p class="preview-note">Vista previa del estado vacío. El servicio de notificaciones todavía no está conectado.</p>
+</rp-workspace-shell>

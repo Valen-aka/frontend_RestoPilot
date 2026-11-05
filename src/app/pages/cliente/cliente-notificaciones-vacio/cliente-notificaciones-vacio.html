@@ -1,3 +1,10 @@
-<!-- FRAME: cliente-notificaciones-vacio | Tus notificaciones -->
-<!-- TODO: implementar Desktop y Mobile con Angular Material. -->
-<!-- No hay campos, datos ni contenido visual implementados. -->
+<rp-workspace-shell [role]="'client'" breadcrumb="Notificaciones" active="notificaciones">
+  <header class="page-heading"><p class="eyebrow">Notificaciones</p><h1>Tus notificaciones</h1><p class="subtitle">Te avisaremos cuando haya algo nuevo.</p></header>
+  <section class="panel empty-result notifications-empty" aria-labelledby="empty-notifications">
+    <div class="result-icon" aria-hidden="true">◎</div>
+    <h2 id="empty-notifications">Todo tranquilo por aquí</h2>
+    <p>Las novedades de tus pedidos y reservas aparecerán en este espacio.</p>
+    <a mat-flat-button class="primary" routerLink="/cliente">Volver al inicio</a>
+  </section>
+  <p class="preview-note">Vista previa del estado vacío. El servicio de notificaciones todavía no está conectado.</p>
+</rp-workspace-shell>

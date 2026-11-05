@@ -1,3 +1,21 @@
-<!-- FRAME: cliente-notificaciones | Buenas noticias, aquí -->
-<!-- TODO: implementar Desktop y Mobile con Angular Material. -->
-<!-- No hay campos, datos ni contenido visual implementados. -->
+<rp-workspace-shell [role]="'client'" breadcrumb="Notificaciones" active="notificaciones">
+  <header class="page-heading"><p class="eyebrow">Notificaciones</p><h1>Buenas noticias, aquí</h1><p class="subtitle">Pedidos y reservas, al día.</p></header>
+  <p class="preview-note"><span class="badge">Vista previa</span> Mensajes ilustrativos del diseño. No son notificaciones de tu cuenta.</p>
+  <section class="panel notifications-panel" aria-labelledby="recent-activity">
+    <h2 class="panel-title" id="recent-activity">Tu actividad reciente</h2>
+    <ul class="notification-list">
+      <li class="notification">
+        <span class="notification-icon" aria-hidden="true">✓</span>
+        <div><p class="notification-time">Hoy · 13:42</p><h3>Tu pedido ya está listo</h3><p>Pedido #1042 · Puedes acercarte a recogerlo.</p><a class="text-link" routerLink="/cliente/pedido" [queryParams]="{vista: 'cliente-pedido-listo'}" aria-label="Ver detalle del pedido listo">Ver detalle</a></div>
+      </li>
+      <li class="notification">
+        <span class="notification-icon clock-icon" aria-hidden="true">◷</span>
+        <div><p class="notification-time">Hoy · 11:30</p><h3>Reserva confirmada</h3><p>Reserva #208 · Mesa 04 para 4 personas.</p><a class="text-link" routerLink="/cliente/reserva" [queryParams]="{vista: 'cliente-reserva-confirmada'}" aria-label="Ver detalle de la reserva confirmada">Ver detalle</a></div>
+      </li>
+      <li class="notification">
+        <span class="notification-icon" aria-hidden="true">✓</span>
+        <div><p class="notification-time">Ayer · 19:15</p><h3>Reserva completada</h3><p>Gracias por compartir tu mesa con nosotros.</p><a class="text-link" routerLink="/cliente/reserva" [queryParams]="{vista: 'cliente-reserva-completada'}" aria-label="Ver detalle de la reserva completada">Ver detalle</a></div>
+      </li>
+    </ul>
+  </section>
+</rp-workspace-shell>
