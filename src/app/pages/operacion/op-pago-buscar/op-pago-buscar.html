@@ -1,3 +1,22 @@
-<!-- FRAME: op-pago-buscar | Un pago, bien registrado -->
-<!-- TODO: implementar Desktop y Mobile con Angular Material. -->
-<!-- No hay campos, datos ni contenido visual implementados. -->
+<rp-workspace-shell [role]="'operation'" breadcrumb="Pagos" active="pagos">
+ <header class="page-heading"><p class="eyebrow">Pagos</p><h1>Un pago, bien registrado</h1><p class="subtitle">Registra lo recibido por los medios de tu restaurante.</p></header>
+ <section class="panel" aria-labelledby="buscar-title">
+  <h2 class="panel-title" id="buscar-title">Buscar pedido</h2>
+  <form [formGroup]="form" (ngSubmit)="search()" novalidate>
+   <div class="field"><label for="numero-pedido">Número de pedido</label><input matInput id="numero-pedido" formControlName="numero" inputmode="numeric" maxlength="12" autocomplete="off" aria-describedby="numero-hint numero-error" [attr.aria-invalid]="form.controls.numero.touched && form.controls.numero.invalid">
+    <p class="hint" id="numero-hint">Consulta visual de referencia: pedido #1042. No se consulta el sistema de pedidos.</p>
+    @if(form.controls.numero.touched && form.controls.numero.invalid){<p class="field-error" id="numero-error" role="alert">Ingresa un número de pedido válido.</p>}
+   </div>
+   <div class="actions"><a mat-stroked-button class="secondary" routerLink="/operacion">Cancelar</a><button mat-flat-button class="primary" type="submit">Consultar pedido</button></div>
+  </form>
+ </section>
+ @if(searched()){
+  <section class="panel search-result" aria-live="polite">
+   @if(match()){
+    <h2 class="panel-title">Pedido #1042</h2><p>2 platos <strong>S/ 66.00</strong></p><span class="badge">Pendiente de pago · referencia visual</span>
+    <div class="actions"><a mat-flat-button class="primary" routerLink="/operacion/pago/registrar">Revisar registro de pago</a></div>
+   }@else{<h2 class="panel-title">Sin coincidencias en la referencia</h2><p>El único pedido disponible en esta vista previa es #1042. No se ha consultado el backend.</p>}
+  </section>
+ }
+ <p class="notice">No existe un listado global de pagos. Consulta un pedido concreto o usa el reporte de pagos del período.</p>
+</rp-workspace-shell>

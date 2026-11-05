@@ -1463,8 +1463,8 @@
     ],
     "owner": "Francesco Meza",
     "us": "US18",
-    "status": "Pendiente",
-    "contenidoImplementado": false
+    "status": "Implementado visualmente; integración pendiente",
+    "contenidoImplementado": true
   },
   {
     "slug": "op-pago-registrar",
@@ -1485,8 +1485,8 @@
     ],
     "owner": "Francesco Meza",
     "us": "US18",
-    "status": "Pendiente",
-    "contenidoImplementado": false
+    "status": "Implementado visualmente; integración pendiente",
+    "contenidoImplementado": true
   },
   {
     "slug": "op-pago-confirmado",
@@ -1507,8 +1507,8 @@
     ],
     "owner": "Francesco Meza",
     "us": "US18",
-    "status": "Pendiente",
-    "contenidoImplementado": false
+    "status": "Implementado visualmente; integración pendiente",
+    "contenidoImplementado": true
   },
   {
     "slug": "op-pago-error",
@@ -1529,8 +1529,8 @@
     ],
     "owner": "Francesco Meza",
     "us": "US18",
-    "status": "Pendiente",
-    "contenidoImplementado": false
+    "status": "Implementado visualmente; integración pendiente",
+    "contenidoImplementado": true
   },
   {
     "slug": "op-mesas",

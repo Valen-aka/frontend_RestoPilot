@@ -1,7 +1,10 @@
 import {Component} from '@angular/core';
-import {FormGroup,ReactiveFormsModule} from '@angular/forms';
-/** Frame: op-pago-error. Responsable: Francesco Meza. Implementación pendiente. */
-@Component({selector:'rp-op-pago-error',imports:[ReactiveFormsModule],templateUrl:'./op-pago-error.html',styleUrl:'./op-pago-error.css'})
-export class OpPagoErrorPage{
- readonly form0=new FormGroup({}); // TODO: campos y validaciones del frame.
-}
+import {ReactiveFormsModule} from '@angular/forms';
+import {RouterLink} from '@angular/router';
+import {MatInputModule} from '@angular/material/input';
+import {MatButtonModule} from '@angular/material/button';
+import {WorkspaceShell} from '../../../components/workspace-shell/workspace-shell';
+import {OpPagoRegistrarPage} from '../op-pago-registrar/op-pago-registrar';
+
+@Component({selector:'rp-op-pago-error',imports:[WorkspaceShell,ReactiveFormsModule,RouterLink,MatInputModule,MatButtonModule],templateUrl:'./op-pago-error.html',styleUrls:['../../../components/workspace-shell/workspace-pages.css','../op-pago-registrar/op-pago-registrar.css','./op-pago-error.css']})
+export class OpPagoErrorPage extends OpPagoRegistrarPage {}

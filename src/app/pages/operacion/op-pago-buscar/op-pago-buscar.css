@@ -1,2 +1,1 @@
-:host{display:block}
-/* TODO: estilos responsive exclusivos de esta pantalla; utilizar variables globales. */
+:host{display:block}.search-result{margin-top:24px}.search-result p{color:#647480}.search-result strong{margin-left:12px}.notice{margin-top:32px}
