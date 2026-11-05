@@ -18,8 +18,8 @@
     ],
     "owner": "Francesco Meza",
     "us": "US02",
-    "status": "Pendiente",
-    "contenidoImplementado": false
+    "status": "Implementado visualmente; integración pendiente",
+    "contenidoImplementado": true
   },
   {
     "slug": "acceso-error",
@@ -40,8 +40,8 @@
     ],
     "owner": "Francesco Meza",
     "us": "US02",
-    "status": "Pendiente",
-    "contenidoImplementado": false
+    "status": "Implementado visualmente; integración pendiente",
+    "contenidoImplementado": true
   },
   {
     "slug": "registro-cliente",
@@ -62,8 +62,8 @@
     ],
     "owner": "Francesco Meza",
     "us": "US01",
-    "status": "Pendiente",
-    "contenidoImplementado": false
+    "status": "Implementado visualmente; integración pendiente",
+    "contenidoImplementado": true
   },
   {
     "slug": "registro-dueno",
@@ -84,8 +84,8 @@
     ],
     "owner": "Francesco Meza",
     "us": "US21",
-    "status": "Pendiente",
-    "contenidoImplementado": false
+    "status": "Implementado visualmente; integración pendiente",
+    "contenidoImplementado": true
   },
   {
     "slug": "registro-restaurante",
@@ -106,8 +106,8 @@
     ],
     "owner": "Francesco Meza",
     "us": "US21",
-    "status": "Pendiente",
-    "contenidoImplementado": false
+    "status": "Implementado visualmente; integración pendiente",
+    "contenidoImplementado": true
   },
   {
     "slug": "registro-duplicado",
@@ -128,8 +128,8 @@
     ],
     "owner": "Francesco Meza",
     "us": "US21",
-    "status": "Pendiente",
-    "contenidoImplementado": false
+    "status": "Implementado visualmente; integración pendiente",
+    "contenidoImplementado": true
   },
   {
     "slug": "dueno-bienvenida",
@@ -150,8 +150,8 @@
     ],
     "owner": "Francesco Meza",
     "us": "US21",
-    "status": "Pendiente",
-    "contenidoImplementado": false
+    "status": "Implementado visualmente; integración pendiente",
+    "contenidoImplementado": true
   },
   {
     "slug": "cliente-inicio",
@@ -304,8 +304,8 @@
     ],
     "owner": "Alexandra Fong",
     "us": "US11",
-    "status": "Pendiente",
-    "contenidoImplementado": false
+    "status": "Interfaz implementada; integración y aceptación pendientes",
+    "contenidoImplementado": true
   },
   {
     "slug": "cliente-carrito-vacio",
@@ -326,8 +326,8 @@
     ],
     "owner": "Alexandra Fong",
     "us": "US11",
-    "status": "Pendiente",
-    "contenidoImplementado": false
+    "status": "Interfaz implementada; integración y aceptación pendientes",
+    "contenidoImplementado": true
   },
   {
     "slug": "cliente-entrega-salon",
@@ -348,8 +348,8 @@
     ],
     "owner": "Alexandra Fong",
     "us": "US11",
-    "status": "Pendiente",
-    "contenidoImplementado": false
+    "status": "Interfaz implementada; integración y aceptación pendientes",
+    "contenidoImplementado": true
   },
   {
     "slug": "cliente-entrega-delivery",
@@ -370,8 +370,8 @@
     ],
     "owner": "Alexandra Fong",
     "us": "US11",
-    "status": "Pendiente",
-    "contenidoImplementado": false
+    "status": "Interfaz implementada; integración y aceptación pendientes",
+    "contenidoImplementado": true
   },
   {
     "slug": "cliente-entrega-llevar",
@@ -392,8 +392,8 @@
     ],
     "owner": "Alexandra Fong",
     "us": "US11",
-    "status": "Pendiente",
-    "contenidoImplementado": false
+    "status": "Interfaz implementada; integración y aceptación pendientes",
+    "contenidoImplementado": true
   },
   {
     "slug": "cliente-entrega-recoger",
@@ -414,8 +414,8 @@
     ],
     "owner": "Alexandra Fong",
     "us": "US11",
-    "status": "Pendiente",
-    "contenidoImplementado": false
+    "status": "Interfaz implementada; integración y aceptación pendientes",
+    "contenidoImplementado": true
   },
   {
     "slug": "cliente-restaurante-cerrado",
@@ -436,8 +436,8 @@
     ],
     "owner": "Alexandra Fong",
     "us": "US11",
-    "status": "Pendiente",
-    "contenidoImplementado": false
+    "status": "Interfaz implementada; integración y aceptación pendientes",
+    "contenidoImplementado": true
   },
   {
     "slug": "cliente-pedido-creado",
@@ -458,8 +458,8 @@
     ],
     "owner": "Alexandra Fong",
     "us": "US11",
-    "status": "Pendiente",
-    "contenidoImplementado": false
+    "status": "Interfaz implementada; integración y aceptación pendientes",
+    "contenidoImplementado": true
   },
   {
     "slug": "cliente-pedidos",
@@ -480,8 +480,8 @@
     ],
     "owner": "Alexandra Fong",
     "us": "US12, US13",
-    "status": "Pendiente",
-    "contenidoImplementado": false
+    "status": "Listado y navegación de muestra implementados; integración y aceptación pendientes",
+    "contenidoImplementado": true
   },
   {
     "slug": "cliente-pedido-detalle",
@@ -502,8 +502,8 @@
     ],
     "owner": "Alexandra Fong",
     "us": "US12, US13",
-    "status": "Pendiente",
-    "contenidoImplementado": false
+    "status": "Interfaz implementada; integración y aceptación pendientes",
+    "contenidoImplementado": true
   },
   {
     "slug": "cliente-pedido-listo",
@@ -524,8 +524,8 @@
     ],
     "owner": "Alexandra Fong",
     "us": "US12, US13",
-    "status": "Pendiente",
-    "contenidoImplementado": false
+    "status": "Interfaz implementada; integración y aceptación pendientes",
+    "contenidoImplementado": true
   },
   {
     "slug": "cliente-pedido-entregado",
@@ -546,8 +546,8 @@
     ],
     "owner": "Alexandra Fong",
     "us": "US11",
-    "status": "Pendiente",
-    "contenidoImplementado": false
+    "status": "Interfaz implementada; integración y aceptación pendientes",
+    "contenidoImplementado": true
   },
   {
     "slug": "cliente-pedido-cancelado",
@@ -568,8 +568,8 @@
     ],
     "owner": "Alexandra Fong",
     "us": "US12, US13",
-    "status": "Pendiente",
-    "contenidoImplementado": false
+    "status": "Interfaz implementada; integración y aceptación pendientes",
+    "contenidoImplementado": true
   },
   {
     "slug": "cliente-pago",
@@ -590,8 +590,8 @@
     ],
     "owner": "Alexandra Fong",
     "us": "US12, US18",
-    "status": "Pendiente",
-    "contenidoImplementado": false
+    "status": "Interfaz implementada; integración y aceptación pendientes",
+    "contenidoImplementado": true
   },
   {
     "slug": "cliente-pago-pendiente",
@@ -612,8 +612,8 @@
     ],
     "owner": "Alexandra Fong",
     "us": "US12, US18",
-    "status": "Pendiente",
-    "contenidoImplementado": false
+    "status": "Interfaz implementada; integración y aceptación pendientes",
+    "contenidoImplementado": true
   },
   {
     "slug": "cliente-reservar",
@@ -634,8 +634,8 @@
     ],
     "owner": "Cristian Condori",
     "us": "US05",
-    "status": "Pendiente",
-    "contenidoImplementado": false
+    "status": "Implementada",
+    "contenidoImplementado": true
   },
   {
     "slug": "cliente-plano",
@@ -656,8 +656,8 @@
     ],
     "owner": "Cristian Condori",
     "us": "US05",
-    "status": "Pendiente",
-    "contenidoImplementado": false
+    "status": "Implementada",
+    "contenidoImplementado": true
   },
   {
     "slug": "cliente-sin-disponibilidad",
@@ -678,8 +678,8 @@
     ],
     "owner": "Cristian Condori",
     "us": "US05",
-    "status": "Pendiente",
-    "contenidoImplementado": false
+    "status": "Implementada",
+    "contenidoImplementado": true
   },
   {
     "slug": "cliente-reservas-deshabilitadas",
@@ -722,8 +722,8 @@
     ],
     "owner": "Cristian Condori",
     "us": "US06",
-    "status": "Pendiente",
-    "contenidoImplementado": false
+    "status": "Implementada",
+    "contenidoImplementado": true
   },
   {
     "slug": "cliente-reservas",
@@ -744,8 +744,8 @@
     ],
     "owner": "Cristian Condori",
     "us": "US07",
-    "status": "Pendiente",
-    "contenidoImplementado": false
+    "status": "Implementada",
+    "contenidoImplementado": true
   },
   {
     "slug": "cliente-reserva-pendiente",
@@ -766,8 +766,8 @@
     ],
     "owner": "Cristian Condori",
     "us": "US07",
-    "status": "Pendiente",
-    "contenidoImplementado": false
+    "status": "Implementada",
+    "contenidoImplementado": true
   },
   {
     "slug": "cliente-reserva-confirmada",
@@ -788,8 +788,8 @@
     ],
     "owner": "Cristian Condori",
     "us": "US07",
-    "status": "Pendiente",
-    "contenidoImplementado": false
+    "status": "Implementada",
+    "contenidoImplementado": true
   },
   {
     "slug": "cliente-reserva-rechazada",
@@ -810,8 +810,8 @@
     ],
     "owner": "Cristian Condori",
     "us": "US07",
-    "status": "Pendiente",
-    "contenidoImplementado": false
+    "status": "Implementada",
+    "contenidoImplementado": true
   },
   {
     "slug": "cliente-reserva-cancelada",
@@ -832,8 +832,8 @@
     ],
     "owner": "Cristian Condori",
     "us": "US07",
-    "status": "Pendiente",
-    "contenidoImplementado": false
+    "status": "Implementada",
+    "contenidoImplementado": true
   },
   {
     "slug": "cliente-reserva-expirada",
@@ -854,8 +854,8 @@
     ],
     "owner": "Cristian Condori",
     "us": "US07, US26",
-    "status": "Pendiente",
-    "contenidoImplementado": false
+    "status": "Implementada",
+    "contenidoImplementado": true
   },
   {
     "slug": "cliente-reserva-completada",
@@ -876,8 +876,8 @@
     ],
     "owner": "Cristian Condori",
     "us": "US07, US25",
-    "status": "Pendiente",
-    "contenidoImplementado": false
+    "status": "Implementada",
+    "contenidoImplementado": true
   },
   {
     "slug": "cliente-reserva-editar",
@@ -898,8 +898,8 @@
     ],
     "owner": "Cristian Condori",
     "us": "US08",
-    "status": "Pendiente",
-    "contenidoImplementado": false
+    "status": "Implementada",
+    "contenidoImplementado": true
   },
   {
     "slug": "cliente-reserva-cancelar",
@@ -923,8 +923,8 @@
     ],
     "owner": "Cristian Condori",
     "us": "US09",
-    "status": "Pendiente",
-    "contenidoImplementado": false
+    "status": "Implementada",
+    "contenidoImplementado": true
   },
   {
     "slug": "cliente-reserva-cancelacion-bloqueada",
@@ -945,8 +945,8 @@
     ],
     "owner": "Cristian Condori",
     "us": "US09",
-    "status": "Pendiente",
-    "contenidoImplementado": false
+    "status": "Implementada",
+    "contenidoImplementado": true
   },
   {
     "slug": "cliente-notificaciones",
@@ -1011,8 +1011,8 @@
     ],
     "owner": "Francesco Meza",
     "us": "Vista de acceso a módulos operativos",
-    "status": "Pendiente",
-    "contenidoImplementado": false
+    "status": "Implementado visualmente; integración pendiente",
+    "contenidoImplementado": true
   },
   {
     "slug": "dueno-inicio",
@@ -1033,8 +1033,8 @@
     ],
     "owner": "Francesco Meza",
     "us": "US21",
-    "status": "Pendiente",
-    "contenidoImplementado": false
+    "status": "Implementado visualmente; integración pendiente",
+    "contenidoImplementado": true
   },
   {
     "slug": "op-categorias",
@@ -1055,8 +1055,8 @@
     ],
     "owner": "Valentina Montenegro",
     "us": "US23",
-    "status": "Pendiente",
-    "contenidoImplementado": false
+    "status": "Implementada e integrada; validada con JWT y H2, PostgreSQL pendiente",
+    "contenidoImplementado": true
   },
   {
     "slug": "op-categoria-nueva",
@@ -1077,8 +1077,8 @@
     ],
     "owner": "Valentina Montenegro",
     "us": "US23",
-    "status": "Pendiente",
-    "contenidoImplementado": false
+    "status": "Implementada e integrada; validada con JWT y H2, PostgreSQL pendiente",
+    "contenidoImplementado": true
   },
   {
     "slug": "op-categoria-editar",
@@ -1099,8 +1099,8 @@
     ],
     "owner": "Valentina Montenegro",
     "us": "US23",
-    "status": "Pendiente",
-    "contenidoImplementado": false
+    "status": "Implementada e integrada; validada con JWT y H2, PostgreSQL pendiente",
+    "contenidoImplementado": true
   },
   {
     "slug": "op-categoria-eliminar",
@@ -1124,8 +1124,8 @@
     ],
     "owner": "Valentina Montenegro",
     "us": "US23",
-    "status": "Pendiente",
-    "contenidoImplementado": false
+    "status": "Implementada e integrada; validada con JWT y H2, PostgreSQL pendiente",
+    "contenidoImplementado": true
   },
   {
     "slug": "op-platos",
@@ -1262,8 +1262,8 @@
     ],
     "owner": "Alexandra Fong",
     "us": "US12, US15",
-    "status": "Pendiente",
-    "contenidoImplementado": false
+    "status": "Interfaz de consulta implementada; integración y aceptación pendientes",
+    "contenidoImplementado": true
   },
   {
     "slug": "op-cocina",
@@ -1284,8 +1284,8 @@
     ],
     "owner": "Alexandra Fong",
     "us": "US15",
-    "status": "Pendiente",
-    "contenidoImplementado": false
+    "status": "Interfaz de consulta implementada; integración y aceptación pendientes",
+    "contenidoImplementado": true
   },
   {
     "slug": "op-pedido-detalle",
@@ -1306,8 +1306,8 @@
     ],
     "owner": "Alexandra Fong",
     "us": "US12, US15",
-    "status": "Pendiente",
-    "contenidoImplementado": false
+    "status": "Interfaz de consulta implementada; integración y aceptación pendientes",
+    "contenidoImplementado": true
   },
   {
     "slug": "op-pedido-listo",
@@ -1328,8 +1328,8 @@
     ],
     "owner": "Alexandra Fong",
     "us": "US19",
-    "status": "Pendiente",
-    "contenidoImplementado": false
+    "status": "Interfaz y transiciones de muestra implementadas; integración y aceptación pendientes",
+    "contenidoImplementado": true
   },
   {
     "slug": "op-pedido-entregar",
@@ -1350,8 +1350,8 @@
     ],
     "owner": "Alexandra Fong",
     "us": "US19",
-    "status": "Pendiente",
-    "contenidoImplementado": false
+    "status": "Interfaz y transiciones de muestra implementadas; integración y aceptación pendientes",
+    "contenidoImplementado": true
   },
   {
     "slug": "op-pedido-entregado",
@@ -1372,8 +1372,8 @@
     ],
     "owner": "Alexandra Fong",
     "us": "US19",
-    "status": "Pendiente",
-    "contenidoImplementado": false
+    "status": "Interfaz y transiciones de muestra implementadas; integración y aceptación pendientes",
+    "contenidoImplementado": true
   },
   {
     "slug": "op-pedido-editar",
@@ -1394,8 +1394,8 @@
     ],
     "owner": "Francesco Meza",
     "us": "US24",
-    "status": "Pendiente",
-    "contenidoImplementado": false
+    "status": "Implementado visualmente; integración pendiente",
+    "contenidoImplementado": true
   },
   {
     "slug": "op-pedido-cancelar",
@@ -1419,8 +1419,8 @@
     ],
     "owner": "Francesco Meza",
     "us": "US24",
-    "status": "Pendiente",
-    "contenidoImplementado": false
+    "status": "Implementado visualmente; integración pendiente",
+    "contenidoImplementado": true
   },
   {
     "slug": "op-pedido-bloqueado",
@@ -1441,8 +1441,8 @@
     ],
     "owner": "Francesco Meza",
     "us": "US24",
-    "status": "Pendiente",
-    "contenidoImplementado": false
+    "status": "Implementado visualmente; integración pendiente",
+    "contenidoImplementado": true
   },
   {
     "slug": "op-pago-buscar",
@@ -1686,7 +1686,7 @@
     ],
     "owner": "Valentina Montenegro",
     "us": "US29",
-    "status": "Pendiente",
+    "status": "Parcial US26: historial de expiradas de muestra; módulo general US07/US29 pendiente",
     "contenidoImplementado": false
   },
   {
@@ -1708,8 +1708,8 @@
     ],
     "owner": "Cristian Condori",
     "us": "US06, US29",
-    "status": "Pendiente",
-    "contenidoImplementado": false
+    "status": "Implementada",
+    "contenidoImplementado": true
   },
   {
     "slug": "op-reserva-detalle",
@@ -1730,8 +1730,8 @@
     ],
     "owner": "Cristian Condori",
     "us": "US17, US29",
-    "status": "Pendiente",
-    "contenidoImplementado": false
+    "status": "Implementada",
+    "contenidoImplementado": true
   },
   {
     "slug": "op-reserva-rechazar",
@@ -1752,8 +1752,8 @@
     ],
     "owner": "Cristian Condori",
     "us": "US17, US29",
-    "status": "Pendiente",
-    "contenidoImplementado": false
+    "status": "Implementada",
+    "contenidoImplementado": true
   },
   {
     "slug": "op-reserva-rechazada",
@@ -1774,8 +1774,8 @@
     ],
     "owner": "Cristian Condori",
     "us": "US17, US29",
-    "status": "Pendiente",
-    "contenidoImplementado": false
+    "status": "Implementada",
+    "contenidoImplementado": true
   },
   {
     "slug": "op-reserva-llegada",
@@ -1796,8 +1796,8 @@
     ],
     "owner": "Alexandra Fong",
     "us": "US25",
-    "status": "Pendiente",
-    "contenidoImplementado": false
+    "status": "Interfaz y atención de muestra implementadas; integración y aceptación pendientes",
+    "contenidoImplementado": true
   },
   {
     "slug": "op-reserva-atendiendo",
@@ -1818,8 +1818,8 @@
     ],
     "owner": "Alexandra Fong",
     "us": "US25",
-    "status": "Pendiente",
-    "contenidoImplementado": false
+    "status": "Interfaz y atención de muestra implementadas; integración y aceptación pendientes",
+    "contenidoImplementado": true
   },
   {
     "slug": "op-reserva-completada",
@@ -1840,8 +1840,8 @@
     ],
     "owner": "Alexandra Fong",
     "us": "US25",
-    "status": "Pendiente",
-    "contenidoImplementado": false
+    "status": "Interfaz y atención de muestra implementadas; integración y aceptación pendientes",
+    "contenidoImplementado": true
   },
   {
     "slug": "op-reserva-expirada",
@@ -1862,8 +1862,8 @@
     ],
     "owner": "Alexandra Fong",
     "us": "US26",
-    "status": "Pendiente",
-    "contenidoImplementado": false
+    "status": "US26: detalle visual de muestra; integración con API pendiente",
+    "contenidoImplementado": true
   },
   {
     "slug": "op-reserva-editar",
@@ -2088,8 +2088,8 @@
     ],
     "owner": "Francesco Meza",
     "us": "US22",
-    "status": "Pendiente",
-    "contenidoImplementado": false
+    "status": "Implementado visualmente; integración pendiente",
+    "contenidoImplementado": true
   },
   {
     "slug": "dueno-administrador-creado",
@@ -2110,8 +2110,8 @@
     ],
     "owner": "Francesco Meza",
     "us": "US22",
-    "status": "Pendiente",
-    "contenidoImplementado": false
+    "status": "Implementado visualmente; integración pendiente",
+    "contenidoImplementado": true
   },
   {
     "slug": "dueno-administrador-duplicado",
@@ -2132,8 +2132,8 @@
     ],
     "owner": "Francesco Meza",
     "us": "US22",
-    "status": "Pendiente",
-    "contenidoImplementado": false
+    "status": "Implementado visualmente; integración pendiente",
+    "contenidoImplementado": true
   },
   {
     "slug": "estado-403",

@@ -1,3 +1,23 @@
-<!-- FRAME: registro-dueno | Dale un nuevo ritmo a tu restaurante -->
-<!-- TODO: implementar Desktop y Mobile con Angular Material. -->
-<!-- No hay campos, datos ni contenido visual implementados. -->
+<div class="auth-page">
+  <header class="auth-heading"><div><p class="eyebrow">Acceso</p><h1>Dale un nuevo ritmo a tu restaurante</h1><p>Todo lo que necesitas para empezar, en un solo lugar.</p></div></header>
+<ol class="steps" aria-label="Progreso del registro"><li class="step active" aria-current="step">01 Tu cuenta</li><li class="step">02 Tu restaurante</li></ol>
+<section class="auth-section" aria-labelledby="register-title">
+<h2 id="register-title">Primero, tus datos</h2>
+<form class="auth-form" [formGroup]="form" (ngSubmit)="submit()" novalidate>
+<div class="field"><label class="field-label" for="nombre">Nombre completo</label>
+<input matInput id="nombre" type="text" formControlName="nombre" autocomplete="name" maxlength="150" [attr.aria-invalid]="form.controls.nombre.touched && form.controls.nombre.invalid" aria-describedby="nombre-errors">
+
+<div id="nombre-errors"><rp-form-errors [messages]="errors(form.controls.nombre, 'Nombre completo')" /></div></div>
+<div class="field"><label class="field-label" for="correo">Correo electrónico</label>
+<input matInput id="correo" type="email" formControlName="correo" autocomplete="email" maxlength="100" inputmode="email" autocapitalize="none" spellcheck="false" [attr.aria-invalid]="form.controls.correo.touched && form.controls.correo.invalid" aria-describedby="correo-errors">
+
+<div id="correo-errors"><rp-form-errors [messages]="errors(form.controls.correo, 'Correo electrónico')" /></div></div>
+<div class="field"><label class="field-label" for="password">Contraseña</label>
+<input matInput id="password" type="password" formControlName="password" autocomplete="new-password"  [attr.aria-invalid]="form.controls.password.touched && form.controls.password.invalid" aria-describedby="password-errors password-hint">
+<small id="password-hint">8 caracteres o más: letras, número y carácter especial. Máximo 72 bytes UTF-8.</small>
+<div id="password-errors"><rp-form-errors [messages]="errors(form.controls.password, 'Contraseña')" /></div></div>
+<div class="auth-actions"><button mat-flat-button class="primary-action" type="submit">Continuar</button></div>
+@if (notice()) {<p class="notice" role="status">{{ notice() }}</p>}
+</form></section>
+<nav class="auth-links" aria-label="Acceso"><a routerLink="/auth/login">Ya tengo una cuenta</a></nav>
+</div>

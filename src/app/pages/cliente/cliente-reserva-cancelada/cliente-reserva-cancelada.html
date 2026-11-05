@@ -1,3 +1,88 @@
-<!-- FRAME: cliente-reserva-cancelada | Tu reserva cancelada -->
-<!-- TODO: implementar Desktop y Mobile con Angular Material. -->
-<!-- No hay campos, datos ni contenido visual implementados. -->
+<a class="skip-link" href="#reserva-canc-content">Saltar al contenido</a>
+
+<div class="reserva-shell">
+  <!-- Cabecera de Cliente -->
+  <header class="client-header">
+    <a class="brand" routerLink="/cliente" aria-label="RestoPilot, inicio de cliente">
+      <div class="brand-icon" aria-hidden="true">RP</div>
+      <span>Resto<span class="brand-accent">Pilot</span><small>Tu restaurante, en piloto automático</small></span>
+    </a>
+    <nav aria-label="Navegación de cliente">
+      <a routerLink="/cliente">Inicio</a>
+      <a routerLink="/cliente/carta">La carta</a>
+      <a routerLink="/cliente/reservas" class="active" aria-current="page">Mis reservas</a>
+      <a routerLink="/cliente/pedidos">Mis pedidos</a>
+      <a routerLink="/cliente/asistente">Asistente IA</a>
+    </nav>
+    <div class="sample-context">
+      <span class="sample-avatar" aria-hidden="true">AP</span>
+      <div>
+        <strong>Ana Pérez</strong>
+        <small>Mi cuenta de cliente</small>
+      </div>
+    </div>
+  </header>
+
+  <!-- Contenido Principal -->
+  <main id="reserva-canc-content" tabindex="-1" class="reserva-main">
+    <div class="page-heading">
+      <p class="eyebrow">RESERVAS CLIENTE</p>
+      <h1>Tu reserva fue cancelada</h1>
+      <p class="subtitle">La solicitud ha sido cancelada satisfactoriamente y la mesa ha quedado liberada.</p>
+    </div>
+
+    @if (reserva(); as r) {
+      <div class="reserva-card state-detail-card">
+        <!-- Banner de Cancelación -->
+        <div class="status-callout cancelled" role="status">
+          <div class="callout-icon" aria-hidden="true">✓</div>
+          <div class="callout-content">
+            <h2>Cancelación Completada</h2>
+            <p>La reserva <strong>#{{ r.codigo }}</strong> ha sido cancelada sin penalización. No hay cargos pendientes en tu cuenta.</p>
+          </div>
+        </div>
+
+        <div class="detail-section">
+          <h3>Detalle de la reserva cancelada</h3>
+          <dl class="detail-dl">
+            <div>
+              <dt>Código</dt>
+              <dd>#{{ r.codigo }}</dd>
+            </div>
+            <div>
+              <dt>Fecha que estaba reservada</dt>
+              <dd>{{ r.fecha }} ({{ r.horaInicio }} a {{ r.horaFin }})</dd>
+            </div>
+            <div>
+              <dt>Mesa liberada</dt>
+              <dd>{{ r.mesaNumero }}</dd>
+            </div>
+            @if (r.motivoRechazo) {
+              <div>
+                <dt>Motivo registrado</dt>
+                <dd>{{ r.motivoRechazo }}</dd>
+              </div>
+            }
+          </dl>
+        </div>
+
+        <!-- Acciones -->
+        <div class="form-actions border-top">
+          <a mat-stroked-button routerLink="/cliente/reservas" class="btn-secondary">
+            ← Volver a mis reservas
+          </a>
+          <a mat-flat-button routerLink="/cliente/reservar" class="btn-primary">
+            Hacer una nueva reserva →
+          </a>
+        </div>
+      </div>
+    }
+  </main>
+
+  <!-- Pie de Página -->
+  <footer class="client-footer">
+    <p>RestoPilot · La Mesa Verde (Lima - Miraflores)</p>
+    <p>Tu restaurante, en piloto automático.</p>
+    <a routerLink="/cliente">Volver al inicio</a>
+  </footer>
+</div>

@@ -1,3 +1,20 @@
-<!-- FRAME: acceso-error | Revisemos tus datos -->
-<!-- TODO: implementar Desktop y Mobile con Angular Material. -->
-<!-- No hay campos, datos ni contenido visual implementados. -->
+<div class="auth-page">
+  <header class="auth-heading"><div><p class="eyebrow">Acceso</p><h1>Revisemos tus datos</h1><p>Las credenciales no son válidas.</p></div></header>
+<section class="auth-section" aria-labelledby="login-title">
+<div class="notice error-notice" role="alert"><span aria-hidden="true">ⓘ</span><div><strong>No pudimos iniciar sesión.</strong><p>Revisa el correo y la contraseña e inténtalo otra vez.</p></div></div>
+<h2 id="login-title">Inicia sesión</h2>
+
+<form class="auth-form" [formGroup]="form" (ngSubmit)="submit()" novalidate>
+<div class="field"><label class="field-label" for="correo">Correo electrónico</label>
+<input matInput id="correo" type="email" formControlName="correo" autocomplete="username" maxlength="100" inputmode="email" autocapitalize="none" spellcheck="false" [attr.aria-invalid]="form.controls.correo.touched && form.controls.correo.invalid" aria-describedby="correo-errors">
+
+<div id="correo-errors"><rp-form-errors [messages]="errors(form.controls.correo, 'Correo electrónico')" /></div></div>
+<div class="field"><label class="field-label" for="password">Contraseña</label>
+<input matInput id="password" type="password" formControlName="password" autocomplete="current-password"  [attr.aria-invalid]="form.controls.password.touched && form.controls.password.invalid" aria-describedby="password-errors">
+
+<div id="password-errors"><rp-form-errors [messages]="errors(form.controls.password, 'Contraseña')" /></div></div>
+<div class="auth-actions"><button mat-flat-button class="primary-action" type="submit">Volver a intentar</button></div>
+@if (notice()) {<p class="notice" role="status">{{ notice() }}</p>}
+</form></section>
+<nav class="auth-links" aria-label="Acceso"><a routerLink="/auth/login">Volver a iniciar sesión</a></nav>
+</div>

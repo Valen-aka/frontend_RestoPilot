@@ -1,3 +1,16 @@
-<!-- FRAME: dueno-administrador-creado | Tu equipo ya tiene un nuevo acceso -->
-<!-- TODO: implementar Desktop y Mobile con Angular Material. -->
-<!-- No hay campos, datos ni contenido visual implementados. -->
+<rp-workspace-shell [role]="'owner'" breadcrumb="Dueño" active="administradores">
+  <header class="page-heading"><p class="eyebrow">Dueño</p><h1>Tu equipo ya tiene un nuevo acceso</h1><p class="subtitle">Cada persona gestiona con su propia cuenta.</p></header>
+  <section class="panel" aria-labelledby="created-title">
+    <h2 class="panel-title" id="created-title">Administrador incorporado</h2>
+    <span class="badge">Vista previa</span>
+    <p class="hint preview-description">Ejemplo del estado de confirmación. No se ha creado ninguna cuenta ni asignado permisos.</p>
+    <dl class="definition-list account-details">
+      <div><dt>Nombre</dt><dd>Pendiente de conexión</dd></div>
+      <div><dt>Correo</dt><dd>Pendiente de conexión</dd></div>
+      <div><dt>Rol previsto</dt><dd>Administrador</dd></div>
+      <div><dt>Restaurante</dt><dd>Tu restaurante</dd></div>
+    </dl>
+    <p class="notice">La confirmación real no debe exponer contraseñas ni credenciales. El envío de una invitación no forma parte de este flujo.</p>
+    <div class="actions result-actions"><a mat-stroked-button class="secondary" routerLink="/dueno/administradores/nuevo">Incorporar otra persona</a><a class="text-link" routerLink="/dueno">Volver al inicio</a></div>
+  </section>
+</rp-workspace-shell>

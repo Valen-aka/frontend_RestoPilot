@@ -1,3 +1,68 @@
-<!-- FRAME: op-reserva-rechazar | Comunica el motivo -->
-<!-- TODO: implementar Desktop y Mobile con Angular Material. -->
-<!-- No hay campos, datos ni contenido visual implementados. -->
+<rp-cocina-shell active="reservations">
+  <div class="heading">
+    <p class="eyebrow">RESERVAS OPERACIÓN · US17</p>
+    <h1>Rechazar solicitud de reserva</h1>
+    <p class="subtitle">Consigna el motivo formal por el cual no es posible atender la solicitud para notificar al comensal.</p>
+  </div>
+
+  @if (reserva(); as r) {
+    <div class="form-shell">
+      @if (mensajeError) {
+        <div class="error-banner" role="alert">
+          {{ mensajeError }}
+        </div>
+      }
+
+      <mat-card appearance="outlined" class="card-container">
+        <!-- Callout de advertencia -->
+        <div class="alert-box">
+          <span class="alert-icon" aria-hidden="true">⚠️</span>
+          <div>
+            <strong>Rechazo formal con liberación de espacio</strong>
+            <p>Al confirmar el rechazo, la reserva pasará al estado RECHAZADA, la mesa {{ r.mesaNumero }} quedará liberada de inmediato y el cliente recibirá una notificación con el motivo sustentado.</p>
+          </div>
+        </div>
+
+        <!-- Resumen de la reserva a desestimar -->
+        <div class="summary-box">
+          <h3>Datos de la solicitud #{{ r.codigo }}</h3>
+          <div class="summary-grid">
+            <div>
+              <span class="label">Comensal titular</span>
+              <span class="val"><strong>{{ r.nombreCliente }}</strong> ({{ r.telefonoCliente }})</span>
+            </div>
+            <div>
+              <span class="label">Fecha y horario</span>
+              <span class="val">{{ r.fecha }} · {{ r.horaInicio }} a {{ r.horaFin }}</span>
+            </div>
+            <div>
+              <span class="label">Mesa solicitada</span>
+              <span class="val">{{ r.mesaNumero }} ({{ r.zona }}) · {{ r.comensales }} personas</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Formulario con motivo obligatorio -->
+        <form [formGroup]="form0" (ngSubmit)="rechazar()" class="reject-form" novalidate>
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Motivo obligatorio del rechazo</mat-label>
+            <textarea matInput formControlName="motivo" rows="3" maxlength="300" placeholder="Ej: Salón reservado íntegramente para evento privado institucional, sobrecupo imprevisto en cocina..." required></textarea>
+            <mat-hint>Explica claramente la razón que se enviará al cliente (US17)</mat-hint>
+            <mat-hint align="end">{{ form0.controls.motivo.value.length || 0 }} / 300</mat-hint>
+            <mat-error>El motivo no puede estar vacío (mínimo 5 caracteres)</mat-error>
+          </mat-form-field>
+
+          <!-- Acciones -->
+          <div class="form-actions">
+            <a mat-stroked-button [routerLink]="['/operacion/reserva']" [queryParams]="{ id: r.id }" class="btn-back">
+              ← Cancelar y conservar solicitud
+            </a>
+            <button mat-flat-button color="warn" type="submit" class="btn-reject" [disabled]="form0.invalid">
+              Rechazar reserva formalmente
+            </button>
+          </div>
+        </form>
+      </mat-card>
+    </div>
+  }
+</rp-cocina-shell>

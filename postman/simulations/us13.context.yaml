@@ -1,0 +1,30 @@
+purpose:
+  stands_in_for: Consulta del estado del pedido propio del backend RestoPilot.
+  unblocks: Probar el refresco real del frontend y sus errores sin cambiar pedidos de la base del equipo.
+assumptions:
+  - id: seguimiento-por-consulta
+    status: supported
+    claim: GET /api/pedidos/{id} devuelve el estado actual del pedido y valida su propiedad para clientes.
+    reason: Se leyeron PedidoController, PedidoService y EstadoPedido; no existe un endpoint separado de seguimiento en este contrato.
+    verification: Inspección del código el 2026-11-02; pasaron 21 recorridos del frontend real contra HTTP simulado, siete casos del store y tres pruebas HTTP backend con JWT/H2, con alcances separados.
+    source: backend modules/pedidos/controller/PedidoController.java y service/PedidoService.java; src/app/core/services/pedido.service.ts
+    updated_at: '2026-11-02'
+  - id: refresco-sin-avances-inventados
+    status: supported
+    claim: En los escenarios ejecutados el frontend actualiza solo desde una respuesta válida del mismo pedido y distingue información anterior de una consulta nueva.
+    reason: Se observaron GET, estado de la UI, invariancia del desglose, doble clic, pérdida de acceso y respuestas tardías; no hubo escrituras de pedidos desde el seguimiento.
+    verification: 21 recorridos HTTP simulados US13 y 25 regresiones US12 correctos; consulta de pedidos en el log de la simulación y resultados del navegador.
+    source: scripts/us13-api-browser.cjs; scripts/us13-seguimiento.test.cjs; src/app/pages/cliente/pedido-ui/pedido-consulta-store.ts
+    updated_at: '2026-11-02'
+  - id: disponibilidad-no-certificada
+    status: unknown
+    claim: El estado consultado refleja el entorno PostgreSQL del equipo en una sesión de cliente real.
+    reason: El mock usa datos y tokens sintéticos y sus cambios se realizan solo en /__test; no prueba persistencia de ese entorno.
+    verification: Pendiente de prueba conjunta con la base del equipo. Se reutiliza el mock local de US11/US12 sin publicar recursos remotos.
+    source: postman/mocks/restopilot-us11/default.js; docs/GUIA-INTEGRACION-PEDIDOS.md
+    updated_at: '2026-11-02'
+fingerprints:
+  - id: us13-local
+    date: '2026-11-02'
+    commit: working-tree
+    cli: '1.75.0'
