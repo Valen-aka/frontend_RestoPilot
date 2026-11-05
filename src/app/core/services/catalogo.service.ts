@@ -140,6 +140,25 @@ export class CatalogoService {
     );
   }
 
+  // US14: OBTENER PLATO POR ID
+  obtenerPlato(id: number): Observable<PlatoResponse> {
+    return this.http.get<PlatoResponse>(
+      this.base + '/platos/' + id,
+      { timeout: 20000 }
+    );
+  }
+
+// US14: ACTUALIZAR PLATO
+  actualizarPlato(
+    id: number,
+    datos: PlatoRequest
+  ): Observable<PlatoResponse> {
+    return this.http.put<PlatoResponse>(
+      this.base + '/platos/' + id,
+      datos,
+      { timeout: 20000 }
+    );
+  }
   // LISTAR CATEGORÍAS
   categorias(
     restauranteId: number
