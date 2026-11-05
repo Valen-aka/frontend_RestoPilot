@@ -1055,8 +1055,8 @@
     ],
     "owner": "Valentina Montenegro",
     "us": "US23",
-    "status": "Pendiente",
-    "contenidoImplementado": false
+    "status": "Implementada e integrada; validada con JWT y H2, PostgreSQL pendiente",
+    "contenidoImplementado": true
   },
   {
     "slug": "op-categoria-nueva",
@@ -1077,8 +1077,8 @@
     ],
     "owner": "Valentina Montenegro",
     "us": "US23",
-    "status": "Pendiente",
-    "contenidoImplementado": false
+    "status": "Implementada e integrada; validada con JWT y H2, PostgreSQL pendiente",
+    "contenidoImplementado": true
   },
   {
     "slug": "op-categoria-editar",
@@ -1099,8 +1099,8 @@
     ],
     "owner": "Valentina Montenegro",
     "us": "US23",
-    "status": "Pendiente",
-    "contenidoImplementado": false
+    "status": "Implementada e integrada; validada con JWT y H2, PostgreSQL pendiente",
+    "contenidoImplementado": true
   },
   {
     "slug": "op-categoria-eliminar",
@@ -1124,8 +1124,8 @@
     ],
     "owner": "Valentina Montenegro",
     "us": "US23",
-    "status": "Pendiente",
-    "contenidoImplementado": false
+    "status": "Implementada e integrada; validada con JWT y H2, PostgreSQL pendiente",
+    "contenidoImplementado": true
   },
   {
     "slug": "op-platos",

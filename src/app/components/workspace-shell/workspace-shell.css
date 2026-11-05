@@ -10,3 +10,21 @@
 main{padding:38px;flex:1;min-width:0}.customer,.account{display:flex;flex-direction:column}.customer main{max-width:1200px;width:100%;margin:auto;padding-top:38px}.public-header{min-height:76px;padding:24px max(22px,calc((100% - 1120px)/2));display:flex;align-items:center;justify-content:space-between;gap:28px;background:#fff;border-bottom:1px solid #e0e6e3}.public-brand{color:#18334a;text-decoration:none;flex:none}.public-brand small{color:#8caaa0;font-size:7px}.public-header nav{display:flex;gap:24px;flex-wrap:wrap}.public-header nav a{font-size:12px;color:#758c86;text-decoration:none}.public-header nav a:hover{color:#219567}.account{background:#fff}.account main{max-width:900px;width:100%;margin:auto}
 footer{display:flex;justify-content:space-between;gap:18px;flex-wrap:wrap;max-width:1124px;width:calc(100% - 76px);margin:40px auto 0;border-top:1px solid #e0e6e3;padding:26px 0 36px;color:#97a99e;font-size:11px}footer a{color:#219567;text-decoration:none}a:focus-visible{outline:3px solid #4eb28e;outline-offset:3px}
 @media(max-width:900px){.workspace{grid-template-columns:minmax(0,1fr)}.sidebar{min-height:0;padding:20px}.restaurant,.nav-label,.profile,.access-link{display:none}.sidebar nav{flex-direction:row;flex-wrap:wrap;gap:4px;margin-top:16px}.sidebar nav a{min-height:30px;padding:7px 8px;font-size:10px;gap:0;border:0}.nav-icon{display:none}.brand small{font-size:7px}.topbar{padding:12px 20px;min-height:56px;font-size:10px;gap:8px}.topbar-actions{gap:8px}.topbar .preview-status{font-size:9px;padding:7px 8px}main{padding:28px 18px 42px}.public-header{padding:24px 18px;flex-wrap:wrap;gap:20px}.public-header nav{gap:16px;order:2;width:100%}.public-header nav a{font-size:11px}.public-header .bell{margin-left:auto}.customer main{padding:30px 18px}.account main{padding:38px 22px}footer{width:calc(100% - 36px);margin-top:16px;flex-direction:column;gap:7px}}
+
+/* Variante conectada US23: sin cambiar estilos de otras historias. */
+@font-face{font-family:RP-Categorias;src:url('/assets/pedido/fonts/roboto.ttf') format('truetype');font-weight:100 900;font-display:swap}
+.live{font-family:RP-Categorias,Roboto,Arial,sans-serif;background:#f5f6f2;color:#18334a}
+.live .sidebar{background:var(--rp-navy);padding:28px 20px;min-height:900px}
+.live .logo img{position:static;width:48px;height:48px;object-fit:contain}.live .logo-cover{position:absolute;inset:0;background:white;border-radius:10px}
+.live .brand strong{font-size:21px}.live .restaurant{margin:30px 0 0;padding:13px}.live .nav-label{margin:30px 12px 12px}
+.live .sidebar nav a{padding:12px 10px;min-height:44px}.live .profile{padding-top:24px}
+.live .logout{background:none;border:0;text-align:left;cursor:pointer;padding:0;min-height:44px}
+.live .topbar{min-height:77px}.live main{padding:38px 38px 65px;max-width:1450px;width:100%}
+@media(max-width:900px){.live .sidebar{min-height:160px;padding:20px}.live .sidebar nav{flex-wrap:nowrap;overflow-x:auto;gap:8px;padding-bottom:4px}.live .sidebar nav a{flex:none;min-height:44px;padding:8px;font-size:10px}.live .topbar{min-height:55px;padding:12px 20px}.live main{padding:25px 18px 60px}.live .brand small{letter-spacing:1.6px}.live .profile,.live .logout{display:none}}
+
+@media(max-width:900px){.workspace.live{grid-template-rows:min-content 1fr}.live .sidebar{align-self:start;width:100%;min-width:0}}
+
+.live .topbar{height:77px;min-height:77px}.live .topbar .preview-status{font-size:10px;line-height:13px;padding:6px 10px}.live .sidebar nav a{height:44px;padding:0 10px}.live .brand small{font-weight:400}
+@media(max-width:900px){.live .topbar{height:55px;min-height:55px}.live .sidebar{min-height:160px}.live .sidebar nav a{padding:8px}}
+
+.live .current-date{font-size:10px;line-height:13px}@media(max-width:900px){.live .current-date{display:none}}
