@@ -127,14 +127,13 @@
           <td>
             <div class="actions">
               <a
-                [routerLink]="['/operacion/plato/editar']"
+                [routerLink]="['/operacion/plato/editar', plato.id]"
               >
                 Editar
               </a>
 
               <a
-                [routerLink]="['/operacion/plato/disponibilidad']"
-                [queryParams]="{id: plato.id}"
+                [routerLink]="['/operacion/plato/disponibilidad', plato.id]"
               >
                 Disponibilidad
               </a>

@@ -1,3 +1,50 @@
-<!-- FRAME: op-plato-disponibilidad | Pausar un plato -->
-<!-- TODO: implementar Desktop y Mobile con Angular Material. -->
-<!-- No hay campos, datos ni contenido visual implementados. -->
+<section class="availability-page">
+  <header class="page-heading">
+    <div>
+      <p class="eyebrow">CARTA</p>
+
+      <h1>
+        @if (plato() && !plato()!.disponible) {
+        Reactivar un plato
+        } @else {
+        Pausar un plato
+        }
+      </h1>
+
+      <p class="subtitle">
+        Reactívalo cuando vuelva a estar listo.
+      </p>
+    </div>
+  </header>
+
+  <main class="confirmation-area">
+    @if (cargando()) {
+    <div class="state-message" role="status">
+      Cargando información del plato...
+    </div>
+    } @else if (plato(); as seleccionado) {
+    <div class="confirmation-content">
+      @if (error()) {
+      <p class="error-message" role="alert">
+        {{ error() }}
+      </p>
+      }
+
+      <rp-op-plato-disponibilidad-dialog
+        [nombre]="seleccionado.nombre"
+        [disponible]="seleccionado.disponible"
+        [guardando]="guardando()"
+        (confirmar)="confirmarCambio()"
+        (volver)="volver()"
+      />
+    </div>
+    } @else {
+    <div class="state-message error-message" role="alert">
+      <p>{{ error() }}</p>
+      <a routerLink="/operacion/platos">
+        Volver al listado
+      </a>
+    </div>
+    }
+  </main>
+</section>

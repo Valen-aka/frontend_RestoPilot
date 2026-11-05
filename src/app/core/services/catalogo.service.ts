@@ -159,6 +159,20 @@ export class CatalogoService {
       { timeout: 20000 }
     );
   }
+  // US14: CAMBIAR DISPONIBILIDAD DE PLATO
+  cambiarDisponibilidadPlato(
+    id: number,
+    disponible: boolean
+  ): Observable<PlatoResponse> {
+    return this.http.patch<PlatoResponse>(
+      this.base + '/platos/' + id + '/disponibilidad',
+      null,
+      {
+        params: { disponible: String(disponible) },
+        timeout: 20000
+      }
+    );
+  }
   // LISTAR CATEGORÍAS
   categorias(
     restauranteId: number
