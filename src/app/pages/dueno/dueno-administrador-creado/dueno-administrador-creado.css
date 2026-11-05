@@ -1,2 +1,7 @@
-:host{display:block}
-/* TODO: estilos responsive exclusivos de esta pantalla; utilizar variables globales. */
+:host { display: block; }
+.preview-description { margin: 12px 0 24px; }
+.account-details { display: grid; gap: 24px; margin: 24px 0; }
+.account-details div { display: grid; gap: 8px; }
+.account-details dt { color: #83919a; font-size: 12px; }
+.account-details dd { margin: 0; }
+.result-actions { margin-top: 24px; align-items: center; }

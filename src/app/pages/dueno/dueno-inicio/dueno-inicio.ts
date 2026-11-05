@@ -1,6 +1,12 @@
 import {Component} from '@angular/core';
-/** Frame: dueno-inicio. Responsable: Francesco Meza. Implementación pendiente. */
-@Component({selector:'rp-dueno-inicio',imports:[],templateUrl:'./dueno-inicio.html',styleUrl:'./dueno-inicio.css'})
-export class DuenoInicioPage{
+import {RouterLink} from '@angular/router';
+import {MatButtonModule} from '@angular/material/button';
+import {WorkspaceShell} from '../../../components/workspace-shell/workspace-shell';
 
-}
+@Component({
+  selector: 'rp-dueno-inicio',
+  imports: [WorkspaceShell, RouterLink, MatButtonModule],
+  templateUrl: './dueno-inicio.html',
+  styleUrls: ['../../../components/workspace-shell/workspace-pages.css', './dueno-inicio.css'],
+})
+export class DuenoInicioPage {}

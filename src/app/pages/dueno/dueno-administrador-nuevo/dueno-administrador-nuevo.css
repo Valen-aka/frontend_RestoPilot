@@ -1,2 +1,7 @@
-:host{display:block}
-/* TODO: estilos responsive exclusivos de esta pantalla; utilizar variables globales. */
+:host { display: block; }
+.form-actions { justify-content: space-between; margin-top: 24px; padding-top: 24px; border-top: 1px solid #edf0ec; }
+.account-notice { margin-top: 32px; }
+.preview-label { margin-bottom: 16px; }
+.preview-label .hint { margin: 8px 0 0; }
+.field-error:empty { display: none; }
+@media (max-width: 420px) { .form-actions { gap: 12px; } .form-actions .primary { padding-inline: 14px; } }
