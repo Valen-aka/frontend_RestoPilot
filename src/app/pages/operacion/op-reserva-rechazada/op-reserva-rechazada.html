@@ -1,3 +1,68 @@
-<!-- FRAME: op-reserva-rechazada | Solicitud rechazada -->
-<!-- TODO: implementar Desktop y Mobile con Angular Material. -->
-<!-- No hay campos, datos ni contenido visual implementados. -->
+<rp-cocina-shell active="reservations">
+  <div class="heading">
+    <p class="eyebrow">RESERVAS OPERACIÓN · US17</p>
+    <h1>Constancia de reserva desestimada</h1>
+    <p class="subtitle">La solicitud ha sido rechazada formalmente y la mesa ha sido liberada para la agenda del salón.</p>
+  </div>
+
+  @if (reserva(); as r) {
+    <div class="content-shell">
+      <mat-card appearance="outlined" class="card-container">
+        <!-- Banner de rechazo procesado -->
+        <div class="status-banner" role="status">
+          <div class="banner-icon" aria-hidden="true">✕</div>
+          <div class="banner-content">
+            <h2>Solicitud Desestimada</h2>
+            <p>La reserva <strong>#{{ r.codigo }}</strong> figura como rechazada. La mesa <strong>{{ r.mesaNumero }}</strong> quedó liberada para nuevas reservas en el turno {{ r.horaInicio }} a {{ r.horaFin }}.</p>
+          </div>
+        </div>
+
+        <!-- Ficha de detalles -->
+        <div class="details-section">
+          <h3>Detalle de la resolución administrativa</h3>
+          <dl class="detail-dl">
+            <div>
+              <dt>Código de reserva</dt>
+              <dd>#{{ r.codigo }}</dd>
+            </div>
+            <div>
+              <dt>Titular comensal</dt>
+              <dd>{{ r.nombreCliente }} ({{ r.telefonoCliente }})</dd>
+            </div>
+            <div>
+              <dt>Fecha y horario solicitado</dt>
+              <dd>{{ r.fecha }} · {{ r.horaInicio }} a {{ r.horaFin }}</dd>
+            </div>
+            <div>
+              <dt>Mesa desocupada</dt>
+              <dd>{{ r.mesaNumero }} ({{ r.zona }})</dd>
+            </div>
+            <div>
+              <dt>Comensales</dt>
+              <dd>{{ r.comensales }} personas</dd>
+            </div>
+            <div class="full-row">
+              <dt>Motivo registrado para el comensal (US17)</dt>
+              <dd class="reason-text">{{ r.motivoRechazo || 'Capacidad máxima de cocina y salón alcanzada para el turno nocturno.' }}</dd>
+            </div>
+          </dl>
+        </div>
+
+        <div class="notification-notice">
+          <span class="notice-icon" aria-hidden="true">🔔</span>
+          <p>Se envió una notificación interna al comensal comunicando el motivo de rechazo y ofreciendo alternativas de reserva.</p>
+        </div>
+
+        <!-- Acciones -->
+        <div class="form-actions">
+          <a mat-stroked-button routerLink="/operacion" class="btn-secondary">
+            Panel de operación
+          </a>
+          <a mat-flat-button routerLink="/operacion/reservas" class="btn-primary">
+            Volver a la agenda de reservas →
+          </a>
+        </div>
+      </mat-card>
+    </div>
+  }
+</rp-cocina-shell>

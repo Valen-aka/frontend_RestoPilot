@@ -1,0 +1,130 @@
+<a class="skip-link" href="#pedido-contenido" (click)="skipToContent($event)">Saltar al contenido</a>
+<div class="pedido-shell">
+  <header class="client-header">
+    <a class="brand" routerLink="/cliente" aria-label="RestoPilot, inicio de cliente">
+      <span>Resto<span class="brand-accent">Pilot</span></span>
+      <small>Tu restaurante, en piloto automático</small>
+    </a>
+    <nav aria-label="Navegación de cliente">
+      <a routerLink="/cliente">Inicio</a><a routerLink="/cliente/carta">La carta</a>
+      <a routerLink="/cliente/reservas">Mis reservas</a><a routerLink="/cliente/pedidos" class="active" aria-current="page">Mis pedidos</a>
+      <a routerLink="/cliente/asistente">Asistente IA</a>
+    </nav>
+    <div class="sample-context"><span class="sample-avatar" aria-hidden="true">M</span><div><strong>{{ integrated() ? 'Mi cuenta' : 'Vista de muestra' }}</strong><small>{{ sessionConnected() ? 'Sesión de cliente' : 'Sin sesión conectada' }}</small></div></div>
+  </header>
+
+  <main id="pedido-contenido" tabindex="-1" class="pedido-main">
+    <div class="page-heading">
+      <p class="eyebrow">{{ mode() === 'payment' ? 'PAGOS' : 'PEDIDOS CLIENTE' }}</p>
+      <h1 id="pedido-title" tabindex="-1">{{ title() }}</h1>
+      <p class="subtitle">{{ mode() === 'payment' ? 'Tu información, en un solo lugar.' : 'Cada paso, sin perderte nada.' }}</p>
+      @if (!integrated()) {<p class="sample-notice">Demostración visual · Los datos son de ejemplo y no se guardan operaciones.</p>}
+    </div>
+
+    @switch (queryState()) {
+      @case ('missing-id') {<mat-card appearance="outlined" class="state-card" role="status"><h2>Elige el pedido que deseas consultar</h2><p>Abre un pedido desde tu listado para ver su detalle y pago.</p><a mat-stroked-button routerLink="/cliente/pedidos">Ver mis pedidos</a></mat-card>}
+      @case ('unauthenticated') {<mat-card appearance="outlined" class="state-card" role="status"><h2>Necesitas una sesión de cliente</h2><p>Inicia sesión para acceder a tus pedidos.</p><a mat-stroked-button routerLink="/auth/login">Ir al inicio de sesión</a></mat-card>}
+      @case ('forbidden') {<mat-card appearance="outlined" class="state-card" role="alert"><h2>No tienes permiso para esta consulta</h2><p>No podemos mostrar la información de este pedido.</p><a mat-stroked-button routerLink="/cliente/pedidos">Volver a mis pedidos</a></mat-card>}
+      @case ('loading') {
+        <mat-card appearance="outlined" class="state-card" role="status" aria-live="polite" aria-busy="true">
+          <mat-spinner diameter="32" aria-hidden="true"></mat-spinner>
+          <p>Consultando la información del pedido…</p>
+        </mat-card>
+      }
+      @case ('not-found') {
+        <mat-card appearance="outlined" class="state-card" role="status">
+          <h2>No se encontró el pedido</h2>
+          <p>No hay información disponible para esta consulta.</p>
+          <a mat-stroked-button routerLink="/cliente/pedidos">Volver a mis pedidos</a>
+        </mat-card>
+      }
+      @case ('error') {
+        <mat-card appearance="outlined" class="state-card" role="alert">
+          <h2>No pudimos completar la consulta</h2>
+          <p>{{ issue() || 'No pudimos consultar el pedido. Intenta nuevamente.' }}</p>
+          <button mat-stroked-button type="button" (click)="retryRequested.emit()">Reintentar consulta</button>
+        </mat-card>
+      }
+      @default {
+        @if (mode() === 'payment') {
+          <mat-card appearance="outlined" class="payment-card">
+            <h2>Pedido #{{ order().id }}</h2>
+            @if (paymentQueryState() === 'loading') {<div role="status" aria-live="polite" aria-busy="true"><mat-spinner diameter="32" aria-hidden="true"/><p>Consultando el registro de pago…</p></div>}
+            @else if (paymentQueryState() === 'error') {<div role="alert"><p>{{ paymentIssue() }}</p><button mat-stroked-button type="button" (click)="retryRequested.emit()">Reintentar consulta de pago</button></div>}
+            @else { @switch (effectivePayment()) {
+              @case ('missing') {
+                <p class="no-payment" role="status">No existe un registro de pago para este pedido.</p>
+              }
+              @case ('pending') {
+                <span class="status-badge pending">Pendiente</span>
+                <p class="payment-amount">{{ (paymentRecord()?.amount ?? order().total) | currency:'PEN':'S/ ':'1.2-2' }}</p>
+                <p class="payment-description">Aún no hay un pago confirmado por el restaurante. Consulta con el personal cómo realizarlo.</p>
+                @if (paymentRecord()?.method || paymentRecord()?.reference) {<dl class="payment-details">@if (paymentRecord()?.method) {<div><dt>Método</dt><dd>{{ paymentRecord()?.method }}</dd></div>}@if (paymentRecord()?.reference) {<div><dt>Referencia</dt><dd>{{ paymentRecord()?.reference }}</dd></div>}</dl>}
+                @else {<p class="information"><span aria-hidden="true">i</span>No se ha elegido un método de pago. No hay pasarela ni captura de tarjeta.</p>}
+              }
+              @case ('paid') {
+                <span class="status-badge">Pagado</span>
+                <p class="payment-amount">{{ paymentRecord()?.amount | currency:'PEN':'S/ ':'1.2-2' }}</p>
+                <dl class="payment-details">
+                  @if (paymentRecord()?.method) {<div><dt>Método</dt><dd>{{ paymentRecord()?.method }}</dd></div>}
+                  @if (paymentRecord()?.reference) {<div><dt>Referencia</dt><dd>{{ paymentRecord()?.reference }}</dd></div>}
+                  @if (paymentRecord()?.registeredAt) {<div><dt>Registrado</dt><dd>{{ paymentRecord()?.registeredAt }}</dd></div>}
+                </dl>
+                <p class="information"><span aria-hidden="true">i</span>El restaurante registró este pago recibido por un medio externo. RestoPilot no procesa el cobro.</p>
+              }
+            }
+            }
+            <a mat-stroked-button class="back-to-order" routerLink="/cliente/pedido" [queryParams]="orderQuery()" [state]="returnState">Volver al pedido</a>
+          </mat-card>
+        } @else {
+          <mat-card appearance="outlined" class="tracking-card" [attr.aria-busy]="refreshing()">
+            <div class="tracking-heading"><h2>Pedido #{{ order().id }}</h2><span class="current-status" [class.cancelled-status]="status() === 'Cancelado'">{{ status() }}</span></div>
+            <rp-pedido-progress id="tracking-progress" [status]="status()" [stale]="trackingStale()" />
+            @if (trackingIssue()) {<p class="tracking-error" role="alert">{{ trackingIssue() }}</p>}
+            <div class="tracking-actions">
+              @if (integrated()) {<button mat-stroked-button type="button" aria-label="Actualizar seguimiento" aria-controls="tracking-progress" [disabled]="refreshing()" [disabledInteractive]="true" (click)="refreshRequested.emit()">{{ refreshing() ? 'Actualizando…' : 'Actualizar seguimiento' }}</button>}
+              @if (refreshing()) {<p class="refresh-message" role="status" aria-live="polite">Consultando el estado del pedido…</p>}
+              @else if (refreshStatus()) {<p class="refresh-message" role="status" aria-live="polite">{{ refreshStatus() }}</p>}
+            </div>
+            <a class="tracking-notifications" routerLink="/cliente/notificaciones">Consultar notificaciones</a>
+          </mat-card>
+
+          <div class="detail-grid">
+            <mat-card appearance="outlined" class="selection-card">
+              <h2 id="selection-title">Tu selección</h2>
+              <div class="table-region" tabindex="0" role="region" aria-labelledby="selection-title"
+                aria-describedby="table-help">
+                <table mat-table [dataSource]="order().lines" aria-label="Platos del pedido">
+                  <ng-container matColumnDef="name"><th mat-header-cell *matHeaderCellDef scope="col">Plato</th><td mat-cell *matCellDef="let line">{{ line.name }}</td></ng-container>
+                  <ng-container matColumnDef="quantity"><th mat-header-cell *matHeaderCellDef scope="col">Cantidad</th><td mat-cell *matCellDef="let line">{{ line.quantity }}</td></ng-container>
+                  <ng-container matColumnDef="unitPrice"><th mat-header-cell *matHeaderCellDef scope="col">Precio unitario</th><td mat-cell *matCellDef="let line">{{ line.unitPrice | currency:'PEN':'S/ ':'1.2-2' }}</td></ng-container>
+                  <ng-container matColumnDef="subtotal"><th mat-header-cell *matHeaderCellDef scope="col">Subtotal</th><td mat-cell *matCellDef="let line">{{ line.subtotal | currency:'PEN':'S/ ':'1.2-2' }}</td></ng-container>
+                  <tr mat-header-row *matHeaderRowDef="columns"></tr>
+                  <tr mat-row *matRowDef="let row; columns: columns"></tr>
+                </table>
+              </div>
+              <p class="table-help" id="table-help">En pantallas pequeñas, desplaza la tabla para ver todas las columnas.</p>
+              <p class="selection-count">{{ unitCount() }} {{ unitCount() === 1 ? 'plato' : 'platos' }} <span>{{ order().total | currency:'PEN':'S/ ':'1.2-2' }}</span></p>
+              <p class="selection-total"><span>Total del pedido</span><strong>{{ order().total | currency:'PEN':'S/ ':'1.2-2' }}</strong></p>
+              <p class="total-note">El total definitivo lo calcula el restaurante. No se cobra desde esta pantalla.</p>
+            </mat-card>
+            <mat-card appearance="outlined" class="order-information">
+              <h2>Información del pedido</h2>
+              <dl>
+                <div><dt>Modalidad</dt><dd>{{ labels[order().modality] }}</dd></div>
+                <div><dt>Restaurante</dt><dd>{{ order().restaurant }}</dd></div>
+                <div><dt>Fecha de solicitud</dt><dd>{{ order().requestedAt }}</dd></div>
+                @if (order().modality === 'SALON' && order().table) {<div><dt>Mesa</dt><dd>{{ order().table }}</dd></div>}
+                @if (order().modality === 'RECOGER' && order().restaurantAddress) {<div><dt>Dirección del restaurante</dt><dd>{{ order().restaurantAddress }}</dd></div>}
+                @if (order().modality === 'DELIVERY' && order().deliveryAddress) {<div><dt>Dirección de entrega</dt><dd>{{ order().deliveryAddress }}</dd></div>}
+              </dl>
+              <a mat-stroked-button routerLink="/cliente/pago" [queryParams]="paymentQuery()" [state]="navigationState()">Ver registro de pago</a>
+            </mat-card>
+          </div>
+          <a class="orders-return" routerLink="/cliente/pedidos" [state]="{pedidoReturnId: order().id}">← Volver a mis pedidos</a>
+        }
+      }
+    }
+  </main>
+  <footer class="client-footer"><p>RestoPilot{{ queryState() === 'ready' ? ' · ' + order().restaurant : '' }}</p><p>Tu restaurante, en piloto automático.</p>@if (integrated() && sessionConnected()) {<button mat-button type="button" (click)="logoutRequested.emit()">Cerrar sesión</button>}</footer>
+</div>

@@ -1,0 +1,23 @@
+purpose:
+  stands_in_for: Consulta y atención de reservas US25 con controles del reloj del servidor.
+  unblocks: Confirmaciones, fechas, límites, errores y verificación de resultado incierto sin tocar datos del equipo.
+assumptions:
+  - id: contrato-atencion
+    status: supported
+    claim: GET /reservas/{id} y PATCH /reservas/{id}/llegada o completar devuelven ReservaResponseDTO.
+    reason: Se contrastaron los controllers, servicios, reglas y ampliación aditiva de controles.
+    source: docs/specs/operacion-reserva-atencion-api/SPEC.md
+    updated_at: '2026-11-03'
+  - id: limites
+    status: unverified
+    claim: La simulación no acredita JWT firmado, notificaciones, liberación de mesa ni PostgreSQL del equipo.
+    reason: Se prueban por separado en backend con HTTP/JWT/Clock/H2; este mock usa datos sintéticos y estado aislado.
+    source: backend Us25HttpIntegrationTest.java
+    updated_at: '2026-11-03'
+
+verification:
+  date: '2026-11-03'
+  frontend_unit: 62 pruebas compartidas correctas, incluidas 17 de US25.
+  browser: 23 recorridos correctos a 320/390/768/1440, con errores, recuperación y controles del servidor.
+  backend_separate: 8 pruebas HTTP/JWT/Clock/H2 y 19 de regresión del ciclo correctas.
+  limitations: El mock no demuestra JWT real, PostgreSQL, notificaciones o disponibilidad; esas consecuencias se prueban por separado en backend aislado.

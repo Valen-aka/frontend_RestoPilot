@@ -1,2 +1,9 @@
-:host{display:block}
-/* TODO: estilos responsive exclusivos de esta pantalla; utilizar variables globales. */
+:host { display: block; }
+.dashboard-disclaimer { color: #647480; font-size: 12px; margin: -8px 0 22px; }
+.dashboard-disclaimer .badge { margin-right: 8px; }
+.dashboard-columns { grid-template-columns: 1.55fr 1fr; margin-top: 24px; align-items: start; }
+.preparation-list { list-style: none; padding: 0; }
+.preparation-list li { padding: 18px 12px; color: #4e806d; border-bottom: 1px solid #edf0ec; }
+.preparation-list li span { margin-right: 4px; }
+h3 { font-size: 16px; margin: 20px 0 12px; }
+@media (max-width: 760px) { .dashboard-columns { grid-template-columns: 1fr; } }

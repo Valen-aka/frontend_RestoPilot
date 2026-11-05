@@ -1,0 +1,38 @@
+:host{--mat-button-filled-container-shape:9px;--mat-button-filled-label-text-font:'Pedido Roboto',Arial,sans-serif;--mat-button-filled-label-text-size:12px;--mat-button-filled-label-text-weight:700;--mat-button-outlined-label-text-size:12px;--mat-form-field-container-text-font:'Pedido Open Sans',Arial,sans-serif;--mat-form-field-container-text-size:13px;--mat-form-field-outlined-label-text-size:13px;--mat-button-toggle-selected-state-background-color:var(--rp-navy);--mat-button-toggle-selected-state-text-color:#fff;--mat-button-toggle-text-color:#596d77;--mat-button-toggle-label-text-font:'Pedido Open Sans',Arial,sans-serif;--mat-button-toggle-label-text-size:12px;--mat-button-toggle-height:44px;--mat-button-toggle-shape:8px;--mat-button-toggle-background-color:transparent}
+.cart-brand{display:flex;align-items:center;gap:10px;font-size:21px}
+.brand-image{display:block;position:relative;width:43px;height:43px;flex:none;border-radius:10px;overflow:hidden}
+.brand-image img{position:absolute;inset:0;width:43px;height:43px;object-fit:contain}
+.brand-image>span{position:absolute;inset:0;background:#fff}
+.cart-main{min-height:550px}
+.cart-main .page-heading{margin-bottom:34px}
+.cart-grid{display:grid;grid-template-columns:minmax(0,1.55fr) minmax(0,1fr);gap:24px;align-items:start}
+.cart-summary,.modality-card{padding:24px}
+.cart-summary h2{margin-bottom:26px}
+.cart-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:20px}
+.cart-actions a,.cart-actions button{min-height:44px;font-size:12px}
+.cart-summary>button{align-self:flex-start;min-height:44px;margin-top:4px;max-width:100%;height:auto;padding-block:12px;line-height:1.5}
+.selection-count{flex-wrap:wrap;overflow-wrap:anywhere}
+.selection-total{margin-bottom:0;overflow-wrap:anywhere}
+.selection-total strong{overflow-wrap:anywhere;max-width:100%}
+.modality-selector{display:flex;width:max-content;max-width:100%;flex-wrap:wrap;border:0;border-bottom:1px solid var(--pedido-border);border-radius:0;padding-bottom:16px;margin-bottom:24px;gap:8px}
+.modality-selector mat-button-toggle{border:0;border-radius:8px}
+.modality-card h2{margin-bottom:24px}
+.modality-card mat-form-field{width:100%;margin-bottom:12px}
+.modality-description{color:var(--pedido-muted);font-size:13px;line-height:1.8}
+.modality-card .information{margin-top:30px}
+.field-note{font-size:11px;color:var(--pedido-muted);line-height:1.7;margin-block:8px 16px}
+.center-card{max-width:850px;margin:48px auto 0;padding:60px 36px 46px;text-align:center;align-items:center}
+.center-card h2{font:700 26px/1.25 'Pedido Roboto',Arial,sans-serif;letter-spacing:-.6px;margin:28px 0;max-width:100%;overflow-wrap:anywhere}
+.center-card p{font-size:13px;line-height:1.9;color:var(--pedido-muted);max-width:600px;margin:8px 0 24px;overflow-wrap:anywhere}
+.center-card a{min-height:44px;margin-top:4px;max-width:100%;height:auto;padding-block:12px}
+.state-symbol{display:grid;place-items:center;width:80px;height:80px;border-radius:24px;background:#edf5f0;color:var(--rp-primary);font:400 42px/1 'Pedido Open Sans',Arial,sans-serif}
+.center-card .created-status{font-weight:700;color:var(--rp-primary);margin:0 0 8px}
+.cart-feedback,.selection-error{font-size:13px;line-height:1.7;color:var(--rp-error);overflow-wrap:anywhere}
+.cart-feedback{padding:16px;border:1px solid var(--rp-error);border-radius:8px;background:var(--rp-error-container);margin-bottom:24px}
+.cart-feedback:focus{outline:3px solid var(--rp-navy);outline-offset:3px}
+@media(max-width:1100px){.cart-brand{max-width:100%}.cart-brand small{white-space:normal}}
+@media(max-width:850px){.cart-grid{grid-template-columns:1fr;gap:28px}.center-card{margin-top:36px}}
+@media(max-width:600px){.cart-main .page-heading{margin-bottom:30px}.cart-summary,.modality-card{padding:20px}.center-card{padding:56px 24px 44px}.center-card h2{font-size:25px}.center-card p{font-size:13px}.cart-brand{font-size:21px;gap:6px}.cart-brand small{letter-spacing:.8px;font-size:7px}.modality-selector{width:100%;gap:4px;justify-content:flex-start}.modality-selector mat-button-toggle{flex:1 1 auto}.modality-card .information{margin-top:24px}.cart-summary>button{font-size:12px}}
+@media(max-width:360px){.modality-selector{display:grid;grid-template-columns:1fr 1fr}.center-card{padding-inline:20px}}
+
+.confirmed-lines{padding-inline-start:24px;text-align:left;max-width:100%;overflow-wrap:anywhere}

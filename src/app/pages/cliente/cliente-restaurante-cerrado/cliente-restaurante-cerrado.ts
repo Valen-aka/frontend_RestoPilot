@@ -1,6 +1,6 @@
 import {Component} from '@angular/core';
-/** Frame: cliente-restaurante-cerrado. Responsable: Alexandra Fong. Implementación pendiente. */
-@Component({selector:'rp-cliente-restaurante-cerrado',imports:[],templateUrl:'./cliente-restaurante-cerrado.html',styleUrl:'./cliente-restaurante-cerrado.css'})
-export class ClienteRestauranteCerradoPage{
+import {CarritoView} from '../carrito-ui/carrito-view';
 
-}
+/** Entrada de US11: presentación de muestra, sin registro real. */
+@Component({selector:'rp-cliente-restaurante-cerrado',imports:[CarritoView],templateUrl:'./cliente-restaurante-cerrado.html',styleUrl:'./cliente-restaurante-cerrado.css'})
+export class ClienteRestauranteCerradoPage {}

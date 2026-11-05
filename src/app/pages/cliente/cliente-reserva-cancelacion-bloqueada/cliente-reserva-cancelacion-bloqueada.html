@@ -1,3 +1,108 @@
-<!-- FRAME: cliente-reserva-cancelacion-bloqueada | Tu reserva empieza pronto -->
-<!-- TODO: implementar Desktop y Mobile con Angular Material. -->
-<!-- No hay campos, datos ni contenido visual implementados. -->
+<a class="skip-link" href="#reserva-blocked-content">Saltar al contenido</a>
+
+<div class="reserva-shell">
+  <!-- Cabecera de Cliente -->
+  <header class="client-header">
+    <a class="brand" routerLink="/cliente" aria-label="RestoPilot, inicio de cliente">
+      <div class="brand-icon" aria-hidden="true">RP</div>
+      <span>Resto<span class="brand-accent">Pilot</span><small>Tu restaurante, en piloto automático</small></span>
+    </a>
+    <nav aria-label="Navegación de cliente">
+      <a routerLink="/cliente">Inicio</a>
+      <a routerLink="/cliente/carta">La carta</a>
+      <a routerLink="/cliente/reservas" class="active" aria-current="page">Mis reservas</a>
+      <a routerLink="/cliente/pedidos">Mis pedidos</a>
+      <a routerLink="/cliente/asistente">Asistente IA</a>
+    </nav>
+    <div class="sample-context">
+      <span class="sample-avatar" aria-hidden="true">AP</span>
+      <div>
+        <strong>Ana Pérez</strong>
+        <small>Mi cuenta de cliente</small>
+      </div>
+    </div>
+  </header>
+
+  <!-- Contenido Principal -->
+  <main id="reserva-blocked-content" tabindex="-1" class="reserva-main">
+    <div class="page-heading">
+      <p class="eyebrow">RESERVAS CLIENTE · US09</p>
+      <h1>Cancelación no disponible</h1>
+      <p class="subtitle">La cancelación autónoma por la aplicación requiere más de 2 horas de anticipación.</p>
+    </div>
+
+    @if (reserva(); as r) {
+      <div class="reserva-card blocked-card">
+        <!-- Callout de restricción -->
+        <div class="status-callout blocked" role="alert">
+          <div class="callout-icon" aria-hidden="true">🔒</div>
+          <div class="callout-content">
+            <h2>Límite de tiempo alcanzado (menos de 2 horas)</h2>
+            <p>
+              Faltan 2 horas o menos para el horario programado de tu reserva <strong>#{{ r.codigo }}</strong>.
+              Por políticas de preparación de salón y asignación de mesas en cocina, la anulación directa a través de la web ha quedado bloqueada.
+            </p>
+          </div>
+        </div>
+
+        <!-- Instrucción de contacto con recepción -->
+        <div class="contact-box">
+          <div class="contact-header">
+            <span class="phone-icon" aria-hidden="true">📞</span>
+            <div>
+              <h3>Comunícate directamente con recepción</h3>
+              <p>Nuestro equipo de anfitriones evaluará tu situación para gestionar la mesa de inmediato.</p>
+            </div>
+          </div>
+
+          <div class="contact-phone">
+            <span>Central telefónica:</span>
+            <a href="tel:014458920" class="phone-number">{{ telefonoRecepcion }}</a>
+          </div>
+
+          <p class="contact-hours">Horario de atención telefónica: Lunes a Domingo de 11:00 am a 11:00 pm</p>
+        </div>
+
+        <!-- Resumen de la reserva -->
+        <div class="detail-section">
+          <h3>Información de tu reserva</h3>
+          <dl class="detail-dl">
+            <div>
+              <dt>Código de reserva</dt>
+              <dd>#{{ r.codigo }}</dd>
+            </div>
+            <div>
+              <dt>Fecha y hora</dt>
+              <dd>{{ r.fecha }} · {{ r.horaInicio }} a {{ r.horaFin }}</dd>
+            </div>
+            <div>
+              <dt>Mesa</dt>
+              <dd>{{ r.mesaNumero }} ({{ r.zona }})</dd>
+            </div>
+            <div>
+              <dt>Estado</dt>
+              <dd><span class="badge-status">{{ r.estado }}</span></dd>
+            </div>
+          </dl>
+        </div>
+
+        <!-- Acciones -->
+        <div class="form-actions border-top">
+          <a mat-stroked-button routerLink="/cliente/reservas" class="btn-secondary">
+            ← Volver a mis reservas
+          </a>
+          <a mat-flat-button [routerLink]="['/cliente/reserva']" [queryParams]="{ vista: 'cliente-reserva-confirmada', id: r.id }" class="btn-primary">
+            Ver detalle de mi reserva →
+          </a>
+        </div>
+      </div>
+    }
+  </main>
+
+  <!-- Pie de Página -->
+  <footer class="client-footer">
+    <p>RestoPilot · La Mesa Verde (Lima - Miraflores)</p>
+    <p>Tu restaurante, en piloto automático.</p>
+    <a routerLink="/cliente">Volver al inicio</a>
+  </footer>
+</div>

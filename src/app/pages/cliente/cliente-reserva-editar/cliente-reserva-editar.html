@@ -1,3 +1,126 @@
-<!-- FRAME: cliente-reserva-editar | Cambiemos el plan -->
-<!-- TODO: implementar Desktop y Mobile con Angular Material. -->
-<!-- No hay campos, datos ni contenido visual implementados. -->
+<a class="skip-link" href="#reserva-edit-content">Saltar al contenido</a>
+
+<div class="reserva-shell">
+  <!-- Cabecera de Cliente -->
+  <header class="client-header">
+    <a class="brand" routerLink="/cliente" aria-label="RestoPilot, inicio de cliente">
+      <div class="brand-icon" aria-hidden="true">RP</div>
+      <span>Resto<span class="brand-accent">Pilot</span><small>Tu restaurante, en piloto automático</small></span>
+    </a>
+    <nav aria-label="Navegación de cliente">
+      <a routerLink="/cliente">Inicio</a>
+      <a routerLink="/cliente/carta">La carta</a>
+      <a routerLink="/cliente/reservas" class="active" aria-current="page">Mis reservas</a>
+      <a routerLink="/cliente/pedidos">Mis pedidos</a>
+      <a routerLink="/cliente/asistente">Asistente IA</a>
+    </nav>
+    <div class="sample-context">
+      <span class="sample-avatar" aria-hidden="true">AP</span>
+      <div>
+        <strong>Ana Pérez</strong>
+        <small>Mi cuenta de cliente</small>
+      </div>
+    </div>
+  </header>
+
+  <!-- Contenido Principal -->
+  <main id="reserva-edit-content" tabindex="-1" class="reserva-main">
+    <div class="page-heading">
+      <p class="eyebrow">RESERVAS CLIENTE · US08</p>
+      <h1>Cambiemos el plan</h1>
+      <p class="subtitle">Modifica la fecha, hora o cantidad de personas de tu reserva activa.</p>
+    </div>
+
+    @if (reserva(); as r) {
+      <div class="reserva-card edit-card">
+        <!-- Callout de advertencia de estado pendiente -->
+        <div class="status-callout warning" role="alert">
+          <div class="callout-icon" aria-hidden="true">ℹ</div>
+          <div class="callout-content">
+            <h2>Aviso de reprogramación</h2>
+            <p>
+              Al solicitar un cambio de horario o fecha para la reserva <strong>#{{ r.codigo }}</strong>,
+              la solicitud volverá al estado <strong>PENDIENTE</strong> para una nueva evaluación del establecimiento conforme a la política del restaurante.
+            </p>
+          </div>
+        </div>
+
+        <!-- Información de la reserva original -->
+        <div class="original-info-box">
+          <span class="info-label">Datos actuales:</span>
+          <span><strong>Mesa:</strong> {{ r.mesaNumero }} ({{ r.zona }})</span>
+          <span>·</span>
+          <span><strong>Fecha actual:</strong> {{ r.fecha }}</span>
+          <span>·</span>
+          <span><strong>Horario actual:</strong> {{ r.horaInicio }} a {{ r.horaFin }}</span>
+          <span>·</span>
+          <span><strong>Comensales:</strong> {{ r.comensales }} personas</span>
+        </div>
+
+        @if (mensajeError) {
+          <div class="error-banner" role="alert">
+            {{ mensajeError }}
+          </div>
+        }
+
+        <!-- Formulario de Modificación -->
+        <form [formGroup]="form0" (ngSubmit)="solicitarCambio()" class="edit-form" novalidate>
+          <div class="form-row">
+            <mat-form-field appearance="outline" class="field-item">
+              <mat-label>Nueva fecha</mat-label>
+              <input matInput type="date" formControlName="fecha" required>
+              <mat-hint>Fecha a partir de hoy</mat-hint>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="field-item">
+              <mat-label>Nueva hora de inicio</mat-label>
+              <mat-select formControlName="horaInicio" (valueChange)="onHoraInicioChange($event)">
+                @for (h of horasDisponibles; track h) {
+                  <mat-option [value]="h">{{ h }} hrs</mat-option>
+                }
+              </mat-select>
+              <mat-hint>Turnos de 1.5 horas</mat-hint>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="field-item">
+              <mat-label>Hora estimada de fin</mat-label>
+              <input matInput type="text" formControlName="horaFin" readonly>
+              <mat-hint>Calculada automáticamente</mat-hint>
+            </mat-form-field>
+          </div>
+
+          <div class="form-row">
+            <mat-form-field appearance="outline" class="field-item">
+              <mat-label>Cantidad de comensales</mat-label>
+              <input matInput type="number" formControlName="comensales" min="1" max="12" required>
+              <mat-hint>Mínimo 1 comensal</mat-hint>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="field-item full-width">
+              <mat-label>Notas adicionales o pedidos especiales (opcional)</mat-label>
+              <textarea matInput formControlName="notas" rows="2" maxlength="500" placeholder="Ej: Preferencia de ubicación, celebración especial..."></textarea>
+              <mat-hint align="end">{{ form0.get('notas')?.value?.length || 0 }} / 500</mat-hint>
+            </mat-form-field>
+          </div>
+
+          <!-- Acciones -->
+          <div class="form-actions border-top">
+            <a mat-stroked-button routerLink="/cliente/reservas" class="btn-secondary">
+              ← Cancelar y volver
+            </a>
+            <button mat-flat-button type="submit" class="btn-primary" [disabled]="form0.invalid">
+              Solicitar cambio →
+            </button>
+          </div>
+        </form>
+      </div>
+    }
+  </main>
+
+  <!-- Pie de Página -->
+  <footer class="client-footer">
+    <p>RestoPilot · La Mesa Verde (Lima - Miraflores)</p>
+    <p>Tu restaurante, en piloto automático.</p>
+    <a routerLink="/cliente">Volver al inicio</a>
+  </footer>
+</div>
