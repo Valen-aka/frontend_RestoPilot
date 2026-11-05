@@ -1,0 +1,14 @@
+{
+  "environment": "Angular + Spring Boot + JWT + JPA/H2 aislado (no PostgreSQL)",
+  "checks": 26,
+  "categoriasHttpRequests": 22,
+  "viewports": [
+    1440,
+    390,
+    320,
+    768,
+    1024
+  ],
+  "screenshots": 10,
+  "errors": []
+}

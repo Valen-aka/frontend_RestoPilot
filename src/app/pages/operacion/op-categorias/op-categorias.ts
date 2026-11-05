@@ -1,6 +1,4 @@
 import {Component} from '@angular/core';
-/** Frame: op-categorias. Responsable: Valentina Montenegro. Implementación pendiente. */
-@Component({selector:'rp-op-categorias',imports:[],templateUrl:'./op-categorias.html',styleUrl:'./op-categorias.css'})
-export class OpCategoriasPage{
-
-}
+import {CategoriasView} from '../categorias-ui/categorias-view';
+@Component({selector:'rp-op-categorias',imports:[CategoriasView],templateUrl:'./op-categorias.html',styleUrl:'./op-categorias.css'})
+export class OpCategoriasPage {}

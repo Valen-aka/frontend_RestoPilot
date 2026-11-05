@@ -1,3 +1,22 @@
-<!-- FRAME: op-pago-error | Revisa el importe -->
-<!-- TODO: implementar Desktop y Mobile con Angular Material. -->
-<!-- No hay campos, datos ni contenido visual implementados. -->
+<rp-workspace-shell [role]="'operation'" breadcrumb="Pagos" active="pagos">
+ <header class="page-heading"><p class="eyebrow">Pagos</p><h1>Revisa el importe</h1><p class="subtitle">Conserva los datos y corrige el campo indicado.</p></header>
+ <p class="hint preview-label">Vista previa del pedido #1042 · Datos de la referencia visual.</p>
+ <p class="notice error" role="note">Vista previa de error: el monto debe coincidir con el total del pedido, S/ 66.00. Este ejemplo no representa un intento de pago real.</p>
+<div class="columns payment-columns">
+  <section class="panel" aria-labelledby="pago-title">
+   <h2 class="panel-title" id="pago-title">Corregir pago · Pedido #1042</h2>
+   <form [formGroup]="form" (ngSubmit)="submit()" novalidate>
+    <div class="form-grid">
+     <div class="field"><label for="pago-monto">Monto recibido (S/)</label><input matInput id="pago-monto" type="number" min="0.01" step="0.01" formControlName="monto" inputmode="decimal" aria-describedby="monto-hint monto-error" [attr.aria-invalid]="form.controls.monto.touched && form.controls.monto.invalid"><p class="hint" id="monto-hint">Debe coincidir exactamente con el total.</p>@if(form.controls.monto.touched && form.controls.monto.invalid){<p class="field-error" id="monto-error" role="alert">Ingresa un monto positivo igual a S/ 66.00.</p>}</div>
+     <div class="field"><label for="pago-metodo">Método</label><select matNativeControl id="pago-metodo" formControlName="metodo" aria-describedby="metodo-error" [attr.aria-invalid]="form.controls.metodo.touched && form.controls.metodo.invalid">@for(method of methods;track method){<option [value]="method">{{method}}</option>}</select>@if(form.controls.metodo.touched && form.controls.metodo.invalid){<p class="field-error" id="metodo-error" role="alert">Selecciona un método válido.</p>}</div>
+     <div class="field"><label for="pago-referencia">Código de referencia</label><input matInput id="pago-referencia" formControlName="referencia" maxlength="100" autocomplete="off" aria-describedby="referencia-hint referencia-error" [attr.aria-required]="form.controls.metodo.value !== 'Efectivo'" [attr.aria-invalid]="referenceInvalid"><p class="hint" id="referencia-hint">Obligatorio salvo efectivo; máximo 100 caracteres. No ingreses datos de tarjeta.</p>@if(referenceInvalid){<p class="field-error" id="referencia-error" role="alert">Ingresa un código de referencia de hasta 100 caracteres.</p>}</div>
+     <div class="field"><label for="pago-estado">Estado previsto</label><input matInput id="pago-estado" value="PAGADO" readonly aria-describedby="estado-hint"><p class="hint" id="estado-hint">No cambia el estado real del pedido.</p></div>
+    </div>
+    <div class="actions"><a mat-stroked-button class="secondary" routerLink="/operacion/pagos">Cancelar</a><button mat-flat-button class="primary" type="submit">Volver a registrar</button></div>
+    @if(notice()){<p class="notice" role="status">{{notice()}}</p>}
+   </form>
+  </section>
+
+ </div>
+ <nav class="preview-links" aria-label="Estados de referencia"><span class="hint">Vistas de referencia:</span><a class="text-link" routerLink="/operacion/pago/registrar" [queryParams]="{vista:'op-pago-confirmado'}">Pago confirmado</a><a class="text-link" routerLink="/operacion/pago/registrar" [queryParams]="{vista:'op-pago-error'}">Error de importe</a></nav>
+</rp-workspace-shell>

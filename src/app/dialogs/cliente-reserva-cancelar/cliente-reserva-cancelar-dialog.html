@@ -1,3 +1,22 @@
-<h2 mat-dialog-title><!-- TODO: título --></h2>
-<mat-dialog-content><!-- TODO: mensaje y campos si corresponden --></mat-dialog-content>
-<mat-dialog-actions><!-- TODO: botones de volver y confirmar --></mat-dialog-actions>
+<h2 mat-dialog-title class="dialog-title">¿Confirmar anulación de la reserva?</h2>
+
+<mat-dialog-content class="dialog-content">
+  <p>
+    Estás a punto de cancelar tu reserva
+    @if (data?.codigo) {
+      <strong>#{{ data.codigo }}</strong>.
+    }
+  </p>
+  <p class="dialog-warning">
+    Esta acción liberará de inmediato la mesa asignada en el salón para otros comensales. Esta operación no se puede deshacer.
+  </p>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end" class="dialog-actions">
+  <button mat-stroked-button [mat-dialog-close]="false" class="btn-cancel">
+    No, conservar reserva
+  </button>
+  <button mat-flat-button color="warn" [mat-dialog-close]="true" class="btn-confirm-delete">
+    Sí, cancelar reserva
+  </button>
+</mat-dialog-actions>

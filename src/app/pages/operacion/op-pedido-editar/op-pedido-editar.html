@@ -1,3 +1,30 @@
-<!-- FRAME: op-pedido-editar | Ajustar pedido pendiente -->
-<!-- TODO: implementar Desktop y Mobile con Angular Material. -->
-<!-- No hay campos, datos ni contenido visual implementados. -->
+<rp-workspace-shell [role]="'operation'" breadcrumb="Pedidos operación" active="pedidos">
+ <header class="page-heading"><p class="eyebrow">Pedidos operación</p><h1>Ajustar pedido pendiente</h1><p class="subtitle">Solo se modifica un pedido pendiente y no pagado.</p></header>
+ <section class="panel" aria-labelledby="order-title">
+  <h2 id="order-title" class="panel-title">Pedido #1042</h2>
+  <p class="hint">Datos de diseño. Los cambios de esta pantalla solo afectan la vista previa.</p>
+  <div class="table-wrap" tabindex="0" role="region" aria-label="Platos de la vista previa">
+   <table mat-table [dataSource]="items">
+    <ng-container matColumnDef="plato"><th mat-header-cell *matHeaderCellDef>Plato</th><td mat-cell *matCellDef="let item">{{item.name}}</td></ng-container>
+    <ng-container matColumnDef="cantidad"><th mat-header-cell *matHeaderCellDef>Cantidad</th><td mat-cell *matCellDef="let item">{{item.quantity}}</td></ng-container>
+    <ng-container matColumnDef="precio"><th mat-header-cell *matHeaderCellDef>Precio unitario</th><td mat-cell *matCellDef="let item">{{item.price | currency:'PEN':'S/ ':'1.2-2'}}</td></ng-container>
+    <ng-container matColumnDef="subtotal"><th mat-header-cell *matHeaderCellDef>Subtotal</th><td mat-cell *matCellDef="let item">{{item.price * item.quantity | currency:'PEN':'S/ ':'1.2-2'}}</td></ng-container>
+    <ng-container matColumnDef="acciones"><th mat-header-cell *matHeaderCellDef>Acciones</th><td mat-cell *matCellDef="let item"><button mat-button type="button" (click)="remove(item.key)" [attr.aria-label]="'Quitar '+item.name+' de la vista previa'">Quitar</button></td></ng-container>
+    <tr mat-header-row *matHeaderRowDef="columns"></tr><tr mat-row *matRowDef="let row; columns:columns"></tr>
+   </table>
+  </div>
+  <form [formGroup]="form" (ngSubmit)="save()" novalidate>
+   <div class="form-grid">
+    <div class="field"><label for="lomo-quantity">Cantidad de Lomo saltado</label><input matInput id="lomo-quantity" type="number" min="0" max="99" step="1" formControlName="lomo" aria-describedby="lomo-error"><p id="lomo-error" class="field-error">@if(form.controls.lomo.touched&&form.controls.lomo.invalid){Ingresa una cantidad entera entre 0 y 99.}</p></div>
+    <div class="field"><label for="aji-quantity">Cantidad de Ají de gallina</label><input matInput id="aji-quantity" type="number" min="0" max="99" step="1" formControlName="aji" aria-describedby="aji-error"><p id="aji-error" class="field-error">@if(form.controls.aji.touched&&form.controls.aji.invalid){Ingresa una cantidad entera entre 0 y 99.}</p></div>
+    <div class="field"><label id="modality-label">Modalidad</label><mat-select formControlName="modalidad" aria-labelledby="modality-label"><mat-option value="RECOGER">RECOGER</mat-option><mat-option value="SALON">SALÓN</mat-option><mat-option value="DELIVERY">DELIVERY</mat-option></mat-select></div>
+    <div class="field"><label for="order-table">Mesa para salón</label><input matInput id="order-table" formControlName="mesa" maxlength="30" aria-describedby="table-error"><p id="table-error" class="field-error">@if(submitted()&&form.hasError('tableRequired')){Indica una mesa para atención en salón.}</p></div>
+    <div class="field span-full"><label for="order-address">Dirección para delivery</label><textarea matInput id="order-address" formControlName="direccion" rows="3" maxlength="255" aria-describedby="address-error"></textarea><p id="address-error" class="field-error">@if(submitted()&&form.hasError('addressRequired')){Indica la dirección para delivery.}</p></div>
+   </div>
+   @if(submitted()&&form.hasError('emptyOrder')){<p class="field-error" role="alert">Conserva al menos un plato con cantidad mayor que cero.</p>}
+   <p class="preview-total">Total de la vista previa <strong>{{total | currency:'PEN':'S/ ':'1.2-2'}}</strong></p>
+   <div class="actions"><a mat-stroked-button class="secondary" routerLink="/operacion/pedidos">Cancelar</a><button mat-flat-button class="primary" type="submit">Guardar pedido</button></div>
+  </form>
+  @if(notice()){<p class="notice" role="status">{{notice()}}</p>}
+ </section>
+</rp-workspace-shell>

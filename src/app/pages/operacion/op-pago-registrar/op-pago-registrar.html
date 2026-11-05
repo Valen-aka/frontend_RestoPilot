@@ -1,3 +1,21 @@
-<!-- FRAME: op-pago-registrar | Registrar pago recibido -->
-<!-- TODO: implementar Desktop y Mobile con Angular Material. -->
-<!-- No hay campos, datos ni contenido visual implementados. -->
+<rp-workspace-shell [role]="'operation'" breadcrumb="Pagos" active="pagos">
+ <header class="page-heading"><p class="eyebrow">Pagos</p><h1>Registrar pago recibido</h1><p class="subtitle">La confirmación es administrativa, no de una pasarela.</p></header>
+ <p class="hint preview-label">Vista previa del pedido #1042 · Datos de la referencia visual.</p>
+ <div class="columns payment-columns">
+  <section class="panel" aria-labelledby="pago-title">
+   <h2 class="panel-title" id="pago-title">Datos del pago · Pedido #1042</h2>
+   <form [formGroup]="form" (ngSubmit)="submit()" novalidate>
+    <div class="form-grid">
+     <div class="field"><label for="pago-monto">Monto recibido (S/)</label><input matInput id="pago-monto" type="number" min="0.01" step="0.01" formControlName="monto" inputmode="decimal" aria-describedby="monto-hint monto-error" [attr.aria-invalid]="form.controls.monto.touched && form.controls.monto.invalid"><p class="hint" id="monto-hint">Debe coincidir exactamente con el total.</p>@if(form.controls.monto.touched && form.controls.monto.invalid){<p class="field-error" id="monto-error" role="alert">Ingresa un monto positivo igual a S/ 66.00.</p>}</div>
+     <div class="field"><label for="pago-metodo">Método</label><select matNativeControl id="pago-metodo" formControlName="metodo" aria-describedby="metodo-error" [attr.aria-invalid]="form.controls.metodo.touched && form.controls.metodo.invalid">@for(method of methods;track method){<option [value]="method">{{method}}</option>}</select>@if(form.controls.metodo.touched && form.controls.metodo.invalid){<p class="field-error" id="metodo-error" role="alert">Selecciona un método válido.</p>}</div>
+     <div class="field"><label for="pago-referencia">Código de referencia</label><input matInput id="pago-referencia" formControlName="referencia" maxlength="100" autocomplete="off" aria-describedby="referencia-hint referencia-error" [attr.aria-required]="form.controls.metodo.value !== 'Efectivo'" [attr.aria-invalid]="referenceInvalid"><p class="hint" id="referencia-hint">Obligatorio salvo efectivo; máximo 100 caracteres. No ingreses datos de tarjeta.</p>@if(referenceInvalid){<p class="field-error" id="referencia-error" role="alert">Ingresa un código de referencia de hasta 100 caracteres.</p>}</div>
+     <div class="field"><label for="pago-estado">Estado previsto</label><input matInput id="pago-estado" value="PAGADO" readonly aria-describedby="estado-hint"><p class="hint" id="estado-hint">No cambia el estado real del pedido.</p></div>
+    </div>
+    <div class="actions"><a mat-stroked-button class="secondary" routerLink="/operacion/pagos">Cancelar</a><button mat-flat-button class="primary" type="submit">Confirmar registro</button></div>
+    @if(notice()){<p class="notice" role="status">{{notice()}}</p>}
+   </form>
+  </section>
+  <aside class="panel total-panel" aria-labelledby="total-title"><h2 class="panel-title" id="total-title">Total por registrar</h2><p class="order-line">2 platos <span>S/ 66.00</span></p><p class="total-line">Total del pedido <strong>S/ 66.00</strong></p><p class="hint">El total definitivo lo calcula el restaurante. No se cobra desde esta pantalla.</p><p class="notice warning">Confirma que el dinero ya se recibió por un medio externo. RestoPilot no realiza cobros.</p></aside>
+ </div>
+ <nav class="preview-links" aria-label="Estados de referencia"><span class="hint">Vistas de referencia:</span><a class="text-link" routerLink="/operacion/pago/registrar" [queryParams]="{vista:'op-pago-confirmado'}">Pago confirmado</a><a class="text-link" routerLink="/operacion/pago/registrar" [queryParams]="{vista:'op-pago-error'}">Error de importe</a></nav>
+</rp-workspace-shell>

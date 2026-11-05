@@ -1,3 +1,137 @@
-<!-- FRAME: cliente-reserva-revisar | Tu próxima mesa, casi lista -->
-<!-- TODO: implementar Desktop y Mobile con Angular Material. -->
-<!-- No hay campos, datos ni contenido visual implementados. -->
+<a class="skip-link" href="#revisar-content">Saltar al contenido</a>
+
+<div class="reserva-shell">
+  <!-- Cabecera de Cliente -->
+  <header class="client-header">
+    <a class="brand" routerLink="/cliente" aria-label="RestoPilot, inicio de cliente">
+      <div class="brand-icon" aria-hidden="true">RP</div>
+      <span>Resto<span class="brand-accent">Pilot</span><small>Tu restaurante, en piloto automático</small></span>
+    </a>
+    <nav aria-label="Navegación de cliente">
+      <a routerLink="/cliente">Inicio</a>
+      <a routerLink="/cliente/carta">La carta</a>
+      <a routerLink="/cliente/reservas" class="active" aria-current="page">Mis reservas</a>
+      <a routerLink="/cliente/pedidos">Mis pedidos</a>
+      <a routerLink="/cliente/asistente">Asistente IA</a>
+    </nav>
+    <div class="sample-context">
+      <span class="sample-avatar" aria-hidden="true">CC</span>
+      <div>
+        <strong>Cristian Condori</strong>
+        <small>Módulo de Reservas</small>
+      </div>
+    </div>
+  </header>
+
+  <!-- Contenido Principal -->
+  <main id="revisar-content" tabindex="-1" class="reserva-main">
+    <div class="page-heading">
+      <p class="eyebrow">RESERVAS CLIENTE</p>
+      <h1>Tu próxima mesa, casi lista</h1>
+      <p class="subtitle">Verifica los datos de tu solicitud antes de enviarla al restaurante.</p>
+    </div>
+
+    @if (reservaConfirmada(); as r) {
+      <!-- Mensaje de éxito tras confirmación -->
+      <div class="reserva-card success-card" role="status">
+        <span class="success-icon" aria-hidden="true">✓</span>
+        <h2>¡Solicitud de reserva enviada con éxito!</h2>
+        <p>Tu código de reserva es <strong>#{{ r.codigo }}</strong> en estado <strong>PENDIENTE DE CONFIRMACIÓN</strong>.</p>
+        <p class="success-sub">Redirigiendo a tu historial de reservas...</p>
+      </div>
+    } @else {
+      <!-- Ficha de Revisión -->
+      <div class="review-grid">
+        <!-- Columna Izquierda: Resumen de reserva -->
+        <section class="reserva-card summary-card" aria-label="Resumen de reserva">
+          <h2 class="card-title">Resumen de tu experiencia</h2>
+
+          <dl class="summary-list">
+            <div class="summary-row">
+              <dt>Restaurante</dt>
+              <dd><strong>La Mesa Verde</strong> (Sede Miraflores)</dd>
+            </div>
+            <div class="summary-row">
+              <dt>Fecha de visita</dt>
+              <dd>{{ store.draft().fecha }}</dd>
+            </div>
+            <div class="summary-row">
+              <dt>Horario reservado</dt>
+              <dd>{{ store.draft().horaInicio }} a {{ store.draft().horaFin }}</dd>
+            </div>
+            <div class="summary-row">
+              <dt>Mesa seleccionada</dt>
+              <dd>
+                <span class="table-badge">{{ store.draft().mesaNumero || 'Mesa 04' }}</span>
+                <span class="zone-text">{{ store.draft().zona || 'Salón Principal' }}</span>
+              </dd>
+            </div>
+            <div class="summary-row">
+              <dt>Cantidad de personas</dt>
+              <dd>{{ store.draft().comensales }} comensales</dd>
+            </div>
+          </dl>
+
+          <div class="modify-links">
+            <a mat-button routerLink="/cliente/plano" class="link-btn">
+              ← Cambiar mesa en el plano
+            </a>
+            <a mat-button routerLink="/cliente/reservar" class="link-btn">
+              ← Cambiar fecha y horario
+            </a>
+          </div>
+        </section>
+
+        <!-- Columna Derecha: Datos de contacto y envío -->
+        <section class="reserva-card form-card" aria-label="Datos de contacto y confirmación">
+          <h2 class="card-title">Datos del titular</h2>
+
+          <div class="user-preview">
+            <div class="user-row">
+              <span class="user-label">Nombre:</span>
+              <span class="user-val">{{ store.draft().nombreCliente }}</span>
+            </div>
+            <div class="user-row">
+              <span class="user-label">Correo:</span>
+              <span class="user-val">{{ store.draft().emailCliente }}</span>
+            </div>
+            <div class="user-row">
+              <span class="user-label">Teléfono:</span>
+              <span class="user-val">{{ store.draft().telefonoCliente }}</span>
+            </div>
+          </div>
+
+          <form [formGroup]="form0" (ngSubmit)="confirmarSolicitud()" class="review-form">
+            <mat-form-field appearance="outline" class="form-full">
+              <mat-label>Comentarios adicionales para la cocina o salón</mat-label>
+              <textarea matInput formControlName="notas" rows="3" placeholder="Indícanos si tienes alguna preferencia especial"></textarea>
+              <mat-hint align="end">{{ form0.controls.notas.value?.length || 0 }} / 300 caracteres</mat-hint>
+            </mat-form-field>
+
+            <div class="policy-notice">
+              <mat-checkbox formControlName="aceptaTerminos" color="primary">
+                Acepto la política de reserva. Entiendo que la cancelación gratuita aplica hasta 2 horas antes de la cita (US09).
+              </mat-checkbox>
+              @if (form0.controls.aceptaTerminos.invalid && form0.controls.aceptaTerminos.touched) {
+                <p class="error-text" role="alert">Debes aceptar los términos de reserva.</p>
+              }
+            </div>
+
+            <div class="form-actions">
+              <button mat-flat-button type="submit" class="btn-primary" [disabled]="form0.invalid">
+                Confirmar y enviar reserva →
+              </button>
+            </div>
+          </form>
+        </section>
+      </div>
+    }
+  </main>
+
+  <!-- Pie de Página -->
+  <footer class="client-footer">
+    <p>RestoPilot · La Mesa Verde (Lima - Miraflores)</p>
+    <p>Tu restaurante, en piloto automático.</p>
+    <a routerLink="/cliente">Volver al inicio</a>
+  </footer>
+</div>

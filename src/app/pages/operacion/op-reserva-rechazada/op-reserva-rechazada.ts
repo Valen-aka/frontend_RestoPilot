@@ -1,6 +1,40 @@
-import {Component} from '@angular/core';
-/** Frame: op-reserva-rechazada. Responsable: Cristian Condori. Implementación pendiente. */
-@Component({selector:'rp-op-reserva-rechazada',imports:[],templateUrl:'./op-reserva-rechazada.html',styleUrl:'./op-reserva-rechazada.css'})
-export class OpReservaRechazadaPage{
+import {Component, computed, inject} from '@angular/core';
+import {ActivatedRoute, RouterLink} from '@angular/router';
+import {MatButtonModule} from '@angular/material/button';
+import {MatCardModule} from '@angular/material/card';
+import {MatIconModule} from '@angular/material/icon';
+import {CocinaShell} from '../cocina-ui/cocina-shell';
+import {ReservaStore} from '../../cliente/reserva-ui/reserva-store';
+import {ReservaItem} from '../../cliente/reserva-ui/reserva.model';
 
+/**
+ * Frame: op-reserva-rechazada | "Constancia de reserva desestimada"
+ * Responsable: Cristian Condori
+ * US17, US29: Constancia de rechazo de reserva con motivo y liberación de mesa en agenda.
+ */
+@Component({
+  selector: 'rp-op-reserva-rechazada',
+  imports: [
+    RouterLink,
+    MatButtonModule,
+    MatCardModule,
+    MatIconModule,
+    CocinaShell
+  ],
+  templateUrl: './op-reserva-rechazada.html',
+  styleUrl: './op-reserva-rechazada.css'
+})
+export class OpReservaRechazadaPage {
+  readonly store = inject(ReservaStore);
+  private readonly route = inject(ActivatedRoute);
+
+  readonly reserva = computed<ReservaItem>(() => {
+    const qId = Number(this.route.snapshot.queryParamMap.get('id'));
+    if (qId) {
+      const encontrada = this.store.obtenerReservaPorId(qId);
+      if (encontrada) return encontrada;
+    }
+    const rechazada = this.store.reservas().find(r => r.estado === 'RECHAZADA');
+    return rechazada || this.store.reservas()[2];
+  });
 }

@@ -1,2 +1,1 @@
-:host{display:block}
-/* TODO: estilos responsive exclusivos de esta pantalla; utilizar variables globales. */
+:host{display:block}.payment-columns{grid-template-columns:minmax(0,1fr)}.notice.error{margin-bottom:20px}

@@ -1,4 +1,5 @@
 import {Component} from '@angular/core';
 import {RouterOutlet} from '@angular/router';
-@Component({selector:'rp-auth-layout',imports:[RouterOutlet],templateUrl:'./auth-layout.html',styleUrl:'./auth-layout.css'})
+import {AuthStory} from '../../components/auth-story/auth-story';
+@Component({selector:'rp-auth-layout',imports:[RouterOutlet,AuthStory],templateUrl:'./auth-layout.html',styleUrl:'./auth-layout.css'})
 export class AuthLayout{}

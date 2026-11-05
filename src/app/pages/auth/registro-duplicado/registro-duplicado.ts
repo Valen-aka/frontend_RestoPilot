@@ -1,6 +1,6 @@
 import {Component} from '@angular/core';
-/** Frame: registro-duplicado. Responsable: Francesco Meza. Implementación pendiente. */
-@Component({selector:'rp-registro-duplicado',imports:[],templateUrl:'./registro-duplicado.html',styleUrl:'./registro-duplicado.css'})
-export class RegistroDuplicadoPage{
+import {RouterLink} from '@angular/router';
+import {MatButtonModule} from '@angular/material/button';
 
-}
+@Component({selector: 'rp-registro-duplicado', imports: [RouterLink, MatButtonModule], templateUrl: './registro-duplicado.html', styleUrls: ['../../../layouts/auth-layout/auth-forms.css', './registro-duplicado.css']})
+export class RegistroDuplicadoPage {}

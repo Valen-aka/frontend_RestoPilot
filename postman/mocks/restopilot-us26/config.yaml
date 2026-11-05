@@ -1,0 +1,10 @@
+version: 1
+name: RestoPilot US26 local
+slug: restopilot-us26
+protocol: http
+port: 4506
+interceptRequests: true
+scenarios:
+  - name: default
+    path: ./default.js
+    default: true

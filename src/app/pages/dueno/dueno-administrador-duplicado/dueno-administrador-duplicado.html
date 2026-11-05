@@ -1,3 +1,18 @@
-<!-- FRAME: dueno-administrador-duplicado | Ese correo ya tiene una cuenta -->
-<!-- TODO: implementar Desktop y Mobile con Angular Material. -->
-<!-- No hay campos, datos ni contenido visual implementados. -->
+<rp-workspace-shell [role]="'owner'" breadcrumb="Dueño" active="administradores">
+  <header class="page-heading"><p class="eyebrow">Dueño</p><h1>Ese correo ya tiene una cuenta</h1><p class="subtitle">Prueba con el correo individual correcto.</p></header>
+  <div class="preview-label"><span class="badge">Vista previa</span><p class="hint">Ejemplo del estado de correo duplicado. No se ha consultado ninguna cuenta.</p></div>
+  <p class="notice error">El correo ya está registrado en otro perfil. En este estado no se crea un administrador ni se cambia la cuenta existente.</p>
+  <section class="panel" aria-labelledby="administrator-title">
+    <h2 class="panel-title" id="administrator-title">Revisar los datos</h2>
+    <form [formGroup]="form" (ngSubmit)="submit()" novalidate>
+      <div class="form-grid">
+        <div class="field"><label for="admin-nombre">Nombre completo</label><input matInput id="admin-nombre" formControlName="nombre" autocomplete="name" maxlength="150" [attr.aria-invalid]="form.controls.nombre.touched && form.controls.nombre.invalid" aria-describedby="admin-nombre-error"><p class="field-error" id="admin-nombre-error" aria-live="polite">{{ error('nombre') }}</p></div>
+        <div class="field"><label for="admin-correo">Correo electrónico</label><input matInput id="admin-correo" type="email" formControlName="correo" autocomplete="email" inputmode="email" autocapitalize="none" spellcheck="false" maxlength="100" [attr.aria-invalid]="form.controls.correo.touched && form.controls.correo.invalid" aria-describedby="admin-correo-error"><p class="field-error" id="admin-correo-error" aria-live="polite">{{ error('correo') }}</p></div>
+        <div class="field span-full"><label for="admin-password">Contraseña</label><input matInput id="admin-password" type="password" formControlName="password" autocomplete="new-password" [attr.aria-invalid]="form.controls.password.touched && form.controls.password.invalid" aria-describedby="admin-password-hint admin-password-error"><small class="hint" id="admin-password-hint">8 caracteres o más: letras, número y carácter especial. Máximo 72 bytes UTF-8.</small><p class="field-error" id="admin-password-error" aria-live="polite">{{ error('password') }}</p></div>
+      </div>
+      <div class="actions form-actions"><a mat-stroked-button class="secondary" routerLink="/dueno">Cancelar</a><button mat-flat-button class="primary" type="submit">Volver a intentar</button></div>
+      @if (notice()) {<p class="notice" role="status">{{ notice() }}</p>}
+    </form>
+  </section>
+  <p class="notice account-notice">El restaurante y el rol se asignarán desde la cuenta del dueño cuando se conecte el servicio. No se envía una invitación por correo.</p>
+</rp-workspace-shell>

@@ -1,3 +1,13 @@
-<!-- FRAME: op-pedido-cancelar | Cancelar pedido pendiente -->
-<!-- TODO: implementar Desktop y Mobile con Angular Material. -->
-<!-- No hay campos, datos ni contenido visual implementados. -->
+<rp-workspace-shell [role]="'operation'" breadcrumb="Pedidos operación" active="pedidos">
+ <header class="page-heading"><p class="eyebrow">Pedidos operación</p><h1>Cancelar pedido pendiente</h1><p class="subtitle">No se elimina físicamente el pedido.</p></header>
+ <section class="confirmation-stage" aria-labelledby="pending-order-title">
+  <div class="panel confirmation-card">
+   <span class="warning-icon" aria-hidden="true">!</span><p class="eyebrow">Confirmar acción</p>
+   <h2 id="pending-order-title">¿Cancelar el pedido #1042?</h2>
+   <p>El pedido conservará su historial. La cancelación solo está permitida si está pendiente y no pagado.</p>
+   <p class="hint">Datos de diseño. Esta vista previa no cancela un pedido real.</p>
+   <div class="actions"><a mat-stroked-button class="secondary" routerLink="/operacion/pedidos">Volver</a><button mat-flat-button class="danger" type="button" (click)="openConfirmation()">Cancelar pedido</button></div>
+  </div>
+ </section>
+ @if(notice()){<p class="notice" role="status">{{notice()}}</p>}
+</rp-workspace-shell>

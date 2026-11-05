@@ -1,3 +1,108 @@
-<!-- FRAME: op-reserva-nueva | Registrar una reserva -->
-<!-- TODO: implementar Desktop y Mobile con Angular Material. -->
-<!-- No hay campos, datos ni contenido visual implementados. -->
+<rp-cocina-shell active="reservations">
+  <div class="heading">
+    <p class="eyebrow">RESERVAS OPERACIÓN · US27</p>
+    <h1>Nueva reserva manual en salón</h1>
+    <p class="subtitle">Registra una reserva presencial o telefónica directamente en la agenda operativa de La Mesa Verde.</p>
+  </div>
+
+  <div class="form-shell">
+    @if (mensajeError) {
+      <div class="error-banner" role="alert">
+        {{ mensajeError }}
+      </div>
+    }
+
+    <mat-card appearance="outlined" class="card-container">
+      <div class="card-header-box">
+        <h2>Datos del Comensal y Cita Presencial</h2>
+        <p>Al pulsar «Crear solicitud pendiente», el horario quedará reservado en estado pendiente para auditoría y confirmación.</p>
+      </div>
+
+      <form [formGroup]="form0" (ngSubmit)="crearSolicitud()" class="op-form" novalidate>
+        <!-- Sección 1: Datos del cliente -->
+        <div class="section-title">
+          <span class="step-num">1</span>
+          <h3>Información del Cliente</h3>
+        </div>
+
+        <div class="form-row">
+          <mat-form-field appearance="outline" class="field-item">
+            <mat-label>Nombre completo del titular</mat-label>
+            <input matInput formControlName="nombreCliente" placeholder="Ej: Carlos Mendoza" required>
+            <mat-error>El nombre del titular es requerido</mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="field-item">
+            <mat-label>Teléfono de contacto</mat-label>
+            <input matInput formControlName="telefonoCliente" placeholder="Ej: +51 987 123 456" required>
+            <mat-error>El teléfono es requerido para coordinaciones</mat-error>
+          </mat-form-field>
+        </div>
+
+        <!-- Sección 2: Cita y asignación de mesa -->
+        <div class="section-title">
+          <span class="step-num">2</span>
+          <h3>Fecha, Turno y Salón</h3>
+        </div>
+
+        <div class="form-row">
+          <mat-form-field appearance="outline" class="field-item">
+            <mat-label>Fecha de la visita</mat-label>
+            <input matInput type="date" formControlName="fecha" required>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="field-item">
+            <mat-label>Hora de inicio</mat-label>
+            <mat-select formControlName="horaInicio" (valueChange)="onHoraInicioChange($event)">
+              @for (h of horasDisponibles; track h) {
+                <mat-option [value]="h">{{ h }} hrs</mat-option>
+              }
+            </mat-select>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="field-item">
+            <mat-label>Hora estimada de fin</mat-label>
+            <input matInput type="text" formControlName="horaFin" readonly>
+            <mat-hint>Turno de 1.5 horas</mat-hint>
+          </mat-form-field>
+        </div>
+
+        <div class="form-row">
+          <mat-form-field appearance="outline" class="field-item">
+            <mat-label>Cantidad de comensales</mat-label>
+            <input matInput type="number" formControlName="comensales" min="1" max="12" required>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="field-item">
+            <mat-label>Mesa asignada</mat-label>
+            <mat-select formControlName="mesaId">
+              @for (m of store.mesas(); track m.id) {
+                <mat-option [value]="m.id">
+                  {{ m.numero }} ({{ m.zona }}) · Capacidad: {{ m.capacidad }} personas
+                </mat-option>
+              }
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <div class="form-row">
+          <mat-form-field appearance="outline" class="field-item full-width">
+            <mat-label>Notas adicionales u observaciones del anfitrión (opcional)</mat-label>
+            <textarea matInput formControlName="notas" rows="2" maxlength="500" placeholder="Ej: Reserva telefónica, comensal alérgico a mariscos..."></textarea>
+            <mat-hint align="end">{{ form0.controls.notas.value.length || 0 }} / 500</mat-hint>
+          </mat-form-field>
+        </div>
+
+        <!-- Acciones -->
+        <div class="form-actions">
+          <a mat-stroked-button routerLink="/operacion/reservas" class="btn-back">
+            ← Volver a reservas
+          </a>
+          <button mat-flat-button type="submit" class="btn-submit" [disabled]="form0.invalid">
+            Crear solicitud pendiente →
+          </button>
+        </div>
+      </form>
+    </mat-card>
+  </div>
+</rp-cocina-shell>
