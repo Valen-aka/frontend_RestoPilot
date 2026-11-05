@@ -1,0 +1,30 @@
+purpose:
+  stands_in_for: Backend RestoPilot local, únicamente acceso, selección de carta y registro US11.
+  unblocks: Pruebas del frontend real por HTTP sin credenciales ni base de datos reales.
+assumptions:
+  - id: contrato-creacion
+    status: supported
+    claim: El contrato revisado registra pedidos mediante POST /api/pedidos y devuelve 201 con PedidoResponseDTO.
+    reason: Se inspeccionaron PedidoController, DTO y PedidoService; no es evidencia de una ejecución real.
+    verification: Lectura del código local el 2026-11-02; diez recorridos del frontend real contra esta simulación pasaron. Sus requests de acceso, restaurante, platos, mesas y pedidos constan en el log de la ejecución local; no es prueba de PostgreSQL.
+    source: backend modules/pedidos/controller/PedidoController.java y dto/PedidoResponseDTO.java; docs/specs/cliente-pedido-api/SPEC.md
+    updated_at: '2026-11-02'
+  - id: resultados-frontend-controlados
+    status: supported
+    claim: El frontend ejecutó las cuatro modalidades, evitó doble envío, conservó borrador tras 400 y bloqueó repetición ante 500 HTML o 201 incompleto en los escenarios probados.
+    reason: Se observaron estado de UI, número de peticiones y registros del mock; no se deriva comportamiento de un proveedor real.
+    verification: Diez recorridos correctos en scripts/us11-api-browser.cjs, incluyendo limpieza de sesión y revisión de credenciales no persistidas.
+    source: scripts/us11-api-browser.cjs; postman/mocks/restopilot-us11/default.js; docs/specs/cliente-pedido-api/SPEC.md
+    updated_at: '2026-11-02'
+  - id: autenticacion-real
+    status: unknown
+    claim: El login y la firma JWT del backend funcionan con la base y credenciales del entorno del equipo.
+    reason: El mock devuelve exclusivamente un token sintético sin firma válida; no valida el backend.
+    verification: Se ejecutó además Us11HttpIntegrationTest sobre Spring Boot/JWT y H2 aislado; el entorno PostgreSQL del equipo sigue sin probar. El comando postman status no está disponible en CLI 1.75.0; se omitió búsqueda de mocks del equipo y no se publicó nada.
+    source: src/app/core/services/auth.service.ts; postman/mocks/restopilot-us11/default.js
+    updated_at: '2026-11-02'
+fingerprints:
+  - id: us11-local
+    date: '2026-11-02'
+    commit: working-tree
+    cli: '1.75.0'

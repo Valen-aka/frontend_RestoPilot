@@ -1,3 +1,108 @@
-<!-- FRAME: cliente-reservar | Hay una mesa para ti -->
-<!-- TODO: implementar Desktop y Mobile con Angular Material. -->
-<!-- No hay campos, datos ni contenido visual implementados. -->
+<a class="skip-link" href="#reservar-content">Saltar al contenido</a>
+
+<div class="reserva-shell">
+  <!-- Cabecera de Cliente -->
+  <header class="client-header">
+    <a class="brand" routerLink="/cliente" aria-label="RestoPilot, inicio de cliente">
+      <div class="brand-icon" aria-hidden="true">RP</div>
+      <span>Resto<span class="brand-accent">Pilot</span><small>Tu restaurante, en piloto automático</small></span>
+    </a>
+    <nav aria-label="Navegación de cliente">
+      <a routerLink="/cliente">Inicio</a>
+      <a routerLink="/cliente/carta">La carta</a>
+      <a routerLink="/cliente/reservas" class="active" aria-current="page">Mis reservas</a>
+      <a routerLink="/cliente/pedidos">Mis pedidos</a>
+      <a routerLink="/cliente/asistente">Asistente IA</a>
+    </nav>
+    <div class="sample-context">
+      <span class="sample-avatar" aria-hidden="true">CC</span>
+      <div>
+        <strong>Cristian Condori</strong>
+        <small>Módulo de Reservas</small>
+      </div>
+    </div>
+  </header>
+
+  <!-- Contenido Principal -->
+  <main id="reservar-content" tabindex="-1" class="reserva-main">
+    <div class="page-heading">
+      <p class="eyebrow">RESERVAS CLIENTE</p>
+      <h1>Hay una mesa para ti</h1>
+      <p class="subtitle">Indícanos la fecha, el turno y cuántas personas asistirán para reservar tu experiencia.</p>
+      <div class="sample-notice" role="status">
+        Demostración interactiva · Validación reactiva de horarios y capacidad de comensales (US05).
+      </div>
+    </div>
+
+    <div class="reserva-card">
+      <h2 class="card-title">Datos de tu visita</h2>
+      <p class="card-instruction">Completa el formulario para consultar la disponibilidad en tiempo real en nuestro plano de mesas.</p>
+
+      <form [formGroup]="form0" (ngSubmit)="buscarMesas()" class="form-grid">
+        <!-- Fecha -->
+        <mat-form-field appearance="outline">
+          <mat-label>Fecha de la reserva</mat-label>
+          <input matInput type="date" formControlName="fecha" [min]="hoy" required>
+          @if (form0.controls.fecha.invalid && form0.controls.fecha.touched) {
+            <mat-error>La fecha es obligatoria y no puede ser pasada.</mat-error>
+          }
+        </mat-form-field>
+
+        <!-- Cantidad de Comensales -->
+        <mat-form-field appearance="outline">
+          <mat-label>Número de comensales</mat-label>
+          <input matInput type="number" formControlName="comensales" min="1" max="12" required>
+          <mat-hint>Capacidad de 1 a 12 personas</mat-hint>
+          @if (form0.controls.comensales.invalid && form0.controls.comensales.touched) {
+            <mat-error>Ingresa un número válido de personas (1 a 12).</mat-error>
+          }
+        </mat-form-field>
+
+        <!-- Hora de Inicio -->
+        <mat-form-field appearance="outline">
+          <mat-label>Hora de inicio</mat-label>
+          <input matInput type="time" formControlName="horaInicio" required>
+          @if (form0.controls.horaInicio.invalid && form0.controls.horaInicio.touched) {
+            <mat-error>Indica una hora de inicio válida.</mat-error>
+          }
+        </mat-form-field>
+
+        <!-- Hora de Fin -->
+        <mat-form-field appearance="outline">
+          <mat-label>Hora estimada de fin</mat-label>
+          <input matInput type="time" formControlName="horaFin" required>
+          @if (form0.controls.horaFin.invalid && form0.controls.horaFin.touched) {
+            <mat-error>Indica una hora de fin estimada.</mat-error>
+          }
+        </mat-form-field>
+
+        <!-- Notas u observaciones especiales -->
+        <mat-form-field appearance="outline" class="form-full">
+          <mat-label>Notas o preferencias (opcional)</mat-label>
+          <textarea matInput formControlName="notas" rows="3" placeholder="Ej: Cumpleaños, preferencia terraza, silla para bebé..."></textarea>
+          <mat-hint align="end">{{ form0.controls.notas.value?.length || 0 }} / 300 caracteres</mat-hint>
+          @if (form0.controls.notas.invalid && form0.controls.notas.touched) {
+            <mat-error>El texto supera el límite de 300 caracteres.</mat-error>
+          }
+        </mat-form-field>
+
+        <!-- Acciones -->
+        <div class="form-actions form-full">
+          <button mat-stroked-button type="button" class="btn-secondary" (click)="simularSinDisponibilidad()">
+            Simular sin disponibilidad
+          </button>
+          <button mat-flat-button type="submit" class="btn-primary" [disabled]="form0.invalid">
+            Ver mesas en el plano →
+          </button>
+        </div>
+      </form>
+    </div>
+  </main>
+
+  <!-- Pie de Página -->
+  <footer class="client-footer">
+    <p>RestoPilot · La Mesa Verde (Lima - Miraflores)</p>
+    <p>Tu restaurante, en piloto automático.</p>
+    <a routerLink="/cliente">Volver al inicio</a>
+  </footer>
+</div>

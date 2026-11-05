@@ -2,8 +2,15 @@ node_modules/
 dist/
 .angular/
 coverage/
+artifacts/flujos-integrados/
 .env
 .env.*
 !.env.example
 *.log
 .DS_Store
+
+artifacts/us11-api/
+
+artifacts/us12-api/
+
+artifacts/us13-api/

@@ -1,0 +1,38 @@
+<rp-workspace-shell [role]="session()?.role==='DUENO'?'owner':'operation'" active="carta" breadcrumb="Carta" [live]="true" [restaurantName]="restaurant()?.nombre || 'Tu restaurante'" [restaurantId]="session()?.restauranteId ?? null" [restaurantActive]="restaurant()?.activo ?? null" (signOut)="logout()">
+ <header class="heading"><p class="eyebrow">Carta</p><h1>{{title()}}</h1><p class="subtitle" [class.form-subtitle]="mode()==='create'||mode()==='edit'">{{subtitle()}}</p></header>
+ @if(!store.hasSession()){
+  <section class="panel feedback" role="alert"><h2>Acceso restringido</h2><p>{{store.problem()}}</p><a mat-flat-button routerLink="/auth/login" [queryParams]="{returnUrl:'/operacion/categorias'}">Iniciar sesión</a></section>
+ }@else if(store.state()==='loading'||store.state()==='idle'){
+  <section class="panel feedback" role="status" aria-live="polite" aria-busy="true">Cargando categorías…</section>
+ }@else if(store.state()==='error'){
+  <section class="panel feedback" role="alert"><p>{{store.problem()}}</p><button mat-stroked-button (click)="load()">Reintentar</button><a mat-button routerLink="/operacion/categorias">Volver a categorías</a></section>
+ }@else{
+  @if(store.issue() && mode()!=='delete'){<div class="feedback error" role="alert"><p>{{store.issue()}}</p>@if(store.uncertain()){<button mat-stroked-button (click)="back()">Consultar listado</button>}</div>}
+  @if(mode()==='list'){
+   <section class="panel list-panel" aria-labelledby="categorias-title"><h2 id="categorias-title" tabindex="-1">Categorías</h2>
+    @if(!store.entries().length){<p class="empty" role="status">Todavía no hay categorías. Crea la primera para organizar tu carta.</p>}@else{
+     <div class="table-scroll" tabindex="0" role="region" aria-label="Categorías. Desplaza horizontalmente para ver las acciones.">
+      <table mat-table [dataSource]="store.entries()">
+       <ng-container matColumnDef="nombre"><th mat-header-cell *matHeaderCellDef>Nombre</th><td mat-cell *matCellDef="let c">{{c.nombre}}</td></ng-container>
+       <ng-container matColumnDef="descripcion"><th mat-header-cell *matHeaderCellDef>Descripción</th><td mat-cell *matCellDef="let c">{{c.descripcion || 'Sin descripción'}}</td></ng-container>
+       <ng-container matColumnDef="acciones"><th mat-header-cell *matHeaderCellDef><span class="sr-only">Acciones</span></th><td mat-cell *matCellDef="let c"><div class="row-actions"><a mat-button routerLink="/operacion/categoria/editar" [queryParams]="{categoriaId:c.id}" [attr.aria-label]="'Editar '+c.nombre">Editar</a><button mat-button (click)="openDelete(c.id)" [attr.aria-label]="'Eliminar '+c.nombre">Eliminar</button></div></td></ng-container>
+       <tr mat-header-row *matHeaderRowDef="columns"></tr><tr mat-row *matRowDef="let row; columns:columns"></tr>
+      </table>
+     </div>
+    }
+   </section><a mat-flat-button class="primary new-category" routerLink="/operacion/categoria/nueva">＋ Nueva categoría</a>
+  }@else if(mode()==='delete'){
+   <section class="delete-stage" aria-label="Confirmación de eliminación"><rp-op-categoria-eliminar-dialog [context]="store" (finished)="back()" /></section>
+  }@else{
+   <section class="panel" aria-labelledby="category-form-title"><h2 id="category-form-title">Datos de la categoría</h2>
+    <form [formGroup]="form" (ngSubmit)="submit()" novalidate [attr.aria-busy]="store.busy()">
+     <div class="field name-field"><label for="categoria-nombre">Nombre</label><input matInput id="categoria-nombre" formControlName="nombre" autocomplete="off" [readonly]="store.busy()" required aria-describedby="nombre-error" [attr.aria-invalid]="form.controls.nombre.touched&&form.controls.nombre.invalid">
+      <div id="nombre-error" class="field-error" aria-live="polite">@if(form.controls.nombre.touched&&form.controls.nombre.invalid){<span>{{form.controls.nombre.hasError('maxlength')?'El nombre admite hasta 100 caracteres.':'Ingresa un nombre para la categoría.'}}</span>}</div>
+     </div>
+     <div class="field"><label for="categoria-descripcion">Descripción</label><textarea matInput id="categoria-descripcion" formControlName="descripcion" [readonly]="store.busy()" aria-label="Descripción (opcional)"></textarea></div>
+     <div class="form-actions"><a mat-stroked-button routerLink="/operacion/categorias">Cancelar</a><button mat-flat-button class="primary" type="submit" [disabled]="store.busy()||store.uncertain()">{{store.busy()?'Guardando…':'Guardar categoría →'}}</button></div>
+    </form>
+   </section>
+  }
+ }
+</rp-workspace-shell>

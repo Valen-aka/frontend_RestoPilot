@@ -1,2 +1,39 @@
-:host{display:block}
-/* TODO: adaptar al modal del frame. */
+:host {
+  display: block;
+}
+
+.dialog-title {
+  color: #15324e;
+  font-size: 18px;
+  font-weight: 700;
+  margin: 0;
+  padding: 24px 24px 12px;
+}
+
+.dialog-content {
+  color: #4b6357;
+  font-size: 14px;
+  line-height: 1.5;
+  padding: 0 24px 16px;
+}
+
+.dialog-warning {
+  background: #fef2f2;
+  border-left: 3px solid #dc2626;
+  padding: 10px 14px;
+  border-radius: 4px;
+  color: #991b1b;
+  font-size: 13px;
+  margin-top: 12px;
+}
+
+.dialog-actions {
+  padding: 16px 24px;
+  gap: 12px;
+  border-top: 1px solid #e5ede8;
+}
+
+.btn-confirm-delete {
+  background: #dc2626 !important;
+  color: #fff !important;
+}

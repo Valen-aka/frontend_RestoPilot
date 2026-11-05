@@ -1,2 +1,3 @@
-:host{display:block}
-/* TODO: estilos responsive exclusivos de esta pantalla; utilizar variables globales. */
+:host { display: block; }
+.business-notice { display: flex; align-items: center; flex-wrap: wrap; gap: 12px; }
+.business-notice a { font-weight: 700; }

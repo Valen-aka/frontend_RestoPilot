@@ -1,2 +1,119 @@
-:host{display:block}
-/* TODO: estilos responsive exclusivos de esta pantalla; utilizar variables globales. */
+:host {
+  display: block;
+}
+
+.state-detail-card {
+  padding: 32px;
+}
+
+.status-callout.confirmed {
+  background: #e6f7ef;
+  border: 1px solid #a8e5c8;
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  padding: 20px 24px;
+  border-radius: 10px;
+  margin-bottom: 28px;
+}
+
+.callout-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: var(--rp-primary);
+  color: #fff;
+  display: grid;
+  place-items: center;
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.callout-content h2 {
+  font: 700 18px/1.3 Roboto, Arial, sans-serif;
+  color: var(--rp-navy);
+  margin: 0 0 4px;
+}
+
+.callout-content p {
+  font-size: 13px;
+  color: #0c5637;
+  margin: 0;
+  line-height: 1.5;
+}
+
+.detail-columns {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 32px;
+  margin-bottom: 28px;
+}
+
+.detail-section h3 {
+  font: 700 15px/1.3 Roboto, Arial, sans-serif;
+  color: var(--rp-navy);
+  margin-bottom: 16px;
+  border-bottom: 1px solid var(--reserva-border);
+  padding-bottom: 8px;
+}
+
+.detail-dl {
+  display: grid;
+  gap: 12px;
+  margin: 0;
+  padding: 0;
+}
+
+.detail-dl div {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+
+dt {
+  font-size: 13px;
+  color: var(--reserva-muted);
+}
+
+dd {
+  font-size: 14px;
+  color: var(--rp-navy);
+  margin: 0;
+  text-align: right;
+}
+
+.code-badge {
+  background: var(--rp-primary);
+  color: #fff;
+  padding: 3px 10px;
+  border-radius: 6px;
+  font-weight: 700;
+  font-size: 13px;
+}
+
+.arrival-box {
+  background: #fafbfa;
+  border: 1px solid var(--reserva-border);
+  border-radius: 8px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  font-size: 13px;
+  color: var(--rp-navy);
+  line-height: 1.5;
+}
+
+.arrival-box p {
+  margin: 0;
+}
+
+.border-top {
+  border-top: 1px solid var(--reserva-border);
+  padding-top: 24px;
+}
+
+.btn-cancel {
+  color: var(--rp-error) !important;
+  font-weight: 500;
+}
