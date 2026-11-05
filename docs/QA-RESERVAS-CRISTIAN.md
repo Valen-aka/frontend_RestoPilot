@@ -52,6 +52,7 @@ Este documento consolida la verificación técnica, funcional y estructural de l
 | **US26 - Expiración por tolerancia** | `cliente-reserva-expirada` | Visualiza caducidad tras superar los 15 minutos de tolerancia sin registro de llegada presencial. | **Aprobado** |
 | **US27 - Registro manual** | `op-reserva-nueva` | Personal de recepción registra clientes telefónicos/presenciales asignando mesa en estado pendiente. | **Aprobado** |
 | **US29 - Auditoría de reserva** | `op-reserva-detalle` | Visualiza ficha técnica del salón con opciones para «Confirmar reserva», «Rechazar» o «Reprogramar». | **Aprobado** |
+| **QA Móvil - 390px (Viewport celular)** | *12 pantallas asignadas* | Cero desbordamiento horizontal en 390px (iPhone 12/14/15/Android viewport). El diseño de escritorio se conserva al 100%. | **Aprobado** |
 
 ---
 
@@ -94,8 +95,13 @@ El desarrollo se ejecutó de forma incremental bajo la estrategia GitFlow:
    - `docs(qa): matriz de pruebas, trazabilidad de historias y aseguramiento de calidad (Cristian Condori)`
    - **Pull Request #25:** Integración final en `develop`.
 
+4. **Rama `fix/reservas-responsive-390px` (Atención a observaciones de QA / Líder):**
+   - `fix(reservas): resolver desbordamiento horizontal a 390px mediante media queries móviles sin alterar formato desktop`
+   - Incorporación de `@media (max-width: 600px)` y `@media (max-width: 1100px)` en hojas de estilo del módulo de reservas (`reserva-view.css`, `cliente-plano.css`, vistas de detalle, y pantallas operativas).
+   - Verificación estricta: resolución móvil 390px limpia sin scroll horizontal, navegación táctil suave, y formato de escritorio ($\ge 1024$px / 1440px) 100% inalterado.
+
 ---
 
 ## 5. Conclusiones
 
-Todas las pantallas, componentes, reglas de negocio, validaciones reactivas y diálogos asignados a Cristian Condori fueron implementados en su totalidad, cumpliendo los estándares de diseño de RestoPilot, accesibilidad semántica y verificaciones de compilación del proyecto.
+Todas las pantallas, componentes, reglas de negocio, validaciones reactivas, diálogos y adaptabilidad responsiva móvil asignados a Cristian Condori fueron implementados en su totalidad, cumpliendo los estándares de diseño de RestoPilot, accesibilidad semántica y verificaciones de compilación del proyecto.

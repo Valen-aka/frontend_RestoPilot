@@ -80,9 +80,36 @@ dd {
   color: var(--rp-navy);
   margin: 0;
   text-align: right;
+  overflow-wrap: anywhere;
 }
 
 .border-top {
   border-top: 1px solid var(--reserva-border);
   padding-top: 24px;
+}
+
+/* ==========================================================================
+   Adaptaciones Responsivas Móvil (<= 390px)
+   ========================================================================== */
+@media (max-width: 600px) {
+  .state-detail-card {
+    padding: 18px 14px;
+  }
+
+  .status-callout.rejected {
+    padding: 14px 12px;
+    gap: 12px;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .detail-dl div {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 2px;
+  }
+
+  dd {
+    text-align: left;
+  }
 }

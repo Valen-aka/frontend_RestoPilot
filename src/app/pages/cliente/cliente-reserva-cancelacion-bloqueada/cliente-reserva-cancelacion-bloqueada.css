@@ -139,6 +139,7 @@ dd {
   color: var(--rp-navy);
   margin: 0;
   text-align: right;
+  overflow-wrap: anywhere;
 }
 
 .badge-status {
@@ -153,4 +154,46 @@ dd {
 .border-top {
   border-top: 1px solid var(--reserva-border);
   padding-top: 24px;
+}
+
+/* ==========================================================================
+   Adaptaciones Responsivas Móvil (<= 390px)
+   ========================================================================== */
+@media (max-width: 600px) {
+  .blocked-card {
+    padding: 18px 14px;
+  }
+
+  .status-callout.blocked {
+    padding: 14px 12px;
+    gap: 12px;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .contact-box {
+    padding: 16px 14px;
+    gap: 12px;
+  }
+
+  .contact-phone {
+    padding: 10px 12px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+  }
+
+  .phone-number {
+    font-size: 17px;
+  }
+
+  .detail-dl div {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 2px;
+  }
+
+  dd {
+    text-align: left;
+  }
 }
