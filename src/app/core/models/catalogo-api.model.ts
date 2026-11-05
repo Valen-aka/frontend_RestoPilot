@@ -20,6 +20,24 @@ export interface MesaResponse {
 
 /** Lectura de la entidad Categoria serializada por CategoriaController. */
 export interface CategoriaResponse {
-  readonly id: number; readonly restauranteId: number; readonly nombre: string;
-  readonly descripcion: string | null; readonly creadoEn: string; readonly actualizadoEn: string | null;
+  readonly id: number;
+  readonly restauranteId: number;
+  readonly nombre: string;
+  readonly descripcion: string | null;
+  readonly creadoEn: string;
+  readonly actualizadoEn: string | null;
+}
+  export interface PlatoRequest {
+  restauranteId: number;
+  categoriaId: number;
+  nombre: string;
+  descripcion: string | null;
+  precio: number;
+  ingredientes: string | null;
+  alergenos: string | null;
+  complejidad: 'BAJA' | 'MEDIA' | 'ALTA';
+  tiempoPreparacionMinutos: number;
+  disponible: boolean;
+  imagenUrl: string | null;
+
 }

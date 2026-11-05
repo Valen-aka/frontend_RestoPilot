@@ -1,3 +1,173 @@
-<!-- FRAME: op-plato-nuevo | Añadir un nuevo favorito -->
-<!-- TODO: implementar Desktop y Mobile con Angular Material. -->
-<!-- No hay campos, datos ni contenido visual implementados. -->
+<section class="plato-page">
+  <header class="page-header">
+    <a routerLink="/operacion/platos" class="back-link">
+      ← Volver a platos
+    </a>
+
+    <h1>Registrar nuevo plato</h1>
+    <p>
+      Completa la información para agregar un plato a la carta.
+    </p>
+  </header>
+
+  <form [formGroup]="form" (ngSubmit)="guardar()" class="form-card">
+    <h2>Información del plato</h2>
+
+    @if (error()) {
+    <div class="alert-error" role="alert">
+      {{ error() }}
+    </div>
+    }
+
+    <div class="form-grid">
+      <div class="field">
+        <label for="nombre">Nombre del plato *</label>
+        <input
+          id="nombre"
+          type="text"
+          formControlName="nombre"
+          placeholder="Ej. Lomo saltado"
+        />
+
+        @if (form.controls.nombre.touched &&
+        form.controls.nombre.invalid) {
+        <small class="field-error">
+          Ingresa un nombre válido de máximo 150 caracteres.
+        </small>
+        }
+      </div>
+
+      <div class="field">
+        <label for="categoria">Categoría *</label>
+        <select id="categoria" formControlName="categoriaId">
+          <option [ngValue]="0">Seleccionar categoría</option>
+
+          @for (categoria of categorias(); track categoria.id) {
+          <option [ngValue]="categoria.id">
+            {{ categoria.nombre }}
+          </option>
+          }
+        </select>
+
+        @if (cargandoCategorias()) {
+        <small>Cargando categorías...</small>
+        }
+
+        @if (form.controls.categoriaId.touched &&
+        form.controls.categoriaId.invalid) {
+        <small class="field-error">
+          Selecciona una categoría.
+        </small>
+        }
+      </div>
+
+      <div class="field full">
+        <label for="descripcion">Descripción</label>
+        <textarea
+          id="descripcion"
+          rows="3"
+          formControlName="descripcion"
+          placeholder="Describe brevemente el plato"
+        ></textarea>
+      </div>
+
+      <div class="field">
+        <label for="precio">Precio (S/) *</label>
+        <input
+          id="precio"
+          type="number"
+          min="0.01"
+          step="0.01"
+          formControlName="precio"
+        />
+
+        @if (form.controls.precio.touched &&
+        form.controls.precio.invalid) {
+        <small class="field-error">
+          Ingresa un precio mayor que cero.
+        </small>
+        }
+      </div>
+
+      <div class="field">
+        <label for="complejidad">Complejidad *</label>
+        <select id="complejidad" formControlName="complejidad">
+          <option value="BAJA">Baja</option>
+          <option value="MEDIA">Media</option>
+          <option value="ALTA">Alta</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label for="tiempo">Tiempo de preparación (minutos) *</label>
+        <input
+          id="tiempo"
+          type="number"
+          min="5"
+          max="15"
+          step="1"
+          formControlName="tiempoPreparacionMinutos"
+        />
+
+        @if (form.controls.tiempoPreparacionMinutos.touched &&
+        form.controls.tiempoPreparacionMinutos.invalid) {
+        <small class="field-error">
+          Debe estar entre 5 y 15 minutos.
+        </small>
+        }
+      </div>
+
+      <div class="field">
+        <label for="imagen">URL de la imagen</label>
+        <input
+          id="imagen"
+          type="url"
+          formControlName="imagenUrl"
+          placeholder="https://ejemplo.com/plato.jpg"
+        />
+      </div>
+
+      <div class="field full">
+        <label for="ingredientes">Ingredientes</label>
+        <textarea
+          id="ingredientes"
+          rows="3"
+          formControlName="ingredientes"
+          placeholder="Ingredientes principales"
+        ></textarea>
+      </div>
+
+      <div class="field full">
+        <label for="alergenos">Alérgenos</label>
+        <textarea
+          id="alergenos"
+          rows="2"
+          formControlName="alergenos"
+          placeholder="Ej. Gluten, lácteos, frutos secos"
+        ></textarea>
+      </div>
+
+      <label class="availability full">
+        <input type="checkbox" formControlName="disponible" />
+        <span>
+          <strong>Plato disponible</strong>
+          <small>El plato podrá ofrecerse en la carta.</small>
+        </span>
+      </label>
+    </div>
+
+    <footer class="form-actions">
+      <a routerLink="/operacion/platos" class="btn-cancel">
+        Cancelar
+      </a>
+
+      <button
+        type="submit"
+        class="btn-save"
+        [disabled]="guardando() || cargandoCategorias() || categorias().length === 0"
+      >
+        {{ guardando() ? 'Guardando...' : 'Guardar plato' }}
+      </button>
+    </footer>
+  </form>
+</section>
