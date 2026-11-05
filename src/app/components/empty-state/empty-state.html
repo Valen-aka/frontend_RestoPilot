@@ -1,1 +1,10 @@
-<!-- TODO: componente reutilizable empty-state. Sin contenido implementado. -->
+<section class="empty-state" aria-label="Información de la pantalla">
+ <div class="state-icon" aria-hidden="true">{{icon}}</div>
+ <h2>{{title}}</h2>
+ <p>{{description}}</p>
+ @if(actionLabel){
+  @if(actionUrl){<a mat-flat-button class="state-action" [routerLink]="actionUrl">{{actionLabel}}</a>}
+  @else{<button mat-flat-button class="state-action" type="button" (click)="action.emit()">{{actionLabel}}</button>}
+ }
+ <ng-content />
+</section>

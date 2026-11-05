@@ -2154,8 +2154,8 @@
     ],
     "owner": "Francesco Meza",
     "us": "Transversal; US02 para sesión y permisos",
-    "status": "Pendiente",
-    "contenidoImplementado": false
+    "status": "Implementado visualmente; integración pendiente",
+    "contenidoImplementado": true
   },
   {
     "slug": "estado-404",
@@ -2176,8 +2176,8 @@
     ],
     "owner": "Francesco Meza",
     "us": "Transversal; US02 para sesión y permisos",
-    "status": "Pendiente",
-    "contenidoImplementado": false
+    "status": "Implementado visualmente; integración pendiente",
+    "contenidoImplementado": true
   },
   {
     "slug": "estado-sesion-expirada",
@@ -2198,8 +2198,8 @@
     ],
     "owner": "Francesco Meza",
     "us": "Transversal; US02 para sesión y permisos",
-    "status": "Pendiente",
-    "contenidoImplementado": false
+    "status": "Implementado visualmente; integración pendiente",
+    "contenidoImplementado": true
   },
   {
     "slug": "estado-error",
@@ -2220,8 +2220,8 @@
     ],
     "owner": "Francesco Meza",
     "us": "Transversal; US02 para sesión y permisos",
-    "status": "Pendiente",
-    "contenidoImplementado": false
+    "status": "Implementado visualmente; integración pendiente",
+    "contenidoImplementado": true
   },
   {
     "slug": "estado-cargando",
@@ -2242,8 +2242,8 @@
     ],
     "owner": "Francesco Meza",
     "us": "Transversal; US02 para sesión y permisos",
-    "status": "Pendiente",
-    "contenidoImplementado": false
+    "status": "Implementado visualmente; integración pendiente",
+    "contenidoImplementado": true
   },
   {
     "slug": "cliente-ia",

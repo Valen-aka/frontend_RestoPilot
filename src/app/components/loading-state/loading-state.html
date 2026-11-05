@@ -1,1 +1,6 @@
-<!-- TODO: componente reutilizable loading-state. Sin contenido implementado. -->
+<div class="loading-state" role="status" aria-live="polite">
+ <span class="sr-only">{{label}}</span>
+ <div class="skeleton-grid" aria-hidden="true">
+  @for(item of placeholders;track item){<div class="skeleton-card"><div class="skeleton image"></div><div class="skeleton line"></div><div class="skeleton line short"></div></div>}
+ </div>
+</div>

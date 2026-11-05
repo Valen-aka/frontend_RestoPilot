@@ -1,6 +1,5 @@
 import {Component} from '@angular/core';
-/** Frame: estado-404. Responsable: Francesco Meza. Implementación pendiente. */
-@Component({selector:'rp-estado-404',imports:[],templateUrl:'./estado-404.html',styleUrl:'./estado-404.css'})
-export class Estado404Page{
-
-}
+import {CuentaLayout} from '../../../layouts/cuenta-layout/cuenta-layout';
+import {EmptyState} from '../../../components/empty-state/empty-state';
+@Component({selector:'rp-estado-404',imports:[CuentaLayout,EmptyState],templateUrl:'./estado-404.html',styleUrls:['../../../components/workspace-shell/workspace-pages.css','./estado-404.css']})
+export class Estado404Page {}

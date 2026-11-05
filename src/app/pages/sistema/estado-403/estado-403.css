@@ -1,2 +1,1 @@
-:host{display:block}
-/* TODO: estilos responsive exclusivos de esta pantalla; utilizar variables globales. */
+:host{display:block}.page-heading h1{font-size:30px;line-height:1.2;letter-spacing:-1px;max-width:650px}.page-heading .eyebrow{font-size:10px;letter-spacing:2px}.page-heading .subtitle{margin-top:18px;color:#647480;font-size:12px}.retry-note{margin:24px auto 0;max-width:520px;font-size:12px;text-align:center}@media(max-width:700px){.page-heading h1{font-size:27px;letter-spacing:-.8px}}

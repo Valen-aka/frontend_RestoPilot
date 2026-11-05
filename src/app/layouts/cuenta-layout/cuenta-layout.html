@@ -1,2 +1,7 @@
-<!-- TODO: cabecera, navegación y marco de cuenta. -->
-<router-outlet />
+<div class="account-shell">
+ <aside class="account-story" aria-label="RestoPilot">
+  <a class="brand" routerLink="/" aria-label="RestoPilot, volver al inicio"><span class="logo"><img src="/assets/workspace-logo.webp" width="88" height="82" alt=""></span><span><strong>Resto<span>Pilot</span></strong><small>Tu restaurante, en piloto automático</small></span></a>
+  <div class="story-content"><p class="story-eyebrow">Menos gestión. Más experiencias.</p><h2>Buen servicio.<br>Buenas historias.</h2><p class="story-description">Conecta tu cocina, tu equipo y cada encuentro alrededor de una mesa.</p><img class="bowl" src="/assets/bowl.svg" width="200" height="200" alt="" aria-hidden="true"></div>
+ </aside>
+ <main class="account-content"><router-outlet /><ng-content /></main>
+</div>
