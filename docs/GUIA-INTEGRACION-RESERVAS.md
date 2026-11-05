@@ -98,3 +98,7 @@ Pendiente: aceptación conjunta en el entorno del equipo y despliegue. No declar
 ## Corrección de entradas cliente — 05/11/2026
 
 Historial, expirada y completada deben seguir componiendo ReservaExpiradaView con ReservaExpiradaStore. No sustituirlos por ReservaStore de muestra: rompería identidad, fechas y disponibilidad pese a pasar pruebas aisladas del store. reservaId es el parámetro canónico; id se admite como compatibilidad. Un ID explícito inválido no permite recurrir a history.state. Ver [QA actual](QA-US26-CORRECCION-Y-REGRESION.md).
+
+## PostgreSQL remoto — 05/11/2026
+
+Se verificaron historial, fecha de expiración, disponibilidad y estado Completada contra Supabase desde el frontend actual y la API de IntelliJ en 8081. Ver [evidencia de conexión](CONEXION-SUPABASE.md). Se mantiene el servidor como autoridad de estados y disponibilidad; esta etapa no ejecutó llegada/finalización ni otras escrituras.
