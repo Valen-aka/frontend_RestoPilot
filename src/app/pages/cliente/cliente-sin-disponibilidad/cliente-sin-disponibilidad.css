@@ -85,3 +85,28 @@
   color: var(--rp-primary);
   margin-top: 8px;
 }
+
+/* ==========================================================================
+   Adaptaciones Responsivas Móvil (<= 390px)
+   ========================================================================== */
+@media (max-width: 600px) {
+  .no-disp-card {
+    padding: 18px 14px;
+  }
+
+  .no-disp-badge {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .no-disp-desc {
+    font-size: 13px;
+    margin-bottom: 20px;
+  }
+
+  .suggestions-grid {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+}

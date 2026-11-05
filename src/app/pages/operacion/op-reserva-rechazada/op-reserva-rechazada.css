@@ -100,6 +100,7 @@ dd {
   color: var(--rp-navy, #15324e);
   margin: 0;
   font-weight: 500;
+  overflow-wrap: anywhere;
 }
 
 .reason-text {
@@ -110,6 +111,7 @@ dd {
   color: #991b1b;
   font-size: 13px;
   line-height: 1.5;
+  overflow-wrap: anywhere;
 }
 
 .notification-notice {
@@ -147,4 +149,44 @@ dd {
   background: var(--rp-primary, #1b7954) !important;
   color: #fff !important;
   font-weight: 600;
+}
+
+/* ==========================================================================
+   Adaptaciones Responsivas Móvil (<= 390px)
+   ========================================================================== */
+@media (max-width: 600px) {
+  h1 {
+    font-size: 24px;
+    line-height: 1.25;
+  }
+
+  .card-container {
+    padding: 18px 14px;
+    border-radius: 10px;
+  }
+
+  .status-banner {
+    padding: 14px 12px;
+    gap: 12px;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .detail-dl {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+
+  .form-actions {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+  }
+
+  .form-actions a,
+  .form-actions button {
+    width: 100%;
+    text-align: center;
+    justify-content: center;
+  }
 }
