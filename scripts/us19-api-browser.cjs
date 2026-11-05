@@ -82,7 +82,7 @@ async function fits(page){assert.equal(await page.evaluate(()=>document.document
    await login(page);await go(page,'/operacion/cocina');await page.locator('rp-cocina-card mat-card[data-order-id="900"]').waitFor();
    await confirm(page,'Marcar listo',900);await page.getByRole('heading',{name:'Pedido listo para entregar',exact:true}).waitFor();await go(page,'/operacion/cocina');await page.getByRole('link',{name:'Consultar pedido seleccionado',exact:true}).waitFor();
    assert.equal(await page.locator('rp-cocina-card mat-card[data-order-id="900"]').count(),0);
-   await page.getByRole('link',{name:'Consultar pedido seleccionado',exact:true}).click();await page.getByRole('heading',{name:'Pedido listo para entregar',exact:true}).waitFor();assert.equal(await button(page,'Registrar entrega',900).isEnabled(),true);
+   await page.getByRole('link',{name:'Consultar pedido seleccionado',exact:true}).click();await page.getByRole('heading',{name:'Pedido listo para entregar',exact:true}).waitFor();await page.waitForFunction(()=>{const button=document.querySelector('button[aria-label="Registrar entrega del pedido #900"]');return button&&!button.disabled;});assert.equal(await button(page,'Registrar entrega',900).isEnabled(),true);
   });
   fs.writeFileSync(path.join(output,'results.json'),JSON.stringify(results,null,2));console.log(results.length+' recorridos HTTP de US19 correctos.');
  }finally{await browser.close();}

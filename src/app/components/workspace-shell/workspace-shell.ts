@@ -26,9 +26,8 @@ export class WorkspaceShell {
 
   // Fecha actual
   readonly currentDate = new Intl.DateTimeFormat('es-PE', {
-    day: 'numeric',
-    month: 'long',
-    year: 'numeric'
+    dateStyle: 'long',
+    timeZone: 'America/Lima'
   }).format(new Date());
 
   // Navegación del panel
@@ -37,7 +36,7 @@ export class WorkspaceShell {
     { key: 'pedidos', label: 'Pedidos', icon: '▤', url: '/operacion/pedidos' },
     { key: 'cocina', label: 'Cocina', icon: '♧', url: '/operacion/cocina' },
     { key: 'carta', label: 'Carta', icon: '▧', url: '/operacion/platos' },
-    { key: 'reservas', label: 'Reservas', icon: '▷', url: '/operacion/reservas' },
+    { key: 'reservas', label: 'Reservas', icon: '◷', url: '/operacion/reservas' },
     { key: 'mesas', label: 'Mesas', icon: '⊞', url: '/operacion/mesas' },
     { key: 'pagos', label: 'Pagos', icon: '▣', url: '/operacion/pagos' },
     { key: 'reportes', label: 'Reportes', icon: '▥', url: '/operacion/reportes' },

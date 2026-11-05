@@ -94,3 +94,11 @@ Pasaron 18 recorridos US26 y 23 de regresión US25. El mock es sintético y no a
 Resultados ejecutados: 11 pruebas HTTP/JWT/Clock/H2 US26 y 53 de regresión correctas, 64 en total. Se ejecutaron US26 y la regresión en invocaciones separadas. Se revisaron capturas de las vistas cliente/operación y no hubo desbordamiento global en los escenarios a 320/390/768/1440.
 
 Pendiente: aceptación conjunta en el entorno del equipo y despliegue. No declarar tareas Done únicamente por estas pruebas. No se crearon commits ni PR automáticamente.
+
+## Corrección de entradas cliente — 05/11/2026
+
+Historial, expirada y completada deben seguir componiendo ReservaExpiradaView con ReservaExpiradaStore. No sustituirlos por ReservaStore de muestra: rompería identidad, fechas y disponibilidad pese a pasar pruebas aisladas del store. reservaId es el parámetro canónico; id se admite como compatibilidad. Un ID explícito inválido no permite recurrir a history.state. Ver [QA actual](QA-US26-CORRECCION-Y-REGRESION.md).
+
+## PostgreSQL remoto — 05/11/2026
+
+Se verificaron historial, fecha de expiración, disponibilidad y estado Completada contra Supabase desde el frontend actual y la API de IntelliJ en 8081. Ver [evidencia de conexión](CONEXION-SUPABASE.md). Se mantiene el servidor como autoridad de estados y disponibilidad; esta etapa no ejecutó llegada/finalización ni otras escrituras.

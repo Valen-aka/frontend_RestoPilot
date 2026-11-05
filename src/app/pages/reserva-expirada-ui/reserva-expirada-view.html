@@ -37,7 +37,11 @@
           </mat-card>
         }
         <mat-card appearance="outlined" class="history-card">
-          <h2>Historial de reservas</h2><p class="muted">{{ rows().length }} reservas recibidas. Se conserva el estado real de cada registro.</p>
+          <h2>Historial de reservas</h2><p class="muted">{{ store.rows().length }} reservas recibidas. Se conserva el estado real de cada registro.</p>
+          <mat-chip-listbox aria-label="Filtrar las reservas consultadas" [value]="filter()" (change)="filter.set($event.value || 'Todas')">
+            @for (status of filters; track status) {<mat-chip-option [value]="status">{{ status }}</mat-chip-option>}
+          </mat-chip-listbox>
+          <p class="muted">El filtro se aplica a las reservas recibidas en esta consulta.</p>
           @if (rows().length) {
             <div class="table-region" role="region" tabindex="0" aria-label="Reservas. Desplaza horizontalmente para ver todas las columnas.">
               <table mat-table [dataSource]="rows()" aria-label="Historial de reservas">
@@ -51,7 +55,7 @@
                 <tr mat-header-row *matHeaderRowDef="columns"></tr><tr mat-row *matRowDef="let row; columns: columns;"></tr>
               </table>
             </div>
-          } @else {<div class="empty-state" role="status"><h3>No hay reservas</h3><p>No se recibieron reservas para esta consulta.</p></div>}
+          } @else {<div class="empty-state" role="status"><h3>{{ store.rows().length ? 'Sin coincidencias' : 'No hay reservas' }}</h3><p>{{ store.rows().length ? 'No hay reservas con el estado seleccionado.' : 'No se recibieron reservas para esta consulta.' }}</p></div>}
         </mat-card>
       } @else if (selected(); as reservation) {
         <div class="detail-grid" [class.operation]="context() === 'operation'">

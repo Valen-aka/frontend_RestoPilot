@@ -164,3 +164,7 @@ Con Angular de desarrollo en 4311 y PLAYWRIGHT_MODULE configurado, ejecutar scri
 En backend, .\mvnw.cmd '-Dtest=Us13HttpIntegrationTest' test usa HTTP/JWT reales y H2 aislado. Comprueba transiciones mediante una cuenta de operación de prueba y consultas posteriores del cliente. El cliente HTTP de prueba usa JdkClientHttpRequestFactory porque el transporte HttpURLConnection no permite PATCH; no se modifica el cliente o seguridad de producción.
 
 La aceptación final requiere el recorrido con las pantallas de acceso/carta y la base del equipo. No marcar tareas Done por mock, H2 o build, ni implementar pantallas asignadas a otras tareas para ocultar una dependencia.
+
+## Conexión real con Supabase — 05/11/2026
+
+Se comprobó la API de IntelliJ en 8081 y el PostgreSQL remoto: 17 verificaciones HTTP y 22 de navegador correctas. Angular conserva su apiUrl del backend. Ver [conexión y límites](CONEXION-SUPABASE.md); las pruebas no conectan automáticamente las interfaces de acceso/carta todavía pendientes.

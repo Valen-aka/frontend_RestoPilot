@@ -171,3 +171,7 @@ Verificación: check y build correctos; 79 pruebas frontend de contratos/stores/
 Backend: 11 pruebas nuevas HTTP/JWT/Clock/H2 correctas y 53 de regresión (ReglasNegocioIntegrationTest 26, CicloReservaIntegrationTest 19, Us25HttpIntegrationTest 8), total 64. Cubren límites exactos, historial, disponibilidad libre al expirar, ocupación posterior válida, llegada/completada no expirables por ausencia, concurrencia sin duplicados y solicitudes tardías que no reactivan la reserva.
 
 Reproducción y límites: [guía compartida de reservas](../../GUIA-INTEGRACION-RESERVAS.md). Las capturas inspeccionadas no acreditan una comparación nueva con Figma ni auditoría completa de accesibilidad. La aceptación con autenticación/PostgreSQL del equipo y el despliegue siguen pendientes. No se crearon commits, push ni PR automáticamente.
+
+## 13. Recuperación de la integración — 05/11/2026
+
+Las tres entradas de cliente (historial, expirada y completada) reutilizan de nuevo la vista y store API compartidos; se elimina su selección por defecto desde muestras. Se conservan filtros de estado sobre datos recibidos y se admite el alias id sin sustituir parámetros explícitos inválidos. La variante completada requiere sesión. Las pruebas de navegador incluyen las entradas reales, no solo el store. Ver [corrección y regresión](../../QA-US26-CORRECCION-Y-REGRESION.md) para resultados y problemas abiertos de otras pantallas.

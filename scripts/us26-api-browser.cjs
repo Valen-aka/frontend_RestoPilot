@@ -33,6 +33,20 @@ const refresh=page=>page.getByRole('button',{name:'Actualizar reservas',exact:tr
    await page.waitForFunction(()=>document.activeElement?.id==='expiry-row-802');
    assert((await calls()).every(r=>r.method==='GET'&&r.authorized));
   },width);
+  await run('filtros conservan datos reales y selección sin muestras',async page=>{
+   await login(page,'client');await page.getByRole('heading',{name:'Historial de reservas',exact:true}).waitFor();
+   await page.getByRole('option',{name:'Expirada',exact:true}).click();assert.equal(await page.locator('table tbody tr').count(),1);
+   await page.getByRole('link',{name:'Ver reserva 802',exact:true}).click();await ready(page,802);
+   await go(page,'/cliente/reserva?vista=cliente-reserva-expirada&id=802');await ready(page,802);
+   assert.equal(await page.locator('.reservation-card .status').innerText(),'Expirada');
+   await go(page,'/cliente/reserva?vista=cliente-reserva-completada&reservaId=803');await ready(page,803);
+   assert.equal(await page.locator('.reservation-card .status').innerText(),'Completada');
+   assert.equal(await page.getByRole('button',{name:'Consultar disponibilidad',exact:true}).count(),0);
+   const before=(await calls()).length;
+   await go(page,'/cliente/reserva?vista=cliente-reserva-expirada&reservaId=abc&id=802');
+   await page.getByText('Selecciona una reserva válida para consultarla.',{exact:true}).waitFor();
+   assert.equal((await calls()).length,before);assert.equal(await page.locator('.reservation-card').count(),0);
+  });
   await run('disponibilidad ocupada o consulta fallida no inventa mesa libre',async page=>{
    await login(page,'client',detail('client',802));await ready(page,802);await control('availability-error');await page.getByRole('button',{name:'Consultar disponibilidad',exact:true}).click();await page.getByText('No pudimos verificar la disponibilidad de esta mesa. Puedes volver a consultarla.',{exact:true}).waitFor();assert.equal(await page.locator('.reservation-card .status').innerText(),'Expirada');
    await control('availability-empty');await page.getByRole('button',{name:'Consultar disponibilidad',exact:true}).click();await page.getByText('No pudimos verificar la disponibilidad de esta mesa. Puedes volver a consultarla.',{exact:true}).waitFor();
