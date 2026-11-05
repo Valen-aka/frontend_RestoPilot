@@ -1,0 +1,30 @@
+purpose:
+  stands_in_for: Consultas de pedidos propios y pagos del backend RestoPilot.
+  unblocks: Verificar US12 en el frontend real con respuestas HTTP controladas y datos sintéticos.
+assumptions:
+  - id: contrato-consulta
+    status: supported
+    claim: El contrato revisado ofrece GET /api/pedidos/{id}, /api/pedidos/{id}/pagos y /api/pedidos/me.
+    reason: Se inspeccionaron DTO, controladores y servicios actuales; el pago es un objeto y el listado usa pedidos, no content.
+    verification: Lectura del código el 2026-11-02. Se ejecutaron 25 recorridos del frontend real contra este mock y tres pruebas HTTP del backend sobre JWT/H2, con sus alcances separados.
+    source: backend PedidoController, PedidoService, PagoController, PagoService y PagoResponseDTO; docs/specs/cliente-pedido-api/SPEC.md
+    updated_at: '2026-11-02'
+  - id: pago-ausente
+    status: supported
+    claim: Un 404 de pago no distingue por sí solo pago ausente de pedido inaccesible.
+    reason: PagoService lanza ResourceNotFoundException en ambos casos; el frontend vuelve a consultar el pedido antes de mostrar ausencia de registro.
+    verification: Inspección del servicio y GlobalExceptionHandler; los escenarios del mock no añaden otro endpoint o código de negocio.
+    source: backend modules/pagos/service/PagoService.java; src/app/pages/cliente/pedido-ui/pedido-consulta-store.ts
+    updated_at: '2026-11-02'
+  - id: entorno-equipo
+    status: unknown
+    claim: La integración completa está aceptada con acceso/carta y PostgreSQL del equipo.
+    reason: La simulación usa tokens y datos sintéticos; no establece comportamiento de la base real ni termina las tareas de otros integrantes.
+    verification: Pasaron los escenarios controlados de carga, pago pendiente/pagado/ausente, propiedad, errores, reintentos, paginación e identidad. La base PostgreSQL y el recorrido con pantallas del equipo siguen pendientes. Se reutilizó el mock local de US11 sin buscar ni publicar recursos remotos.
+    source: docs/GUIA-INTEGRACION-PEDIDOS.md; postman/mocks/restopilot-us11/default.js
+    updated_at: '2026-11-02'
+fingerprints:
+  - id: us12-local
+    date: '2026-11-02'
+    commit: working-tree
+    cli: '1.75.0'

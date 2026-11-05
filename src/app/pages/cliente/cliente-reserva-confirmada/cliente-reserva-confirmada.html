@@ -1,3 +1,112 @@
-<!-- FRAME: cliente-reserva-confirmada | Tu reserva confirmada -->
-<!-- TODO: implementar Desktop y Mobile con Angular Material. -->
-<!-- No hay campos, datos ni contenido visual implementados. -->
+<a class="skip-link" href="#reserva-conf-content">Saltar al contenido</a>
+
+<div class="reserva-shell">
+  <!-- Cabecera de Cliente -->
+  <header class="client-header">
+    <a class="brand" routerLink="/cliente" aria-label="RestoPilot, inicio de cliente">
+      <div class="brand-icon" aria-hidden="true">RP</div>
+      <span>Resto<span class="brand-accent">Pilot</span><small>Tu restaurante, en piloto automático</small></span>
+    </a>
+    <nav aria-label="Navegación de cliente">
+      <a routerLink="/cliente">Inicio</a>
+      <a routerLink="/cliente/carta">La carta</a>
+      <a routerLink="/cliente/reservas" class="active" aria-current="page">Mis reservas</a>
+      <a routerLink="/cliente/pedidos">Mis pedidos</a>
+      <a routerLink="/cliente/asistente">Asistente IA</a>
+    </nav>
+    <div class="sample-context">
+      <span class="sample-avatar" aria-hidden="true">AP</span>
+      <div>
+        <strong>Ana Pérez</strong>
+        <small>Mi cuenta de cliente</small>
+      </div>
+    </div>
+  </header>
+
+  <!-- Contenido Principal -->
+  <main id="reserva-conf-content" tabindex="-1" class="reserva-main">
+    <div class="page-heading">
+      <p class="eyebrow">RESERVAS CLIENTE</p>
+      <h1>Tu mesa te espera</h1>
+      <p class="subtitle">¡Tu reserva ha sido confirmada por el equipo de La Mesa Verde!</p>
+    </div>
+
+    @if (reserva(); as r) {
+      <div class="reserva-card state-detail-card">
+        <!-- Banner de Confirmación -->
+        <div class="status-callout confirmed" role="status">
+          <div class="callout-icon" aria-hidden="true">✓</div>
+          <div class="callout-content">
+            <h2>Reserva Confirmada</h2>
+            <p>Mesa reservada exitosamente. Presenta tu código <strong>#{{ r.codigo }}</strong> en la recepción a tu llegada. Cuentas con 15 minutos de tolerancia.</p>
+          </div>
+        </div>
+
+        <div class="detail-columns">
+          <div class="detail-section">
+            <h3>Detalles de la cita</h3>
+            <dl class="detail-dl">
+              <div>
+                <dt>Código de reserva</dt>
+                <dd><span class="code-badge">#{{ r.codigo }}</span></dd>
+              </div>
+              <div>
+                <dt>Fecha de visita</dt>
+                <dd><strong>{{ r.fecha }}</strong></dd>
+              </div>
+              <div>
+                <dt>Horario</dt>
+                <dd>{{ r.horaInicio }} a {{ r.horaFin }}</dd>
+              </div>
+              <div>
+                <dt>Mesa asignada</dt>
+                <dd>{{ r.mesaNumero }} ({{ r.zona }})</dd>
+              </div>
+              <div>
+                <dt>Comensales</dt>
+                <dd>{{ r.comensales }} personas</dd>
+              </div>
+            </dl>
+          </div>
+
+          <div class="detail-section">
+            <h3>Indicaciones de llegada</h3>
+            <div class="arrival-box">
+              <p>📍 <strong>La Mesa Verde:</strong> Av. Larco 1045, Miraflores.</p>
+              <p>⏱️ Te recomendamos llegar 10 minutos antes del turno indicado.</p>
+              <p>🔒 La cancelación gratuita aplica hasta 2 horas antes del horario de inicio (US09).</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Acciones -->
+        <div class="form-actions border-top">
+          <a mat-stroked-button routerLink="/cliente/reservas" class="btn-secondary">
+            ← Volver a mis reservas
+          </a>
+          <a mat-stroked-button
+            routerLink="/cliente/reserva/editar"
+            [queryParams]="{ id: r.id }"
+            [state]="{ reservaId: r.id }"
+            class="btn-secondary">
+            Reprogramar reserva
+          </a>
+          <a mat-button
+            routerLink="/cliente/reserva/cancelar"
+            [queryParams]="{ id: r.id }"
+            [state]="{ reservaId: r.id }"
+            class="btn-cancel">
+            Cancelar reserva
+          </a>
+        </div>
+      </div>
+    }
+  </main>
+
+  <!-- Pie de Página -->
+  <footer class="client-footer">
+    <p>RestoPilot · La Mesa Verde (Lima - Miraflores)</p>
+    <p>Tu restaurante, en piloto automático.</p>
+    <a routerLink="/cliente">Volver al inicio</a>
+  </footer>
+</div>

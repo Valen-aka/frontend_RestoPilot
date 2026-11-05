@@ -1,0 +1,4 @@
+.brand{display:flex;align-items:center;gap:10px}
+.brand-image{position:relative;display:block;width:43px;height:43px;flex:none;overflow:hidden;border-radius:9px}
+.brand-image img{display:block;object-fit:cover}.brand-image>span{position:absolute;inset:0;background:#fff}
+@media(max-width:650px){.brand{font-size:22px}.client-header{gap:16px}.client-header nav{gap:16px}}

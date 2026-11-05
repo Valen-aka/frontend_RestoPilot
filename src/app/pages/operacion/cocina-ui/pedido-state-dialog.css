@@ -1,0 +1,5 @@
+:host{display:block;max-width:100%;color:var(--rp-ink);font-family:'Cocina Open Sans',Arial,sans-serif}
+p{font-size:14px;line-height:1.8}dl{display:grid;gap:16px;margin:24px 0}dt{font-size:12px;color:var(--rp-muted)}dd{margin:4px 0 0;font-size:14px;color:var(--rp-navy);font-weight:600}
+.notice{padding:14px;border-radius:8px;background:var(--rp-info-container);color:var(--rp-navy);font-size:12px}
+mat-dialog-actions{padding:16px 24px 24px;gap:12px;flex-wrap:wrap}
+button{min-height:44px;max-width:100%;height:auto;padding-block:12px;line-height:1.6}

@@ -1,6 +1,4 @@
 import {Component} from '@angular/core';
-/** Frame: op-categoria-eliminar. Responsable: Valentina Montenegro. Implementación pendiente. */
-@Component({selector:'rp-op-categoria-eliminar',imports:[],templateUrl:'./op-categoria-eliminar.html',styleUrl:'./op-categoria-eliminar.css'})
-export class OpCategoriaEliminarPage{
-
-}
+import {CategoriasView} from '../categorias-ui/categorias-view';
+@Component({selector:'rp-op-categoria-eliminar',imports:[CategoriasView],templateUrl:'./op-categoria-eliminar.html',styleUrl:'./op-categoria-eliminar.css'})
+export class OpCategoriaEliminarPage {}

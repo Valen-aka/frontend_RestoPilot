@@ -1,0 +1,11 @@
+:host{display:block;min-width:0;--mat-table-background-color:#fff;--mat-table-header-headline-font:'Pedido Open Sans',Arial,sans-serif;--mat-table-row-item-label-text-font:'Pedido Open Sans',Arial,sans-serif;--mat-table-row-item-label-text-size:13px;--mat-table-header-headline-size:12px}
+.table-region{max-width:100%;overflow-x:auto;overscroll-behavior-inline:contain;border-radius:4px}
+.table-region:focus-visible{outline:3px solid var(--rp-navy);outline-offset:3px}
+table{width:100%;min-width:360px;border-collapse:collapse}
+.editable table{min-width:580px}
+th,td{padding:16px 10px;text-align:left;border-bottom:1px solid #e2e8e7;overflow-wrap:anywhere}
+th{background:#fafbfa;color:#596d77;font-weight:500;font-size:12px}
+td{font-size:13px;color:var(--rp-navy)}
+.quantity-field{width:146px;margin-block:8px;--mat-form-field-container-text-size:13px;--mat-form-field-container-vertical-padding:12px;--mat-form-field-container-height:44px}
+.table-help{display:none;font-size:11px;color:#596d77;margin-top:12px}
+@media(max-width:850px){.table-help{display:block}}

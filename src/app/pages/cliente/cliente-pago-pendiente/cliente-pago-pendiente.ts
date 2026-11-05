@@ -1,6 +1,5 @@
 import {Component} from '@angular/core';
-/** Frame: cliente-pago-pendiente. Responsable: Alexandra Fong. Implementación pendiente. */
-@Component({selector:'rp-cliente-pago-pendiente',imports:[],templateUrl:'./cliente-pago-pendiente.html',styleUrl:'./cliente-pago-pendiente.css'})
-export class ClientePagoPendientePage{
+import {PedidoSelectionView} from '../pedido-ui/pedido-selection-view';
 
-}
+@Component({selector:'rp-cliente-pago-pendiente',imports:[PedidoSelectionView],templateUrl:'./cliente-pago-pendiente.html',styleUrl:'./cliente-pago-pendiente.css'})
+export class ClientePagoPendientePage {}

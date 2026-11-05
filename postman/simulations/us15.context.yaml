@@ -1,0 +1,23 @@
+purpose:
+  stands_in_for: Cola y detalle de pedidos del restaurante con metadatos de prioridad.
+  unblocks: Navegación y errores HTTP del frontend sin tocar pedidos del equipo.
+assumptions:
+  - id: contrato-cola
+    status: supported
+    claim: GET /pedidos/pendientes entrega Page Spring con estados activos y prioridad antes de paginar.
+    reason: Contrato contrastado con PedidoController y PedidoService del backend local.
+    source: docs/specs/operacion-cocina-api/SPEC.md
+    updated_at: '2026-11-02'
+  - id: limites
+    status: unverified
+    claim: Esta simulación no verifica firmas JWT, persistencia PostgreSQL ni despliegue del equipo.
+    reason: Usa tokens sintéticos; la prioridad real y autorización se prueban separadamente con HTTP/JWT/H2.
+    source: backend Us15HttpIntegrationTest.java
+    updated_at: '2026-11-02'
+
+verification:
+  date: '2026-11-02'
+  frontend_unit: 33 pruebas de contrato/store e infraestructura compartida correctas.
+  browser: 13 recorridos contra esta simulación correctos, sin mutaciones y con anchos 320/390/768/1440.
+  backend_separate: 3 pruebas US15 HTTP/JWT/H2 y 10 regresiones de pedidos correctas.
+  limitations: No certifica PostgreSQL del equipo ni firma JWT por el mock; no se volvió a comparar Figma por límite del plan.

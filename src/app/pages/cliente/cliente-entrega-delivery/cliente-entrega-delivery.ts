@@ -1,7 +1,6 @@
 import {Component} from '@angular/core';
-import {FormGroup,ReactiveFormsModule} from '@angular/forms';
-/** Frame: cliente-entrega-delivery. Responsable: Alexandra Fong. Implementación pendiente. */
-@Component({selector:'rp-cliente-entrega-delivery',imports:[ReactiveFormsModule],templateUrl:'./cliente-entrega-delivery.html',styleUrl:'./cliente-entrega-delivery.css'})
-export class ClienteEntregaDeliveryPage{
- readonly form0=new FormGroup({}); // TODO: campos y validaciones del frame.
-}
+import {CarritoView} from '../carrito-ui/carrito-view';
+
+/** Entrada de US11: presentación de muestra, sin registro real. */
+@Component({selector:'rp-cliente-entrega-delivery',imports:[CarritoView],templateUrl:'./cliente-entrega-delivery.html',styleUrl:'./cliente-entrega-delivery.css'})
+export class ClienteEntregaDeliveryPage {}
