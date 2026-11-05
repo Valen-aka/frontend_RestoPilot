@@ -140,8 +140,7 @@
 
               <a
                 class="delete-link"
-                [routerLink]="['/operacion/plato/eliminar']"
-                [queryParams]="{id: plato.id}"
+                [routerLink]="['/operacion/plato/eliminar', plato.id]"
               >
                 Eliminar
               </a>

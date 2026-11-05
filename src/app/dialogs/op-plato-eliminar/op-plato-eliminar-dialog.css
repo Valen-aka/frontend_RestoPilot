@@ -1,2 +1,108 @@
-:host{display:block}
-/* TODO: adaptar al modal del frame. */
+:host {
+  display: block;
+  width: 100%;
+}
+
+.confirm-card {
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 480px;
+  padding: 33px;
+  border: 1px solid #e0e8df;
+  border-radius: 17px;
+  background: #fff;
+  box-shadow: 0 20px 35px rgba(28, 61, 51, .06);
+}
+
+.warning-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  border-radius: 15px;
+  background: #faece8;
+  color: #bd6860;
+  font-size: 23px;
+}
+
+.eyebrow {
+  margin: 0 0 5px;
+  color: #219567;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 2.1px;
+}
+
+h2 {
+  margin: 0 0 16px;
+  color: #18334a;
+  font-size: 25px;
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: -.5px;
+}
+
+.description {
+  margin: 0;
+  color: #647480;
+  font-size: 12px;
+  line-height: 21px;
+}
+
+.plato-name {
+  margin: 10px 0 0;
+  color: #647480;
+  font-size: 12px;
+  overflow-wrap: anywhere;
+}
+
+.plato-name strong {
+  color: #18334a;
+}
+
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+.actions button {
+  min-height: 45px;
+  padding: 0 19px;
+  border-radius: 10px;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.actions .back-button {
+  border: 1px solid #e2e8e7;
+  background: #fff;
+  color: #18334a;
+}
+
+.actions .delete-button {
+  background: #b6534c;
+  color: #fff;
+}
+
+.actions button:disabled {
+  opacity: .6;
+  cursor: not-allowed;
+}
+
+@media (max-width: 600px) {
+  .confirm-card {
+    padding: 25px;
+  }
+
+  h2 {
+    font-size: 23px;
+  }
+
+  .actions {
+    justify-content: flex-start;
+  }
+}

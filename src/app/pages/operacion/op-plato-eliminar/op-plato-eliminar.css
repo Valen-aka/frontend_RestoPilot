@@ -1,2 +1,96 @@
-:host{display:block}
-/* TODO: estilos responsive exclusivos de esta pantalla; utilizar variables globales. */
+:host {
+  display: block;
+  width: 100%;
+}
+
+.delete-page {
+  box-sizing: border-box;
+  width: 100%;
+  padding: 38px;
+  color: #18334a;
+}
+
+.page-heading {
+  margin-bottom: 0;
+}
+
+.eyebrow {
+  margin: 0 0 7px;
+  color: #219567;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 2px;
+}
+
+.page-heading h1 {
+  margin: 0 0 10px;
+  font-size: 38px;
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: -.5px;
+}
+
+.subtitle {
+  margin: 0 0 28px;
+  color: #647480;
+  font-size: 14px;
+  line-height: 21px;
+}
+
+.confirmation-area {
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: 530px;
+  padding: 35px 18px;
+  border-radius: 16px;
+  background: #e8eeea;
+}
+
+.confirmation-content {
+  width: 100%;
+  max-width: 480px;
+}
+
+.state-message {
+  width: 100%;
+  max-width: 480px;
+  padding: 22px;
+  border-radius: 12px;
+  background: white;
+  text-align: center;
+}
+
+.error-message {
+  padding: 12px;
+  border-radius: 8px;
+  background: #faece8;
+  color: #b6534c;
+  font-size: 13px;
+}
+
+.confirmation-content > .error-message {
+  margin: 0 0 12px;
+}
+
+.state-message a {
+  color: #219567;
+  font-weight: 700;
+}
+
+@media (max-width: 600px) {
+  .delete-page {
+    padding: 25px 18px;
+  }
+
+  .page-heading h1 {
+    font-size: 30px;
+  }
+
+  .confirmation-area {
+    min-height: 350px;
+    padding: 25px 14px;
+  }
+}

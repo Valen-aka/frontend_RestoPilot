@@ -131,7 +131,7 @@ export class CatalogoService {
       );
   }
 
-  // US14: REGISTRAR NUEVO PLATO
+  // REGISTRAR NUEVO PLATO
   crearPlato(datos: PlatoRequest): Observable<PlatoResponse> {
     return this.http.post<PlatoResponse>(
       this.base + '/platos',
@@ -140,7 +140,7 @@ export class CatalogoService {
     );
   }
 
-  // US14: OBTENER PLATO POR ID
+  // OBTENER PLATO POR ID
   obtenerPlato(id: number): Observable<PlatoResponse> {
     return this.http.get<PlatoResponse>(
       this.base + '/platos/' + id,
@@ -148,7 +148,7 @@ export class CatalogoService {
     );
   }
 
-// US14: ACTUALIZAR PLATO
+// ACTUALIZAR PLATO
   actualizarPlato(
     id: number,
     datos: PlatoRequest
@@ -159,7 +159,7 @@ export class CatalogoService {
       { timeout: 20000 }
     );
   }
-  // US14: CAMBIAR DISPONIBILIDAD DE PLATO
+  // CAMBIAR DISPONIBILIDAD DE PLATO
   cambiarDisponibilidadPlato(
     id: number,
     disponible: boolean
@@ -171,6 +171,24 @@ export class CatalogoService {
         params: { disponible: String(disponible) },
         timeout: 20000
       }
+    );
+  }
+  // ELIMINAR PLATO
+  eliminarPlato(id: number): Observable<void> {
+    return this.http.delete(
+      this.base + '/platos/' + id,
+      {
+        observe: 'response',
+        timeout: 20000
+      }
+    ).pipe(
+      map(response => {
+        if (response.status !== 204) {
+          throw new Error(
+            'No se pudo confirmar la eliminación del plato.'
+          );
+        }
+      })
     );
   }
   // LISTAR CATEGORÍAS
