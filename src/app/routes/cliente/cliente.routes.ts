@@ -1,3 +1,4 @@
+import {reservaFisicaGuard} from '../../core/guards/atencion-fisica.guard';
 import {reservaConsultaGuard} from '../../core/guards/reserva-consulta.guard';
 import {Routes} from '@angular/router';
 import {ClienteLayout} from '../../layouts/cliente-layout/cliente-layout';
@@ -10,9 +11,9 @@ const children:Routes=[
 {path:"pedidos",pathMatch:'full',loadComponent:()=>import('../../screen-host').then(m=>m.ScreenHost),data:{base:"/cliente/pedidos"}},
 {path:"pedido",pathMatch:'full',loadComponent:()=>import('../../screen-host').then(m=>m.ScreenHost),data:{base:"/cliente/pedido"}},
 {path:"pago",pathMatch:'full',loadComponent:()=>import('../../screen-host').then(m=>m.ScreenHost),data:{base:"/cliente/pago"}},
-{path:"reservar",pathMatch:'full',loadComponent:()=>import('../../screen-host').then(m=>m.ScreenHost),data:{base:"/cliente/reservar"}},
-{path:"plano",pathMatch:'full',loadComponent:()=>import('../../screen-host').then(m=>m.ScreenHost),data:{base:"/cliente/plano"}},
-{path:"reserva/revisar",pathMatch:'full',loadComponent:()=>import('../../screen-host').then(m=>m.ScreenHost),data:{base:"/cliente/reserva/revisar"}},
+{path:"reservar",canActivate:[reservaFisicaGuard],runGuardsAndResolvers:'paramsOrQueryParamsChange',pathMatch:'full',loadComponent:()=>import('../../screen-host').then(m=>m.ScreenHost),data:{base:"/cliente/reservar"}},
+{path:"plano",canActivate:[reservaFisicaGuard],runGuardsAndResolvers:'paramsOrQueryParamsChange',pathMatch:'full',loadComponent:()=>import('../../screen-host').then(m=>m.ScreenHost),data:{base:"/cliente/plano"}},
+{path:"reserva/revisar",canActivate:[reservaFisicaGuard],runGuardsAndResolvers:'paramsOrQueryParamsChange',pathMatch:'full',loadComponent:()=>import('../../screen-host').then(m=>m.ScreenHost),data:{base:"/cliente/reserva/revisar"}},
 {path:"reservas",canActivate:[reservaConsultaGuard],pathMatch:'full',loadComponent:()=>import('../../screen-host').then(m=>m.ScreenHost),data:{base:"/cliente/reservas"}},
 {path:"reserva",canActivate:[reservaConsultaGuard],runGuardsAndResolvers:'paramsOrQueryParamsChange',pathMatch:'full',loadComponent:()=>import('../../screen-host').then(m=>m.ScreenHost),data:{base:"/cliente/reserva"}},
 {path:"reserva/editar",pathMatch:'full',loadComponent:()=>import('../../screen-host').then(m=>m.ScreenHost),data:{base:"/cliente/reserva/editar"}},

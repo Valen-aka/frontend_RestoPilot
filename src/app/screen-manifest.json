@@ -700,8 +700,8 @@
     ],
     "owner": "Valentina Montenegro",
     "us": "US27",
-    "status": "Pendiente",
-    "contenidoImplementado": false
+    "status": "Implementada e integrada; verificada con HTTP controlado y Supabase (US27)",
+    "contenidoImplementado": true
   },
   {
     "slug": "cliente-reserva-revisar",
@@ -1931,8 +1931,8 @@
     ],
     "owner": "Valentina Montenegro",
     "us": "US27",
-    "status": "Pendiente",
-    "contenidoImplementado": false
+    "status": "Implementada e integrada; verificada con HTTP controlado y Supabase (US27)",
+    "contenidoImplementado": true
   },
   {
     "slug": "op-reservas-modulo-confirmar",
@@ -1956,8 +1956,8 @@
     ],
     "owner": "Valentina Montenegro",
     "us": "US27",
-    "status": "Pendiente",
-    "contenidoImplementado": false
+    "status": "Implementada e integrada; verificada con HTTP controlado y Supabase (US27)",
+    "contenidoImplementado": true
   },
   {
     "slug": "op-reportes",
