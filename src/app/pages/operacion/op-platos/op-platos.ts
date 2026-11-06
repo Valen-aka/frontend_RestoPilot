@@ -1,5 +1,9 @@
+import {MatButtonModule} from '@angular/material/button';
+import {MatFormFieldModule} from '@angular/material/form-field';
+import {MatInputModule} from '@angular/material/input';
+import {MatSelectModule} from '@angular/material/select';
+import {MatTableModule} from '@angular/material/table';
 import {Component, computed, inject, OnInit, signal} from '@angular/core';
-import {CommonModule} from '@angular/common';
 import {RouterLink} from '@angular/router';
 import {finalize} from 'rxjs';
 import {AuthService} from '../../../core/services/auth.service';
@@ -9,7 +13,7 @@ import {PlatoResponse} from '../../../core/models/catalogo-api.model';
 @Component({
   selector: 'rp-op-platos',
   standalone: true,
-  imports: [CommonModule, RouterLink],
+  imports: [RouterLink, MatButtonModule, MatFormFieldModule, MatInputModule, MatSelectModule, MatTableModule],
   templateUrl: './op-platos.html',
   styleUrl: './op-platos.css'
 })
@@ -17,6 +21,7 @@ export class OpPlatosPage implements OnInit {
   private readonly auth = inject(AuthService);
   private readonly catalogo = inject(CatalogoService);
 
+  readonly columnas = ['plato', 'categoria', 'precio', 'preparacion', 'disponibilidad', 'acciones'];
   readonly platos = signal<readonly PlatoResponse[]>([]);
   readonly cargando = signal(false);
   readonly error = signal('');
