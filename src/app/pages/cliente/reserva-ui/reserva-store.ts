@@ -1,5 +1,22 @@
-import {Injectable, computed, signal} from '@angular/core';
+import {Injectable, computed, inject, signal} from '@angular/core';
+import {catchError, map, Observable, of} from 'rxjs';
 import {EstadoReserva, MesaPlano, ReservaDraft, ReservaItem} from './reserva.model';
+import {MesaDisponible} from '../../../core/models/reserva-query.model';
+import {ReservaResponse} from '../../../core/models/reserva-api.model';
+import {ReservaService} from '../../../core/services/reserva.service';
+
+function inferirZona(numero: number, coordX?: number): 'Terraza' | 'Salón Principal' | 'Ventanal' | 'Zona VIP' {
+  if (coordX !== undefined && coordX !== null) {
+    if (coordX <= 30) return 'Terraza';
+    if (coordX <= 60) return 'Salón Principal';
+    if (coordX <= 80) return 'Ventanal';
+    return 'Zona VIP';
+  }
+  if (numero <= 2) return 'Terraza';
+  if (numero <= 5) return 'Salón Principal';
+  if (numero <= 7) return 'Ventanal';
+  return 'Zona VIP';
+}
 
 const MESAS_INICIALES: MesaPlano[] = [
   { id: 1, numero: 'Mesa 01', capacidad: 2, zona: 'Terraza', disponible: true, x: 10, y: 15 },
@@ -174,6 +191,42 @@ export class ReservaStore {
     }));
   }
 
+  actualizarMesasDesdeDisponibilidad(mesasDisponibles: readonly MesaDisponible[]) {
+    const mapeadas: MesaPlano[] = mesasDisponibles.map(m => ({
+      id: m.mesaId,
+      numero: `Mesa ${String(m.numero).padStart(2, '0')}`,
+      capacidad: m.capacidad,
+      zona: inferirZona(m.numero, m.coordenadaX),
+      disponible: m.disponible,
+      motivoNoDisponible: m.disponible ? undefined : 'Ocupada en este horario',
+      x: m.coordenadaX ?? ((m.numero * 18) % 85 + 5),
+      y: m.coordenadaY ?? ((m.numero * 22) % 65 + 15)
+    }));
+    this.mesas.set(mapeadas);
+  }
+
+  incorporarReservaCreada(res: ReservaResponse): ReservaItem {
+    const d = this.draft();
+    const nueva: ReservaItem = {
+      id: res.id,
+      codigo: `RES-${res.id}`,
+      fecha: res.fecha,
+      horaInicio: res.horaInicio.length >= 5 ? res.horaInicio.slice(0, 5) : res.horaInicio,
+      horaFin: res.horaFin.length >= 5 ? res.horaFin.slice(0, 5) : res.horaFin,
+      comensales: res.numeroComensales,
+      mesaId: res.mesaId,
+      mesaNumero: `Mesa ${String(res.mesaNumero).padStart(2, '0')}`,
+      zona: d.zona ?? 'Salón Principal',
+      estado: res.estado,
+      solicitadaEn: res.creadoEn ? res.creadoEn.replace('T', ' ').slice(0, 16) : new Date().toISOString().replace('T', ' ').slice(0, 16),
+      notas: res.notas ?? '',
+      nombreCliente: res.clienteNombre || d.nombreCliente || 'Cliente',
+      telefonoCliente: d.telefonoCliente || ''
+    };
+    this.reservas.update(list => [nueva, ...list.filter(item => item.id !== nueva.id)]);
+    return nueva;
+  }
+
   confirmarReservaActual(): ReservaItem {
     const d = this.draft();
     const newId = Math.max(200, ...this.reservas().map(r => r.id)) + 1;
@@ -199,8 +252,51 @@ export class ReservaStore {
     return nuevaReserva;
   }
 
+  private readonly reservaService = inject(ReservaService);
+
   obtenerReservaPorId(id: number): ReservaItem | undefined {
     return this.reservas().find(r => r.id === id);
+  }
+
+  cargarReservaPorId(id: number): Observable<ReservaItem | null> {
+    const local = this.obtenerReservaPorId(id);
+    if (local) return of(local);
+    return this.reservaService.obtener(id).pipe(
+      map(res => this.incorporarReservaCreada(res)),
+      catchError(() => of(null))
+    );
+  }
+
+  cargarMisReservas(): Observable<ReservaItem[]> {
+    return this.reservaService.propias().pipe(
+      map(list => {
+        const mapeadas = list.reservas.map(res => {
+          const item: ReservaItem = {
+            id: res.id,
+            codigo: `RES-${res.id}`,
+            fecha: res.fecha,
+            horaInicio: res.horaInicio.length >= 5 ? res.horaInicio.slice(0, 5) : res.horaInicio,
+            horaFin: res.horaFin.length >= 5 ? res.horaFin.slice(0, 5) : res.horaFin,
+            comensales: res.numeroComensales,
+            mesaId: res.mesaId,
+            mesaNumero: `Mesa ${String(res.mesaNumero).padStart(2, '0')}`,
+            zona: inferirZona(res.mesaNumero),
+            estado: res.estado,
+            solicitadaEn: res.creadoEn ? res.creadoEn.replace('T', ' ').slice(0, 16) : '',
+            notas: res.notas ?? '',
+            motivoRechazo: res.motivoRechazo ?? undefined,
+            nombreCliente: res.clienteNombre,
+            telefonoCliente: ''
+          };
+          return item;
+        });
+        if (mapeadas.length > 0) {
+          this.reservas.set(mapeadas);
+        }
+        return mapeadas;
+      }),
+      catchError(() => of(this.reservas()))
+    );
   }
 
   obtenerReservaActiva(preferId?: number): ReservaItem {

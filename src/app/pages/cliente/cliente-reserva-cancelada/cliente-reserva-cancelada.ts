@@ -1,4 +1,4 @@
-import {Component, computed, inject} from '@angular/core';
+import {Component, computed, inject, OnInit} from '@angular/core';
 import {ActivatedRoute, Router, RouterLink} from '@angular/router';
 import {MatButtonModule} from '@angular/material/button';
 import {MatCardModule} from '@angular/material/card';
@@ -9,7 +9,7 @@ import {ReservaItem} from '../reserva-ui/reserva.model';
 /**
  * Frame: cliente-reserva-cancelada | "Tu reserva fue cancelada"
  * Responsable: Cristian Condori
- * US07 / US09: Confirmación del estado cancelado y liberación de mesa.
+ * US07 / US09: Confirmación del estado cancelado y liberación de mesa conectada con la API.
  */
 @Component({
   selector: 'rp-cliente-reserva-cancelada',
@@ -22,10 +22,17 @@ import {ReservaItem} from '../reserva-ui/reserva.model';
   templateUrl: './cliente-reserva-cancelada.html',
   styleUrls: ['../reserva-ui/reserva-view.css', './cliente-reserva-cancelada.css']
 })
-export class ClienteReservaCanceladaPage {
+export class ClienteReservaCanceladaPage implements OnInit {
   readonly store = inject(ReservaStore);
   private readonly router = inject(Router);
   private readonly route = inject(ActivatedRoute);
+
+  ngOnInit() {
+    const qId = Number(this.route.snapshot.queryParamMap.get('id'));
+    if (qId && !this.store.obtenerReservaPorId(qId)) {
+      this.store.cargarReservaPorId(qId).subscribe();
+    }
+  }
 
   readonly reserva = computed<ReservaItem>(() => {
     const nav = this.router.getCurrentNavigation();

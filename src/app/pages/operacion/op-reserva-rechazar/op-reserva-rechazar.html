@@ -57,8 +57,8 @@
             <a mat-stroked-button [routerLink]="['/operacion/reserva']" [queryParams]="{ id: r.id }" class="btn-back">
               ← Cancelar y conservar solicitud
             </a>
-            <button mat-flat-button color="warn" type="submit" class="btn-reject" [disabled]="form0.invalid">
-              Rechazar reserva formalmente
+            <button mat-flat-button color="warn" type="submit" class="btn-reject" [disabled]="form0.invalid || cargando()">
+              {{ cargando() ? 'Rechazando...' : 'Rechazar reserva formalmente' }}
             </button>
           </div>
         </form>
