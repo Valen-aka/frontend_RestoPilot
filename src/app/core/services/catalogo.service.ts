@@ -1,3 +1,4 @@
+import {MesaRequest, MesaContractError, readMesa, readMesas} from '../models/mesas.model';
 import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { map, Observable } from 'rxjs';
@@ -275,6 +276,29 @@ export class CatalogoService {
       );
   }
 
+  mesasPropias(restaurantId:number):Observable<readonly MesaResponse[]> {
+    return this.http.get<unknown>(this.base+'/mesas',{timeout:20000}).pipe(map(v=>readMesas(v,restaurantId)));
+  }
+  obtenerMesa(id:number,restaurantId:number):Observable<MesaResponse> {
+    return this.http.get<unknown>(this.base+'/mesas/'+id,{timeout:20000}).pipe(map(v=>readMesa(v,restaurantId,id)));
+  }
+  crearMesa(datos:MesaRequest,restaurantId:number):Observable<MesaResponse> {
+    return this.http.post<unknown>(this.base+'/mesas',datos,{observe:'response',timeout:20000}).pipe(map(r=>{
+      if(r.status!==201)throw new MesaContractError();const mesa=readMesa(r.body,restaurantId);
+      if(!mesa.activo||mesa.numero!==datos.numero||mesa.capacidad!==datos.capacidad||mesa.coordenadaX!==datos.coordenadaX||mesa.coordenadaY!==datos.coordenadaY)throw new MesaContractError();return mesa;
+    }));
+  }
+  actualizarMesa(id:number,datos:MesaRequest,restaurantId:number):Observable<MesaResponse> {
+    return this.http.put<unknown>(this.base+'/mesas/'+id,datos,{observe:'response',timeout:20000}).pipe(map(r=>{
+      if(r.status!==200)throw new MesaContractError();const mesa=readMesa(r.body,restaurantId,id);
+      if(mesa.numero!==datos.numero||mesa.capacidad!==datos.capacidad||mesa.coordenadaX!==datos.coordenadaX||mesa.coordenadaY!==datos.coordenadaY)throw new MesaContractError();return mesa;
+    }));
+  }
+  cambiarEstadoMesa(id:number,activo:boolean,restaurantId:number):Observable<MesaResponse> {
+    return this.http.patch<unknown>(this.base+'/mesas/'+id+'/estado',{activo},{observe:'response',timeout:20000}).pipe(map(r=>{
+      if(r.status!==200)throw new MesaContractError();const mesa=readMesa(r.body,restaurantId,id);if(mesa.activo!==activo)throw new MesaContractError();return mesa;
+    }));
+  }
   // LISTAR MESAS
   mesas(
     restauranteId: number

@@ -1,0 +1,12 @@
+<section class="floor" aria-label="Plano de ubicaciones de mesas">
+ <h2>Plano del salón</h2><p class="hint">Ubicaciones relativas a las coordenadas registradas. El estado activo no indica disponibilidad para un horario.</p>
+ @if(points().length){
+  <div class="board" role="group" aria-label="Selecciona una ubicación para consultar sus mesas">
+   @for(point of points();track point.key){<button mat-stroked-button type="button" class="point" [style.left.%]="point.x" [style.top.%]="point.y" [class.inactive]="allInactive(point.mesas)" [class.selected]="selectedKey()===point.key" [attr.aria-label]="label(point.mesas)" (click)="selectedKey.set(point.key)"><strong>{{point.mesas.length===1?point.mesas[0].numero:point.mesas.length+' mesas'}}</strong>@if(point.mesas.length===1){<small>{{point.mesas[0].capacidad}} personas</small>}</button>}
+  </div>
+  <p class="legend"><span>Activa</span><span class="off">Inactiva</span><span class="chosen">Seleccionada</span></p>
+  @if(selected();as group){<div class="selection" role="region" aria-label="Mesas de la ubicación seleccionada"><h3>{{label(group.mesas)}}</h3>@for(mesa of group.mesas;track mesa.id){<div class="selection-entry"><p>Mesa {{mesa.numero}} · {{mesa.capacidad}} personas · {{mesa.activo?'Activa':'Inactiva'}}</p><p>X {{mesa.coordenadaX}} · Y {{mesa.coordenadaY}}</p><a mat-button routerLink="/operacion/mesa/editar" [queryParams]="{mesaId:mesa.id}" [attr.aria-label]="'Editar Mesa '+mesa.numero">Editar mesa</a><a mat-button routerLink="/operacion/mesa/desactivar" [queryParams]="{mesaId:mesa.id}">{{mesa.activo?'Desactivar':'Activar'}} mesa</a></div>}</div>}
+ } @else {<p class="empty" role="status">No hay mesas con ubicación registrada.</p>}
+ @if(missing().length){<div class="selection"><h3>Sin ubicación registrada</h3><p>Estas mesas se conservan en el listado.</p>@for(mesa of missing();track mesa.id){<a mat-button routerLink="/operacion/mesa/editar" [queryParams]="{mesaId:mesa.id}">Ubicar Mesa {{mesa.numero}}</a>}</div>}
+ @if(preview();as p){<aside class="preview" role="status"><h3>Datos de ubicación por guardar</h3><p>Mesa {{p.numero}} · {{p.capacidad}} personas</p><p>X {{p.coordenadaX}} · Y {{p.coordenadaY}}</p><p>La ubicación del plano se actualizará cuando guardes los datos.</p></aside>}
+</section>

@@ -1551,8 +1551,8 @@
     ],
     "owner": "Valentina Montenegro",
     "us": "US16",
-    "status": "Pendiente",
-    "contenidoImplementado": false
+    "status": "Implementado e integrado con API; verificación US16 en docs/QA-US16.md",
+    "contenidoImplementado": true
   },
   {
     "slug": "op-mesas-lista",
@@ -1573,8 +1573,8 @@
     ],
     "owner": "Valentina Montenegro",
     "us": "US16",
-    "status": "Pendiente",
-    "contenidoImplementado": false
+    "status": "Implementado e integrado con API; verificación US16 en docs/QA-US16.md",
+    "contenidoImplementado": true
   },
   {
     "slug": "op-mesa-nueva",
@@ -1595,8 +1595,8 @@
     ],
     "owner": "Valentina Montenegro",
     "us": "US16",
-    "status": "Pendiente",
-    "contenidoImplementado": false
+    "status": "Implementado e integrado con API; verificación US16 en docs/QA-US16.md",
+    "contenidoImplementado": true
   },
   {
     "slug": "op-mesa-editar",
@@ -1617,8 +1617,8 @@
     ],
     "owner": "Valentina Montenegro",
     "us": "US16",
-    "status": "Pendiente",
-    "contenidoImplementado": false
+    "status": "Implementado e integrado con API; verificación US16 en docs/QA-US16.md",
+    "contenidoImplementado": true
   },
   {
     "slug": "op-mesa-desactivar",
@@ -1642,8 +1642,8 @@
     ],
     "owner": "Valentina Montenegro",
     "us": "US16",
-    "status": "Pendiente",
-    "contenidoImplementado": false
+    "status": "Implementado e integrado con API; verificación US16 en docs/QA-US16.md",
+    "contenidoImplementado": true
   },
   {
     "slug": "op-mesa-bloqueada",
@@ -1664,8 +1664,8 @@
     ],
     "owner": "Valentina Montenegro",
     "us": "US16",
-    "status": "Pendiente",
-    "contenidoImplementado": false
+    "status": "Implementado e integrado con API; verificación US16 en docs/QA-US16.md",
+    "contenidoImplementado": true
   },
   {
     "slug": "op-reservas",

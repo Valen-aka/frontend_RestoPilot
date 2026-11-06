@@ -1,3 +1,4 @@
+import {mesasPendingGuard} from '../../core/guards/mesas.guard';
 import {reservaConsultaGuard} from '../../core/guards/reserva-consulta.guard';
 import {reservaAtencionGuard, reservaPendingGuard} from '../../core/guards/reserva-atencion.guard';
 import {Routes} from '@angular/router';
@@ -23,11 +24,11 @@ const children:Routes=[
 {path:"pedido/cancelar",pathMatch:'full',loadComponent:()=>import('../../screen-host').then(m=>m.ScreenHost),data:{base:"/operacion/pedido/cancelar"}},
 {path:"pagos",pathMatch:'full',loadComponent:()=>import('../../screen-host').then(m=>m.ScreenHost),data:{base:"/operacion/pagos"}},
 {path:"pago/registrar",pathMatch:'full',loadComponent:()=>import('../../screen-host').then(m=>m.ScreenHost),data:{base:"/operacion/pago/registrar"}},
-{path:"mesas",pathMatch:'full',loadComponent:()=>import('../../screen-host').then(m=>m.ScreenHost),data:{base:"/operacion/mesas"}},
-{path:"mesas/lista",pathMatch:'full',loadComponent:()=>import('../../screen-host').then(m=>m.ScreenHost),data:{base:"/operacion/mesas/lista"}},
-{path:"mesa/nueva",pathMatch:'full',loadComponent:()=>import('../../screen-host').then(m=>m.ScreenHost),data:{base:"/operacion/mesa/nueva"}},
-{path:"mesa/editar",pathMatch:'full',loadComponent:()=>import('../../screen-host').then(m=>m.ScreenHost),data:{base:"/operacion/mesa/editar"}},
-{path:"mesa/desactivar",pathMatch:'full',loadComponent:()=>import('../../screen-host').then(m=>m.ScreenHost),data:{base:"/operacion/mesa/desactivar"}},
+{path:"mesas",canActivate:[operacionCocinaGuard],canDeactivate:[mesasPendingGuard],runGuardsAndResolvers:'paramsOrQueryParamsChange',pathMatch:'full',loadComponent:()=>import('../../screen-host').then(m=>m.ScreenHost),data:{base:"/operacion/mesas"}},
+{path:"mesas/lista",canActivate:[operacionCocinaGuard],canDeactivate:[mesasPendingGuard],runGuardsAndResolvers:'paramsOrQueryParamsChange',pathMatch:'full',loadComponent:()=>import('../../screen-host').then(m=>m.ScreenHost),data:{base:"/operacion/mesas/lista"}},
+{path:"mesa/nueva",canActivate:[operacionCocinaGuard],canDeactivate:[mesasPendingGuard],runGuardsAndResolvers:'paramsOrQueryParamsChange',pathMatch:'full',loadComponent:()=>import('../../screen-host').then(m=>m.ScreenHost),data:{base:"/operacion/mesa/nueva"}},
+{path:"mesa/editar",canActivate:[operacionCocinaGuard],canDeactivate:[mesasPendingGuard],runGuardsAndResolvers:'paramsOrQueryParamsChange',pathMatch:'full',loadComponent:()=>import('../../screen-host').then(m=>m.ScreenHost),data:{base:"/operacion/mesa/editar"}},
+{path:"mesa/desactivar",canActivate:[operacionCocinaGuard],canDeactivate:[mesasPendingGuard],runGuardsAndResolvers:'paramsOrQueryParamsChange',pathMatch:'full',loadComponent:()=>import('../../screen-host').then(m=>m.ScreenHost),data:{base:"/operacion/mesa/desactivar"}},
 {path:"reservas",canActivate:[reservaConsultaGuard],pathMatch:'full',loadComponent:()=>import('../../screen-host').then(m=>m.ScreenHost),data:{base:"/operacion/reservas"}},
 {path:"reserva/nueva",pathMatch:'full',loadComponent:()=>import('../../screen-host').then(m=>m.ScreenHost),data:{base:"/operacion/reserva/nueva"}},
 {path:"reserva",canActivate:[reservaAtencionGuard,reservaConsultaGuard],canDeactivate:[reservaPendingGuard],runGuardsAndResolvers:'paramsOrQueryParamsChange',pathMatch:'full',loadComponent:()=>import('../../screen-host').then(m=>m.ScreenHost),data:{base:"/operacion/reserva"}},
