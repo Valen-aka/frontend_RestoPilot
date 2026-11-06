@@ -1,0 +1,78 @@
+[
+  {
+    "name": "historial, detalle y mesa libre client 320",
+    "passed": true
+  },
+  {
+    "name": "historial, detalle y mesa libre client 390",
+    "passed": true
+  },
+  {
+    "name": "historial, detalle y mesa libre client 768",
+    "passed": true
+  },
+  {
+    "name": "historial, detalle y mesa libre client 1440",
+    "passed": true
+  },
+  {
+    "name": "historial, detalle y mesa libre operation 320",
+    "passed": true
+  },
+  {
+    "name": "historial, detalle y mesa libre operation 390",
+    "passed": true
+  },
+  {
+    "name": "historial, detalle y mesa libre operation 768",
+    "passed": true
+  },
+  {
+    "name": "historial, detalle y mesa libre operation 1440",
+    "passed": true
+  },
+  {
+    "name": "filtros conservan datos reales y selección sin muestras",
+    "passed": true
+  },
+  {
+    "name": "disponibilidad ocupada o consulta fallida no inventa mesa libre",
+    "passed": true
+  },
+  {
+    "name": "actualización reconsulta disponibilidad previamente solicitada",
+    "passed": true
+  },
+  {
+    "name": "confirmada solo cambia a Expirada cuando vuelve a responder la API",
+    "passed": true
+  },
+  {
+    "name": "error de refresco conserva lectura anterior y recuperar no muta",
+    "passed": true
+  },
+  {
+    "name": "fila ajena elimina la consulta client",
+    "passed": true
+  },
+  {
+    "name": "fila ajena elimina la consulta operation",
+    "passed": true
+  },
+  {
+    "name": "fecha ausente no se calcula y conserva la ficha",
+    "passed": true
+  },
+  {
+    "name": "historial vacío, ID inválido y completada directa",
+    "passed": true
+  },
+  {
+    "name": "recorrido US25 hacia historial conserva Completada e identidad",
+    "passed": true
+  },
+  {
+    "name": "sin sesión guarda retorno y perfil incorrecto no consulta",
+    "passed": true
+  }
+]

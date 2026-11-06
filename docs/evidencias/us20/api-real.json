@@ -1,0 +1,67 @@
+{
+  "date": "2026-11-06T17:10:20.663Z",
+  "type": "real-api-isolated-postgresql",
+  "results": [
+    {
+      "name": "fixture aislada con estados, snapshots, reservas y pagos en fecha distinta",
+      "passed": true
+    },
+    {
+      "name": "ventas usan snapshots de ENTREGADOS y excluyen cancelados, otro local y fecha externa",
+      "passed": true
+    },
+    {
+      "name": "demanda excluye CANCELADOS y conserva horarios reales",
+      "passed": true
+    },
+    {
+      "name": "pedidos y reservas separados y suma como operaciones",
+      "passed": true
+    },
+    {
+      "name": "ocupación por minutos de mesas activas sin contar mesa desactivada",
+      "passed": true
+    },
+    {
+      "name": "pago posterior se incluye por creación del pedido y excluye cancelados/ajenos",
+      "passed": true
+    },
+    {
+      "name": "cinco tipos específicos devuelven únicamente sus secciones",
+      "passed": true
+    },
+    {
+      "name": "endpoint dedicado a pagos coincide con consolidado",
+      "passed": true
+    },
+    {
+      "name": "fecha de pago sin pedidos creados ese día produce vacío real",
+      "passed": true
+    },
+    {
+      "name": "API rechaza fechas invertidas y acceso de cliente",
+      "passed": true
+    },
+    {
+      "name": "cada JWT consulta exclusivamente el restaurante asignado",
+      "passed": true
+    },
+    {
+      "name": "Angular representa las métricas reales y gráficos coinciden con sus tablas",
+      "passed": true
+    },
+    {
+      "name": "navegación a pagos conserva período y utiliza endpoint real",
+      "passed": true
+    },
+    {
+      "name": "vacío real no dibuja métricas de muestra",
+      "passed": true
+    },
+    {
+      "name": "recorrido real sin errores ni desbordamiento",
+      "passed": true
+    }
+  ],
+  "limitation": "Fixture histórica SQL en base aislada; inicio mediante AuthService real desde harness de desarrollo."
+}
