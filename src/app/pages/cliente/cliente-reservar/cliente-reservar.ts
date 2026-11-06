@@ -84,9 +84,9 @@ export class ClienteReservarPage {
     // Si los comensales exceden la capacidad máxima disponible (ej. > 8 personas sin mesas agrupadas),
     // o si el store detecta que no hay disponibilidad, derivamos a la vista de sin disponibilidad
     if (comensales > 8 || !this.store.hayDisponibilidad()) {
-      this.router.navigate(['/cliente/reservar'], { queryParams: { vista: 'cliente-sin-disponibilidad' } });
+      this.router.navigate(['/cliente/reservar'], { queryParams: { vista: 'cliente-sin-disponibilidad' },queryParamsHandling:'merge' });
     } else {
-      this.router.navigate(['/cliente/plano']);
+      this.router.navigate(['/cliente/plano'],{queryParamsHandling:'preserve'});
     }
   }
 

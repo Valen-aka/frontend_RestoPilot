@@ -20,6 +20,7 @@ async function fits(page){assert.equal(await page.evaluate(()=>document.document
  const browser=await chromium.launch({headless:true,executablePath:process.env.BROWSER_EXECUTABLE||'C:/Program Files/Google/Chrome/Application/chrome.exe'}),results=[];
  async function run(name,fn,width=1440){if(process.env.RP_QA_FILTER&&!name.includes(process.env.RP_QA_FILTER))return;
   await control('success',true);const context=await browser.newContext({viewport:{width,height:1000}}),page=await context.newPage(),errors=[];
+  await context.route('http://localhost:8081/api/**',route=>route.continue({url:route.request().url().replace('http://localhost:8081',mock)}));
   page.on('pageerror',e=>{errors.push(e.message);console.error('ERROR NAVEGADOR: '+e.message);});
   try{await fn(page);await fits(page);assert.deepEqual(errors,[]);results.push({name,passed:true});console.log('OK '+name);}
   catch(e){console.error('URL: '+page.url());await page.screenshot({path:path.join(output,'failure.png'),fullPage:true,animations:'disabled'});throw e;}finally{await context.close();}
@@ -88,7 +89,7 @@ async function fits(page){assert.equal(await page.evaluate(()=>document.document
   });
   await run('retorno al login y detalle ajeno a US25 conserva su ruta',async page=>{
    await page.goto(app+'/operacion/reserva/llegada?reservaId=800');await page.waitForURL(/\/auth\/login/);assert(new URL(page.url()).searchParams.get('returnUrl').includes('reservaId=800'));
-   await page.goto(app+'/operacion/reserva');await page.waitForURL(url=>url.pathname==='/operacion/reserva');assert.equal((await calls()).length,0);
+   await page.goto(app+'/operacion/reserva');await page.waitForURL(/\/auth\/login/);assert(new URL(page.url()).searchParams.get('returnUrl').includes('/operacion/reserva'));assert.equal((await calls()).length,0);
   });
   fs.writeFileSync(path.join(output,'results.json'),JSON.stringify(results,null,2));console.log(results.length+' recorridos HTTP US25 correctos.');
  }finally{await browser.close();}

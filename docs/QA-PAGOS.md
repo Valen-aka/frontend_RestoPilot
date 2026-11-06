@@ -10,3 +10,5 @@ Fecha: 2026-10-30. Rama: feature/pagos.
 - Revisión estática de seguridad sin hallazgos bloqueantes en alcance visual.
 
 Sin integración, persistencia, cobros ni validación de permisos reales.
+
+Revision visual US18: consulta con carga/vacio/error/permisos, registro en memoria de demostracion y detalle coherente. Yape/Plin/Tarjeta/Efectivo, importe exacto, referencia condicional, pendiente sin fecha y bloqueo al confirmar o cancelar. La muestra compartida se reinicia explicitamente y al recargar; no hay HTTP ni cobro. Checker y build aprobados.

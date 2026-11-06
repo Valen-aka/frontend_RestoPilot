@@ -48,3 +48,15 @@ Conservar aprendizajes verificables que ayuden a evitar errores repetidos en est
 - Evidencia: tras una integración de interfaces, el historial y detalle cliente volvieron a usar un store de muestra mientras 189 pruebas de contratos/stores seguían pasando. El navegador detectó la desconexión.
 - Aprendizaje: comprobar también componentes de entrada, parámetros de URL y recorrido entre pantallas. Conservar las consultas existentes al integrar cambios visuales; un ID inválido explícito no se reemplaza por selección previa.
 - Comprobación: ejecutar las regresiones DOM/HTTP de US26 y US25, además de las pruebas unitarias. El renderizado por sí solo tampoco acredita consulta real.
+
+
+### 2026-11-06 — Unidad de las métricas de reportes
+
+- Evidencia: EstadoPagosDTO devuelve cantidades por método, aunque Figma presenta importes; ReporteService delimita pagos por creación del pedido. Se contrastó con un pago registrado fuera de ese período en PostgreSQL aislado.
+- Aprendizaje: verificar la unidad y fecha de referencia del DTO antes de etiquetar gráficos o tablas. No transformar cantidades en soles ni pedidos/reservas en clientes únicos.
+- Comprobación: consultar docs/specs/us20/SPEC.md y repetir los casos de docs/QA-US20.md al cambiar los contratos de reportes.
+### 2026-11-06 — Disponibilidad al reprogramar la reserva actual
+
+- Evidencia: la consulta de disponibilidad incluye la ocupación de la reserva que se edita; el PUT excluye su ID al comprobar solapamientos. Las pruebas reales de US29 permitieron editar notas en la misma mesa y rechazaron un horario ocupado por otra reserva.
+- Aprendizaje: no presentar la mesa actual como libre ni bloquear toda edición por esa ocupación. Identificarla como mesa actual con verificación al guardar y dejar la decisión definitiva al servidor. No inventar parámetros de exclusión que la API no admite.
+- Comprobación: revisar el contrato vigente y repetir los casos documentados en docs/QA-US29.md si se modifica disponibilidad o reprogramación.

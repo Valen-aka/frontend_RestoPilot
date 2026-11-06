@@ -1,0 +1,189 @@
+{
+  "passed": true,
+  "cases": 20,
+  "results": [
+    {
+      "name": "Listado, filtros Material y ancho 320",
+      "passed": true
+    },
+    {
+      "name": "Registro y selector numérico Material 320",
+      "passed": true
+    },
+    {
+      "name": "Edición cargada y ancho 320",
+      "passed": true
+    },
+    {
+      "name": "Listado, filtros Material y ancho 390",
+      "passed": true
+    },
+    {
+      "name": "Registro y selector numérico Material 390",
+      "passed": true
+    },
+    {
+      "name": "Edición cargada y ancho 390",
+      "passed": true
+    },
+    {
+      "name": "Listado, filtros Material y ancho 768",
+      "passed": true
+    },
+    {
+      "name": "Registro y selector numérico Material 768",
+      "passed": true
+    },
+    {
+      "name": "Edición cargada y ancho 768",
+      "passed": true
+    },
+    {
+      "name": "Listado, filtros Material y ancho 1440",
+      "passed": true
+    },
+    {
+      "name": "Registro y selector numérico Material 1440",
+      "passed": true
+    },
+    {
+      "name": "Edición cargada y ancho 1440",
+      "passed": true
+    },
+    {
+      "name": "Selector abre con teclado y Escape conserva el foco",
+      "passed": true
+    },
+    {
+      "name": "Formulario inválido muestra mat-error y evita envío",
+      "passed": true
+    },
+    {
+      "name": "Checkbox Material conserva el valor del formulario",
+      "passed": true
+    },
+    {
+      "name": "Rechazo API conserva formulario y permite reintentar",
+      "passed": true
+    },
+    {
+      "name": "Registro navega y vuelve a consultar el listado",
+      "passed": true
+    },
+    {
+      "name": "Edición conserva PUT, ID y navegación al listado",
+      "passed": true
+    },
+    {
+      "name": "Filtro vacío conserva el mensaje de ausencia de resultados",
+      "passed": true
+    },
+    {
+      "name": "Sin errores JavaScript",
+      "passed": true
+    }
+  ],
+  "scope": "Interacciones Material con HTTP controlado; sin escrituras reales",
+  "requests": [
+    {
+      "path": "/api/auth/login",
+      "method": "POST"
+    },
+    {
+      "path": "/api/platos/restaurante/7",
+      "method": "GET"
+    },
+    {
+      "path": "/api/categorias/restaurante/7",
+      "method": "GET"
+    },
+    {
+      "path": "/api/platos/31",
+      "method": "GET"
+    },
+    {
+      "path": "/api/categorias/restaurante/7",
+      "method": "GET"
+    },
+    {
+      "path": "/api/platos/restaurante/7",
+      "method": "GET"
+    },
+    {
+      "path": "/api/categorias/restaurante/7",
+      "method": "GET"
+    },
+    {
+      "path": "/api/platos/31",
+      "method": "GET"
+    },
+    {
+      "path": "/api/categorias/restaurante/7",
+      "method": "GET"
+    },
+    {
+      "path": "/api/platos/restaurante/7",
+      "method": "GET"
+    },
+    {
+      "path": "/api/categorias/restaurante/7",
+      "method": "GET"
+    },
+    {
+      "path": "/api/platos/31",
+      "method": "GET"
+    },
+    {
+      "path": "/api/categorias/restaurante/7",
+      "method": "GET"
+    },
+    {
+      "path": "/api/platos/restaurante/7",
+      "method": "GET"
+    },
+    {
+      "path": "/api/categorias/restaurante/7",
+      "method": "GET"
+    },
+    {
+      "path": "/api/platos/31",
+      "method": "GET"
+    },
+    {
+      "path": "/api/categorias/restaurante/7",
+      "method": "GET"
+    },
+    {
+      "path": "/api/categorias/restaurante/7",
+      "method": "GET"
+    },
+    {
+      "path": "/api/platos",
+      "method": "POST"
+    },
+    {
+      "path": "/api/platos",
+      "method": "POST"
+    },
+    {
+      "path": "/api/platos/restaurante/7",
+      "method": "GET"
+    },
+    {
+      "path": "/api/platos/31",
+      "method": "GET"
+    },
+    {
+      "path": "/api/categorias/restaurante/7",
+      "method": "GET"
+    },
+    {
+      "path": "/api/platos/31",
+      "method": "PUT"
+    },
+    {
+      "path": "/api/platos/restaurante/7",
+      "method": "GET"
+    }
+  ]
+}
