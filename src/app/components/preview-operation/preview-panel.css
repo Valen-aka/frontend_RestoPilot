@@ -1,0 +1,10 @@
+:host {display: block; min-width: 0; margin-block: var(--rp-space-4);}
+.preview {padding: var(--rp-space-4); border: var(--rp-border); border-radius: var(--rp-radius-card); background: var(--rp-surface);}
+.preview-label {font-size: var(--rp-label-size); color: var(--rp-muted); margin-bottom: var(--rp-space-4);}
+mat-form-field {display: block; width: 100%;}
+summary {cursor: pointer; color: var(--rp-navy); padding-block: var(--rp-space-2);}
+summary:focus-visible {outline: 2px solid var(--rp-focus-color); outline-offset: 3px;}
+.feedback {padding: var(--rp-space-3); border-radius: var(--rp-radius-input); background: var(--rp-info-container); color: var(--rp-navy);}
+.success {background: var(--rp-container); color: var(--rp-on-container);}
+.error {background: var(--rp-error-container); color: var(--rp-error);}
+mat-progress-bar {margin-block: var(--rp-space-3);}
