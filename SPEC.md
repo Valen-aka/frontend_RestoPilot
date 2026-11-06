@@ -50,6 +50,7 @@ El SPEC común contiene las 29 historias y sus criterios. No se requiere un arch
 | Complemento | Alcance |
 | --- | --- |
 | [Landing](docs/specs/landing/SPEC.md) | LP01: presentación del producto y accesos |
+| [US10](docs/specs/us10/SPEC.md) | Carta del cliente, filtro por categoría, detalle real y selección hacia el carrito |
 | [US11](docs/specs/us11/SPEC.md) | Carrito y registro del pedido por modalidad |
 | [US12](docs/specs/us12/SPEC.md) | Detalle del pedido y consulta de pago |
 | [US13](docs/specs/us13/SPEC.md) | Seguimiento del pedido |

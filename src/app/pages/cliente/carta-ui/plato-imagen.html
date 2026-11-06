@@ -1,0 +1,1 @@
+@if(url()&&!broken()) {<img [src]="url()" [alt]="name()" loading="lazy" referrerpolicy="no-referrer" (error)="broken.set(true)"/>} @else {<div class="missing" role="img" [attr.aria-label]="name()+': sin imagen disponible'"><span aria-hidden="true">◯</span><small>Sin imagen disponible</small></div>}
