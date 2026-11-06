@@ -1,4 +1,4 @@
-import {Component, ElementRef, inject, signal} from '@angular/core';
+import {Component, ElementRef, inject} from '@angular/core';
 import {RouterLink} from '@angular/router';
 import {MatButtonModule} from '@angular/material/button';
 import {WorkspaceShell} from '../../../components/workspace-shell/workspace-shell';
@@ -6,7 +6,7 @@ import {FormControl, FormGroup, ReactiveFormsModule, Validators} from '@angular/
 import {MatInputModule} from '@angular/material/input';
 @Component({
   selector: 'rp-dueno-administrador-nuevo',
-  imports: [WorkspaceShell, RouterLink, MatButtonModule, ReactiveFormsModule, MatInputModule],
+  imports: [ WorkspaceShell, RouterLink, MatButtonModule, ReactiveFormsModule, MatInputModule],
   templateUrl: './dueno-administrador-nuevo.html',
   styleUrls: ['../../../components/workspace-shell/workspace-pages.css', './dueno-administrador-nuevo.css'],
 })
@@ -21,7 +21,6 @@ export class DuenoAdministradorNuevoPage {
       control => new TextEncoder().encode(control.value).length > 72 ? {passwordBytes: true} : null,
     ]}),
   });
-  readonly notice = signal('');
   private readonly host = inject<ElementRef<HTMLElement>>(ElementRef);
   error(name: keyof typeof this.form.controls): string {
     const control = this.form.controls[name];
@@ -34,14 +33,11 @@ export class DuenoAdministradorNuevoPage {
     return 'Revisa este campo.';
   }
   submit(): void {
-    this.notice.set('');
     this.form.markAllAsTouched();
     if (this.form.invalid) {
       const invalid = (Object.keys(this.form.controls) as (keyof typeof this.form.controls)[]).find(name => this.form.controls[name].invalid);
       if (invalid) this.host.nativeElement.querySelector<HTMLInputElement>(`[formControlName="${invalid}"]`)?.focus();
       return;
     }
-    this.notice.set('Los datos tienen un formato válido. No se creó un administrador: el servicio de administración todavía no está conectado.');
-    this.form.controls.password.reset();
   }
 }

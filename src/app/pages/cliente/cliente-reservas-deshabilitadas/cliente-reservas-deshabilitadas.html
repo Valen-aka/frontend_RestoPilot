@@ -1,3 +1,12 @@
-<!-- FRAME: cliente-reservas-deshabilitadas | Por ahora, sin reservas online -->
-<!-- TODO: implementar Desktop y Mobile con Angular Material. -->
-<!-- No hay campos, datos ni contenido visual implementados. -->
+<rp-workspace-shell role="client" [live]="true" active="reservas"><section class="reservation-access"><header><p class="eyebrow">RESERVAS CLIENTE</p><h1>{{status()?.habilitado?'Reservas del restaurante':status()?'Por ahora, sin reservas online':'Consulta las reservas del restaurante'}}</h1><p>Te esperamos con el mismo sabor de siempre.</p></header>
+@if(!hasSession()){<div class="feedback" role="alert"><h2>Inicia sesión como cliente</h2><a mat-flat-button routerLink="/auth/login">Ir al acceso</a></div>}
+@else if(loading()){<div class="feedback" role="status" aria-busy="true"><mat-spinner diameter="32" aria-hidden="true"/><p>Consultando atención física…</p></div>}
+@else {
+ @if(restaurants().length){<mat-form-field appearance="outline" subscriptSizing="dynamic"><mat-label>Restaurante</mat-label><mat-select [value]="status()?.restauranteId??null" (selectionChange)="choose($event.value)">@for(r of restaurants();track r.id){<mat-option [value]="r.id">{{r.nombre}}</mat-option>}</mat-select></mat-form-field>}
+ @if(problem()){<div class="problem" role="alert"><p>{{problem()}}</p><button mat-stroked-button type="button" (click)="refresh()">Volver a consultar</button></div>}
+ @if(status();as state){<mat-card appearance="outlined" class="feedback"><span class="symbol" aria-hidden="true">◷</span><h2>{{state.habilitado?'Las reservas están habilitadas':'Las reservas están en pausa'}}</h2><p>{{state.restauranteNombre}}</p><p>{{state.habilitado?'Puedes continuar a la consulta de disponibilidad.':'El restaurante ha pausado temporalmente las nuevas reservas. Las reservas existentes conservan su historial y atención.'}}</p><div class="actions">
+ @if(state.habilitado){<a mat-flat-button routerLink="/cliente/reservar" [queryParams]="{restauranteId:state.restauranteId}">Consultar disponibilidad</a>}
+ <a mat-stroked-button routerLink="/cliente/carta" [queryParams]="{restauranteId:state.restauranteId}">Ver carta</a><a mat-button routerLink="/cliente/reservas">Mis reservas</a><button mat-button type="button" (click)="refresh()">Actualizar estado</button></div></mat-card>}
+ @else if(!problem()){<div class="feedback" role="status"><h2>{{restaurants().length?'Elige un restaurante':'No hay restaurantes disponibles'}}</h2><p>Consulta su estado antes de buscar una mesa.</p><button mat-button type="button" (click)="refresh()">Actualizar</button></div>}
+}
+</section></rp-workspace-shell>

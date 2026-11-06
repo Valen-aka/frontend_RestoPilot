@@ -1,0 +1,21 @@
+<rp-workspace-shell role="operation" active="reservas" breadcrumb="Reservas · Atención física" [live]="true" [restaurantName]="store.data()?.restauranteNombre||'Restaurante de la sesión'" [restaurantId]="store.data()?.restauranteId||null" (signOut)="logout()">
+ <section class="attention-page"><header><p class="eyebrow">RESERVAS OPERACIÓN</p><h1>{{confirm()?'Pausar nuevas reservas':'Reservas a tu ritmo'}}</h1><p>Controla cuándo aceptar nuevas solicitudes.</p></header>
+ @if(!store.hasSession()){<mat-card appearance="outlined" class="feedback" role="alert"><h2>Acceso de gestión requerido</h2><p>{{store.problem()}}</p><a mat-flat-button routerLink="/auth/login">Ir al acceso</a></mat-card>}
+ @else {
+  @if(store.state()==='loading'){<div class="feedback" role="status" aria-busy="true"><mat-spinner diameter="32" aria-hidden="true"/><p>Consultando el estado del restaurante…</p></div>}
+  @if(store.problem()){<div class="problem" role="alert"><p>{{store.problem()}}</p><button mat-stroked-button type="button" (click)="store.load()" [disabled]="store.busy()">Consultar estado actual</button></div>}
+  @if(store.notice()){<p class="success" role="status">{{store.notice()}}</p>}
+  @if(store.data();as status){<mat-card appearance="outlined" class="module-card"><mat-card-content>
+   <h2>Disponibilidad de la atención física</h2><p class="status" [class.paused]="!status.habilitado">{{status.habilitado?'Habilitada':'Pausada'}}</p>
+   @if(store.state()!=='ready'){<p class="muted">Última respuesta recibida. Actualiza la consulta antes de realizar otro cambio.</p>}
+   <h3>{{status.habilitado?'Recibe reservas en línea':'Las nuevas reservas están en pausa'}}</h3><p>Restaurante: {{status.restauranteNombre}}</p>
+   <p class="reservation-count"><strong>{{status.reservasActivasPendientes}}</strong> reservas vigentes informadas por el servidor.</p>
+   <div class="actions">@if(status.habilitado){@if(confirm()){<button id="atencion-action" mat-stroked-button type="button" (click)="askPause()" [disabled]="!store.canChange()">Revisar confirmación</button>}@else{<button id="atencion-action" mat-stroked-button type="button" (click)="pause()" [disabled]="!store.canChange()">Deshabilitar reservas</button>}}
+   @else{<button id="atencion-action" mat-flat-button type="button" (click)="enable()" [disabled]="!store.canChange()">Habilitar atención física</button>}
+   <button mat-button type="button" (click)="store.load()" [disabled]="store.busy()||store.state()==='loading'">Actualizar estado</button><a mat-button routerLink="/operacion/reservas">Ver reservas existentes</a></div>
+   @if(store.busy()){<p role="status" aria-busy="true">Guardando y consultando la configuración…</p>}
+   <aside class="information"><p>Al pausar, se bloquean las nuevas reservas, la creación de mesas y los nuevos pedidos en salón. Las reservas anteriores se conservan y deben seguir atendiéndose.</p><p>Los pedidos para llevar, recoger o delivery mantienen sus propias condiciones.</p></aside>
+  </mat-card-content></mat-card>}
+ }
+ </section>
+</rp-workspace-shell>

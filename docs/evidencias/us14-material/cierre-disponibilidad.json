@@ -1,0 +1,104 @@
+{
+  "date": "2026-11-05",
+  "branch": "fix/us14-angular-material",
+  "controlled": {
+    "passed": true,
+    "cases": 9,
+    "scope": "HTTP controlado; sin escrituras reales",
+    "results": [
+      {
+        "name": "Desactivar y reactivar persiste al volver a consultar",
+        "passed": true
+      },
+      {
+        "name": "Sin cambio de disponibilidad no emite PATCH",
+        "passed": true
+      },
+      {
+        "name": "Editar permite borrar información complementaria",
+        "passed": true
+      },
+      {
+        "name": "PUT rechazado conserva formulario y no ejecuta PATCH",
+        "passed": true
+      },
+      {
+        "name": "Guardado parcial informado: patchRejected",
+        "passed": true
+      },
+      {
+        "name": "Guardado parcial informado: patchUnavailable",
+        "passed": true
+      },
+      {
+        "name": "Respuesta PUT ajena impide PATCH y éxito",
+        "passed": true
+      },
+      {
+        "name": "Respuesta PATCH inconsistente no anuncia éxito: badPatchState",
+        "passed": true
+      },
+      {
+        "name": "Respuesta PATCH inconsistente no anuncia éxito: badPatchIdentity",
+        "passed": true
+      }
+    ]
+  },
+  "real": {
+    "passed": true,
+    "cases": 10,
+    "results": [
+      {
+        "name": "Sesión administrativa real obtenida con AuthService",
+        "passed": true
+      },
+      {
+        "name": "Registro real crea únicamente un plato de prueba y refresca listado",
+        "passed": true
+      },
+      {
+        "name": "Edición guarda nombre por PUT y disponibilidad false por PATCH",
+        "passed": true
+      },
+      {
+        "name": "GET independiente confirma persistencia en PostgreSQL de Supabase",
+        "passed": true
+      },
+      {
+        "name": "Recarga completa y sesión nueva conservan los valores reales",
+        "passed": true
+      },
+      {
+        "name": "Reactivar el plato persiste y aparece Disponible",
+        "passed": true
+      },
+      {
+        "name": "Guardar sin cambiar disponibilidad no repite PATCH",
+        "passed": true
+      },
+      {
+        "name": "Eliminar desde la interfaz retira el plato temporal y refresca el listado",
+        "passed": true
+      },
+      {
+        "name": "Sin errores JavaScript en el recorrido real",
+        "passed": true
+      },
+      {
+        "name": "Limpieza confirmada: el plato temporal ya no existe",
+        "passed": true
+      }
+    ],
+    "target": "Angular → Spring Boot temporal 8082 → Supabase restopilot",
+    "writes": "Un plato de pruebas creado, editado y eliminado; sin cambios en platos previos"
+  },
+  "materialRegression": {
+    "cases": 20,
+    "passed": true
+  },
+  "unit": {
+    "passed": 191,
+    "failed": 0
+  },
+  "build": "passed"
+}
