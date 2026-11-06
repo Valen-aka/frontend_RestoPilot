@@ -1686,8 +1686,8 @@
     ],
     "owner": "Valentina Montenegro",
     "us": "US29",
-    "status": "Parcial US26: historial de expiradas de muestra; módulo general US07/US29 pendiente",
-    "contenidoImplementado": false
+    "status": "US29 implementado e integrado con API; evidencia en docs/QA-US29.md",
+    "contenidoImplementado": true
   },
   {
     "slug": "op-reserva-nueva",
@@ -1730,7 +1730,7 @@
     ],
     "owner": "Cristian Condori",
     "us": "US17, US29",
-    "status": "Implementada",
+    "status": "US29 implementado e integrado con API; evidencia en docs/QA-US29.md",
     "contenidoImplementado": true
   },
   {
@@ -1884,8 +1884,8 @@
     ],
     "owner": "Valentina Montenegro",
     "us": "US29",
-    "status": "Pendiente",
-    "contenidoImplementado": false
+    "status": "US29 implementado e integrado con API; evidencia en docs/QA-US29.md",
+    "contenidoImplementado": true
   },
   {
     "slug": "op-reserva-cancelar",
@@ -1909,8 +1909,8 @@
     ],
     "owner": "Valentina Montenegro",
     "us": "US29",
-    "status": "Pendiente",
-    "contenidoImplementado": false
+    "status": "US29 implementado e integrado con API; evidencia en docs/QA-US29.md",
+    "contenidoImplementado": true
   },
   {
     "slug": "op-reservas-modulo",
