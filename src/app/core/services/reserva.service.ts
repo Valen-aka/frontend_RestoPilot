@@ -1,4 +1,5 @@
 import {AgendaFilters, ReservaUpdate, readAgenda, confirmedReprogramacion, confirmedEstado} from '../models/reserva-agenda.model';
+import {readAtencionFisica, AtencionFisicaResponse} from '../models/atencion-fisica.model';
 import {inject, Injectable} from '@angular/core';
 import {HttpClient, HttpParams} from '@angular/common/http';
 import {map, Observable} from 'rxjs';
@@ -23,6 +24,20 @@ export class ReservaService {
     const params=new HttpParams().set('restauranteId',r.restauranteId).set('fecha',r.fecha)
       .set('horaInicio',r.horaInicio).set('horaFin',r.horaFin).set('numeroComensales',r.numeroComensales);
     return this.http.get<unknown>(this.url+'/disponibilidad',{params,timeout:20000}).pipe(map(readReservaDisponibilidad));
+  }
+  moduloPropio(restaurantId:number):Observable<AtencionFisicaResponse> {
+    return this.http.get<unknown>(this.url+'/modulo/estado',{timeout:20000}).pipe(map(value=>readAtencionFisica(value,restaurantId)));
+  }
+  moduloRestaurante(restaurantId:number):Observable<AtencionFisicaResponse> {
+    return this.http.get<unknown>(this.url+'/modulo/estado/restaurante/'+restaurantId,{timeout:20000}).pipe(map(value=>readAtencionFisica(value,restaurantId)));
+  }
+  cambiarModulo(habilitado:boolean,restaurantId:number):Observable<AtencionFisicaResponse> {
+    return this.http.patch<unknown>(this.url+'/modulo/estado',{habilitado},{observe:'response',timeout:20000}).pipe(map(response=>{
+      if(response.status!==200)throw new Error('El cambio no pudo verificarse.');
+      const value=readAtencionFisica(response.body,restaurantId);
+      if(value.habilitado!==habilitado)throw new Error('El cambio no corresponde al estado solicitado.');
+      return value;
+    }));
   }
   registrarLlegada(id:number):Observable<ReservaResponse> {return this.cambiar(id,'llegada');}
   completar(id:number):Observable<ReservaResponse> {return this.cambiar(id,'completar');}
