@@ -1,0 +1,122 @@
+{
+  "date": "2026-11-06T16:38:00.841Z",
+  "type": "controlled-browser",
+  "results": [
+    {
+      "name": "agenda, filtros, detalle y reprogramación 320",
+      "passed": true
+    },
+    {
+      "name": "agenda, filtros, detalle y reprogramación 390",
+      "passed": true
+    },
+    {
+      "name": "agenda, filtros, detalle y reprogramación 768",
+      "passed": true
+    },
+    {
+      "name": "agenda, filtros, detalle y reprogramación 1440",
+      "passed": true
+    },
+    {
+      "name": "filtros independientes y vacío",
+      "passed": true
+    },
+    {
+      "name": "cancelación explícita, Escape y foco",
+      "passed": true
+    },
+    {
+      "name": "mesa actual ocupada no se anuncia disponible y permite notas",
+      "passed": true
+    },
+    {
+      "name": "cambiar horario invalida disponibilidad y mesa anterior",
+      "passed": true
+    },
+    {
+      "name": "conflicto conserva datos y verifica estado conflict",
+      "passed": true
+    },
+    {
+      "name": "conflicto conserva datos y verifica estado concurrentArrival",
+      "passed": true
+    },
+    {
+      "name": "conflicto conserva datos y verifica estado verifyFails",
+      "passed": true
+    },
+    {
+      "name": "resultado incierto sin reenvío lost",
+      "passed": true
+    },
+    {
+      "name": "resultado incierto sin reenvío malformed",
+      "passed": true
+    },
+    {
+      "name": "resultado incierto sin reenvío confirmedFailure",
+      "passed": true
+    },
+    {
+      "name": "llegada y estado terminal bloquean acciones",
+      "passed": true
+    },
+    {
+      "name": "ID inválido sin reserva alternativa ",
+      "passed": true
+    },
+    {
+      "name": "ID inválido sin reserva alternativa ?reservaId=0",
+      "passed": true
+    },
+    {
+      "name": "ID inválido sin reserva alternativa ?reservaId=abc&id=80",
+      "passed": true
+    },
+    {
+      "name": "ID inválido sin reserva alternativa ?reservaId=99",
+      "passed": true
+    },
+    {
+      "name": "respuesta inválida y recuperación foreign",
+      "passed": true
+    },
+    {
+      "name": "respuesta inválida y recuperación duplicate",
+      "passed": true
+    },
+    {
+      "name": "respuesta inválida y recuperación read500",
+      "passed": true
+    },
+    {
+      "name": "respuesta inválida y recuperación ignoredFilter",
+      "passed": true
+    },
+    {
+      "name": "detalle ajeno no muestra datos",
+      "passed": true
+    },
+    {
+      "name": "disponibilidad rechazada no permite guardar",
+      "passed": true
+    },
+    {
+      "name": "evaluación pendiente usa API y vuelve a consultar",
+      "passed": true
+    },
+    {
+      "name": "sesión cliente no consulta y URL privada guarda retorno",
+      "passed": true
+    },
+    {
+      "name": "cambio de cuenta elimina información anterior",
+      "passed": true
+    },
+    {
+      "name": "envío pendiente bloquea navegación y repetición",
+      "passed": true
+    }
+  ]
+}

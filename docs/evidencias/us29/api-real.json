@@ -1,0 +1,67 @@
+{
+  "date": "2026-11-06T16:39:15.370Z",
+  "type": "real-api-isolated-postgresql",
+  "results": [
+    {
+      "name": "datos exclusivos de QA y reserva confirmada con API real",
+      "passed": true
+    },
+    {
+      "name": "login JWT y agenda real aislada por restaurante",
+      "passed": true
+    },
+    {
+      "name": "filtros combinados consultan solo la confirmada del período",
+      "passed": true
+    },
+    {
+      "name": "edición de la propia mesa ocupada persiste notas y vuelve a PENDIENTE",
+      "passed": true
+    },
+    {
+      "name": "filtros se conservan y reflejan que la reserva dejó de estar confirmada",
+      "passed": true
+    },
+    {
+      "name": "solapamiento real rechaza PUT y conserva reserva y borrador",
+      "passed": true
+    },
+    {
+      "name": "mesa alternativa disponible permite reprogramación persistida",
+      "passed": true
+    },
+    {
+      "name": "cancelación administrativa preserva historial y libera horario",
+      "passed": true
+    },
+    {
+      "name": "estado final bloquea controles de modificación",
+      "passed": true
+    },
+    {
+      "name": "personal cancela a menos de dos horas cuando cliente es rechazado",
+      "passed": true
+    },
+    {
+      "name": "detalle ajeno rechazado por servidor y sin datos visibles",
+      "passed": true
+    },
+    {
+      "name": "acción de confirmar del detalle compartido usa API real",
+      "passed": true
+    },
+    {
+      "name": "rechazo persistido con motivo desde el detalle compartido",
+      "passed": true
+    },
+    {
+      "name": "llegada real bloquea cambios y conserva enlace de atención US25",
+      "passed": true
+    },
+    {
+      "name": "recorridos reales sin errores de navegador",
+      "passed": true
+    }
+  ],
+  "limitation": "Inicio con AuthService real desde harness de desarrollo; formulario de login no integrado en develop."
+}

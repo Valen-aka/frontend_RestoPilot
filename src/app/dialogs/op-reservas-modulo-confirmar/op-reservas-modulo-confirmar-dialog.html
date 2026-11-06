@@ -1,3 +1,1 @@
-<h2 mat-dialog-title><!-- TODO: título --></h2>
-<mat-dialog-content><!-- TODO: mensaje y campos si corresponden --></mat-dialog-content>
-<mat-dialog-actions><!-- TODO: botones de volver y confirmar --></mat-dialog-actions>
+<h2 mat-dialog-title>¿Deshabilitar las reservas en línea?</h2><mat-dialog-content><p>Se pausará la atención física de <strong>{{data.restauranteNombre}}</strong>.</p><p>Esto bloqueará nuevas reservas, nuevos pedidos en salón y la creación de mesas.</p><p><strong>{{data.reservasActivasPendientes}}</strong> reservas vigentes informadas se conservarán. No se cancelan automáticamente.</p></mat-dialog-content><mat-dialog-actions align="end"><button mat-button [mat-dialog-close]="false">Volver</button><button mat-flat-button [mat-dialog-close]="true">Confirmar cambio</button></mat-dialog-actions>

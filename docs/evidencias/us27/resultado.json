@@ -1,0 +1,240 @@
+{
+  "date": "2026-11-05",
+  "branch": "feature/operacion-atencion-fisica",
+  "scope": "US27 S2-TSK-019 y S2-TSK-020",
+  "controlled": {
+    "passed": true,
+    "cases": 24,
+    "results": [
+      {
+        "name": "Configuración y confirmación responsive 320",
+        "width": 320,
+        "role": "ADMINISTRADOR",
+        "passed": true
+      },
+      {
+        "name": "Configuración y confirmación responsive 390",
+        "width": 390,
+        "role": "ADMINISTRADOR",
+        "passed": true
+      },
+      {
+        "name": "Configuración y confirmación responsive 768",
+        "width": 768,
+        "role": "ADMINISTRADOR",
+        "passed": true
+      },
+      {
+        "name": "Configuración y confirmación responsive 1440",
+        "width": 1440,
+        "role": "ADMINISTRADOR",
+        "passed": true
+      },
+      {
+        "name": "Pausar y habilitar usan el local de la sesión y refrescan",
+        "width": 1440,
+        "role": "ADMINISTRADOR",
+        "passed": true
+      },
+      {
+        "name": "URL de confirmar no escribe antes de aceptar",
+        "width": 1440,
+        "role": "ADMINISTRADOR",
+        "passed": true
+      },
+      {
+        "name": "Consulta rechazada o incoherente: getError",
+        "width": 1440,
+        "role": "ADMINISTRADOR",
+        "passed": true
+      },
+      {
+        "name": "Consulta rechazada o incoherente: forbidden",
+        "width": 1440,
+        "role": "ADMINISTRADOR",
+        "passed": true
+      },
+      {
+        "name": "Consulta rechazada o incoherente: foreignGet",
+        "width": 1440,
+        "role": "ADMINISTRADOR",
+        "passed": true
+      },
+      {
+        "name": "Resultado incierto exige reconsulta: unknown",
+        "width": 1440,
+        "role": "ADMINISTRADOR",
+        "passed": true
+      },
+      {
+        "name": "Resultado incierto exige reconsulta: foreignPatch",
+        "width": 1440,
+        "role": "ADMINISTRADOR",
+        "passed": true
+      },
+      {
+        "name": "Cambio confirmado y lectura fallida no repite PATCH",
+        "width": 1440,
+        "role": "ADMINISTRADOR",
+        "passed": true
+      },
+      {
+        "name": "Envío en curso bloquea duplicados y salida",
+        "width": 1440,
+        "role": "ADMINISTRADOR",
+        "passed": true
+      },
+      {
+        "name": "Cliente no consulta ni cambia configuración administrativa",
+        "width": 390,
+        "role": "CLIENTE",
+        "passed": true
+      },
+      {
+        "name": "Pausa cliente, historial accesible y restauración 320",
+        "width": 320,
+        "role": "CLIENTE",
+        "passed": true
+      },
+      {
+        "name": "Pausa cliente, historial accesible y restauración 390",
+        "width": 390,
+        "role": "CLIENTE",
+        "passed": true
+      },
+      {
+        "name": "Pausa cliente, historial accesible y restauración 768",
+        "width": 768,
+        "role": "CLIENTE",
+        "passed": true
+      },
+      {
+        "name": "Pausa cliente, historial accesible y restauración 1440",
+        "width": 1440,
+        "role": "CLIENTE",
+        "passed": true
+      },
+      {
+        "name": "Pausa bloquea entrada directa a plano y revisión",
+        "width": 390,
+        "role": "CLIENTE",
+        "passed": true
+      },
+      {
+        "name": "Sin local o con ID inválido no selecciona muestras",
+        "width": 390,
+        "role": "CLIENTE",
+        "passed": true
+      },
+      {
+        "name": "SALÓN refleja pausa y mantiene llevar disponible",
+        "width": 390,
+        "role": "CLIENTE",
+        "passed": true
+      },
+      {
+        "name": "SALÓN se habilita tras actualizar la condición real",
+        "width": 390,
+        "role": "CLIENTE",
+        "passed": true
+      },
+      {
+        "name": "Pausa entre selección y confirmación impide POST SALÓN",
+        "width": 390,
+        "role": "CLIENTE",
+        "passed": true
+      },
+      {
+        "name": "Rechazo definitivo conserva el estado previo sin éxito",
+        "width": 1440,
+        "role": "ADMINISTRADOR",
+        "passed": true
+      }
+    ],
+    "scope": "HTTP controlado, sin escrituras reales"
+  },
+  "real": {
+    "passed": true,
+    "cases": 13,
+    "results": [
+      {
+        "name": "Configuración propia consultada desde Angular con JWT real",
+        "passed": true
+      },
+      {
+        "name": "Escape cancela sin modificar la configuración real",
+        "passed": true
+      },
+      {
+        "name": "Pausa confirmada persiste en Supabase",
+        "passed": true
+      },
+      {
+        "name": "Las reservas existentes conservan sus IDs y estados reales",
+        "passed": true
+      },
+      {
+        "name": "Cliente refleja la pausa real y conserva acceso al historial",
+        "passed": true
+      },
+      {
+        "name": "Entrada directa al plano también queda bloqueada",
+        "passed": true
+      },
+      {
+        "name": "SALÓN bloqueado con consulta real, sin vaciar el carrito",
+        "passed": true
+      },
+      {
+        "name": "Para llevar permanece seleccionable; no se envía un pedido",
+        "passed": true
+      },
+      {
+        "name": "Habilitación confirmada y persistida",
+        "passed": true
+      },
+      {
+        "name": "Cliente actualiza SALÓN tras habilitar sin perder la selección",
+        "passed": true
+      },
+      {
+        "name": "Acceso a disponibilidad vuelve a habilitarse",
+        "passed": true
+      },
+      {
+        "name": "Sin errores JavaScript en el recorrido real",
+        "passed": true
+      },
+      {
+        "name": "Configuración original del restaurante demo restaurada",
+        "passed": true
+      }
+    ],
+    "target": "Angular → Spring Boot temporal 8082 → PostgreSQL Supabase",
+    "writes": "Cambio reversible del local demo; configuración original restaurada; sin nuevos pedidos ni cancelaciones"
+  },
+  "us11": {
+    "passed": true,
+    "cases": 10
+  },
+  "unit": {
+    "passed": 191,
+    "failed": 0
+  },
+  "build": "passed",
+  "figma": {
+    "fileKey": "sRxKEwFdrMKfXPosGFvoHc",
+    "frames": [
+      "91:51572",
+      "91:51687",
+      "91:51387",
+      "84:47986",
+      "84:48054"
+    ],
+    "comparison": "Composición adaptada a Angular Material y tamaños accesibles; sin equivalencia exacta de píxeles"
+  },
+  "us26": {
+    "passed": true,
+    "cases": 19
+  }
+}
