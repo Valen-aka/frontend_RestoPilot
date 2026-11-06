@@ -1,11 +1,12 @@
-import {Component, DOCUMENT, inject} from '@angular/core';
-import {Router, RouterLink} from '@angular/router';
 
-import {MatButtonModule} from '@angular/material/button';
+import {Component, DOCUMENT, inject} from '@angular/core';
+import {Router} from '@angular/router';
+
+
 import {AuthService} from '../../core/services/auth.service';
 
 @Component({
-  selector: 'rp-expired-client-shell', imports: [RouterLink, MatButtonModule],
+  selector: 'rp-expired-client-shell', imports: [],
   templateUrl: './expired-client-shell.html',
   styleUrls: ['../cliente/pedido-ui/pedido-view.css', './expired-client-shell.css']
 })

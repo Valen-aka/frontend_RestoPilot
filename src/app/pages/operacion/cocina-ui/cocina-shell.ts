@@ -1,3 +1,5 @@
+import {UiIcon} from '../../../components/ui-icon/ui-icon';
+import {Brand} from '../../../components/brand/brand';
 import {Component, DOCUMENT, computed, inject, input, signal} from '@angular/core';
 import {BreakpointObserver} from '@angular/cdk/layout';
 import {toSignal} from '@angular/core/rxjs-interop';
@@ -6,7 +8,7 @@ import {AuthService} from '../../../core/services/auth.service';
 import {MatButtonModule} from '@angular/material/button';
 
 @Component({
-  selector: 'rp-cocina-shell', imports: [RouterLink, MatButtonModule],
+  selector: 'rp-cocina-shell', imports: [Brand, UiIcon,RouterLink, MatButtonModule],
   templateUrl: './cocina-shell.html', styleUrl: './cocina-shell.css'
 })
 export class CocinaShell {

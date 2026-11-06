@@ -1,0 +1,98 @@
+{
+  "date": "2026-11-06T22:26:54.364Z",
+  "type": "controlled-browser",
+  "results": [
+    {
+      "name": "crear, editar y plano responsive 320",
+      "passed": true
+    },
+    {
+      "name": "crear, editar y plano responsive 390",
+      "passed": true
+    },
+    {
+      "name": "crear, editar y plano responsive 768",
+      "passed": true
+    },
+    {
+      "name": "crear, editar y plano responsive 1440",
+      "passed": true
+    },
+    {
+      "name": "desactivar, cancelar con Escape y reactivar",
+      "passed": true
+    },
+    {
+      "name": "reservas impiden reducir capacidad y conservan formulario",
+      "passed": true
+    },
+    {
+      "name": "reservas impiden desactivación sin inventar estado",
+      "passed": true
+    },
+    {
+      "name": "número duplicado conserva datos",
+      "passed": true
+    },
+    {
+      "name": "atención pausada bloquea alta y permite editar",
+      "passed": true
+    },
+    {
+      "name": "pausa concurrente se reconsulta antes de POST",
+      "passed": true
+    },
+    {
+      "name": "resultado incierto exige consulta lost",
+      "passed": true
+    },
+    {
+      "name": "resultado incierto exige consulta malformed",
+      "passed": true
+    },
+    {
+      "name": "resultado incierto exige consulta confirmedReadFailure",
+      "passed": true
+    },
+    {
+      "name": "ID ausente o inválido ",
+      "passed": true
+    },
+    {
+      "name": "ID ausente o inválido ?mesaId=0",
+      "passed": true
+    },
+    {
+      "name": "ID ausente o inválido ?mesaId=no",
+      "passed": true
+    },
+    {
+      "name": "ID ausente o inválido ?mesaId=99",
+      "passed": true
+    },
+    {
+      "name": "consulta inválida y recuperación foreign",
+      "passed": true
+    },
+    {
+      "name": "consulta inválida y recuperación duplicate",
+      "passed": true
+    },
+    {
+      "name": "consulta inválida y recuperación read500",
+      "passed": true
+    },
+    {
+      "name": "rol cliente no consulta gestión",
+      "passed": true
+    },
+    {
+      "name": "envío pendiente bloquea doble envío y navegación",
+      "passed": true
+    },
+    {
+      "name": "mesas coincidentes y sin coordenadas se conservan",
+      "passed": true
+    }
+  ]
+}

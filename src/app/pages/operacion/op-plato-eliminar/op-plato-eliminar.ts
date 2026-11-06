@@ -1,3 +1,4 @@
+import {WorkspaceShell} from '../../../components/workspace-shell/workspace-shell';
 import {
   Component,
   DestroyRef,
@@ -20,7 +21,7 @@ import {
 @Component({
   selector: 'rp-op-plato-eliminar',
   standalone: true,
-  imports: [RouterLink, OpPlatoEliminarDialog],
+  imports: [WorkspaceShell,RouterLink, OpPlatoEliminarDialog],
   templateUrl: './op-plato-eliminar.html',
   styleUrl: './op-plato-eliminar.css'
 })

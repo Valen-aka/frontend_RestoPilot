@@ -1,18 +1,28 @@
-import {computed, inject} from '@angular/core';
+import {BreakpointObserver} from '@angular/cdk/layout';
+import {toSignal} from '@angular/core/rxjs-interop';
+import {UiIcon} from '../ui-icon/ui-icon';
+import {Brand} from '../brand/brand';
+import {computed, inject, signal} from '@angular/core';
 import {AuthService} from '../../core/services/auth.service';
 import {Router} from '@angular/router';
 import {MatButtonModule} from '@angular/material/button';
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, Output } from '@angular/core';
 import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'rp-workspace-shell',
   standalone: true,
-  imports: [RouterLink,MatButtonModule],
+  imports: [Brand, UiIcon,RouterLink,MatButtonModule],
   templateUrl: './workspace-shell.html',
   styleUrl: './workspace-shell.css'
 })
 export class WorkspaceShell {
+ private readonly breakpoint=toSignal(inject(BreakpointObserver).observe('(max-width:900px)'));
+ readonly mobile=computed(()=>this.breakpoint()?.matches??false);
+ readonly menuOpen=signal(false); private readonly host=inject<ElementRef<HTMLElement>>(ElementRef);
+ closeMenu(event:Event):void {if(this.mobile()&&this.menuOpen()){event.preventDefault();this.menuOpen.set(false);this.host.nativeElement.querySelector<HTMLButtonElement>('.menu-toggle')?.focus();}}
+ get displayRestaurantId():number|null {return this.restaurantId??this.auth.session()?.restauranteId??null;}
+
  readonly auth=inject(AuthService);private readonly router=inject(Router);readonly ownerSession=computed(()=>this.auth.session()?.role==='DUENO');
  logout():void{this.auth.logout();this.signOut.emit();void this.router.navigate(['/auth/login']);}
 

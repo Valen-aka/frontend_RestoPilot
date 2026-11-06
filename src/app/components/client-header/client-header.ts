@@ -1,11 +1,16 @@
-import {Component, inject} from '@angular/core';
+import {Brand} from '../brand/brand';
+import {Component, inject, signal, ElementRef} from '@angular/core';
 import {NavigationEnd, Router, RouterLink} from '@angular/router';
 import {toSignal} from '@angular/core/rxjs-interop';
 import {filter, map} from 'rxjs';
 import {MatButtonModule} from '@angular/material/button';
 import {AuthService} from '../../core/services/auth.service';
-@Component({selector:'rp-client-header',imports:[RouterLink,MatButtonModule],templateUrl:'./client-header.html',styleUrl:'./client-header.css'})
+@Component({selector:'rp-client-header',imports: [Brand,RouterLink,MatButtonModule],templateUrl:'./client-header.html',styleUrl:'./client-header.css'})
 export class ClientHeader {
+  readonly menuOpen=signal(false);
+  private readonly host=inject<ElementRef<HTMLElement>>(ElementRef);
+  closeMenu(event:Event):void {if(this.menuOpen()){event.preventDefault();this.menuOpen.set(false);this.host.nativeElement.querySelector<HTMLButtonElement>('.menu-toggle')?.focus();}}
+
   readonly auth = inject(AuthService);
   private readonly router = inject(Router);
   private readonly currentUrl = toSignal(this.router.events.pipe(
