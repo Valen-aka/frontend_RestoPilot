@@ -1,0 +1,63 @@
+{
+  "date": "2026-11-06T06:20:46.997Z",
+  "type": "real-api-isolated-postgresql",
+  "results": [
+    {
+      "name": "altas reales aisladas de dueño y cliente",
+      "passed": true
+    },
+    {
+      "name": "sesión JWT real y listado vacío propio",
+      "passed": true
+    },
+    {
+      "name": "alta desde Angular persiste en PostgreSQL con coordenadas reales",
+      "passed": true
+    },
+    {
+      "name": "edición conserva ID y estado y persiste datos",
+      "passed": true
+    },
+    {
+      "name": "desactivación conserva registro y excluye de consulta activa",
+      "passed": true
+    },
+    {
+      "name": "número duplicado de mesa inactiva se rechaza y conserva formulario",
+      "passed": true
+    },
+    {
+      "name": "reactivación real reflejada en listado",
+      "passed": true
+    },
+    {
+      "name": "reserva vigente real creada para comprobar restricciones",
+      "passed": true
+    },
+    {
+      "name": "servidor bloquea capacidad inferior y Angular muestra reserva asociada",
+      "passed": true
+    },
+    {
+      "name": "servidor impide desactivar con reserva vigente y conserva estado",
+      "passed": true
+    },
+    {
+      "name": "tras cancelar reserva el servidor permite desactivar",
+      "passed": true
+    },
+    {
+      "name": "atención física pausada bloquea alta y permite gestionar mesa existente",
+      "passed": true
+    },
+    {
+      "name": "API rechaza listado administrativo para cliente",
+      "passed": true
+    },
+    {
+      "name": "plano final real sin errores ni desbordamiento",
+      "passed": true
+    }
+  ],
+  "limitation": "Acceso inicial mediante AuthService real desde harness de desarrollo; pantalla de login pendiente de su integración."
+}

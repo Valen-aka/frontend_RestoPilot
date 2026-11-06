@@ -38,6 +38,6 @@ export class ClientePlanoPage {
       alert('Por favor selecciona una mesa disponible antes de continuar.');
       return;
     }
-    this.router.navigate(['/cliente/reserva/revisar']);
+    this.router.navigate(['/cliente/reserva/revisar'],{queryParamsHandling:'preserve'});
   }
 }

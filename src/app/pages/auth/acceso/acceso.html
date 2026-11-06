@@ -14,7 +14,6 @@
 
 <div id="password-errors"><rp-form-errors [messages]="errors(form.controls.password, 'Contraseña')" /></div></div>
 <div class="auth-actions"><button mat-flat-button class="primary-action" type="submit">Entrar a RestoPilot</button></div>
-@if (notice()) {<p class="notice" role="status">{{ notice() }}</p>}
 </form></section>
 <nav class="auth-links" aria-label="Crear una cuenta"><a routerLink="/auth/registro">Crear cuenta de cliente</a><a routerLink="/auth/registro-dueno">Registrar mi restaurante</a></nav>
 </div>

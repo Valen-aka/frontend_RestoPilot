@@ -1,0 +1,5 @@
+.notifications {list-style: none; margin: 0; padding: 0;}
+.notifications li {padding: var(--rp-space-4) 0; border-bottom: var(--rp-border); overflow-wrap: anywhere;}
+.notifications li:last-child {border-bottom: 0;}
+.notifications .hint {margin-bottom: var(--rp-space-2);}
+mat-paginator {background: transparent;}
