@@ -46,6 +46,5 @@ export class DuenoAdministradorNuevoPage {
       return;
     }
     this.preview.run(() => this.form.controls.password.reset());
-    this.form.controls.password.reset();
   }
 }
