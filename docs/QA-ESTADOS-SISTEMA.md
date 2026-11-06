@@ -9,3 +9,5 @@ Fecha: 2026-10-30. Rama: feature/estados-sistema.
 - Calidad confirmó eliminación de wrapper AuthLayout duplicado, main, contraste del botón y eliminación de aria-busy permanente. Seguridad revisó alcance visual sin hallazgos bloqueantes.
 
 Son estados presentacionales; no implementan guards, expiración efectiva ni solicitudes HTTP.
+
+Revision visual US02: pantallas de acceso restringido y sesion expirada identificadas como demostracion, sin permisos ni sesiones ficticias. Reintento del error con carga y recuperacion visual. Checker y build aprobados.
