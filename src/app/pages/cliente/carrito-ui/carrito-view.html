@@ -74,17 +74,20 @@
     } @else {
       <form [formGroup]="form" (ngSubmit)="confirm()" novalidate>
         <mat-button-toggle-group class="modality-selector" formControlName="modality" aria-label="Modalidad del pedido" hideSingleSelectionIndicator>
-          @for (option of options; track option.value) {<mat-button-toggle [value]="option.value">{{ option.label }}</mat-button-toggle>}
+          @for (option of options; track option.value) {<mat-button-toggle [value]="option.value" [disabled]="option.value==='SALON' && physicalState()!=='enabled'">{{ option.label }}</mat-button-toggle>}
         </mat-button-toggle-group>
         <div class="cart-grid">
           <mat-card appearance="outlined" class="modality-card">
             <h2>Tu modalidad: {{ labels[store.modality()] }}</h2>
+            @if(physicalState()==='checking'){<p role="status">Consultando atención física…</p>}
+            @if(physicalState()==='error'){<p role="alert">No se pudo verificar la atención en salón.</p>}
+            <button mat-button type="button" (click)="checkPhysical()" [disabled]="physicalBusy()||store.submitting()">Actualizar atención en salón</button>
             @if (!store.conditions().active || !store.conditions().open) {
               <p class="selection-error" role="status">{{ !store.conditions().active ? 'Este restaurante no está disponible para recibir pedidos.' : 'El restaurante está cerrado y no puede recibir pedidos.' }}</p>
             }
             @switch (store.modality()) {
               @case ('SALON') {
-                @if (!store.conditions().salon) {<p class="selection-error">La atención en salón no está habilitada. Elige otra modalidad.</p>}
+                @if (!store.conditions().salon || physicalState()==='disabled') {<p class="selection-error">La atención en salón no está habilitada. Elige otra modalidad.</p>}
                 <mat-form-field appearance="outline" subscriptSizing="dynamic"><mat-label>Mesa</mat-label>
                   <mat-select formControlName="table" aria-describedby="table-note">
                     @for (table of store.activeTables(); track table.id) {<mat-option [value]="table.id">{{ table.label }}</mat-option>}
@@ -113,7 +116,7 @@
             <p class="selection-total"><span>Total estimado</span><strong>{{ store.totalCents() / 100 | currency:'PEN':'S/ ':'1.2-2' }}</strong></p>
             <p class="total-note">El total definitivo lo calcula el restaurante. No se cobra desde esta pantalla.</p>
             <p class="field-note">Al confirmar se enviará tu pedido al restaurante.</p>
-            <button mat-flat-button type="submit" [disabled]="!canContinue() || !store.conditions().active || !store.conditions().open">{{ store.submitting() ? 'Registrando…' : 'Confirmar pedido' }}</button>
+            <button mat-flat-button type="submit" [disabled]="!canContinue() || physicalBusy() || !store.conditions().active || !store.conditions().open || (store.modality()==='SALON' && physicalState()!=='enabled')">{{ store.submitting() ? 'Registrando…' : 'Confirmar pedido' }}</button>
           </mat-card>
         </div>
       </form>

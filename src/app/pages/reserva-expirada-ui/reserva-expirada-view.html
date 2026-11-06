@@ -6,6 +6,10 @@
       <p class="subtitle">{{ mode() === 'history' ? 'Consulta el detalle y la fecha de vencimiento de cada reserva.' : 'Toda la información de tu reserva, en un solo lugar.' }}</p>
       <p class="sample-notice">Estados y fechas consultados al restaurante. La expiración se registra en el servidor.</p>
       <button mat-stroked-button type="button" (click)="store.refresh()" [disabled]="!store.hasSession() || store.refreshing()">{{ store.refreshing() ? 'Actualizando…' : 'Actualizar reservas' }}</button>
+      @if(mode()==='history') {
+        @if(context()==='operation'){<a mat-stroked-button routerLink="/operacion/atencion">Configurar atención física</a>}
+        @else {<a mat-stroked-button routerLink="/cliente/reservar">Nueva reserva</a>}
+      }
     </div>
     @if (store.queryState() === 'loading') {
       <mat-card appearance="outlined" class="state-card" role="status" aria-busy="true"><mat-spinner diameter="32" aria-hidden="true"/><h2>Consultando las reservas…</h2></mat-card>
@@ -79,7 +83,7 @@
               @if (expirationIssue(reservation)) {<p class="data-warning" role="status">{{ expirationIssue(reservation) }}</p>}
             }
             <div class="actions">
-              @if (context() === 'client' && reservation.status === 'Expirada') {<a mat-flat-button routerLink="/cliente/reservar">Hacer otra reserva</a>}
+              @if (context() === 'client' && reservation.status === 'Expirada') {<a mat-flat-button routerLink="/cliente/reservar" [queryParams]="{restauranteId:reservation.restaurantId}">Hacer otra reserva</a>}
               @if(context() === 'operation' && (reservation.status === 'Confirmada' || reservation.status === 'Completada')) {
                 <a mat-stroked-button [routerLink]="attendanceDestination(reservation).path" [queryParams]="{vista:attendanceDestination(reservation).vista,reservaId:reservation.id}">Consultar atención</a>
               }

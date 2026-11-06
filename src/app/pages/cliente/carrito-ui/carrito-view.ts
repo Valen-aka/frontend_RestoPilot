@@ -1,3 +1,5 @@
+import {Subscription} from 'rxjs';
+import {CatalogoService} from '../../../core/services/catalogo.service';
 import {AuthService} from '../../../core/services/auth.service';
 import {Component, DestroyRef, DOCUMENT, OnInit, computed, effect, inject, input, signal, untracked} from '@angular/core';
 import {CurrencyPipe} from '@angular/common';
@@ -32,6 +34,11 @@ const MODALITY_VISTAS: Record<Modality, string> = {
 })
 export class CarritoView implements OnInit {
   readonly store = inject(CarritoStore);
+  private readonly physicalApi=inject(CatalogoService);
+  private physicalRequest?:Subscription;
+  private physicalGeneration=0;
+  readonly physicalState=signal<'idle'|'checking'|'enabled'|'disabled'|'error'>('idle');
+  readonly physicalBusy=signal(false);
   private readonly auth = inject(AuthService);
 
   private readonly router = inject(Router);
@@ -76,6 +83,8 @@ export class CarritoView implements OnInit {
     this.store.hasSession() && !this.store.submitting() && !this.store.uncertain());
 
   constructor() {
+    this.destroyRef.onDestroy(()=>{this.physicalGeneration++;this.physicalRequest?.unsubscribe();});
+    effect(()=>{const mode=this.mode(),rid=this.store.draft()?.restaurantId;this.auth.session();if(mode==='delivery'&&rid&&this.store.hasSession())untracked(()=>this.checkPhysical());});
     effect(onCleanup => {
       this.lineIds();
       const fields = untracked(() => this.store.lines()).map(line => new FormControl<number | null>(line.quantity,
@@ -127,6 +136,7 @@ export class CarritoView implements OnInit {
   }
 
   confirm(): void {
+    if(this.physicalBusy()||this.store.submitting())return;
     this.form.markAllAsTouched();
     const {modality, table, address} = this.form.getRawValue();
     const rejection = this.store.rejection(modality, table, address);
@@ -135,7 +145,22 @@ export class CarritoView implements OnInit {
       setTimeout(() => this.document.getElementById('cart-feedback')?.focus(), 0);
       return;
     }
-    this.store.submit(modality, table, address);
+    if(modality==='SALON')this.checkPhysical(()=>this.store.submit(modality,table,address));
+    else this.store.submit(modality, table, address);
+  }
+
+  /** Reconsulta el dato vigente; no cambia el carrito ni infiere permisos. */
+  checkPhysical(onEnabled?:()=>void):void {
+    const rid=this.store.draft()?.restaurantId;if(!rid||!this.store.hasSession()||this.store.submitting())return;
+    const token=this.auth.session()?.accessToken,generation=++this.physicalGeneration;
+    this.physicalRequest?.unsubscribe();this.physicalState.set('checking');this.physicalBusy.set(true);
+    this.physicalRequest=this.physicalApi.restaurante(rid).subscribe({next:restaurant=>{
+      if(generation!==this.physicalGeneration||token!==this.auth.session()?.accessToken)return;
+      this.physicalBusy.set(false);this.physicalState.set(restaurant.tieneAtencionFisica?'enabled':'disabled');
+      this.store.updatePhysicalAttention(rid,restaurant.tieneAtencionFisica);
+      if(!restaurant.tieneAtencionFisica)this.message.set('La atención en salón está pausada. Elige otra modalidad.');
+      else {this.message.set('');onEnabled?.();}
+    },error:()=>{if(generation!==this.physicalGeneration)return;this.physicalBusy.set(false);this.physicalState.set('error');this.message.set('No pudimos verificar la atención en salón. Actualiza sus condiciones antes de confirmar.');}});
   }
 
   emptyCart(): void {

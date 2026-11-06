@@ -1,0 +1,94 @@
+[
+  {
+    "name": "llegada, finalización y fechas 320",
+    "passed": true
+  },
+  {
+    "name": "llegada, finalización y fechas 390",
+    "passed": true
+  },
+  {
+    "name": "llegada, finalización y fechas 768",
+    "passed": true
+  },
+  {
+    "name": "llegada, finalización y fechas 1440",
+    "passed": true
+  },
+  {
+    "name": "cancelar devuelve foco y no registra llegada",
+    "passed": true
+  },
+  {
+    "name": "doble clic y navegación durante envío no duplican operación",
+    "passed": true
+  },
+  {
+    "name": "finalización anticipada deshabilitada hasta actualizar reloj del servidor",
+    "passed": true
+  },
+  {
+    "name": "rechazo y consulta autoritativa reject400",
+    "passed": true
+  },
+  {
+    "name": "rechazo y consulta autoritativa reject409",
+    "passed": true
+  },
+  {
+    "name": "rechazo y consulta autoritativa expired",
+    "passed": true
+  },
+  {
+    "name": "respuesta incierta se consulta sin repetir lost",
+    "passed": true
+  },
+  {
+    "name": "respuesta incierta se consulta sin repetir bad-contract",
+    "passed": true
+  },
+  {
+    "name": "respuesta y consulta perdidas bloquean hasta verificar",
+    "passed": true
+  },
+  {
+    "name": "refresco posterior fallido conserva la llegada confirmada",
+    "passed": true
+  },
+  {
+    "name": "acceso denegado o recurso no disponible patch403",
+    "passed": true
+  },
+  {
+    "name": "acceso denegado o recurso no disponible patch404",
+    "passed": true
+  },
+  {
+    "name": "acceso denegado o recurso no disponible read400",
+    "passed": true
+  },
+  {
+    "name": "acceso denegado o recurso no disponible foreign",
+    "passed": true
+  },
+  {
+    "name": "sin metadatos se muestran datos pero no se inventan permisos",
+    "passed": true
+  },
+  {
+    "name": "ID inválido y reserva completada directa no disparan mutaciones",
+    "passed": true
+  },
+  {
+    "name": "sin permisos no consulta cliente@example.test",
+    "passed": true
+  },
+  {
+    "name": "sin permisos no consulta sinlocal@example.test",
+    "passed": true
+  },
+  {
+    "name": "retorno al login y detalle ajeno a US25 conserva su ruta",
+    "passed": true
+  }
+]

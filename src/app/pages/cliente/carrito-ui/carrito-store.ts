@@ -102,6 +102,12 @@ export class CarritoStore {
     this.tableId.set(null);
     this.address.set('');
   }
+  /** Solo con el dato recibido del restaurante; conserva líneas, modalidad y mesa. */
+  updatePhysicalAttention(restaurantId:number,enabled:boolean):void {
+    const draft=this.draft();
+    if(!this.hasSession()||this.submitting()||!draft||draft.restaurantId!==restaurantId||draft.conditions.salon===enabled)return;
+    this.draftState.set({...draft,conditions:{...draft.conditions,salon:enabled}});
+  }
   setQuantity(index: number, quantity: number | null): void {
     if (this.submitting() || this.uncertain()) return;
     this.draftState.update(d => d ? {...d, lines: d.lines.map((l, i) => i === index ? {...l, quantity} : l)} : d);

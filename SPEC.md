@@ -50,6 +50,7 @@ El SPEC común contiene las 29 historias y sus criterios. No se requiere un arch
 | Complemento | Alcance |
 | --- | --- |
 | [Landing](docs/specs/landing/SPEC.md) | LP01: presentación del producto y accesos |
+| [US10](docs/specs/us10/SPEC.md) | Carta del cliente, filtro por categoría, detalle real y selección hacia el carrito |
 | [US11](docs/specs/us11/SPEC.md) | Carrito y registro del pedido por modalidad |
 | [US12](docs/specs/us12/SPEC.md) | Detalle del pedido y consulta de pago |
 | [US13](docs/specs/us13/SPEC.md) | Seguimiento del pedido |
@@ -59,8 +60,12 @@ El SPEC común contiene las 29 historias y sus criterios. No se requiere un arch
 | [US19](docs/specs/us19/SPEC.md) | Preparación, pedido listo y entrega |
 | [Integración API de cocina](docs/specs/operacion-cocina-api/SPEC.md) | US15 y US19: cola autorizada, prioridad, preparación y entrega reales |
 | [US23](docs/specs/us23/SPEC.md) | Categorías: API y estado preparados; interfaces y aceptación pendientes |
+| [US20](docs/specs/us20/SPEC.md) | Reportes operativos y pagos por período, con gráficos, vacío y validación de fechas |
+| [US29](docs/specs/us29/SPEC.md) | Agenda administrativa, filtros, detalle, reprogramación y cancelación con API |
+| [US16](docs/specs/us16/SPEC.md) | Gestión de mesas: plano, listado, registro, edición, estado y restricciones de reservas |
 | [US25](docs/specs/us25/SPEC.md) | Llegada y finalización de reservas |
 | [Integración API de atención de reservas](docs/specs/operacion-reserva-atencion-api/SPEC.md) | US25: llegada, finalización, fechas, reglas temporales y recuperación |
+| [US27](docs/specs/us27/SPEC.md) | Atención física, confirmación de pausa y efectos en reservas nuevas y salón |
 | [US26](docs/specs/us26/SPEC.md) | Consulta de reservas expiradas en detalle e historial |
 | [Integración API de reservas expiradas](docs/specs/reserva-expirada-api/SPEC.md) | US26: detalle, historial, fecha de expiración y disponibilidad autoritativa |
 
