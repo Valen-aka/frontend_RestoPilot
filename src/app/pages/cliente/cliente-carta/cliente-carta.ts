@@ -1,6 +1,5 @@
 import {Component} from '@angular/core';
-/** Frame: cliente-carta. Responsable: Valentina Montenegro. Implementación pendiente. */
-@Component({selector:'rp-cliente-carta',imports:[],templateUrl:'./cliente-carta.html',styleUrl:'./cliente-carta.css'})
-export class ClienteCartaPage{
-
-}
+import {CartaView} from '../carta-ui/carta-view';
+/** US10: consulta real; las variantes conservan los datos del servidor. */
+@Component({selector:'rp-cliente-carta',imports:[CartaView],templateUrl:'./cliente-carta.html',styleUrl:'./cliente-carta.css'})
+export class ClienteCartaPage {}

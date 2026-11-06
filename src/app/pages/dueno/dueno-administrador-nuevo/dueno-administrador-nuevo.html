@@ -10,8 +10,6 @@
         <div class="field span-full"><label for="admin-password">Contraseña</label><input matInput id="admin-password" type="password" formControlName="password" autocomplete="new-password" [attr.aria-invalid]="form.controls.password.touched && form.controls.password.invalid" aria-describedby="admin-password-hint admin-password-error"><small class="hint" id="admin-password-hint">8 caracteres o más: letras, número y carácter especial. Máximo 72 bytes UTF-8.</small><p class="field-error" id="admin-password-error" aria-live="polite">{{ error('password') }}</p></div>
       </div>
       <div class="actions form-actions"><a mat-stroked-button class="secondary" routerLink="/dueno">Cancelar</a><button mat-flat-button class="primary" type="submit">Crear administrador</button></div>
-      @if (notice()) {<p class="notice" role="status">{{ notice() }}</p>}
-    </form>
+      </form>
   </section>
-  <p class="notice account-notice">El restaurante y el rol se asignarán desde la cuenta del dueño cuando se conecte el servicio. No se envía una invitación por correo.</p>
 </rp-workspace-shell>

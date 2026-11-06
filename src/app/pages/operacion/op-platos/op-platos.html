@@ -1,156 +1,51 @@
 <section class="platos-page">
   <header class="page-header">
-    <div>
-      <p class="eyebrow">ADMINISTRACIÓN DE CARTA</p>
-      <h1>Gestión de platos</h1>
-      <p class="subtitle">
-        Administra los platos, precios y disponibilidad de tu restaurante.
-      </p>
-    </div>
-
-    <a class="btn-primary" routerLink="/operacion/plato/nuevo">
-      + Nuevo plato
-    </a>
+    <div><p class="eyebrow">ADMINISTRACIÓN DE CARTA</p><h1>Gestión de platos</h1><p class="subtitle">Administra los platos, precios y disponibilidad de tu restaurante.</p></div>
+    <a mat-flat-button routerLink="/operacion/plato/nuevo">+ Nuevo plato</a>
   </header>
-
   <div class="stats-grid">
-    <article class="stat-card">
-      <span>Total de platos</span>
-      <strong>{{ platos().length }}</strong>
-    </article>
-
-    <article class="stat-card">
-      <span>Disponibles</span>
-      <strong class="success">{{ disponibles() }}</strong>
-    </article>
-
-    <article class="stat-card">
-      <span>Agotados</span>
-      <strong class="danger">{{ agotados() }}</strong>
-    </article>
+    <article class="stat-card"><span>Total de platos</span><strong>{{ platos().length }}</strong></article>
+    <article class="stat-card"><span>Disponibles</span><strong class="success">{{ disponibles() }}</strong></article>
+    <article class="stat-card"><span>Agotados</span><strong class="danger">{{ agotados() }}</strong></article>
   </div>
-
   <div class="content-card">
     <div class="toolbar">
-      <input
-        type="search"
-        placeholder="Buscar plato o categoría..."
-        aria-label="Buscar platos"
-        [value]="busqueda()"
-        (input)="actualizarBusqueda($any($event.target).value)"
-      />
-
-      <select
-        aria-label="Filtrar por categoría"
-        [value]="categoria()"
-        (change)="actualizarCategoria($any($event.target).value)"
-      >
-        <option value="TODAS">Todas las categorías</option>
-        @for (nombre of categorias(); track nombre) {
-        <option [value]="nombre">{{ nombre }}</option>
-        }
-      </select>
-
-      <button
-        class="btn-outline"
-        type="button"
-        (click)="cargarPlatos()"
-        [disabled]="cargando()"
-      >
-        Actualizar
-      </button>
+      <mat-form-field appearance="outline" subscriptSizing="dynamic" class="search-field">
+        <mat-label>Buscar plato o categoría</mat-label>
+        <input matInput type="search" [value]="busqueda()" (input)="actualizarBusqueda($any($event.target).value)" />
+      </mat-form-field>
+      <mat-form-field appearance="outline" subscriptSizing="dynamic" class="category-field">
+        <mat-label>Filtrar por categoría</mat-label>
+        <mat-select [value]="categoria()" (selectionChange)="actualizarCategoria($event.value)">
+          <mat-option value="TODAS">Todas las categorías</mat-option>
+          @for (nombre of categorias(); track nombre) {<mat-option [value]="nombre">{{ nombre }}</mat-option>}
+        </mat-select>
+      </mat-form-field>
+      <button mat-stroked-button type="button" (click)="cargarPlatos()" [disabled]="cargando()">Actualizar</button>
     </div>
-
     @if (cargando()) {
-    <div class="state-message" role="status">
-      Cargando platos...
-    </div>
+      <div class="state-message" role="status" aria-busy="true">Cargando platos…</div>
     } @else if (error()) {
-    <div class="state-message error" role="alert">
-      <p>{{ error() }}</p>
-      <button type="button" (click)="cargarPlatos()">
-        Reintentar
-      </button>
-    </div>
+      <div class="state-message error" role="alert"><p>{{ error() }}</p><button mat-stroked-button type="button" (click)="cargarPlatos()">Reintentar</button></div>
     } @else if (platosFiltrados().length === 0) {
-    <div class="state-message">
-      <h2>No se encontraron platos</h2>
-      <p>
-        No hay platos que coincidan con los filtros seleccionados.
-      </p>
-    </div>
+      <div class="state-message" role="status"><h2>No se encontraron platos</h2><p>No hay platos que coincidan con los filtros seleccionados.</p></div>
     } @else {
-    <div class="table-scroll">
-      <table>
-        <thead>
-        <tr>
-          <th>Plato</th>
-          <th>Categoría</th>
-          <th>Precio</th>
-          <th>Preparación</th>
-          <th>Disponibilidad</th>
-          <th>Acciones</th>
-        </tr>
-        </thead>
-
-        <tbody>
-        @for (plato of platosFiltrados(); track plato.id) {
-        <tr>
-          <td>
-            <div class="plato-name">
-              <strong>{{ plato.nombre }}</strong>
-              <small>{{ plato.descripcion || 'Sin descripción' }}</small>
-            </div>
-          </td>
-
-          <td>{{ plato.categoriaNombre }}</td>
-
-          <td>{{ precio(plato.precio) }}</td>
-
-          <td>
-            {{ plato.tiempoPreparacionMinutos ?? '—' }}
-            @if (plato.tiempoPreparacionMinutos !== null) {
-            min
-            }
-          </td>
-
-          <td>
-                  <span
-                    class="status"
-                    [class.available]="plato.disponible"
-                    [class.unavailable]="!plato.disponible"
-                  >
-                    {{ plato.disponible ? 'Disponible' : 'Agotado' }}
-                  </span>
-          </td>
-
-          <td>
-            <div class="actions">
-              <a
-                [routerLink]="['/operacion/plato/editar', plato.id]"
-              >
-                Editar
-              </a>
-
-              <a
-                [routerLink]="['/operacion/plato/disponibilidad', plato.id]"
-              >
-                Disponibilidad
-              </a>
-
-              <a
-                class="delete-link"
-                [routerLink]="['/operacion/plato/eliminar', plato.id]"
-              >
-                Eliminar
-              </a>
-            </div>
-          </td>
-        </tr>
-        }
-        </tbody>
-      </table>
-    </div>
+      <div class="table-scroll" role="region" tabindex="0" aria-label="Listado de platos. Desplaza horizontalmente para consultar todas las columnas.">
+        <table mat-table [dataSource]="platosFiltrados()" aria-label="Platos del restaurante">
+          <ng-container matColumnDef="plato"><th mat-header-cell *matHeaderCellDef>Plato</th><td mat-cell *matCellDef="let plato"><div class="plato-name"><strong>{{ plato.nombre }}</strong><small>{{ plato.descripcion || 'Sin descripción' }}</small></div></td></ng-container>
+          <ng-container matColumnDef="categoria"><th mat-header-cell *matHeaderCellDef>Categoría</th><td mat-cell *matCellDef="let plato">{{ plato.categoriaNombre }}</td></ng-container>
+          <ng-container matColumnDef="precio"><th mat-header-cell *matHeaderCellDef>Precio</th><td mat-cell *matCellDef="let plato">{{ precio(plato.precio) }}</td></ng-container>
+          <ng-container matColumnDef="preparacion"><th mat-header-cell *matHeaderCellDef>Preparación</th><td mat-cell *matCellDef="let plato">{{ plato.tiempoPreparacionMinutos ?? '—' }} @if (plato.tiempoPreparacionMinutos != null) {min}</td></ng-container>
+          <ng-container matColumnDef="disponibilidad"><th mat-header-cell *matHeaderCellDef>Disponibilidad</th><td mat-cell *matCellDef="let plato"><span class="status" [class.available]="plato.disponible" [class.unavailable]="!plato.disponible">{{ plato.disponible ? 'Disponible' : 'Agotado' }}</span></td></ng-container>
+          <ng-container matColumnDef="acciones"><th mat-header-cell *matHeaderCellDef>Acciones</th><td mat-cell *matCellDef="let plato"><div class="actions">
+            <a mat-button [routerLink]="['/operacion/plato/editar', plato.id]" [attr.aria-label]="'Editar ' + plato.nombre">Editar</a>
+            <a mat-button [routerLink]="['/operacion/plato/disponibilidad', plato.id]" [attr.aria-label]="'Cambiar disponibilidad de ' + plato.nombre">Disponibilidad</a>
+            <a mat-button class="delete-link" [routerLink]="['/operacion/plato/eliminar', plato.id]" [attr.aria-label]="'Eliminar ' + plato.nombre">Eliminar</a>
+          </div></td></ng-container>
+          <tr mat-header-row *matHeaderRowDef="columnas"></tr>
+          <tr mat-row *matRowDef="let row; columns: columnas"></tr>
+        </table>
+      </div>
     }
   </div>
 </section>

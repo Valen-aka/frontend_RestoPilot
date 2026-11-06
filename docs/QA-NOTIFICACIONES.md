@@ -9,3 +9,5 @@ Fecha: 2026-10-30. Rama: feature/notificaciones.
 - Calidad revisó rutas, composición y estilos de estos archivos.
 
 Sin notificaciones reales, sesiones ni consulta al servidor.
+
+Revision visual US28: vista comun de avisos de ejemplo con identificador/fecha, orden descendente, paginador Material, carga/vacio/error/recuperacion y escenarios de permisos/sesion. No consulta AuthService ni HTTP. La integracion iniciada anteriormente se revirtio localmente. Checker y build aprobados; navegador integrado pendiente.

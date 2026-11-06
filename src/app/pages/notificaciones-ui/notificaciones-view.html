@@ -1,0 +1,11 @@
+<rp-workspace-shell [role]="role" breadcrumb="Notificaciones" active="notificaciones">
+  <header class="page-heading"><p class="eyebrow">Notificaciones</p><h1>La actividad de tu cuenta</h1><p class="subtitle">Pedidos y reservas, al día.</p></header>
+  @if (initialEmpty) {
+    <section class="panel empty-result" aria-live="polite"><h2>No tienes notificaciones</h2><p>Cuando haya novedades sobre tus pedidos y reservas, aparecerán aquí.</p></section>
+  } @else {
+    <section class="panel" aria-labelledby="activity-title"><h2 id="activity-title">Notificaciones recientes</h2>
+      <ul class="notifications">@for (message of visible(); track message.id) {<li><p class="hint">{{message.id}} · {{message.fecha}}</p><p>{{message.texto}}</p></li>}</ul>
+      <mat-paginator [length]="messages.length" [pageSize]="3" [pageIndex]="page()" [hidePageSize]="true" aria-label="Páginas de notificaciones" (page)="changePage($event)" />
+    </section>
+  }
+</rp-workspace-shell>
