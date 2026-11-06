@@ -15,7 +15,7 @@ footer{display:flex;justify-content:space-between;gap:18px;flex-wrap:wrap;max-wi
 @font-face{font-family:RP-Categorias;src:url('/assets/pedido/fonts/roboto.ttf') format('truetype');font-weight:100 900;font-display:swap}
 .live{font-family:RP-Categorias,Roboto,Arial,sans-serif;background:#f5f6f2;color:#18334a}
 .live .sidebar{background:var(--rp-navy);padding:28px 20px;min-height:900px}
-.live .logo img{position:static;width:48px;height:48px;object-fit:contain}.live .logo-cover{position:absolute;inset:0;background:white;border-radius:10px}
+
 .live .brand strong{font-size:21px}.live .restaurant{margin:30px 0 0;padding:13px}.live .nav-label{margin:30px 12px 12px}
 .live .sidebar nav a{padding:12px 10px;min-height:44px}.live .profile{padding-top:24px}
 .live .logout{background:none;border:0;text-align:left;cursor:pointer;padding:0;min-height:44px}
@@ -28,3 +28,5 @@ footer{display:flex;justify-content:space-between;gap:18px;flex-wrap:wrap;max-wi
 @media(max-width:900px){.live .topbar{height:55px;min-height:55px}.live .sidebar{min-height:160px}.live .sidebar nav a{padding:8px}}
 
 .live .current-date{font-size:10px;line-height:13px}@media(max-width:900px){.live .current-date{display:none}}
+
+@media(max-width:900px){.sidebar .logout{display:inline-flex;min-height:var(--rp-control-height);margin-top:var(--rp-space-3);}}

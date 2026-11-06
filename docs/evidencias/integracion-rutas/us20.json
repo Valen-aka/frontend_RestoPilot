@@ -1,0 +1,122 @@
+{
+  "date": "2026-11-06T17:34:05.641Z",
+  "type": "controlled-browser",
+  "results": [
+    {
+      "name": "consolidado, gráficos y pagos responsive 320",
+      "passed": true
+    },
+    {
+      "name": "consolidado, gráficos y pagos responsive 390",
+      "passed": true
+    },
+    {
+      "name": "consolidado, gráficos y pagos responsive 768",
+      "passed": true
+    },
+    {
+      "name": "consolidado, gráficos y pagos responsive 1440",
+      "passed": true
+    },
+    {
+      "name": "reporte específico PLATOS",
+      "passed": true
+    },
+    {
+      "name": "reporte específico DEMANDA",
+      "passed": true
+    },
+    {
+      "name": "reporte específico ATENCIONES",
+      "passed": true
+    },
+    {
+      "name": "reporte específico OCUPACION",
+      "passed": true
+    },
+    {
+      "name": "reporte específico PAGOS",
+      "passed": true
+    },
+    {
+      "name": "sin fechas no consulta reportes y formulario conserva valores",
+      "passed": true
+    },
+    {
+      "name": "consulta inválida fechaInicio=2026-11-08&fechaFin=2026-11-01",
+      "passed": true
+    },
+    {
+      "name": "consulta inválida fechaInicio=2026-02-30&fechaFin=2026-11-01",
+      "passed": true
+    },
+    {
+      "name": "consulta inválida fechaInicio=2026-11-01&fechaFin=2026-11-06&tipo=INVALIDO",
+      "passed": true
+    },
+    {
+      "name": "vacío real y Cambiar período devuelve foco",
+      "passed": true
+    },
+    {
+      "name": "ceros y secciones vacías no son vacío global",
+      "passed": true
+    },
+    {
+      "name": "error limpia indicadores y permite recuperación partial",
+      "passed": true
+    },
+    {
+      "name": "error limpia indicadores y permite recuperación sum",
+      "passed": true
+    },
+    {
+      "name": "error limpia indicadores y permite recuperación nan",
+      "passed": true
+    },
+    {
+      "name": "error limpia indicadores y permite recuperación wrongType",
+      "passed": true
+    },
+    {
+      "name": "error limpia indicadores y permite recuperación 400",
+      "passed": true
+    },
+    {
+      "name": "error limpia indicadores y permite recuperación 401",
+      "passed": true
+    },
+    {
+      "name": "error limpia indicadores y permite recuperación 403",
+      "passed": true
+    },
+    {
+      "name": "error limpia indicadores y permite recuperación 500",
+      "passed": true
+    },
+    {
+      "name": "error limpia indicadores y permite recuperación network",
+      "passed": true
+    },
+    {
+      "name": "variante vacía no fabrica ausencia de datos",
+      "passed": true
+    },
+    {
+      "name": "variante inválida usa rango real y permite corregirlo",
+      "passed": true
+    },
+    {
+      "name": "cambios de formulario identifican el período anterior",
+      "passed": true
+    },
+    {
+      "name": "consulta tardía no reemplaza el último tipo",
+      "passed": true
+    },
+    {
+      "name": "sesión y cambio de cuenta limpian datos anteriores",
+      "passed": true
+    }
+  ]
+}

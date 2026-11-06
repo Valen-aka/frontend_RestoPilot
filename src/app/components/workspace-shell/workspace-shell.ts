@@ -1,14 +1,21 @@
+import {computed, inject} from '@angular/core';
+import {AuthService} from '../../core/services/auth.service';
+import {Router} from '@angular/router';
+import {MatButtonModule} from '@angular/material/button';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'rp-workspace-shell',
   standalone: true,
-  imports: [RouterLink],
+  imports: [RouterLink,MatButtonModule],
   templateUrl: './workspace-shell.html',
   styleUrl: './workspace-shell.css'
 })
 export class WorkspaceShell {
+ readonly auth=inject(AuthService);private readonly router=inject(Router);readonly ownerSession=computed(()=>this.auth.session()?.role==='DUENO');
+ logout():void{this.auth.logout();this.signOut.emit();void this.router.navigate(['/auth/login']);}
+
 
   // Configuración general
   @Input() role: 'owner' | 'operation' | 'client' | 'account' = 'operation';

@@ -5,9 +5,9 @@ for(const url of [app,mock])if(!['localhost','127.0.0.1'].includes(new URL(url).
 const output=path.resolve(process.env.RP_QA_OUTPUT||'artifacts/us26-api');fs.mkdirSync(output,{recursive:true});
 async function control(mode='success',reset=false){const r=await fetch(mock+'/api/__test',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({mode,reset})});assert(r.ok);}
 async function calls(){return (await(await fetch(mock+'/api/__test')).json()).calls;}
-async function go(page,url){return page.evaluate(url=>ng.getComponent(document.querySelector('rp-agenda-view')||document.querySelector('rp-reserva-expirada-view')||document.querySelector('rp-reserva-atencion-view')||document.querySelector('rp-carrito-view')).router.navigateByUrl(url),url);}
-async function login(page,context='client',destination){await page.goto(app+'/cliente/carrito');await page.locator('rp-carrito-view').waitFor();
- await page.evaluate(correo=>new Promise((resolve,reject)=>ng.getComponent(document.querySelector('rp-carrito-view')).auth.login({correo,password:'solo-prueba'}).subscribe({next:()=>resolve(),error:()=>reject(Error('Falló login sintético'))})),context==='client'?'cliente@example.test':'admin@example.test');
+async function go(page,url){return page.evaluate(url=>ng.getComponent(document.querySelector('rp-agenda-view')||document.querySelector('rp-reserva-expirada-view')||document.querySelector('rp-reserva-atencion-view')||document.querySelector('rp-carrito-view,rp-acceso')).router.navigateByUrl(url),url);}
+async function login(page,context='client',destination){await page.goto(app+'/cliente/carrito');await page.locator('rp-carrito-view,rp-acceso').waitFor();
+ await page.evaluate(correo=>new Promise((resolve,reject)=>ng.getComponent(document.querySelector('rp-carrito-view,rp-acceso')).auth.login({correo,password:'solo-prueba'}).subscribe({next:()=>resolve(),error:()=>reject(Error('Falló login sintético'))})),context==='client'?'cliente@example.test':'admin@example.test');
  await go(page,destination||(context==='client'?'/cliente/reservas':'/operacion/reservas'));
 }
 const detail=(context,id)=>context==='client'?'/cliente/reserva?vista=cliente-reserva-expirada&reservaId='+id:'/operacion/reserva?vista=op-reserva-expirada&reservaId='+id;

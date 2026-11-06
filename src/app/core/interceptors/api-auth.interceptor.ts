@@ -15,7 +15,7 @@ export const apiAuthInterceptor: HttpInterceptorFn = (request, next) => {
   if (!isApi || !session?.accessToken.trim() || session.expiresAt <= Date.now()) return next(request);
   return next(request.clone({setHeaders: {Authorization: 'Bearer ' + session.accessToken}})).pipe(
     catchError(error => {
-      if (error instanceof HttpErrorResponse && error.status === 401 && auth.session()?.accessToken === session.accessToken) auth.logout();
+      if (error instanceof HttpErrorResponse && error.status === 401 && auth.session()?.accessToken === session.accessToken) auth.logout('unauthorized');
       return throwError(() => error);
     }));
 };

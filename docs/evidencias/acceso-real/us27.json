@@ -1,0 +1,151 @@
+{
+  "passed": true,
+  "cases": 24,
+  "results": [
+    {
+      "name": "Configuración y confirmación responsive 320",
+      "width": 320,
+      "role": "ADMINISTRADOR",
+      "passed": true
+    },
+    {
+      "name": "Configuración y confirmación responsive 390",
+      "width": 390,
+      "role": "ADMINISTRADOR",
+      "passed": true
+    },
+    {
+      "name": "Configuración y confirmación responsive 768",
+      "width": 768,
+      "role": "ADMINISTRADOR",
+      "passed": true
+    },
+    {
+      "name": "Configuración y confirmación responsive 1440",
+      "width": 1440,
+      "role": "ADMINISTRADOR",
+      "passed": true
+    },
+    {
+      "name": "Pausar y habilitar usan el local de la sesión y refrescan",
+      "width": 1440,
+      "role": "ADMINISTRADOR",
+      "passed": true
+    },
+    {
+      "name": "URL de confirmar no escribe antes de aceptar",
+      "width": 1440,
+      "role": "ADMINISTRADOR",
+      "passed": true
+    },
+    {
+      "name": "Consulta rechazada o incoherente: getError",
+      "width": 1440,
+      "role": "ADMINISTRADOR",
+      "passed": true
+    },
+    {
+      "name": "Consulta rechazada o incoherente: forbidden",
+      "width": 1440,
+      "role": "ADMINISTRADOR",
+      "passed": true
+    },
+    {
+      "name": "Consulta rechazada o incoherente: foreignGet",
+      "width": 1440,
+      "role": "ADMINISTRADOR",
+      "passed": true
+    },
+    {
+      "name": "Resultado incierto exige reconsulta: unknown",
+      "width": 1440,
+      "role": "ADMINISTRADOR",
+      "passed": true
+    },
+    {
+      "name": "Resultado incierto exige reconsulta: foreignPatch",
+      "width": 1440,
+      "role": "ADMINISTRADOR",
+      "passed": true
+    },
+    {
+      "name": "Cambio confirmado y lectura fallida no repite PATCH",
+      "width": 1440,
+      "role": "ADMINISTRADOR",
+      "passed": true
+    },
+    {
+      "name": "Envío en curso bloquea duplicados y salida",
+      "width": 1440,
+      "role": "ADMINISTRADOR",
+      "passed": true
+    },
+    {
+      "name": "Cliente no consulta ni cambia configuración administrativa",
+      "width": 390,
+      "role": "CLIENTE",
+      "passed": true
+    },
+    {
+      "name": "Pausa cliente, historial accesible y restauración 320",
+      "width": 320,
+      "role": "CLIENTE",
+      "passed": true
+    },
+    {
+      "name": "Pausa cliente, historial accesible y restauración 390",
+      "width": 390,
+      "role": "CLIENTE",
+      "passed": true
+    },
+    {
+      "name": "Pausa cliente, historial accesible y restauración 768",
+      "width": 768,
+      "role": "CLIENTE",
+      "passed": true
+    },
+    {
+      "name": "Pausa cliente, historial accesible y restauración 1440",
+      "width": 1440,
+      "role": "CLIENTE",
+      "passed": true
+    },
+    {
+      "name": "Pausa bloquea entrada directa a plano y revisión",
+      "width": 390,
+      "role": "CLIENTE",
+      "passed": true
+    },
+    {
+      "name": "Sin local o con ID inválido no selecciona muestras",
+      "width": 390,
+      "role": "CLIENTE",
+      "passed": true
+    },
+    {
+      "name": "SALÓN refleja pausa y mantiene llevar disponible",
+      "width": 390,
+      "role": "CLIENTE",
+      "passed": true
+    },
+    {
+      "name": "SALÓN se habilita tras actualizar la condición real",
+      "width": 390,
+      "role": "CLIENTE",
+      "passed": true
+    },
+    {
+      "name": "Pausa entre selección y confirmación impide POST SALÓN",
+      "width": 390,
+      "role": "CLIENTE",
+      "passed": true
+    },
+    {
+      "name": "Rechazo definitivo conserva el estado previo sin éxito",
+      "width": 1440,
+      "role": "ADMINISTRADOR",
+      "passed": true
+    }
+  ],
+  "scope": "HTTP controlado, sin escrituras reales"
+}

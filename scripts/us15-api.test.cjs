@@ -81,7 +81,7 @@ test('servicio llama endpoint de cola con página y tamaño sin sort local ni mu
 });
 test('login conserva restaurante validado y rechaza divergencia DTO/JWT sin crear otra sesión',()=>{
  const token=rid=>['test',Buffer.from(JSON.stringify({exp:Math.floor(Date.now()/1000)+60,userId:70,sub:'admin@example.test',rol:'ADMINISTRADOR',restauranteId:rid})).toString('base64url'),'test'].join('.');
- for(const rid of [7,8]){const injector=createEnvironmentInjector([{provide:HttpClient,useValue:{post(){return of({id:70,nombreCompleto:'Admin prueba',correo:'admin@example.test',rol:'ADMINISTRADOR',restauranteId:7,token:token(rid)});}}}],null);
+ for(const rid of [7,8]){const injector=createEnvironmentInjector([{provide:HttpClient,useValue:{post(){return of({status:200,body:{id:70,nombreCompleto:'Admin prueba',correo:'admin@example.test',rol:'ADMINISTRADOR',restauranteId:7,token:token(rid)}});}}}],null);
   try{const auth=runInInjectionContext(injector,()=>new AuthService());let error;auth.login({correo:'admin@example.test',password:'solo-test'}).subscribe({error:e=>error=e});
    if(rid===7){assert.equal(auth.session().restauranteId,7);assert(activeOperationSession(auth.session()));}else{assert(error);assert.equal(auth.session(),null);}
   }finally{injector.destroy();}

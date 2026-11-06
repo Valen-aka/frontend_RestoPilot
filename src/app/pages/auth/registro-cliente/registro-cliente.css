@@ -1,3 +1,1 @@
-:host { display: block; }
-.business-notice { display: flex; align-items: center; flex-wrap: wrap; gap: 12px; }
-.business-notice a { font-weight: 700; }
+:host{display:block;}

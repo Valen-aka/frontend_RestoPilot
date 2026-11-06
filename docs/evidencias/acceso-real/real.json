@@ -1,0 +1,78 @@
+{
+  "date": "2026-11-06T17:59:43.163Z",
+  "results": [
+    {
+      "name": "rutas privadas redirigen al formulario con retorno",
+      "passed": true
+    },
+    {
+      "name": "segundo paso directo no crea registros sin cuenta",
+      "passed": true
+    },
+    {
+      "name": "landing inicia alta en dos pasos sin crear registros parciales",
+      "passed": true
+    },
+    {
+      "name": "alta atómica real concede sesión DUENO",
+      "passed": true
+    },
+    {
+      "name": "inicio de dueño consulta datos reales y muestra vacío sin cifras de muestra",
+      "passed": true
+    },
+    {
+      "name": "dueño crea administrador real y conserva su propia sesión",
+      "passed": true
+    },
+    {
+      "name": "administrador inicia sesión desde formulario y entra a operación",
+      "passed": true
+    },
+    {
+      "name": "menú navega a mesas y reportes con la sesión real",
+      "passed": true
+    },
+    {
+      "name": "retorno de otro rol se rechaza y recarga exige sesión nueva",
+      "passed": true
+    },
+    {
+      "name": "guard bloquea panel de dueño para administrador",
+      "passed": true
+    },
+    {
+      "name": "credenciales incorrectas no crean sesión y limpian contraseña",
+      "passed": true
+    },
+    {
+      "name": "registro real de cliente abre la carta",
+      "passed": true
+    },
+    {
+      "name": "retorno externo no abandona la aplicación",
+      "passed": true
+    },
+    {
+      "name": "cliente no accede a rutas de operación",
+      "passed": true
+    },
+    {
+      "name": "retorno interno válido conserva el destino",
+      "passed": true
+    },
+    {
+      "name": "correo duplicado muestra rechazo real y conserva datos",
+      "passed": true
+    },
+    {
+      "name": "no se persisten contraseñas ni JWT en almacenamiento o URL",
+      "passed": true
+    },
+    {
+      "name": "login responsive sin desbordamiento en cuatro anchos",
+      "passed": true
+    }
+  ],
+  "type": "real-forms-api-isolated-postgresql"
+}

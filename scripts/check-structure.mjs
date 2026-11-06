@@ -1,3 +1,4 @@
+import {duplicateRoutes} from './route-audit.mjs';
 import {existsSync,readFileSync,readdirSync} from 'node:fs';
 const frames=JSON.parse(readFileSync('src/app/screen-manifest.json','utf8'));
 if(frames.length!==120||new Set(frames.map(f=>f.slug)).size!==120)throw Error('Faltan pantallas o hay identificadores repetidos');
@@ -32,3 +33,7 @@ for (const dialog of expectedDialogs) {
   }
 }
 
+
+function verifyRoutes(directory){for(const entry of readdirSync(directory,{withFileTypes:true})){const file=directory+'/'+entry.name;if(entry.isDirectory())verifyRoutes(file);else if(entry.name.endsWith('.routes.ts')){const errors=duplicateRoutes(readFileSync(file,'utf8'),file);if(errors.length)throw new Error(errors.join('\n'));}}}
+verifyRoutes('src/app/routes');
+console.log('Rutas hijas comprobadas: sin definiciones duplicadas dentro del mismo nivel.');

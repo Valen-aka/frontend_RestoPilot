@@ -1,11 +1,17 @@
 import {Component, inject} from '@angular/core';
-import {Router, RouterLink} from '@angular/router';
+import {NavigationEnd, Router, RouterLink} from '@angular/router';
+import {toSignal} from '@angular/core/rxjs-interop';
+import {filter, map} from 'rxjs';
 import {MatButtonModule} from '@angular/material/button';
 import {AuthService} from '../../core/services/auth.service';
 @Component({selector:'rp-client-header',imports:[RouterLink,MatButtonModule],templateUrl:'./client-header.html',styleUrl:'./client-header.css'})
 export class ClientHeader {
   readonly auth = inject(AuthService);
   private readonly router = inject(Router);
+  private readonly currentUrl = toSignal(this.router.events.pipe(
+    filter((event):event is NavigationEnd => event instanceof NavigationEnd),
+    map(event=>event.urlAfterRedirects)
+  ),{initialValue:this.router.url});
   readonly links = [
     {label:'Inicio',url:'/cliente',paths:['/cliente']},
     {label:'La carta',url:'/cliente/carta',paths:['/cliente/carta','/cliente/plato']},
@@ -15,7 +21,7 @@ export class ClientHeader {
     {label:'Notificaciones',url:'/cliente/notificaciones',paths:['/cliente/notificaciones']}
   ];
   active(link: typeof this.links[number]): boolean {
-    const path = this.router.url.split(/[?#]/)[0];
+    const path = this.currentUrl().split(/[?#]/)[0];
     return link.paths.some(candidate => path === candidate || (candidate !== '/cliente' && candidate !== '/cliente/notificaciones' && path.startsWith(candidate + '/')));
   }
   logout(): void { this.auth.logout(); void this.router.navigate(['/auth/login']); }

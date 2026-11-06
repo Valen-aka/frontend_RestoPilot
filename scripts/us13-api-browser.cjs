@@ -8,10 +8,10 @@ async function control(options={}){const r=await fetch(mock+'/api/__test',{metho
 async function state(){return(await fetch(mock+'/api/__test')).json();}
 async function fits(page){assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth+1),false,'Desbordamiento horizontal');}
 async function loginCurrent(page){await page.evaluate(()=>new Promise((resolve,reject)=>{
- const c=ng.getComponent(document.querySelector('rp-carrito-view')||document.querySelector('rp-pedido-selection-view'));
+ const c=ng.getComponent(document.querySelector('rp-carrito-view,rp-acceso')||document.querySelector('rp-pedido-selection-view'));
  c.auth.login({correo:'cliente@example.test',password:'solo-pruebas'}).subscribe({next:()=>resolve(),error:()=>reject(Error('Falló login de prueba'))});
 }));}
-async function go(page,url){await page.evaluate(url=>ng.getComponent(document.querySelector('rp-carrito-view')||document.querySelector('rp-pedido-selection-view')||document.querySelector('rp-cliente-pedidos')).router.navigateByUrl(url),url);}
+async function go(page,url){await page.evaluate(url=>ng.getComponent(document.querySelector('rp-carrito-view,rp-acceso')||document.querySelector('rp-pedido-selection-view')||document.querySelector('rp-cliente-pedidos')).router.navigateByUrl(url),url);}
 async function detail(page,id=900){await go(page,'/cliente/pedido?pedidoId='+id);await page.getByRole('heading',{name:'Pedido #'+id,exact:true}).waitFor();}
 const button=page=>page.getByRole('button',{name:'Actualizar seguimiento',exact:true});
 async function refresh(page){const id=new URL(page.url()).searchParams.get('pedidoId');const response=page.waitForResponse(r=>new URL(r.url()).pathname==='/api/pedidos/'+id&&r.request().method()==='GET');await button(page).click();await response;await page.getByRole('button',{name:'Actualizar seguimiento',exact:true,disabled:false}).waitFor();await page.getByText('Consulta de seguimiento actualizada.',{exact:true}).waitFor();}
@@ -23,7 +23,7 @@ const labels={PENDIENTE:'Pendiente',EN_PREPARACION:'En preparación',LISTO:'List
  async function run(name,fn,width=1440){const context=await browser.newContext({viewport:{width,height:1000}}),page=await context.newPage(),errors=[],writes=[];
   page.on('pageerror',error=>errors.push(error.message));page.on('request',request=>{if(/\/api\/pedidos(?:\/|\?|$)/.test(request.url())&&request.method()!=='GET')writes.push(request.method());});
   await page.route('http://localhost:8081/api/**',route=>route.continue({url:route.request().url().replace('http://localhost:8081',mock)}));
-  try{await control({reset:true,seed:true});await page.goto(app+'/cliente/carrito');await page.locator('rp-carrito-view').waitFor();await loginCurrent(page);
+  try{await control({reset:true,seed:true});await page.goto(app+'/cliente/carrito');await page.locator('rp-carrito-view,rp-acceso').waitFor();await loginCurrent(page);
    await fn(page);await fits(page);assert.deepEqual(errors,[]);assert.deepEqual(writes,[],'Seguimiento no debe crear ni cambiar pedidos');results.push({name,passed:true});console.log('PASS '+name);
   }catch(error){await page.screenshot({path:path.join(output,'failure.png'),fullPage:true});throw new Error(name+': '+error.message,{cause:error});}
   finally{await context.close();}

@@ -2599,3 +2599,8 @@ El chequeo conserva 120 escenarios únicos, sus archivos y estados coherentes. U
 | Estado Done | Aceptación y pruebas, no solo documentación |
 
 Consultar la tabla de complementos en Fuentes y alcance para los detalles particulares de cada tarea. Su existencia no indica prioridad ni aceptación.
+
+
+## Integración de acceso y navegación
+
+Consultar [SPEC de acceso real](docs/specs/acceso-real/SPEC.md) para US01, US02, US21 y US22: sesión en memoria, roles, registros y paneles iniciales. La evidencia y las limitaciones se registran en [QA de acceso](docs/QA-ACCESO-REAL.md). No modifica el reparto ni acredita las integraciones de pagos, ajustes o notificaciones.
