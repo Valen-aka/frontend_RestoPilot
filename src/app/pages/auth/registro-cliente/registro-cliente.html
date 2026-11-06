@@ -18,6 +18,6 @@
 <div id="password-errors"><rp-form-errors [messages]="errors(form.controls.password, 'Contraseña')" /></div></div>
 <div class="auth-actions"><button mat-flat-button class="primary-action" type="submit" [disabled]="preview.busy()">Crear cuenta</button></div>
 @if (notice()) {<p class="notice" role="status">{{ notice() }}</p>}
-</form><rp-preview-panel [operation]="preview" [outcomes]="['success','duplicate','error']" successText="Vista previa de registro completo. No se ha creado ninguna cuenta ni sesi?n." />@if (preview.phase() === 'success') {<a mat-flat-button routerLink="/auth/login">Continuar al acceso</a>}</section>
+</form><rp-preview-panel [operation]="preview" [outcomes]="['success','duplicate','error']" successText="Vista previa de registro completo. No se ha creado ninguna cuenta ni sesión." />@if (preview.phase() === 'success') {<a mat-flat-button routerLink="/auth/login">Continuar al acceso</a>}</section>
 <div class="notice business-notice"><span aria-hidden="true">ⓘ</span><span>¿Tienes un restaurante?</span><a routerLink="/auth/registro-dueno">Registra tu negocio</a></div><nav class="auth-links" aria-label="Acceso"><a routerLink="/auth/login">Ya tengo una cuenta</a></nav>
 </div>
