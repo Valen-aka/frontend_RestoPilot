@@ -1,36 +1,55 @@
-# RestoPilot — Frontend y Landing Page en una sola aplicación
+# RestoPilot — frontend y landing
 
-## Ejecutar por primera vez
+Una aplicación Angular para la landing pública y las pantallas de cliente, dueño
+y operación. La ruta `/` carga Home; `/estructura` permite consultar el inventario
+de 120 escenarios. Las 18 vistas IA están previstas y no forman parte de esta
+implementación visual.
+
+## Ejecutar localmente
+
+Usar la versión de Node de `.nvmrc` y los requisitos de `package.json`. Desde la
+raíz del repositorio:
+
 ```powershell
-cd C:\Users\Alex\frontend_RestoPilot
 npm.cmd ci
 npm.cmd run dev
 ```
 
-- http://localhost:4200/ → Home / Landing Page, todavía sin contenido.
-- http://localhost:4200/estructura → inventario técnico de las 120 pantallas.
+Abrir `http://localhost:4200`. Repetir `npm ci` cuando cambie el lockfile o al preparar
+una instalación limpia. Los recursos de la landing pertenecen a `src/app/home/`
+y `public/assets/landing/`; no hay una aplicación de landing separada.
 
-Después de modificar código basta guardar con el servidor activo o ejecutar npm.cmd run dev. Repetir npm.cmd ci únicamente cuando cambien las dependencias/lockfile.
+## Alcance y fuentes
 
-## Landing integrada
-La landing está en src/app/home/: home.ts, home.html y home.css. La ruta / ya carga Home desde app.routes.ts. No se utiliza un proyecto o servidor de landing separado. Toda la landing, incluido su despliegue, corresponde a Alexandra Fong. Consultar src/app/home/README.md.
+Consultar [AGENTS.md](AGENTS.md), [SPEC.md](SPEC.md), la
+[asignación del equipo](docs/ASIGNACION-EQUIPO.md) y su
+[versión estructurada](docs/asignacion-equipo.json). El inventario está en
+`src/app/screen-manifest.json`; sus indicadores describen el avance declarado,
+no la aceptación funcional de todas las pantallas.
 
-## Quién modifica cada archivo
-- docs/ASIGNACION-EQUIPO.md: reparto por integrante, carpeta y componente.
-- docs/asignacion-equipo.json: inventario completo de archivos con un responsable principal.
-- docs/pantallas-y-responsables.json: las 120 pantallas y sus referencias US originales.
-
-Reservas y Pedidos tienen responsables distintos por pantalla; no asignar toda la carpeta de esos dominios a una sola persona. Los componentes compartidos tienen un mantenedor principal para evitar cambios simultáneos.
+La solicitud visual vigente permite revisar formularios, carga, éxito, duplicado,
+rechazo, navegación y datos ilustrativos. Los avisos de demostración no crean
+cuentas, asignan permisos, registran pagos ni modifican pedidos reales. La
+infraestructura API ya existente tiene su alcance documentado en las guías de
+integración. No confundir el renderizado ni el build con una prueba de backend.
 
 ## Verificar
+
 ```powershell
 npm.cmd run verify
+$tests = Get-ChildItem scripts -File | Where-Object Name -match '\.test\.(cjs|mjs)$' | ForEach-Object FullName
+node --test $tests
 ```
 
-Node recomendado: 24.21.0. La base incluye configuración Angular 22, Material, Reactive Forms vacíos, 120 carpetas de pantalla, ocho modales, layouts y componentes reutilizables.
+El checker conserva identificadores, archivos y los ocho modales. La compilación
+verifica compatibilidad del código. Los recorridos de navegador y sus límites
+se registran por separado en la documentación de QA.
 
-## Alcance
-Las plantillas y componentes siguen sin implementar. No hay operaciones, datos de ejemplo, login, backend, Supabase ni IA funcionando. Una compilación correcta comprueba la estructura, no la aceptación de tareas. Las 18 vistas IA son trabajo futuro y no aumentan los 122 SP del sprint sin IA más landing.
+## Preparar publicación
 
-## Publicación pendiente
-Un solo build genera dist/restopilot/browser; netlify.toml y public/_redirects preparan una SPA. Alexandra es responsable de la landing y su despliegue; Francesco de preparar el despliegue de Angular. Al estar integradas ambas partes, se coordina una publicación única, sin mantener otra landing por separado. No se ha desplegado nada.
+Consultar [PUBLICACION.md](docs/PUBLICACION.md) para variables públicas, servicios
+externos, configuración Netlify, fallback SPA y procedimiento de revisión.
+`npm.cmd run build:publish` genera `dist/restopilot/browser` y exige una URL pública
+HTTPS de la API. No se incluyen claves privadas en Angular ni se publica un sitio
+como parte de esta preparación. La publicación única se coordina con los
+responsables definidos en AGENTS.md.
