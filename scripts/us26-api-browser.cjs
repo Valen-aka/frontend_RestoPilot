@@ -17,7 +17,10 @@ const refresh=page=>page.getByRole('button',{name:'Actualizar reservas',exact:tr
 (async()=>{
  const browser=await chromium.launch({headless:true,executablePath:process.env.BROWSER_EXECUTABLE||'C:/Program Files/Google/Chrome/Application/chrome.exe'}),results=[];
  async function run(name,fn,width=1440){if(process.env.RP_QA_FILTER&&!name.includes(process.env.RP_QA_FILTER))return;
-  await control('success',true);const context=await browser.newContext({viewport:{width,height:1000}}),page=await context.newPage(),errors=[];
+  await control('success',true);const context=await browser.newContext({viewport:{width,height:1000}});
+  // El harness nunca envía credenciales sintéticas ni consultas al backend real.
+  await context.route('http://localhost:8081/api/**',route=>route.continue({url:route.request().url().replace('http://localhost:8081',mock)}));
+  const page=await context.newPage(),errors=[];
   page.on('pageerror',e=>{errors.push(e.message);console.error(e.message);});
   try{await fn(page);await fits(page);assert.deepEqual(errors,[]);results.push({name,passed:true});console.log('OK '+name);}
   catch(e){console.error('URL: '+page.url());await page.screenshot({path:path.join(output,'failure.png'),fullPage:true,animations:'disabled'});throw e;}finally{await context.close();}

@@ -152,7 +152,7 @@ export class CatalogoService {
 // ACTUALIZAR PLATO
   actualizarPlato(
     id: number,
-    datos: PlatoRequest
+    datos: Omit<PlatoRequest, 'disponible'>
   ): Observable<PlatoResponse> {
     return this.http.put<PlatoResponse>(
       this.base + '/platos/' + id,
