@@ -30,8 +30,8 @@
 </div>
 <div class="field"><label class="field-label" for="salon">Atención física</label><select matNativeControl id="salon" formControlName="salon"><option [ngValue]="true">Sí, con salón</option><option [ngValue]="false">No, sin salón</option></select></div>
 <div class="field"><label class="field-label" for="delivery">Delivery</label><select matNativeControl id="delivery" formControlName="delivery"><option [ngValue]="true">Sí, habilitado</option><option [ngValue]="false">No, deshabilitado</option></select></div>
-<div class="auth-actions"><button mat-flat-button class="primary-action" type="submit">Crear restaurante</button></div>
+<div class="auth-actions"><button mat-flat-button class="primary-action" type="submit" [disabled]="preview.busy()">Crear restaurante</button></div>
 @if (notice()) {<p class="notice" role="status">{{ notice() }}</p>}
-</form></section>
+</form><rp-preview-panel [operation]="preview" [outcomes]="['success','duplicate','error']" successText="Vista previa de registro completo. No se ha creado ninguna cuenta ni sesión." />@if (preview.phase() === 'success') {<a mat-flat-button routerLink="/dueno/bienvenida">Ver bienvenida de demostración</a>}<p class="notice">Dueño y restaurante se presentarían como una única alta. Un error o correo duplicado no deja un registro parcial.</p></section>
 <p class="notice schedule-notice"><span aria-hidden="true">ⓘ</span> La apertura debe ser anterior al cierre, dentro del mismo día. No se puede reclamar un restaurante existente.</p>
 </div>

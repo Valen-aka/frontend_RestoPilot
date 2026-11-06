@@ -55,3 +55,19 @@ Se confirmó además `nonBlank` en las contraseñas de acceso y acceso con error
 La comprobación visual y de interacción la realizó la sesión principal; este agente no abrió un navegador ni ejecutó otra compilación concurrente. La conexión inicial del navegador al servidor del entorno restringido no estuvo disponible; la sesión principal inició un servidor autorizado fuera de ese entorno para realizar los casos documentados. La revisión estática de seguridad informó que no quedan hallazgos pendientes en este alcance. Se mantienen las limitaciones de accesibilidad y de integración indicadas arriba.
 
 La utilidad de foco usa el estado del FormControl y el atributo formControlName, sin depender de clases CSS que pueden actualizarse después del evento. Se comprobó en navegador que una contraseña superior a 72 bytes deja el foco en password y muestra el mensaje correspondiente.
+
+## Revision visual US01, US02 y US21 (06/11/2026)
+
+La solicitud vigente excluye la integracion de backend. Se conservan Reactive Forms,
+validacion de campos y el recorrido de dos pasos del alta de dueno/restaurante.
+Se agregan estados demostrables de carga, resultado satisfactorio, correo duplicado,
+error, falta de permisos y sesion expirada. En el acceso, los enlaces de perfiles son
+navegacion de demostracion: no crean sesion ni asignan roles. Las contrasenas se
+limpian y no se serializan ni se guardan en stores. La bienvenida es una vista previa.
+El panel de escenarios es plegable y usa controles Material y tokens existentes.
+
+Referencia consultada: Figma original, pagina 5:92, seccion de acceso 84:17153
+(desktop/mobile); criterios US01, US02 y US21 de SPEC.md. Los estados agregados
+son escenarios de demostracion solicitados; no se atribuyen a una nueva aprobacion
+visual del Figma. Checker y build de produccion pasaron; navegacion visual integrada
+se verifica al terminar las ramas. No se acredita integracion ni aceptacion API.

@@ -1,3 +1,5 @@
+import {PreviewOperation} from '../../../components/preview-operation/preview-operation';
+import {PreviewPanel} from '../../../components/preview-operation/preview-panel';
 import {Component, ElementRef, inject, signal} from '@angular/core';
 import {FormControl, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
 import {RouterLink} from '@angular/router';
@@ -6,7 +8,7 @@ import {MatButtonModule} from '@angular/material/button';
 import {FormErrors} from '../../../components/form-errors/form-errors';
 import {fieldErrors, nonBlank, passwordBytes, validateForm} from '../auth-form.utils';
 
-@Component({selector: 'rp-acceso', imports: [ReactiveFormsModule, RouterLink, MatInputModule, MatButtonModule, FormErrors], templateUrl: './acceso.html', styleUrls: ['../../../layouts/auth-layout/auth-forms.css', './acceso.css']})
+@Component({selector: 'rp-acceso', imports: [PreviewPanel, ReactiveFormsModule, RouterLink, MatInputModule, MatButtonModule, FormErrors], templateUrl: './acceso.html', styleUrls: ['../../../layouts/auth-layout/auth-forms.css', './acceso.css']})
 export class AccesoPage {
   readonly form = new FormGroup({
     correo: new FormControl('', {nonNullable: true, validators: [Validators.required, Validators.email, Validators.maxLength(100)]}),
@@ -14,11 +16,13 @@ export class AccesoPage {
   });
   readonly errors = fieldErrors;
   readonly notice = signal('');
+  readonly preview = new PreviewOperation();
   private readonly host = inject<ElementRef<HTMLElement>>(ElementRef);
   submit() {
+    if (this.preview.busy()) return;
     this.notice.set('');
+    this.preview.reset();
     if (!validateForm(this.form, this.host)) return;
-    this.notice.set('Los datos tienen un formato válido. El inicio de sesión estará disponible al conectar el servicio de autenticación.');
-    this.form.controls.password.reset();
+    this.preview.run(() => {this.form.controls.password.reset();});
   }
 }

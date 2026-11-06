@@ -1,0 +1,21 @@
+<aside class="preview" aria-label="Escenarios de demostración">
+  <p class="preview-label">Demostración visual · No se guardan datos ni se inicia una sesión.</p>
+  <details><summary>Revisar estados de demostración</summary><mat-form-field appearance="outline">
+    <mat-label>Escenario para revisar</mat-label>
+    <mat-select [value]="operation.outcome()" [disabled]="operation.busy()" (selectionChange)="operation.outcome.set($event.value); operation.reset()">
+      @for (outcome of outcomes; track outcome) {<mat-option [value]="outcome">{{labels[outcome]}}</mat-option>}
+    </mat-select>
+  </mat-form-field></details>
+  <div aria-live="polite" aria-atomic="true">
+    @switch (operation.phase()) {
+      @case ('loading') {<p role="status">Preparando vista previa…</p><mat-progress-bar mode="indeterminate" aria-label="Cargando vista previa" />}
+      @case ('success') {<p class="feedback success" role="status">{{successText}}</p>}
+      @case ('error') {<p class="feedback error" role="alert">Ejemplo de error: no se pudo completar la operación. Revisa los campos y vuelve a intentar. Las contraseñas se limpian por seguridad.</p>}
+      @case ('duplicate') {<p class="feedback error" role="alert">Ejemplo de correo duplicado: utiliza otro correo o vuelve al acceso. No se crea una cuenta ni un restaurante parcial.</p>}
+      @case ('forbidden') {<p class="feedback error" role="alert">Ejemplo de acceso restringido: esta cuenta no tiene permisos para realizar la acción.</p>}
+      @case ('empty') {<p class="feedback" role="status">No hay resultados en este escenario de demostración.</p>}
+      @case ('expired') {<p class="feedback error" role="alert">Ejemplo de sesión expirada. Vuelve al acceso para continuar.</p>}
+    }
+  </div>
+  @if (operation.phase() !== 'idle') {<button mat-button type="button" (click)="operation.reset()">Restablecer demostración</button>}
+</aside>

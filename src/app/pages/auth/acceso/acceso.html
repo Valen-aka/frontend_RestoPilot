@@ -13,8 +13,10 @@
 <input matInput id="password" type="password" formControlName="password" autocomplete="current-password"  [attr.aria-invalid]="form.controls.password.touched && form.controls.password.invalid" aria-describedby="password-errors">
 
 <div id="password-errors"><rp-form-errors [messages]="errors(form.controls.password, 'Contraseña')" /></div></div>
-<div class="auth-actions"><button mat-flat-button class="primary-action" type="submit">Entrar a RestoPilot</button></div>
+<div class="auth-actions"><button mat-flat-button class="primary-action" type="submit" [disabled]="preview.busy()">Entrar a RestoPilot</button></div>
 @if (notice()) {<p class="notice" role="status">{{ notice() }}</p>}
-</form></section>
+</form><rp-preview-panel [operation]="preview" [outcomes]="['success','error','forbidden','expired']" successText="Vista previa de acceso aceptado. No se ha creado ninguna cuenta ni sesión." />@if (preview.phase() === 'success') {<nav class="auth-links" aria-label="Perfiles de demostración"><p>Elige una interfaz para revisar. No se asignan permisos reales.</p><a routerLink="/cliente/notificaciones">Vista de cliente</a><a routerLink="/dueno">Vista de dueño</a><a routerLink="/operacion">Vista de administrador</a><a routerLink="/auth/login">Salir de la demostración</a></nav>}
+ @if (preview.phase() === 'expired') {<a mat-button routerLink="/estado/sesion">Revisar sesión expirada</a>}
+ @if (preview.phase() === 'forbidden') {<a mat-button routerLink="/estado/403">Revisar acceso restringido</a>}</section>
 <nav class="auth-links" aria-label="Crear una cuenta"><a routerLink="/auth/registro">Crear cuenta de cliente</a><a routerLink="/auth/registro-dueno">Registrar mi restaurante</a></nav>
 </div>
