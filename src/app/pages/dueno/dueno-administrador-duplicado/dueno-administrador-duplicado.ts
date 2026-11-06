@@ -1,6 +1,4 @@
-import {PreviewOperation} from '../../../components/preview-operation/preview-operation';
-import {PreviewPanel} from '../../../components/preview-operation/preview-panel';
-import {Component, ElementRef, inject, signal} from '@angular/core';
+import {Component, ElementRef, inject} from '@angular/core';
 import {RouterLink} from '@angular/router';
 import {MatButtonModule} from '@angular/material/button';
 import {WorkspaceShell} from '../../../components/workspace-shell/workspace-shell';
@@ -8,7 +6,7 @@ import {FormControl, FormGroup, ReactiveFormsModule, Validators} from '@angular/
 import {MatInputModule} from '@angular/material/input';
 @Component({
   selector: 'rp-dueno-administrador-duplicado',
-  imports: [PreviewPanel, WorkspaceShell, RouterLink, MatButtonModule, ReactiveFormsModule, MatInputModule],
+  imports: [ WorkspaceShell, RouterLink, MatButtonModule, ReactiveFormsModule, MatInputModule],
   templateUrl: './dueno-administrador-duplicado.html',
   styleUrls: ['../../../components/workspace-shell/workspace-pages.css', './dueno-administrador-duplicado.css'],
 })
@@ -23,8 +21,6 @@ export class DuenoAdministradorDuplicadoPage {
       control => new TextEncoder().encode(control.value).length > 72 ? {passwordBytes: true} : null,
     ]}),
   });
-  readonly notice = signal('');
-  readonly preview = new PreviewOperation();
   private readonly host = inject<ElementRef<HTMLElement>>(ElementRef);
   error(name: keyof typeof this.form.controls): string {
     const control = this.form.controls[name];
@@ -37,15 +33,11 @@ export class DuenoAdministradorDuplicadoPage {
     return 'Revisa este campo.';
   }
   submit(): void {
-    if (this.preview.busy()) return;
-    this.preview.reset(); this.notice.set('');
     this.form.markAllAsTouched();
     if (this.form.invalid) {
       const invalid = (Object.keys(this.form.controls) as (keyof typeof this.form.controls)[]).find(name => this.form.controls[name].invalid);
       if (invalid) this.host.nativeElement.querySelector<HTMLInputElement>(`[formControlName="${invalid}"]`)?.focus();
       return;
     }
-    this.preview.run(() => this.form.controls.password.reset());
-    this.form.controls.password.reset();
   }
 }
