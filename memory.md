@@ -67,3 +67,10 @@ Conservar aprendizajes verificables que ayuden a evitar errores repetidos en est
 - Evidencia: develop 9106980 conservó 12 definiciones duplicadas y omitió el import de mesasPendingGuard. Las 214 pruebas existentes pasaban, pero fallaba la compilación y las primeras rutas ocultaban guards posteriores.
 - Aprendizaje: verificar compilación y unicidad de rutas por nivel al integrar funcionalidades. Mantener los guards al resolver conflictos; no concatenar ambas versiones de una ruta.
 - Comprobación: npm.cmd run check incluye ahora el análisis de rutas; consultar scripts/routes-integration.test.mjs y docs/QA-INTEGRACION-RUTAS.md.
+
+
+### 2026-11-06 — Cabecera cliente en el layout padre
+
+- Evidencia: ClienteLayout incorpora ClientHeader; ExpiredClientShell conservaba una segunda cabecera. El recorrido visual detectó dos marcas en /cliente/reservas pese a que el build pasaba.
+- Aprendizaje: comprobar el layout padre antes de añadir cabeceras a pantallas o shells internos. Reutilizar Brand y comprobar contraste en fondos claros/oscuros.
+- Comprobación: scripts/visual-audit.cjs comprueba una marca y como máximo una cabecera/sidebars por ruta, además de tamaños y navegación por teclado. Su HTTP es controlado, no acredita integración real.
