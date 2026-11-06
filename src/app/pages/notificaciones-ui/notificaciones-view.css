@@ -1,0 +1,5 @@
+.notifications {list-style: none; padding: 0; margin: 0;}
+.notifications li {padding: var(--rp-space-16) 0; border-bottom: 1px solid #d9e0dc; overflow-wrap: anywhere;}
+.notifications li:last-child {border-bottom: 0;}
+.notifications p {margin: 0 0 var(--rp-space-8);}
+.notifications time {font-size: var(--rp-label-size, 0.875rem);}
