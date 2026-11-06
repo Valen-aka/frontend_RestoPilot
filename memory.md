@@ -60,3 +60,10 @@ Conservar aprendizajes verificables que ayuden a evitar errores repetidos en est
 - Evidencia: la consulta de disponibilidad incluye la ocupación de la reserva que se edita; el PUT excluye su ID al comprobar solapamientos. Las pruebas reales de US29 permitieron editar notas en la misma mesa y rechazaron un horario ocupado por otra reserva.
 - Aprendizaje: no presentar la mesa actual como libre ni bloquear toda edición por esa ocupación. Identificarla como mesa actual con verificación al guardar y dejar la decisión definitiva al servidor. No inventar parámetros de exclusión que la API no admite.
 - Comprobación: revisar el contrato vigente y repetir los casos documentados en docs/QA-US29.md si se modifica disponibilidad o reprogramación.
+
+
+### 2026-11-06 — Revisar rutas compartidas después de un merge
+
+- Evidencia: develop 9106980 conservó 12 definiciones duplicadas y omitió el import de mesasPendingGuard. Las 214 pruebas existentes pasaban, pero fallaba la compilación y las primeras rutas ocultaban guards posteriores.
+- Aprendizaje: verificar compilación y unicidad de rutas por nivel al integrar funcionalidades. Mantener los guards al resolver conflictos; no concatenar ambas versiones de una ruta.
+- Comprobación: npm.cmd run check incluye ahora el análisis de rutas; consultar scripts/routes-integration.test.mjs y docs/QA-INTEGRACION-RUTAS.md.
