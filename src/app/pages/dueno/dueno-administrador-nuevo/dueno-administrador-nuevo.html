@@ -9,9 +9,10 @@
         <div class="field"><label for="admin-correo">Correo electrónico</label><input matInput id="admin-correo" type="email" formControlName="correo" autocomplete="email" inputmode="email" autocapitalize="none" spellcheck="false" maxlength="100" [attr.aria-invalid]="form.controls.correo.touched && form.controls.correo.invalid" aria-describedby="admin-correo-error"><p class="field-error" id="admin-correo-error" aria-live="polite">{{ error('correo') }}</p></div>
         <div class="field span-full"><label for="admin-password">Contraseña</label><input matInput id="admin-password" type="password" formControlName="password" autocomplete="new-password" [attr.aria-invalid]="form.controls.password.touched && form.controls.password.invalid" aria-describedby="admin-password-hint admin-password-error"><small class="hint" id="admin-password-hint">8 caracteres o más: letras, número y carácter especial. Máximo 72 bytes UTF-8.</small><p class="field-error" id="admin-password-error" aria-live="polite">{{ error('password') }}</p></div>
       </div>
-      <div class="actions form-actions"><a mat-stroked-button class="secondary" routerLink="/dueno">Cancelar</a><button mat-flat-button class="primary" type="submit">Crear administrador</button></div>
+      <div class="actions form-actions"><a mat-stroked-button class="secondary" routerLink="/dueno">Cancelar</a><button mat-flat-button class="primary" type="submit" [disabled]="preview.busy()">Crear administrador</button></div>
       @if (notice()) {<p class="notice" role="status">{{ notice() }}</p>}
-    </form>
+    </form><rp-preview-panel [operation]="preview" [outcomes]="['success','duplicate','forbidden','error']" successText="Vista previa: administrador incorporado. No se ha creado ninguna cuenta ni enviado invitaciones." />
+ @if (preview.phase() === 'success') {<section class="panel" aria-label="Resumen de demostraci?n"><h2>Datos revisados</h2><dl><dt>Nombre</dt><dd>{{form.controls.nombre.value}}</dd><dt>Correo</dt><dd>{{form.controls.correo.value}}</dd><dt>Perfil previsto</dt><dd>Administrador del restaurante del due?o</dd></dl><a mat-button routerLink="/dueno/administradores/nuevo" [queryParams]="{vista:'dueno-administrador-creado'}">Ver pantalla de confirmaci?n</a></section>}
   </section>
   <p class="notice account-notice">El restaurante y el rol se asignarán desde la cuenta del dueño cuando se conecte el servicio. No se envía una invitación por correo.</p>
 </rp-workspace-shell>

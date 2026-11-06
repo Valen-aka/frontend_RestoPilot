@@ -9,3 +9,4 @@ Fecha: 2026-10-30. Rama: feature/administradores.
 - Correcciones compartidas revisadas: navegación a asistente, contraste de botones/ayudas y rol del componente sin atributo ARIA inválido.
 
 Alcance visual y navegación. Métricas ilustrativas; backend, autenticación, persistencia y creación real pendientes.
+`nRevision visual: formulario con carga, resultado, duplicado, rechazo por permisos y recuperacion. Resumen de nombre/correo sin password. No se crea cuenta ni se asignan permisos. Checker y build aprobados; navegador integrado pendiente.

@@ -1,3 +1,5 @@
+import {PreviewOperation} from '../../../components/preview-operation/preview-operation';
+import {PreviewPanel} from '../../../components/preview-operation/preview-panel';
 import {Component, ElementRef, inject, signal} from '@angular/core';
 import {RouterLink} from '@angular/router';
 import {MatButtonModule} from '@angular/material/button';
@@ -6,7 +8,7 @@ import {FormControl, FormGroup, ReactiveFormsModule, Validators} from '@angular/
 import {MatInputModule} from '@angular/material/input';
 @Component({
   selector: 'rp-dueno-administrador-nuevo',
-  imports: [WorkspaceShell, RouterLink, MatButtonModule, ReactiveFormsModule, MatInputModule],
+  imports: [PreviewPanel, WorkspaceShell, RouterLink, MatButtonModule, ReactiveFormsModule, MatInputModule],
   templateUrl: './dueno-administrador-nuevo.html',
   styleUrls: ['../../../components/workspace-shell/workspace-pages.css', './dueno-administrador-nuevo.css'],
 })
@@ -22,6 +24,7 @@ export class DuenoAdministradorNuevoPage {
     ]}),
   });
   readonly notice = signal('');
+  readonly preview = new PreviewOperation();
   private readonly host = inject<ElementRef<HTMLElement>>(ElementRef);
   error(name: keyof typeof this.form.controls): string {
     const control = this.form.controls[name];
@@ -34,14 +37,15 @@ export class DuenoAdministradorNuevoPage {
     return 'Revisa este campo.';
   }
   submit(): void {
-    this.notice.set('');
+    if (this.preview.busy()) return;
+    this.preview.reset(); this.notice.set('');
     this.form.markAllAsTouched();
     if (this.form.invalid) {
       const invalid = (Object.keys(this.form.controls) as (keyof typeof this.form.controls)[]).find(name => this.form.controls[name].invalid);
       if (invalid) this.host.nativeElement.querySelector<HTMLInputElement>(`[formControlName="${invalid}"]`)?.focus();
       return;
     }
-    this.notice.set('Los datos tienen un formato válido. No se creó un administrador: el servicio de administración todavía no está conectado.');
+    this.preview.run(() => this.form.controls.password.reset());
     this.form.controls.password.reset();
   }
 }
