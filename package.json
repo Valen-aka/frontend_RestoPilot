@@ -8,7 +8,8 @@
     "build": "ng build",
     "build:development": "ng build --configuration development",
     "check": "node scripts/check-structure.mjs",
-    "verify": "npm run check && npm run build"
+    "verify": "npm run check && npm run build",
+    "build:publish": "node scripts/build-publish.mjs"
   },
   "engines": {
     "node": "^22.22.3 || ^24.15.0 || >=26.0.0"

@@ -14,3 +14,5 @@ artifacts/us11-api/
 artifacts/us12-api/
 
 artifacts/us13-api/
+
+/src/environments/environment.publish.ts
