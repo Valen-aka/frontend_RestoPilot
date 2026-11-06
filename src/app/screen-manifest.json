@@ -172,8 +172,8 @@
     ],
     "owner": "Valentina Montenegro",
     "us": "US10",
-    "status": "Pendiente",
-    "contenidoImplementado": false
+    "status": "Implementada e integrada; verificada con HTTP controlado y consultas reales a Supabase",
+    "contenidoImplementado": true
   },
   {
     "slug": "cliente-carta",
@@ -194,8 +194,8 @@
     ],
     "owner": "Valentina Montenegro",
     "us": "US10",
-    "status": "Pendiente",
-    "contenidoImplementado": false
+    "status": "Implementada e integrada; verificada con HTTP controlado y consultas reales a Supabase",
+    "contenidoImplementado": true
   },
   {
     "slug": "cliente-carta-categoria",
@@ -216,8 +216,8 @@
     ],
     "owner": "Valentina Montenegro",
     "us": "US10",
-    "status": "Pendiente",
-    "contenidoImplementado": false
+    "status": "Implementada e integrada; verificada con HTTP controlado y consultas reales a Supabase",
+    "contenidoImplementado": true
   },
   {
     "slug": "cliente-carta-vacia",
@@ -238,8 +238,8 @@
     ],
     "owner": "Valentina Montenegro",
     "us": "US10",
-    "status": "Pendiente",
-    "contenidoImplementado": false
+    "status": "Implementada e integrada; verificada con HTTP controlado y consultas reales a Supabase",
+    "contenidoImplementado": true
   },
   {
     "slug": "cliente-plato",
@@ -260,8 +260,8 @@
     ],
     "owner": "Valentina Montenegro",
     "us": "US10",
-    "status": "Pendiente",
-    "contenidoImplementado": false
+    "status": "Implementada e integrada; verificada con HTTP controlado y consultas reales a Supabase",
+    "contenidoImplementado": true
   },
   {
     "slug": "cliente-plato-agotado",
@@ -282,8 +282,8 @@
     ],
     "owner": "Valentina Montenegro",
     "us": "US10",
-    "status": "Pendiente",
-    "contenidoImplementado": false
+    "status": "Implementada e integrada; verificada con HTTP controlado y consultas reales a Supabase",
+    "contenidoImplementado": true
   },
   {
     "slug": "cliente-carrito",
@@ -2286,8 +2286,8 @@
     ],
     "owner": "Valentina Montenegro",
     "us": "US10",
-    "status": "Pendiente",
-    "contenidoImplementado": false
+    "status": "Implementada e integrada; verificada con HTTP controlado y consultas reales a Supabase",
+    "contenidoImplementado": true
   },
   {
     "slug": "cliente-ia-recomendaciones",
