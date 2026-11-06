@@ -22,4 +22,26 @@ Adaptación de `op-platos`, `op-plato-nuevo` y `op-plato-editar`, manteniendo su
 
 Resultados sanitizados: `docs/evidencias/us14-material/resultado.json`.
 
-Las respuestas controladas comprueban la interacción de los controles y la conservación de las solicitudes existentes; no certifican persistencia en Supabase ni modificaron datos reales. No se volvió a verificar la equivalencia visual con Figma. El ajuste funcional pendiente del checkbox de disponibilidad en edición, que requiere su operación PATCH separada, queda fuera de esta adaptación de controles.
+Las respuestas controladas comprueban la interacción de los controles y la conservación de las solicitudes existentes; no certifican persistencia en Supabase ni modificaron datos reales. No se volvió a verificar la equivalencia visual con Figma.
+
+## Cierre funcional de disponibilidad — 2026-11-05
+
+La edición envía los datos por PUT sin el campo disponible y aplica PATCH únicamente si el estado devuelto difiere del seleccionado. Verifica ID, restaurante y disponibilidad antes de navegar al listado. El formulario se bloquea durante el envío. Si los datos se guardan y falla el cambio de disponibilidad, informa el guardado parcial y conserva lo ingresado; no simula una transacción atómica entre ambas operaciones. Los campos complementarios vaciados se envían como cadenas vacías para que el servidor pueda borrarlos.
+
+- 9 regresiones HTTP controladas: desactivar/reactivar, omitir PATCH innecesario, borrar descripción, rechazo de PUT, conflictos/fallos de PATCH y respuestas de identidad/estado incorrectos.
+- 10 comprobaciones reales desde Angular con Spring Boot temporal en 8082 y PostgreSQL de Supabase. Registro de un plato temporal, edición de nombre y descripción, disponibilidad false/true, consulta independiente, recarga completa con sesión nueva, guardado sin PATCH redundante y eliminación desde la interfaz. El plato temporal quedó eliminado; los platos preexistentes no se modificaron.
+- Regresión Material: 20 comprobaciones aprobadas. Las 191 pruebas existentes y la compilación también pasaron.
+
+Las pruebas reales utilizan AuthService mediante un harness de desarrollo porque el formulario general de acceso todavía está pendiente. Esto no convierte US02 en terminada. Las comprobaciones de US14 permiten cerrar las tareas S2-TSK-015 y S2-TSK-016 para el alcance revisado.
+
+### Reproducir la regresión de disponibilidad
+
+Con Angular en modo desarrollo y Playwright disponible, ejecutar desde el frontend:
+
+~~~powershell
+$env:RP_QA_URL='http://127.0.0.1:4350'
+# PLAYWRIGHT_MODULE puede apuntar al módulo Playwright instalado fuera del repo.
+node scripts/us14-disponibilidad-browser.cjs
+~~~
+
+La regresión intercepta todas las rutas /api y utiliza exclusivamente respuestas controladas; no necesita credenciales ni escribe en el backend. Guarda resultados en artifacts/us14-disponibilidad o en RP_QA_OUTPUT.

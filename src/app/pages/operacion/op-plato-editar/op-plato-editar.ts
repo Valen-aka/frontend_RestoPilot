@@ -22,7 +22,7 @@ import {
 } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { forkJoin, finalize } from 'rxjs';
+import { concatMap, forkJoin, finalize, of, throwError } from 'rxjs';
 
 import { AuthService } from '../../../core/services/auth.service';
 import { CatalogoService } from '../../../core/services/catalogo.service';
@@ -199,10 +199,10 @@ export class OpPlatoEditarPage implements OnInit {
       return;
     }
 
-    const opcional = (valor: string): string | null =>
-      valor.trim() || null;
+    const opcional = (valor: string): string =>
+      valor.trim();
 
-    const datos: PlatoRequest = {
+    const datos: Omit<PlatoRequest, 'disponible'> = {
       restauranteId,
       categoriaId,
       nombre,
@@ -212,7 +212,6 @@ export class OpPlatoEditarPage implements OnInit {
       alergenos: opcional(valores.alergenos),
       complejidad,
       tiempoPreparacionMinutos: tiempo,
-      disponible: valores.disponible,
       imagenUrl: opcional(valores.imagenUrl)
     };
 
@@ -220,16 +219,33 @@ export class OpPlatoEditarPage implements OnInit {
     this.exito.set('');
     this.guardando.set(true);
 
+    // El servidor guarda los datos y la disponibilidad en operaciones separadas.
+    // No anunciar éxito si la segunda operación se rechaza o no puede verificarse.
+    let datosGuardados = false;
+    this.form.disable({emitEvent: false});
+
     this.catalogo.actualizarPlato(id, datos)
       .pipe(
+        concatMap(plato => {
+          if (plato.id !== id || plato.restauranteId !== restauranteId || typeof plato.disponible !== 'boolean') {
+            return throwError(() => new Error('La respuesta no corresponde al plato actualizado.'));
+          }
+          datosGuardados = true;
+          return plato.disponible === valores.disponible
+            ? of(plato)
+            : this.catalogo.cambiarDisponibilidadPlato(id, valores.disponible);
+        }),
         takeUntilDestroyed(this.destroyRef),
-        finalize(() => this.guardando.set(false))
+        finalize(() => {
+          this.guardando.set(false);
+          this.form.enable({emitEvent: false});
+        })
       )
       .subscribe({
         next: plato => {
-          if (plato.id !== id || plato.restauranteId !== restauranteId) {
+          if (plato.id !== id || plato.restauranteId !== restauranteId || plato.disponible !== valores.disponible) {
             this.error.set(
-              'La respuesta del servidor no corresponde al plato.'
+              'Los datos se guardaron, pero no pudimos verificar la disponibilidad del plato. Consulta el listado antes de volver a intentarlo.'
             );
             return;
           }
@@ -238,7 +254,9 @@ export class OpPlatoEditarPage implements OnInit {
           void this.router.navigate(['/operacion/platos']);
         },
         error: (err: HttpErrorResponse) => {
-          if (err.status === 403) {
+          if (datosGuardados) {
+            this.error.set('Los datos del plato se guardaron, pero no se pudo confirmar la disponibilidad. Revisa el listado antes de volver a intentarlo.');
+          } else if (err.status === 403) {
             this.error.set('No tienes permisos para editar este plato.');
           } else if (err.status === 404) {
             this.error.set('El plato ya no existe.');
