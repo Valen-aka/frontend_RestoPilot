@@ -12,7 +12,7 @@
       <div class="actions form-actions"><a mat-stroked-button class="secondary" routerLink="/dueno">Cancelar</a><button mat-flat-button class="primary" type="submit" [disabled]="preview.busy()">Crear administrador</button></div>
       @if (notice()) {<p class="notice" role="status">{{ notice() }}</p>}
     </form><rp-preview-panel [operation]="preview" [outcomes]="['success','duplicate','forbidden','error']" successText="Vista previa: administrador incorporado. No se ha creado ninguna cuenta ni enviado invitaciones." />
- @if (preview.phase() === 'success') {<section class="panel" aria-label="Resumen de demostraci?n"><h2>Datos revisados</h2><dl><dt>Nombre</dt><dd>{{form.controls.nombre.value}}</dd><dt>Correo</dt><dd>{{form.controls.correo.value}}</dd><dt>Perfil previsto</dt><dd>Administrador del restaurante del due?o</dd></dl><a mat-button routerLink="/dueno/administradores/nuevo" [queryParams]="{vista:'dueno-administrador-creado'}">Ver pantalla de confirmaci?n</a></section>}
+ @if (preview.phase() === 'success') {<section class="panel" aria-label="Resumen de demostración"><h2>Datos revisados</h2><dl><dt>Nombre</dt><dd>{{form.controls.nombre.value}}</dd><dt>Correo</dt><dd>{{form.controls.correo.value}}</dd><dt>Perfil previsto</dt><dd>Administrador del restaurante del dueño</dd></dl><a mat-button routerLink="/dueno/administradores/nuevo" [queryParams]="{vista:'dueno-administrador-creado'}">Ver pantalla de confirmación</a></section>}
   </section>
   <p class="notice account-notice">El restaurante y el rol se asignarán desde la cuenta del dueño cuando se conecte el servicio. No se envía una invitación por correo.</p>
 </rp-workspace-shell>
