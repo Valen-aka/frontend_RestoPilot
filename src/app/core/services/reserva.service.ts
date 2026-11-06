@@ -70,6 +70,13 @@ export class ReservaService {
       return readReserva(response.body,id);
     }));
   }
+  evaluarPorId(id:number,estado:'CONFIRMADA'|'RECHAZADA',motivo?:string|null):Observable<ReservaResponse> {
+    const body={estado,motivo:motivo&&motivo.trim().length>0?motivo.trim():null};
+    return this.http.patch<unknown>(this.url+'/'+id+'/estado',body,{observe:'response',timeout:20000}).pipe(map(response=>{
+      if(response.status!==200)throw new ReservaContractError();
+      return readReserva(response.body,id);
+    }));
+  }
   moduloPropio(restaurantId:number):Observable<AtencionFisicaResponse> {
     return this.http.get<unknown>(this.url+'/modulo/estado',{timeout:20000}).pipe(map(value=>readAtencionFisica(value,restaurantId)));
   }
