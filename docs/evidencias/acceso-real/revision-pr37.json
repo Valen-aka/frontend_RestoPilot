@@ -1,0 +1,74 @@
+{
+  "date": "2026-11-06T22:04:52.303Z",
+  "type": "controlled-forms-browser",
+  "results": [
+    {
+      "name": "JWT vencido devuelve al login con motivo y retorno",
+      "passed": true
+    },
+    {
+      "name": "401 de API termina la sesión y exige autenticarse",
+      "passed": true
+    },
+    {
+      "name": "doble envío de login no duplica la petición",
+      "passed": true
+    },
+    {
+      "name": "login fallido no concede sesión badLogin",
+      "passed": true
+    },
+    {
+      "name": "login fallido no concede sesión mismatch",
+      "passed": true
+    },
+    {
+      "name": "login fallido no concede sesión lost",
+      "passed": true
+    },
+    {
+      "name": "registro rechazado conserva datos y permite corregirlos",
+      "passed": true
+    },
+    {
+      "name": "respuesta perdida de registro bloquea reenvío y no fabrica éxito",
+      "passed": true
+    },
+    {
+      "name": "registro en curso bloquea salida y envíos repetidos",
+      "passed": true
+    },
+    {
+      "name": "campos inválidos no llegan al backend",
+      "passed": true
+    },
+    {
+      "name": "registro y primer paso responsive 320",
+      "passed": true
+    },
+    {
+      "name": "registro y primer paso responsive 390",
+      "passed": true
+    },
+    {
+      "name": "registro y primer paso responsive 768",
+      "passed": true
+    },
+    {
+      "name": "registro y primer paso responsive 1440",
+      "passed": true
+    },
+    {
+      "name": "inicio y carta conservan una sola cabecera cliente",
+      "passed": true
+    },
+    {
+      "name": "errores de campo del servidor se muestran y se pueden corregir",
+      "passed": true
+    },
+    {
+      "name": "dueno crea restaurante una vez y conserva su cuenta al crear admin",
+      "passed": true
+    }
+  ]
+}

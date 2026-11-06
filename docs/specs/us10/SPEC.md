@@ -6,7 +6,7 @@ Como cliente autenticado, quiero consultar la carta de un restaurante, filtrarla
 
 ## Pantallas y navegación
 
-Conservar las rutas hijas `/cliente`, `/cliente/carta` y `/cliente/plato`, el inventario y sus variantes existentes. Las siete entradas de US10 reutilizan vistas de carta/detalle; `vista` no inventa productos, agotamiento ni resultados vacíos. Los datos reales deciden esos estados.
+Conservar las rutas hijas `/cliente`, `/cliente/carta` y `/cliente/plato`, el inventario y sus variantes existentes. El inicio `/cliente` presenta una bienvenida con accesos a carta, pedidos, reservas y notificaciones. El listado de platos corresponde a `/cliente/carta`; las variantes de carta y detalle reutilizan sus respectivas vistas; `vista` no inventa productos, agotamiento ni resultados vacíos. Los datos reales deciden esos estados.
 
 - `restauranteId` identifica el local consultado; sin él, ofrecer selección entre restaurantes devueltos por la API.
 - `categoriaId` conserva el filtro en la URL y al regresar del detalle. Todas las categorías permite limpiar ese filtro.

@@ -14,10 +14,14 @@ export class AuthService {
  readonly session=this.current.asReadonly();readonly endedBy=signal<'manual'|'expired'|'unauthorized'|null>(null);private readonly url=environment.apiUrl.replace(/\/$/,'');
  constructor(){inject(DestroyRef).onDestroy(()=>clearTimeout(this.expiryTimer));}
  login(request:LoginRequest):Observable<AuthResponse> {return this.authenticate('/auth/login',{correo:request.correo.trim().toLowerCase(),password:request.password},200);}
- register(request:AccountRequest):Observable<AuthResponse> {return this.authenticate('/auth/register',{...request,correo:request.correo.trim().toLowerCase()},201,'CLIENTE');}
- registerOwner(request:OwnerRequest):Observable<AuthResponse> {return this.authenticate('/auth/register-owner',{...request,correo:request.correo.trim().toLowerCase()},201,'DUENO');}
+ register(request:AccountRequest):Observable<AuthResponse> {return this.authenticate('/auth/register',this.accountPayload(request),201,'CLIENTE');}
+ registerOwner(request:OwnerRequest):Observable<AuthResponse> {
+  const r=request.restaurante;
+  return this.authenticate('/auth/register-owner',{...this.accountPayload(request),restaurante:{nombre:r.nombre,direccion:r.direccion,telefono:r.telefono,horaApertura:r.horaApertura,horaCierre:r.horaCierre,tieneAtencionFisica:r.tieneAtencionFisica,aceptaDelivery:r.aceptaDelivery}},201,'DUENO');
+ }
+ private accountPayload(request:AccountRequest):AccountRequest {return {nombreCompleto:request.nombreCompleto.trim(),correo:request.correo.trim().toLowerCase(),password:request.password};}
  createAdmin(request:AccountRequest):Observable<AdminResponse> {
-  const session=this.session();return this.http.post<unknown>(this.url+'/usuarios/administradores',request,{observe:'response',timeout:20000}).pipe(map(r=>{const p=r.body as AdminResponse;if(r.status!==201||!session||session.role!=='DUENO'||session.accessToken!==this.session()?.accessToken||!p||!positiveId(p.id)||p.rol!=='ADMINISTRADOR'||p.restauranteId!==session.restauranteId||typeof p.nombreCompleto!=='string'||typeof p.correo!=='string')throw new Error('No pudimos verificar el administrador creado.');return Object.freeze({...p});}));
+  return defer(()=>{const session=this.session();if(!session||session.role!=='DUENO'||!positiveId(session.restauranteId)||session.expiresAt<=Date.now())throw new Error('Necesitas una sesión de dueño vigente.');return this.http.post<unknown>(this.url+'/usuarios/administradores',this.accountPayload(request),{observe:'response',timeout:20000}).pipe(map(r=>{const p=r.body as AdminResponse;if(r.status!==201||session.accessToken!==this.session()?.accessToken||!p||!positiveId(p.id)||p.rol!=='ADMINISTRADOR'||p.restauranteId!==session.restauranteId||typeof p.nombreCompleto!=='string'||typeof p.correo!=='string')throw new Error('No pudimos verificar el administrador creado.');return Object.freeze({mensaje:p.mensaje,id:p.id,nombreCompleto:p.nombreCompleto,correo:p.correo,rol:p.rol,restauranteId:p.restauranteId});}));});
  }
  private authenticate(path:string,request:LoginRequest|AccountRequest|OwnerRequest,status:number,expectedRole?:string):Observable<AuthResponse> {
   return defer(()=>{this.logout();const generation=this.generation;return this.http.post<unknown>(this.url+path,request,{observe:'response',timeout:20000}).pipe(map(r=>{

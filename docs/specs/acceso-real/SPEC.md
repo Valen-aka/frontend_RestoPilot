@@ -1,6 +1,6 @@
 # Acceso real y navegación de la web
 
-Rama: feature/auth-navegacion-real. Base: corrección de rutas a82fa82 sobre develop 9106980; integrar primero el PR de fix/integracion-rutas-operacion. El usuario autoriza conectar las tareas necesarias para entrar desde la landing y recorrer las pantallas, aunque sus formularios pertenezcan al mantenimiento de otro integrante. No se cambia el reparto del backlog.
+Rama: feature/auth-navegacion-real. Base original: corrección de rutas a82fa82 sobre develop 9106980. La revisión local incorpora develop a68c095 y conserva el navbar único y el inicio de cliente independiente de la carta. El usuario autoriza conectar las tareas necesarias para entrar desde la landing y recorrer las pantallas, aunque sus formularios pertenezcan al mantenimiento de otro integrante. No se cambia el reparto del backlog.
 
 ## Alcance
 
@@ -37,3 +37,5 @@ Probar formularios reales con backend de QA/PostgreSQL aislado, sin inyectar ses
 
 
 Ejecución y límites comprobados: [QA de acceso real](../../QA-ACCESO-REAL.md).
+
+Revisión de conflictos, correcciones y verificaciones actuales: [QA del PR 37](../../QA-REVISION-PR37.md).

@@ -1,6 +1,7 @@
 import {sessionGuard} from '../../core/guards/session.guard';
 import {mesasPendingGuard} from '../../core/guards/mesas.guard';
 import {agendaPendingGuard} from '../../core/guards/agenda.guard';
+
 import {atencionPendingGuard} from '../../core/guards/atencion-fisica.guard';
 import {reservaConsultaGuard} from '../../core/guards/reserva-consulta.guard';
 import {reservaAtencionGuard, reservaPendingGuard} from '../../core/guards/reserva-atencion.guard';

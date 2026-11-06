@@ -1,13 +1,5 @@
 <a class="skip-link" href="#orders-content" (click)="skip($event)">Saltar al contenido</a>
 <div class="pedido-shell">
-  <header class="client-header">
-    <a class="brand orders-brand" routerLink="/cliente" aria-label="RestoPilot, inicio de cliente">
-      <span class="brand-image" aria-hidden="true"><img src="/assets/carrito/brand-reference.png" alt="" width="43" height="43"><span></span></span>
-      <span>Resto<span class="brand-accent">Pilot</span><small>Tu restaurante, en piloto automático</small></span>
-    </a>
-    <nav aria-label="Navegación de cliente"><a routerLink="/cliente">Inicio</a><a routerLink="/cliente/carta">La carta</a><a routerLink="/cliente/reservas">Mis reservas</a><a routerLink="/cliente/pedidos" class="active" aria-current="page">Mis pedidos</a><a routerLink="/cliente/asistente">Asistente IA</a></nav>
-    <div class="sample-context"><span class="sample-avatar" aria-hidden="true">M</span><div><strong>Mi cuenta</strong><small>{{ store.hasSession() ? 'Sesión de cliente' : 'Sin sesión conectada' }}</small></div></div>
-  </header>
   <main id="orders-content" tabindex="-1" class="pedido-main">
     <div class="page-heading"><p class="eyebrow">PEDIDOS CLIENTE</p><h1 id="orders-title" tabindex="-1">Tus pedidos</h1><p class="subtitle">Sigue el de hoy o vuelve a tus favoritos.</p></div>
     @if (store.queryState() === 'unauthenticated') {
