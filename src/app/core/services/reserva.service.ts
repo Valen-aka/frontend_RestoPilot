@@ -48,6 +48,28 @@ export class ReservaService {
       return readReserva(response.body,id);
     }));
   }
+  modificarCliente(id:number,request:ReservaRequest):Observable<ReservaResponse> {
+    const payload={
+      mesaId:request.mesaId,
+      restauranteId:request.restauranteId,
+      fecha:request.fecha,
+      horaInicio:reservaTime(request.horaInicio),
+      horaFin:reservaTime(request.horaFin),
+      numeroComensales:request.numeroComensales,
+      notas:request.notas?request.notas.trim():null
+    };
+    return this.http.put<unknown>(this.url+'/'+id,payload,{observe:'response',timeout:20000}).pipe(map(response=>{
+      if(response.status!==200)throw new ReservaContractError();
+      return readReserva(response.body,id);
+    }));
+  }
+  cancelarCliente(id:number,motivo?:string):Observable<ReservaResponse> {
+    const body=motivo&&motivo.trim().length>0?{motivo:motivo.trim()}:{};
+    return this.http.patch<unknown>(this.url+'/'+id+'/cancelar',body,{observe:'response',timeout:20000}).pipe(map(response=>{
+      if(response.status!==200)throw new ReservaContractError();
+      return readReserva(response.body,id);
+    }));
+  }
   moduloPropio(restaurantId:number):Observable<AtencionFisicaResponse> {
     return this.http.get<unknown>(this.url+'/modulo/estado',{timeout:20000}).pipe(map(value=>readAtencionFisica(value,restaurantId)));
   }
