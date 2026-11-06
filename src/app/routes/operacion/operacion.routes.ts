@@ -46,6 +46,8 @@ const children:Routes=[
 {path:"reserva/cancelar",canActivate:[operacionCocinaGuard],canDeactivate:[agendaPendingGuard],runGuardsAndResolvers:'paramsOrQueryParamsChange',pathMatch:'full',loadComponent:()=>import('../../screen-host').then(m=>m.ScreenHost),data:{base:"/operacion/reserva/cancelar"}},
 {path:"atencion",pathMatch:'full',loadComponent:()=>import('../../screen-host').then(m=>m.ScreenHost),data:{base:"/operacion/atencion"}},
 {path:"atencion/confirmar",pathMatch:'full',loadComponent:()=>import('../../screen-host').then(m=>m.ScreenHost),data:{base:"/operacion/atencion/confirmar"}},
+{path:"reportes",canActivate:[operacionCocinaGuard],runGuardsAndResolvers:'paramsOrQueryParamsChange',pathMatch:'full',loadComponent:()=>import('../../screen-host').then(m=>m.ScreenHost),data:{base:"/operacion/reportes"}},
+{path:"reportes/pagos",canActivate:[operacionCocinaGuard],runGuardsAndResolvers:'paramsOrQueryParamsChange',pathMatch:'full',loadComponent:()=>import('../../screen-host').then(m=>m.ScreenHost),data:{base:"/operacion/reportes/pagos"}},
 {path:"reserva/editar",pathMatch:'full',loadComponent:()=>import('../../screen-host').then(m=>m.ScreenHost),data:{base:"/operacion/reserva/editar"}},
 {path:"reserva/cancelar",pathMatch:'full',loadComponent:()=>import('../../screen-host').then(m=>m.ScreenHost),data:{base:"/operacion/reserva/cancelar"}},
 {path:"atencion",canActivate:[operacionCocinaGuard],canDeactivate:[atencionPendingGuard],pathMatch:'full',loadComponent:()=>import('../../screen-host').then(m=>m.ScreenHost),data:{base:"/operacion/atencion"}},
