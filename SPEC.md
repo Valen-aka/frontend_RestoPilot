@@ -59,6 +59,7 @@ El SPEC común contiene las 29 historias y sus criterios. No se requiere un arch
 | [US19](docs/specs/us19/SPEC.md) | Preparación, pedido listo y entrega |
 | [Integración API de cocina](docs/specs/operacion-cocina-api/SPEC.md) | US15 y US19: cola autorizada, prioridad, preparación y entrega reales |
 | [US23](docs/specs/us23/SPEC.md) | Categorías: API y estado preparados; interfaces y aceptación pendientes |
+| [US20](docs/specs/us20/SPEC.md) | Reportes operativos y pagos por período, con gráficos, vacío y validación de fechas |
 | [US25](docs/specs/us25/SPEC.md) | Llegada y finalización de reservas |
 | [Integración API de atención de reservas](docs/specs/operacion-reserva-atencion-api/SPEC.md) | US25: llegada, finalización, fechas, reglas temporales y recuperación |
 | [US26](docs/specs/us26/SPEC.md) | Consulta de reservas expiradas en detalle e historial |
