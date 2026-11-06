@@ -1,1 +1,27 @@
-<rp-carta-view mode="list" />
+<rp-workspace-shell role="client" active="inicio">
+  <section class="home-page" aria-labelledby="home-title">
+    <header class="welcome">
+      <p class="eyebrow">BIENVENIDO A RESTOPILOT</p>
+      <h1 id="home-title">¿Qué te provoca hoy?</h1>
+      <p>Explora la carta o continúa con tus pedidos y reservas.</p>
+      <a mat-flat-button routerLink="/cliente/carta" [queryParams]="{restauranteId:route.snapshot.queryParamMap.get('restauranteId')}">Explorar la carta</a>
+    </header>
+    <div class="home-grid">
+      <mat-card appearance="outlined">
+        <mat-card-header><mat-card-title>Mis pedidos</mat-card-title></mat-card-header>
+        <mat-card-content><p>Consulta el detalle y sigue el estado de tus pedidos.</p></mat-card-content>
+        <mat-card-actions><a mat-button routerLink="/cliente/pedidos">Ver mis pedidos</a></mat-card-actions>
+      </mat-card>
+      <mat-card appearance="outlined">
+        <mat-card-header><mat-card-title>Mis reservas</mat-card-title></mat-card-header>
+        <mat-card-content><p>Revisa las fechas y el estado de tus reservas.</p></mat-card-content>
+        <mat-card-actions><a mat-button routerLink="/cliente/reservas">Ver mis reservas</a></mat-card-actions>
+      </mat-card>
+      <mat-card appearance="outlined">
+        <mat-card-header><mat-card-title>Notificaciones</mat-card-title></mat-card-header>
+        <mat-card-content><p>Consulta las novedades sobre tus pedidos y reservas.</p></mat-card-content>
+        <mat-card-actions><a mat-button routerLink="/cliente/notificaciones">Ver notificaciones</a></mat-card-actions>
+      </mat-card>
+    </div>
+  </section>
+</rp-workspace-shell>
