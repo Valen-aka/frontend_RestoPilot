@@ -17,7 +17,6 @@
 <small id="password-hint">8 caracteres o más: letras, número y carácter especial. Máximo 72 bytes UTF-8.</small>
 <div id="password-errors"><rp-form-errors [messages]="errors(form.controls.password, 'Contraseña')" /></div></div>
 <div class="auth-actions"><button mat-flat-button class="primary-action" type="submit">Crear cuenta</button></div>
-@if (notice()) {<p class="notice" role="status">{{ notice() }}</p>}
 </form></section>
 <div class="notice business-notice"><span aria-hidden="true">ⓘ</span><span>¿Tienes un restaurante?</span><a routerLink="/auth/registro-dueno">Registra tu negocio</a></div><nav class="auth-links" aria-label="Acceso"><a routerLink="/auth/login">Ya tengo una cuenta</a></nav>
 </div>
