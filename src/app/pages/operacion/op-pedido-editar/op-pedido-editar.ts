@@ -1,5 +1,3 @@
-import {PreviewOperation} from '../../../components/preview-operation/preview-operation';
-import {PreviewPanel} from '../../../components/preview-operation/preview-panel';
 import {OperationalPreviewStore} from '../operational-preview/operational-preview-store';
 import {Component, ElementRef, inject, signal} from '@angular/core';
 import {CurrencyPipe} from '@angular/common';
@@ -13,11 +11,9 @@ import {WorkspaceShell} from '../../../components/workspace-shell/workspace-shel
 
 const wholeQuantity:ValidatorFn = control => Number.isInteger(control.value) ? null : {integer: true};
 
-@Component({selector:'rp-op-pedido-editar',imports:[PreviewPanel,WorkspaceShell,ReactiveFormsModule,RouterLink,CurrencyPipe,MatButtonModule,MatInputModule,MatSelectModule,MatTableModule],templateUrl:'./op-pedido-editar.html',styleUrls:['../../../components/workspace-shell/workspace-pages.css','./op-pedido-editar.css']})
+@Component({selector:'rp-op-pedido-editar',imports:[WorkspaceShell,ReactiveFormsModule,RouterLink,CurrencyPipe,MatButtonModule,MatInputModule,MatSelectModule,MatTableModule],templateUrl:'./op-pedido-editar.html',styleUrls:['../../../components/workspace-shell/workspace-pages.css','./op-pedido-editar.css']})
 export class OpPedidoEditarPage {
  readonly store=inject(OperationalPreviewStore);
- readonly preview=new PreviewOperation();
- resetDemo(){this.store.reset();this.preview.reset();this.notice.set('');this.form.reset({lomo:1,aji:1,modalidad:'RECOGER',mesa:'Mesa 04',direccion:''});}
  readonly columns=['plato','cantidad','precio','subtotal','acciones'];
  readonly form=new FormGroup({
   lomo:new FormControl(this.store.items().find(item=>item.key==='lomo')?.quantity ?? 0,{nonNullable:true,validators:[Validators.required,Validators.min(0),Validators.max(99),wholeQuantity]}),
@@ -40,13 +36,12 @@ export class OpPedidoEditarPage {
   {key:'aji' as const,name:'Ají de gallina',quantity:this.form.controls.aji.value,price:28}
  ].filter(item=>item.quantity>0);}
  get total(){return this.items.reduce((sum,item)=>sum+item.quantity*item.price,0);}
- remove(key:'lomo'|'aji'){if(this.store.blocked()||this.preview.busy())return;this.form.controls[key].setValue(0);this.notice.set('Plato retirado de la vista previa. El pedido original no se ha modificado.');}
+ remove(key:'lomo'|'aji'){if(this.store.blocked())return;this.form.controls[key].setValue(0);this.notice.set('');}
  save(){
-  if(this.preview.busy())return;
-  if(this.store.blocked()){this.notice.set('Vista previa bloqueada por pago o estado del pedido.');return;}
+  if(this.store.blocked()){this.notice.set('Este pedido ya no puede modificarse.');return;}
   this.submitted.set(true);this.form.markAllAsTouched();this.notice.set('');
   if(this.form.invalid){this.host.nativeElement.querySelector<HTMLElement>('input.ng-invalid')?.focus();return;}
   const v=this.form.getRawValue(), items=this.items.map(item=>({...item}));
-  this.preview.run(result=>{if(result==='success'&&!this.store.adjust(items,v.modalidad,v.mesa,v.direccion)){this.preview.phase.set('forbidden');}});
+  if(this.store.adjust(items,v.modalidad,v.mesa,v.direccion)){this.notice.set('Los cambios se guardaron correctamente.');}
  }
 }

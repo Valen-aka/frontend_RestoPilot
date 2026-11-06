@@ -1,17 +1,13 @@
 <rp-workspace-shell [role]="'operation'" breadcrumb="Pedidos operación" active="pedidos">
  <header class="page-heading"><p class="eyebrow">Pedidos operación</p><h1>Cancelar pedido pendiente</h1><p class="subtitle">No se elimina físicamente el pedido.</p></header>
- <p class="notice" role="status">Pedido de demostración: {{store.estado()}} · Pago: {{store.payment().estado}}</p>
  @if(store.blocked()){<p class="notice warning">Cancelación bloqueada por pago confirmado o estado distinto de pendiente.</p>}
  <section class="confirmation-stage" aria-labelledby="pending-order-title">
   <div class="panel confirmation-card">
    <span class="warning-icon" aria-hidden="true">!</span><p class="eyebrow">Confirmar acción</p>
    <h2 id="pending-order-title">¿Cancelar el pedido #1042?</h2>
    <p>El pedido conservará su historial. La cancelación solo está permitida si está pendiente y no pagado.</p>
-   <p class="hint">Datos de diseño. Esta vista previa no cancela un pedido real.</p>
-   <div class="actions"><a mat-stroked-button class="secondary" routerLink="/operacion/pedidos">Volver</a><button mat-flat-button class="danger" type="button" (click)="openConfirmation()" [disabled]="preview.busy() || store.blocked()">Cancelar pedido</button></div>
+   <div class="actions"><a mat-stroked-button class="secondary" routerLink="/operacion/pedidos">Volver</a><button mat-flat-button class="danger" type="button" (click)="openConfirmation()" [disabled]="store.blocked()">Cancelar pedido</button></div>
   </div>
  </section>
  @if(notice()){<p class="notice" role="status">{{notice()}}</p>}
-<rp-preview-panel [operation]="preview" [outcomes]="['success','error','forbidden']" successText="Cancelación de demostración completada. Se conserva el importe del pago de muestra y el historial. No se canceló un pedido real." />
- @if(preview.phase()==='success'){<p class="notice">Vista previa del aviso al cliente: tu pedido #1042 fue cancelado. Este mensaje no se envía.</p>}
- <button mat-button type="button" [disabled]="preview.busy()" (click)="store.reset();preview.reset()">Reiniciar pedido de demostración</button></rp-workspace-shell>
+ </rp-workspace-shell>

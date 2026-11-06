@@ -1,17 +1,15 @@
 <rp-workspace-shell [role]="'operation'" breadcrumb="Pedidos operación" active="pedidos">
  <header class="page-heading"><p class="eyebrow">Pedidos operación</p><h1>Ajustar pedido pendiente</h1><p class="subtitle">Solo se modifica un pedido pendiente y no pagado.</p></header>
- <p class="notice">Estado de muestra: {{store.estado()}} · Pago: {{store.payment().estado}}. Se reinicia al recargar.</p>
- @if(store.blocked()){<p class="notice warning" role="status">No puedes ajustar ni cancelar esta muestra: ya está pagada o no está pendiente.</p>}
- <details><summary>Revisar bloqueo por estado</summary><label for="preview-order-state">Estado del pedido de demostración</label><select matNativeControl id="preview-order-state" [value]="store.estado()" [disabled]="preview.busy()" (change)="store.estado.set($any($event.target).value)"><option value="PENDIENTE">Pendiente</option><option value="EN_PREPARACION">En preparación</option><option value="ENTREGADO">Entregado</option><option value="CANCELADO">Cancelado</option></select></details><section class="panel" aria-labelledby="order-title">
+ @if(store.blocked()){<p class="notice warning" role="status">No es posible modificar este pedido porque ya está pagado o su estado cambió.</p>}
+ <section class="panel" aria-labelledby="order-title">
   <h2 id="order-title" class="panel-title">Pedido #1042</h2>
-  <p class="hint">Datos de diseño. Los cambios de esta pantalla solo afectan la vista previa.</p>
-  <div class="table-wrap" tabindex="0" role="region" aria-label="Platos de la vista previa">
+  <div class="table-wrap" tabindex="0" role="region" aria-label="Platos del pedido">
    <table mat-table [dataSource]="items">
     <ng-container matColumnDef="plato"><th mat-header-cell *matHeaderCellDef>Plato</th><td mat-cell *matCellDef="let item">{{item.name}}</td></ng-container>
     <ng-container matColumnDef="cantidad"><th mat-header-cell *matHeaderCellDef>Cantidad</th><td mat-cell *matCellDef="let item">{{item.quantity}}</td></ng-container>
     <ng-container matColumnDef="precio"><th mat-header-cell *matHeaderCellDef>Precio unitario</th><td mat-cell *matCellDef="let item">{{item.price | currency:'PEN':'S/ ':'1.2-2'}}</td></ng-container>
     <ng-container matColumnDef="subtotal"><th mat-header-cell *matHeaderCellDef>Subtotal</th><td mat-cell *matCellDef="let item">{{item.price * item.quantity | currency:'PEN':'S/ ':'1.2-2'}}</td></ng-container>
-    <ng-container matColumnDef="acciones"><th mat-header-cell *matHeaderCellDef>Acciones</th><td mat-cell *matCellDef="let item"><button mat-button type="button" (click)="remove(item.key)" [disabled]="preview.busy() || store.blocked()" [attr.aria-label]="'Quitar '+item.name+' de la vista previa'">Quitar</button></td></ng-container>
+    <ng-container matColumnDef="acciones"><th mat-header-cell *matHeaderCellDef>Acciones</th><td mat-cell *matCellDef="let item"><button mat-button type="button" (click)="remove(item.key)" [disabled]="store.blocked()" [attr.aria-label]="'Quitar '+item.name+' del pedido'">Quitar</button></td></ng-container>
     <tr mat-header-row *matHeaderRowDef="columns"></tr><tr mat-row *matRowDef="let row; columns:columns"></tr>
    </table>
   </div>
@@ -24,11 +22,10 @@
     <div class="field span-full"><label for="order-address">Dirección para delivery</label><textarea matInput id="order-address" formControlName="direccion" rows="3" maxlength="255" aria-describedby="address-error"></textarea><p id="address-error" class="field-error">@if(submitted()&&form.hasError('addressRequired')){Indica la dirección para delivery.}</p></div>
    </div>
    @if(submitted()&&form.hasError('emptyOrder')){<p class="field-error" role="alert">Conserva al menos un plato con cantidad mayor que cero.</p>}
-   <p class="preview-total">Total de la vista previa <strong>{{total | currency:'PEN':'S/ ':'1.2-2'}}</strong></p>
-   <div class="actions"><a mat-stroked-button class="secondary" routerLink="/operacion/pedidos">Cancelar</a><button mat-flat-button class="primary" type="submit" [disabled]="preview.busy() || store.blocked()">Guardar pedido</button></div>
-  </form><rp-preview-panel [operation]="preview" [outcomes]="['success','error','forbidden']" successText="Pedido de demostración actualizado. No se modificó ningún pedido real." />
- @if(preview.phase()==='success'){<p class="notice" role="status">Total guardado de la muestra: S/ {{store.total().toFixed(2)}} · Pago pendiente: S/ {{store.payment().monto.toFixed(2)}}</p>}
- <div class="actions"><button mat-button type="button" (click)="resetDemo()" [disabled]="preview.busy()">Reiniciar pedido de demostración</button><a mat-button routerLink="/operacion/pago/registrar">Revisar pago de la muestra</a><a mat-button routerLink="/operacion/pedido/cancelar">Revisar cancelación</a></div>
+   <p class="preview-total">Total del pedido <strong>{{total | currency:'PEN':'S/ ':'1.2-2'}}</strong></p>
+   <div class="actions"><a mat-stroked-button class="secondary" routerLink="/operacion/pedidos">Cancelar</a><button mat-flat-button class="primary" type="submit" [disabled]="store.blocked()">Guardar cambios</button></div>
+  </form>
+ <div class="actions"><a mat-button routerLink="/operacion/pago/registrar">Registrar pago</a><a mat-button routerLink="/operacion/pedido/cancelar">Cancelar pedido</a></div>
   @if(notice()){<p class="notice" role="status">{{notice()}}</p>}
  </section>
 </rp-workspace-shell>
