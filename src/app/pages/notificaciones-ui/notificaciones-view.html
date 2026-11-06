@@ -1,14 +1,11 @@
 <rp-workspace-shell [role]="role" breadcrumb="Notificaciones" active="notificaciones">
   <header class="page-heading"><p class="eyebrow">Notificaciones</p><h1>La actividad de tu cuenta</h1><p class="subtitle">Pedidos y reservas, al día.</p></header>
-  <p class="notice" role="note">Avisos ilustrativos para revisar una cuenta de ejemplo. No son mensajes de un usuario real ni un registro global del restaurante.</p>
-  <rp-preview-panel [operation]="preview" [outcomes]="['success','empty','error','forbidden','expired']" successText="Avisos de demostración ordenados del más reciente al más antiguo." />
-  <div class="actions"><button mat-stroked-button type="button" [disabled]="preview.busy()" (click)="preview.run()">Mostrar escenario</button></div>
-  @if (preview.phase() === 'success') {
-    <section class="panel" aria-labelledby="activity-title"><h2 id="activity-title">Avisos de ejemplo</h2>
+  @if (initialEmpty) {
+    <section class="panel empty-result" aria-live="polite"><h2>No tienes notificaciones</h2><p>Cuando haya novedades sobre tus pedidos y reservas, aparecerán aquí.</p></section>
+  } @else {
+    <section class="panel" aria-labelledby="activity-title"><h2 id="activity-title">Notificaciones recientes</h2>
       <ul class="notifications">@for (message of visible(); track message.id) {<li><p class="hint">{{message.id}} · {{message.fecha}}</p><p>{{message.texto}}</p></li>}</ul>
-      <mat-paginator [length]="messages.length" [pageSize]="3" [pageIndex]="page()" [hidePageSize]="true" aria-label="Páginas de avisos de ejemplo" (page)="changePage($event)" />
+      <mat-paginator [length]="messages.length" [pageSize]="3" [pageIndex]="page()" [hidePageSize]="true" aria-label="Páginas de notificaciones" (page)="changePage($event)" />
     </section>
   }
-  @if (preview.phase() === 'empty') {<section class="panel empty-result" aria-live="polite"><h2>No tienes notificaciones personales</h2><p>Cuando haya avisos dirigidos a la cuenta, aparecerán aquí.</p></section>}
-  @if (preview.phase() === 'error') {<button mat-button type="button" (click)="retry()">Reintentar demostración</button>}
 </rp-workspace-shell>
