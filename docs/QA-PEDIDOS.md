@@ -9,3 +9,5 @@ Fecha: 2026-10-30. Rama: feature/pedidos.
 - Revisión estática de seguridad: sin hallazgos bloqueantes en alcance visual; sin HTTP ni almacenamiento.
 
 Datos de diseño. Backend, permisos efectivos y operaciones reales pendientes.
+
+Revision visual US24: borrador separado del pedido de muestra, total recalculado al guardar, pago pendiente coherente, bloqueos por pago/estado, dialogo de cancelacion y resultado con historial/aviso de ejemplo. No hay API ni cancelaciones reales. Checker y build aprobados; recorrido integrado pendiente.
