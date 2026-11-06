@@ -1,7 +1,10 @@
 import {positiveId} from './pedido-api.model';
 import {readReserva, ReservaResponse, ReservaContractError} from './reserva-api.model';
 export interface ReservaList {readonly mensaje:string;readonly reservas:readonly ReservaResponse[];}
-export interface MesaDisponible {readonly mesaId:number;readonly numero:number;readonly capacidad:number;readonly disponible:boolean;}
+export interface MesaDisponible {
+  readonly mesaId:number;readonly numero:number;readonly capacidad:number;readonly disponible:boolean;
+  readonly coordenadaX?:number;readonly coordenadaY?:number;
+}
 export interface ReservaDisponibilidad {readonly mensaje:string;readonly mesas:readonly MesaDisponible[];}
 export function readReservaList(value:unknown):ReservaList {
   if(!value||typeof value!=='object')throw new ReservaContractError();

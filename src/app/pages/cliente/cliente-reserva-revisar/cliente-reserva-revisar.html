@@ -20,6 +20,21 @@
         <p class="success-sub">Redirigiendo a tu historial de reservas...</p>
       </div>
     } @else {
+      @if (errorApi()) {
+        <div class="sample-notice error-alert" role="alert" style="background:#fee2e2;color:#991b1b;border:1px solid #f87171;padding:16px;border-radius:8px;margin-bottom:20px;">
+          <h3 style="margin:0 0 6px 0;font-size:16px;font-weight:600;">Conflicto al registrar la reserva</h3>
+          <p style="margin:0 0 12px 0;">{{ errorApi() }}</p>
+          <div style="display:flex;gap:12px;flex-wrap:wrap;">
+            <a mat-stroked-button routerLink="/cliente/plano" queryParamsHandling="preserve" class="btn-secondary">
+              ← Cambiar mesa en el plano
+            </a>
+            <a mat-stroked-button routerLink="/cliente/reservar" queryParamsHandling="preserve" class="btn-secondary">
+              Cambiar fecha y horario
+            </a>
+          </div>
+        </div>
+      }
+
       <!-- Ficha de Revisión -->
       <div class="review-grid">
         <!-- Columna Izquierda: Resumen de reserva -->
@@ -85,7 +100,10 @@
             <mat-form-field appearance="outline" class="form-full">
               <mat-label>Comentarios adicionales para la cocina o salón</mat-label>
               <textarea matInput formControlName="notas" rows="3" placeholder="Indícanos si tienes alguna preferencia especial"></textarea>
-              <mat-hint align="end">{{ form0.controls.notas.value?.length || 0 }} / 300 caracteres</mat-hint>
+              <mat-hint align="end">{{ form0.controls.notas.value?.length || 0 }} / 500 caracteres</mat-hint>
+              @if (form0.controls.notas.invalid && form0.controls.notas.touched) {
+                <mat-error>El texto supera el límite de 500 caracteres.</mat-error>
+              }
             </mat-form-field>
 
             <div class="policy-notice">
@@ -98,8 +116,8 @@
             </div>
 
             <div class="form-actions">
-              <button mat-flat-button type="submit" class="btn-primary" [disabled]="form0.invalid">
-                Confirmar y enviar reserva →
+              <button mat-flat-button type="submit" class="btn-primary" [disabled]="form0.invalid || cargando()">
+                {{ cargando() ? 'Enviando solicitud...' : 'Confirmar y enviar reserva →' }}
               </button>
             </div>
           </form>
