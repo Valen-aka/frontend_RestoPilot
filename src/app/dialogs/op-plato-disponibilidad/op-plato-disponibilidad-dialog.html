@@ -1,3 +1,48 @@
-<h2 mat-dialog-title><!-- TODO: título --></h2>
-<mat-dialog-content><!-- TODO: mensaje y campos si corresponden --></mat-dialog-content>
-<mat-dialog-actions><!-- TODO: botones de volver y confirmar --></mat-dialog-actions>
+<section class="confirm-card" aria-labelledby="confirm-title">
+  <div class="warning-icon" aria-hidden="true">!</div>
+
+  <p class="eyebrow">CONFIRMAR ACCIÓN</p>
+
+  <h2 id="confirm-title">
+    ¿Marcar {{ nombre }} como
+    {{ disponible ? 'agotado' : 'disponible' }}?
+  </h2>
+
+  @if (disponible) {
+  <p class="description">
+    Seguirá en la carta, pero el cliente no podrá
+    añadirlo a un pedido mientras esté no disponible.
+  </p>
+  } @else {
+  <p class="description">
+    El plato volverá a estar disponible en la carta
+    y los clientes podrán añadirlo a sus pedidos.
+  </p>
+  }
+
+  <div class="actions">
+    <button
+      mat-button
+      type="button"
+      class="back-button"
+      [disabled]="guardando"
+      (click)="volver.emit()"
+    >
+      Volver
+    </button>
+
+    <button
+      mat-flat-button
+      type="button"
+      class="confirm-button"
+      [disabled]="guardando"
+      (click)="confirmarCambio()"
+    >
+      @if (guardando) {
+      Guardando...
+      } @else {
+      {{ disponible ? 'Pausar disponibilidad' : 'Reactivar disponibilidad' }}
+      }
+    </button>
+  </div>
+</section>

@@ -1,3 +1,156 @@
-<!-- FRAME: op-platos | Una carta con personalidad -->
-<!-- TODO: implementar Desktop y Mobile con Angular Material. -->
-<!-- No hay campos, datos ni contenido visual implementados. -->
+<section class="platos-page">
+  <header class="page-header">
+    <div>
+      <p class="eyebrow">ADMINISTRACIÓN DE CARTA</p>
+      <h1>Gestión de platos</h1>
+      <p class="subtitle">
+        Administra los platos, precios y disponibilidad de tu restaurante.
+      </p>
+    </div>
+
+    <a class="btn-primary" routerLink="/operacion/plato/nuevo">
+      + Nuevo plato
+    </a>
+  </header>
+
+  <div class="stats-grid">
+    <article class="stat-card">
+      <span>Total de platos</span>
+      <strong>{{ platos().length }}</strong>
+    </article>
+
+    <article class="stat-card">
+      <span>Disponibles</span>
+      <strong class="success">{{ disponibles() }}</strong>
+    </article>
+
+    <article class="stat-card">
+      <span>Agotados</span>
+      <strong class="danger">{{ agotados() }}</strong>
+    </article>
+  </div>
+
+  <div class="content-card">
+    <div class="toolbar">
+      <input
+        type="search"
+        placeholder="Buscar plato o categoría..."
+        aria-label="Buscar platos"
+        [value]="busqueda()"
+        (input)="actualizarBusqueda($any($event.target).value)"
+      />
+
+      <select
+        aria-label="Filtrar por categoría"
+        [value]="categoria()"
+        (change)="actualizarCategoria($any($event.target).value)"
+      >
+        <option value="TODAS">Todas las categorías</option>
+        @for (nombre of categorias(); track nombre) {
+        <option [value]="nombre">{{ nombre }}</option>
+        }
+      </select>
+
+      <button
+        class="btn-outline"
+        type="button"
+        (click)="cargarPlatos()"
+        [disabled]="cargando()"
+      >
+        Actualizar
+      </button>
+    </div>
+
+    @if (cargando()) {
+    <div class="state-message" role="status">
+      Cargando platos...
+    </div>
+    } @else if (error()) {
+    <div class="state-message error" role="alert">
+      <p>{{ error() }}</p>
+      <button type="button" (click)="cargarPlatos()">
+        Reintentar
+      </button>
+    </div>
+    } @else if (platosFiltrados().length === 0) {
+    <div class="state-message">
+      <h2>No se encontraron platos</h2>
+      <p>
+        No hay platos que coincidan con los filtros seleccionados.
+      </p>
+    </div>
+    } @else {
+    <div class="table-scroll">
+      <table>
+        <thead>
+        <tr>
+          <th>Plato</th>
+          <th>Categoría</th>
+          <th>Precio</th>
+          <th>Preparación</th>
+          <th>Disponibilidad</th>
+          <th>Acciones</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        @for (plato of platosFiltrados(); track plato.id) {
+        <tr>
+          <td>
+            <div class="plato-name">
+              <strong>{{ plato.nombre }}</strong>
+              <small>{{ plato.descripcion || 'Sin descripción' }}</small>
+            </div>
+          </td>
+
+          <td>{{ plato.categoriaNombre }}</td>
+
+          <td>{{ precio(plato.precio) }}</td>
+
+          <td>
+            {{ plato.tiempoPreparacionMinutos ?? '—' }}
+            @if (plato.tiempoPreparacionMinutos !== null) {
+            min
+            }
+          </td>
+
+          <td>
+                  <span
+                    class="status"
+                    [class.available]="plato.disponible"
+                    [class.unavailable]="!plato.disponible"
+                  >
+                    {{ plato.disponible ? 'Disponible' : 'Agotado' }}
+                  </span>
+          </td>
+
+          <td>
+            <div class="actions">
+              <a
+                [routerLink]="['/operacion/plato/editar', plato.id]"
+              >
+                Editar
+              </a>
+
+              <a
+                [routerLink]="['/operacion/plato/disponibilidad', plato.id]"
+              >
+                Disponibilidad
+              </a>
+
+              <a
+                class="delete-link"
+                [routerLink]="['/operacion/plato/eliminar', plato.id]"
+              >
+                Eliminar
+              </a>
+            </div>
+          </td>
+        </tr>
+        }
+        </tbody>
+      </table>
+    </div>
+    }
+  </div>
+</section>

@@ -1,3 +1,36 @@
-<h2 mat-dialog-title><!-- TODO: título --></h2>
-<mat-dialog-content><!-- TODO: mensaje y campos si corresponden --></mat-dialog-content>
-<mat-dialog-actions><!-- TODO: botones de volver y confirmar --></mat-dialog-actions>
+<section class="confirm-card" aria-labelledby="delete-title">
+  <div class="warning-icon" aria-hidden="true">!</div>
+
+  <p class="eyebrow">CONFIRMAR ACCIÓN</p>
+
+  <h2 id="delete-title">¿Eliminar este plato?</h2>
+
+  <p class="description">
+    Se elimina el plato del catálogo si no existen restricciones
+    de integridad. Para una pausa temporal, cambia su disponibilidad.
+  </p>
+
+  <p class="plato-name">Plato: <strong>{{ nombre }}</strong></p>
+
+  <div class="actions">
+    <button
+      mat-button
+      type="button"
+      class="back-button"
+      [disabled]="eliminando"
+      (click)="volver.emit()"
+    >
+      Volver
+    </button>
+
+    <button
+      mat-flat-button
+      type="button"
+      class="delete-button"
+      [disabled]="eliminando"
+      (click)="confirmarEliminacion()"
+    >
+      {{ eliminando ? 'Eliminando...' : 'Eliminar plato' }}
+    </button>
+  </div>
+</section>
