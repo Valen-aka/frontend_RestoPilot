@@ -1,206 +1,84 @@
-<section class="plato-editar">
+<section class="plato-page">
   <header class="page-header">
-    <div>
-      <a routerLink="/operacion/platos" class="back-link">
-        ← Volver a platos
-      </a>
-      <h1>Editar plato</h1>
-      <p>Actualiza la información del plato seleccionado.</p>
-    </div>
+    <a mat-button routerLink="/operacion/platos">← Volver a platos</a>
+    <h1>Editar plato</h1>
+    <p>Actualiza la información del plato seleccionado.</p>
   </header>
-
   @if (cargando()) {
-  <div class="message">
-    Cargando información del plato...
-  </div>
+    <div class="message" role="status" aria-busy="true">Cargando información del plato…</div>
   } @else if (platoId()) {
-  @if (error()) {
-  <div class="message error" role="alert">
-    {{ error() }}
-  </div>
-  }
+    @if (error()) {<div class="message error" role="alert">{{ error() }}</div>}
+    @if (exito()) {<div class="message success" role="status">{{ exito() }}</div>}
+    @if (categorias().length > 0) {
+  <form [formGroup]="form" (ngSubmit)="guardar()" class="form-card" [attr.aria-busy]="guardando()">
+    <h2>Información del plato</h2>
 
-  @if (exito()) {
-  <div class="message success" role="status">
-    {{ exito() }}
-  </div>
-  }
 
-  @if (categorias().length > 0) {
-  <form
-    [formGroup]="form"
-    (ngSubmit)="guardar()"
-    class="form-card"
-  >
     <div class="form-grid">
-      <div class="field">
-        <label for="nombre">Nombre del plato *</label>
-        <input
-          id="nombre"
-          type="text"
-          formControlName="nombre"
-          maxlength="150"
-          placeholder="Ej. Lomo saltado"
-        />
-        @if (
-        form.controls.nombre.touched &&
-        form.controls.nombre.invalid
-        ) {
-        <small class="field-error">
-          Ingresa un nombre válido.
-        </small>
-        }
-      </div>
-
-      <div class="field">
-        <label for="categoria">Categoría *</label>
-        <select id="categoria" formControlName="categoriaId">
-          <option [ngValue]="0">Selecciona una categoría</option>
+      <mat-form-field appearance="outline" subscriptSizing="dynamic">
+        <mat-label>Nombre del plato</mat-label>
+        <input matInput id="nombre" formControlName="nombre" maxlength="150" required placeholder="Ej. Lomo saltado" />
+        <mat-error>Ingresa un nombre válido de máximo 150 caracteres.</mat-error>
+      </mat-form-field>
+      <mat-form-field appearance="outline" subscriptSizing="dynamic">
+        <mat-label>Categoría</mat-label>
+        <mat-select id="categoria" formControlName="categoriaId" required>
+          <mat-option [value]="0">Selecciona una categoría</mat-option>
           @for (categoria of categorias(); track categoria.id) {
-          <option [ngValue]="categoria.id">
-            {{ categoria.nombre }}
-          </option>
+            <mat-option [value]="categoria.id">{{ categoria.nombre }}</mat-option>
           }
-        </select>
-        @if (
-        form.controls.categoriaId.touched &&
-        form.controls.categoriaId.invalid
-        ) {
-        <small class="field-error">
-          Selecciona una categoría.
-        </small>
-        }
-      </div>
-
-      <div class="field full-width">
-        <label for="descripcion">Descripción</label>
-        <textarea
-          id="descripcion"
-          formControlName="descripcion"
-          rows="3"
-          placeholder="Describe el plato"
-        ></textarea>
-      </div>
-
-      <div class="field">
-        <label for="precio">Precio (S/) *</label>
-        <input
-          id="precio"
-          type="number"
-          min="0.01"
-          step="0.01"
-          formControlName="precio"
-        />
-        @if (
-        form.controls.precio.touched &&
-        form.controls.precio.invalid
-        ) {
-        <small class="field-error">
-          Ingresa un precio mayor a cero.
-        </small>
-        }
-      </div>
-
-      <div class="field">
-        <label for="complejidad">Complejidad *</label>
-        <select
-          id="complejidad"
-          formControlName="complejidad"
-        >
-          <option value="BAJA">Baja</option>
-          <option value="MEDIA">Media</option>
-          <option value="ALTA">Alta</option>
-        </select>
-      </div>
-
-      <div class="field">
-        <label for="tiempo">
-          Tiempo de preparación (minutos) *
-        </label>
-        <input
-          id="tiempo"
-          type="number"
-          min="5"
-          max="15"
-          step="1"
-          formControlName="tiempoPreparacionMinutos"
-        />
-        @if (
-        form.controls.tiempoPreparacionMinutos.touched &&
-        form.controls.tiempoPreparacionMinutos.invalid
-        ) {
-        <small class="field-error">
-          El tiempo debe ser de 5 a 15 minutos.
-        </small>
-        }
-      </div>
-
-      <div class="field">
-        <label for="imagenUrl">URL de imagen</label>
-        <input
-          id="imagenUrl"
-          type="text"
-          formControlName="imagenUrl"
-          placeholder="https://..."
-        />
-      </div>
-
-      <div class="field full-width">
-        <label for="ingredientes">Ingredientes</label>
-        <textarea
-          id="ingredientes"
-          formControlName="ingredientes"
-          rows="3"
-          placeholder="Ingredientes del plato"
-        ></textarea>
-      </div>
-
-      <div class="field full-width">
-        <label for="alergenos">Alérgenos</label>
-        <textarea
-          id="alergenos"
-          formControlName="alergenos"
-          rows="2"
-          placeholder="Ej. Gluten, leche, frutos secos"
-        ></textarea>
-      </div>
-
-      <div class="field full-width">
-        <label class="checkbox-field">
-          <input
-            type="checkbox"
-            formControlName="disponible"
-          />
-          <span>Plato disponible para la venta</span>
-        </label>
+        </mat-select>
+        <mat-error>Selecciona una categoría del restaurante.</mat-error>
+      </mat-form-field>
+      <mat-form-field appearance="outline" subscriptSizing="dynamic" class="full-width">
+        <mat-label>Descripción</mat-label>
+        <textarea matInput id="descripcion" formControlName="descripcion" rows="3" placeholder="Describe el plato"></textarea>
+      </mat-form-field>
+      <mat-form-field appearance="outline" subscriptSizing="dynamic">
+        <mat-label>Precio (S/)</mat-label>
+        <input matInput id="precio" type="number" min="0.01" step="0.01" formControlName="precio" required />
+        <mat-error>Ingresa un precio mayor que cero.</mat-error>
+      </mat-form-field>
+      <mat-form-field appearance="outline" subscriptSizing="dynamic">
+        <mat-label>Complejidad</mat-label>
+        <mat-select id="complejidad" formControlName="complejidad" required>
+          <mat-option value="BAJA">Baja</mat-option>
+          <mat-option value="MEDIA">Media</mat-option>
+          <mat-option value="ALTA">Alta</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field appearance="outline" subscriptSizing="dynamic">
+        <mat-label>Tiempo de preparación (minutos)</mat-label>
+        <input matInput id="tiempo" type="number" min="5" max="15" step="1" formControlName="tiempoPreparacionMinutos" required />
+        <mat-error>El tiempo debe ser de 5 a 15 minutos.</mat-error>
+      </mat-form-field>
+      <mat-form-field appearance="outline" subscriptSizing="dynamic" class="full-width">
+        <mat-label>URL de imagen</mat-label>
+        <input matInput id="imagenUrl" type="url" formControlName="imagenUrl" placeholder="https://ejemplo.com/plato.jpg" />
+      </mat-form-field>
+      <mat-form-field appearance="outline" subscriptSizing="dynamic" class="full-width">
+        <mat-label>Ingredientes</mat-label>
+        <textarea matInput id="ingredientes" formControlName="ingredientes" rows="3"></textarea>
+      </mat-form-field>
+      <mat-form-field appearance="outline" subscriptSizing="dynamic" class="full-width">
+        <mat-label>Alérgenos</mat-label>
+        <textarea matInput id="alergenos" formControlName="alergenos" rows="2" placeholder="Ej. Gluten, lácteos, frutos secos"></textarea>
+      </mat-form-field>
+      <div class="availability full-width">
+        <mat-checkbox formControlName="disponible">Plato disponible para la venta</mat-checkbox>
       </div>
     </div>
-
     <footer class="form-actions">
-      <a
-        routerLink="/operacion/platos"
-        class="button button-secondary"
-      >
-        Cancelar
-      </a>
-
-      <button
-        type="submit"
-        class="button button-primary"
-        [disabled]="guardando() || form.invalid"
-      >
-        {{ guardando() ? 'Guardando...' : 'Guardar cambios' }}
+      <a mat-stroked-button routerLink="/operacion/platos">Cancelar</a>
+      <button mat-flat-button type="submit" [disabled]="guardando() || form.invalid">
+        {{ guardando() ? 'Guardando…' : 'Guardar cambios' }}
       </button>
     </footer>
   </form>
   } @else if (!error()) {
-  <div class="message">
-    No hay categorías disponibles para editar el plato.
-  </div>
+    <div class="message" role="status">No hay categorías disponibles para editar el plato.</div>
   }
   } @else {
-  <div class="message error" role="alert">
-    {{ error() }}
-  </div>
+    <div class="message error" role="alert">{{ error() }}</div>
   }
 </section>

@@ -21,3 +21,10 @@ verification:
   browser: 18 recorridos US26 y 23 regresiones US25 correctos contra HTTP simulado.
   backend_separate: 11 pruebas HTTP/JWT/Clock/H2 y 53 regresiones de reservas correctas.
   limitations: PostgreSQL, autenticación y despliegue del equipo pendientes; el mock no ejecuta la expiración productiva.
+
+verification_us29:
+  date: '2026-11-06'
+  change: Agenda operativa US29 y lectura de contexto de restaurante; se conserva el contrato de expiración.
+  browser: 19 regresiones US26 y 23 US25 correctas con simulaciones locales.
+  evidence: docs/QA-US29.md
+  limitations: El mock no acredita persistencia ni reloj real; las 15 comprobaciones de US29 con PostgreSQL aislado están documentadas por separado.
