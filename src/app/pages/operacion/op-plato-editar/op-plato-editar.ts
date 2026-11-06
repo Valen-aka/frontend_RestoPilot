@@ -1,3 +1,8 @@
+import {MatButtonModule} from '@angular/material/button';
+import {MatFormFieldModule} from '@angular/material/form-field';
+import {MatInputModule} from '@angular/material/input';
+import {MatSelectModule} from '@angular/material/select';
+import {MatCheckboxModule} from '@angular/material/checkbox';
 import {
   Component,
   DestroyRef,
@@ -29,7 +34,7 @@ import {
 @Component({
   selector: 'rp-op-plato-editar',
   standalone: true,
-  imports: [ReactiveFormsModule, RouterLink],
+  imports: [ReactiveFormsModule, RouterLink, MatButtonModule, MatFormFieldModule, MatInputModule, MatSelectModule, MatCheckboxModule],
   templateUrl: './op-plato-editar.html',
   styleUrl: './op-plato-editar.css'
 })
