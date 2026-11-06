@@ -1,0 +1,45 @@
+<rp-workspace-shell role="client" active="carta" [live]="true" (signOut)="logout()">
+  <section class="carta-page">
+    <header class="heading">
+      <div><p class="eyebrow">CLIENTE</p><h1>{{ mode()==='detail' ? (store.dish()?.nombre || 'Detalle del plato') : 'La carta' }}</h1><p class="subtitle">{{ mode()==='detail' ? 'Todo el sabor de nuestra cocina.' : 'Preparado con intención. Disfrutado a tu ritmo.' }}</p></div>
+      <a mat-stroked-button routerLink="/cliente/carrito">Ver carrito ({{ store.cart.count() }})</a>
+    </header>
+    @if(!store.hasSession()) {
+      <mat-card appearance="outlined" class="feedback" role="alert"><h2>Inicia sesión como cliente</h2><p>Necesitas una sesión de cliente para consultar la carta y preparar tu pedido.</p><a mat-flat-button routerLink="/auth/login" [queryParams]="{returnUrl:router.url}">Ir al acceso</a></mat-card>
+    } @else if(store.state()==='loading') {
+      <div class="feedback" role="status" aria-busy="true"><mat-spinner diameter="32" aria-hidden="true"/><p>Consultando la carta…</p></div>
+    } @else if(store.state()==='error') {
+      <mat-card appearance="outlined" class="feedback" role="alert"><h2>No pudimos completar la consulta</h2><p>{{ store.problem() }}</p><button mat-stroked-button type="button" (click)="refresh()">Volver a consultar</button><a mat-button routerLink="/cliente/carta">Elegir restaurante</a></mat-card>
+    } @else {
+      @if(mode()==='list') {
+        @if(store.restaurants().length) {
+          <div class="restaurant-picker"><mat-form-field appearance="outline" subscriptSizing="dynamic"><mat-label>Restaurante</mat-label><mat-select [value]="store.restaurant()?.id??null" (selectionChange)="chooseRestaurant($event.value)">@for(r of store.restaurants();track r.id){<mat-option [value]="r.id">{{r.nombre}}</mat-option>}</mat-select></mat-form-field><button mat-button type="button" (click)="refresh()">Actualizar carta</button></div>
+        } @else {<div class="feedback" role="status"><h2>No hay restaurantes disponibles</h2><p>Vuelve a consultar más adelante.</p><button mat-button type="button" (click)="refresh()">Actualizar</button></div>}
+      }
+      @if(store.restaurant();as restaurant) {
+        @if(!restaurant.activo||!restaurant.abierto){<p class="restaurant-notice" role="status">{{ !restaurant.activo ? 'Este restaurante no está recibiendo pedidos.' : 'El restaurante está cerrado. Puedes consultar su carta.' }}</p>}
+        @if(mode()==='list') {
+          <mat-chip-listbox class="filters" aria-label="Categorías de la carta" [value]="category()??0" (change)="chooseCategory($event.value||null)"><mat-chip-option [value]="0">Todos</mat-chip-option>@for(c of store.categories();track c.id){<mat-chip-option [value]="c.id">{{c.nombre}}</mat-chip-option>}</mat-chip-listbox>
+          @if(categoryInvalid()){<div class="feedback" role="alert"><h2>La categoría no está disponible</h2><button mat-button type="button" (click)="chooseCategory(null)">Ver toda la carta</button></div>}
+          @else if(rows().length) {
+            <div class="dish-grid">@for(p of rows();track p.id){<mat-card appearance="outlined" class="dish-card">
+              <a class="dish-image" routerLink="/cliente/plato" [queryParams]="{restauranteId:restaurant.id,platoId:p.id,categoriaId:category()}" [attr.aria-label]="'Ver detalle de '+p.nombre"><rp-plato-imagen [source]="p.imagenUrl" [name]="p.nombre"/><span class="availability" [class.unavailable]="!p.disponible">{{p.disponible?'Disponible':'Agotado'}}</span></a>
+              <mat-card-content><p class="dish-meta">{{p.categoriaNombre}} @if(p.tiempoPreparacionMinutos!=null){ · {{p.tiempoPreparacionMinutos}} min}</p><h2>{{p.nombre}}</h2><p class="description">{{p.descripcion||'Descripción no informada.'}}</p><div class="card-bottom"><strong>{{money(p.precio)}}</strong><a mat-button routerLink="/cliente/plato" [queryParams]="{restauranteId:restaurant.id,platoId:p.id,categoriaId:category()}" [attr.aria-label]="'Ver '+p.nombre">Ver plato</a></div></mat-card-content>
+            </mat-card>}</div>
+          } @else {<mat-card appearance="outlined" class="feedback" role="status"><h2>{{category()!==null?'No hay platos en esta categoría':'La carta está vacía'}}</h2><p>No se encontraron platos para esta consulta.</p>@if(category()!==null){<button mat-button type="button" (click)="chooseCategory(null)">Ver toda la carta</button>}</mat-card>}
+        } @else if(store.dish();as p) {
+          <a mat-button routerLink="/cliente/carta" [queryParams]="query()">← Volver a la carta</a>
+          <div class="detail-grid"><div class="detail-image"><rp-plato-imagen [source]="p.imagenUrl" [name]="p.nombre"/></div><mat-card appearance="outlined" class="detail-card"><mat-card-content>
+            <p class="dish-meta">{{p.categoriaNombre}}</p><span class="availability" [class.unavailable]="!p.disponible">{{p.disponible?'Disponible':'Agotado'}}</span><p class="price">{{money(p.precio)}}</p><p>{{p.descripcion||'Descripción no informada.'}}</p>
+            <dl><div><dt>Ingredientes</dt><dd>{{p.ingredientes||'No informados por el restaurante.'}}</dd></div><div><dt>Alérgenos</dt><dd>{{p.alergenos||'No informados. Consulta con el restaurante antes de pedir.'}}</dd></div><div><dt>Preparación estimada</dt><dd>{{p.tiempoPreparacionMinutos!=null?p.tiempoPreparacionMinutos+' minutos':'No informada.'}}</dd></div></dl>
+            @if(!p.disponible){<p class="restaurant-notice" role="status">Hoy se nos terminó. Este plato no se puede añadir al pedido.</p>}
+            <form [formGroup]="form" (ngSubmit)="add()" [attr.aria-busy]="store.busy()"><mat-form-field appearance="outline" subscriptSizing="dynamic"><mat-label>Cantidad</mat-label><input matInput type="number" min="1" step="1" formControlName="cantidad" required/><mat-error>Indica una cantidad entera mayor o igual a uno.</mat-error></mat-form-field><mat-form-field appearance="outline" subscriptSizing="dynamic"><mat-label>Notas para el plato</mat-label><textarea matInput formControlName="notas" rows="2" maxlength="255"></textarea><mat-hint>Hasta 255 caracteres.</mat-hint><mat-error>Las notas admiten hasta 255 caracteres.</mat-error></mat-form-field>
+              @if(store.selectionProblem()){<p class="selection-error" role="alert">{{store.selectionProblem()}}</p>}
+              <button mat-flat-button type="submit" [disabled]="!canAdd()||form.invalid">{{store.busy()?'Preparando selección…':'Añadir al pedido'}}</button>
+            </form>
+          </mat-card-content></mat-card></div>
+        }
+      } @else if(store.restaurants().length) {<div class="feedback" role="status"><h2>Elige un restaurante</h2><p>Selecciona el local cuya carta deseas consultar.</p></div>}
+    }
+  </section>
+</rp-workspace-shell>

@@ -1,2 +1,1 @@
-:host{display:block}
-/* TODO: adaptar al modal del frame. */
+mat-form-field{width:100%;margin-block:var(--rp-space-4);}p{color:var(--rp-muted);}.danger{background:var(--rp-error);color:var(--rp-on-primary);}button{min-height:var(--rp-control-height);}mat-dialog-actions{gap:var(--rp-space-3);}@media(max-width:30rem){mat-dialog-actions{flex-direction:column;align-items:stretch;}button{width:100%;}}

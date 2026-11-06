@@ -27,6 +27,7 @@ http.createServer(async(req,res)=>{
  }
 
 
+ if(req.method==='GET'&&p==='/restaurantes/7')return send(200,{id:7,nombre:'Local de prueba US26',direccion:'Dirección de prueba',activo:true,abierto:true,tieneAtencionFisica:true,aceptaDelivery:true,horaApertura:'00:00:00',horaCierre:'23:59:00'});
  if(req.method==='GET'&&(p==='/reservas'||p==='/reservas/me'||p==='/reservas/disponibilidad')){
   const calls=await pm.state.get('us26-calls')||[];calls.push({method:req.method,path:p,query:url.search,authorized:!!req.headers.authorization});await pm.state.set('us26-calls',calls);
   if(!req.headers.authorization)return send(403,{mensaje:'Acceso restringido'});

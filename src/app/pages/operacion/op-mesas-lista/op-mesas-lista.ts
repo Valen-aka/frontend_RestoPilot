@@ -1,6 +1,4 @@
 import {Component} from '@angular/core';
-/** Frame: op-mesas-lista. Responsable: Valentina Montenegro. Implementación pendiente. */
-@Component({selector:'rp-op-mesas-lista',imports:[],templateUrl:'./op-mesas-lista.html',styleUrl:'./op-mesas-lista.css'})
-export class OpMesasListaPage{
-
-}
+import {MesasView} from '../mesas-ui/mesas-view';
+@Component({selector:'rp-op-mesas-lista',imports:[MesasView],templateUrl:'./op-mesas-lista.html',styleUrl:'./op-mesas-lista.css'})
+export class OpMesasListaPage {}
