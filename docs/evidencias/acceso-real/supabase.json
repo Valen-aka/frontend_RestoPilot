@@ -1,0 +1,19 @@
+{
+  "date": "2026-11-06T18:08:40.733Z",
+  "type": "real-ui-supabase-existing-accounts",
+  "results": [
+    {
+      "role": "dueno",
+      "passed": true
+    },
+    {
+      "role": "admin",
+      "passed": true
+    },
+    {
+      "role": "cliente",
+      "passed": true
+    }
+  ],
+  "scope": "Login y consultas; sin altas ni modificaciones de datos de negocio"
+}

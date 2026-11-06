@@ -18,7 +18,7 @@
     ],
     "owner": "Francesco Meza",
     "us": "US02",
-    "status": "Implementado visualmente; integración pendiente",
+    "status": "Implementado con sesión y API reales; ver docs/QA-ACCESO-REAL.md",
     "contenidoImplementado": true
   },
   {
@@ -40,7 +40,7 @@
     ],
     "owner": "Francesco Meza",
     "us": "US02",
-    "status": "Implementado visualmente; integración pendiente",
+    "status": "Implementado con sesión y API reales; ver docs/QA-ACCESO-REAL.md",
     "contenidoImplementado": true
   },
   {
@@ -62,7 +62,7 @@
     ],
     "owner": "Francesco Meza",
     "us": "US01",
-    "status": "Implementado visualmente; integración pendiente",
+    "status": "Implementado con sesión y API reales; ver docs/QA-ACCESO-REAL.md",
     "contenidoImplementado": true
   },
   {
@@ -84,7 +84,7 @@
     ],
     "owner": "Francesco Meza",
     "us": "US21",
-    "status": "Implementado visualmente; integración pendiente",
+    "status": "Implementado con sesión y API reales; ver docs/QA-ACCESO-REAL.md",
     "contenidoImplementado": true
   },
   {
@@ -106,7 +106,7 @@
     ],
     "owner": "Francesco Meza",
     "us": "US21",
-    "status": "Implementado visualmente; integración pendiente",
+    "status": "Implementado con sesión y API reales; ver docs/QA-ACCESO-REAL.md",
     "contenidoImplementado": true
   },
   {
@@ -128,7 +128,7 @@
     ],
     "owner": "Francesco Meza",
     "us": "US21",
-    "status": "Implementado visualmente; integración pendiente",
+    "status": "Implementado con sesión y API reales; ver docs/QA-ACCESO-REAL.md",
     "contenidoImplementado": true
   },
   {
@@ -150,7 +150,7 @@
     ],
     "owner": "Francesco Meza",
     "us": "US21",
-    "status": "Implementado visualmente; integración pendiente",
+    "status": "Implementado con sesión y API reales; ver docs/QA-ACCESO-REAL.md",
     "contenidoImplementado": true
   },
   {
@@ -1011,7 +1011,7 @@
     ],
     "owner": "Francesco Meza",
     "us": "Vista de acceso a módulos operativos",
-    "status": "Implementado visualmente; integración pendiente",
+    "status": "Implementado con sesión y API reales; ver docs/QA-ACCESO-REAL.md",
     "contenidoImplementado": true
   },
   {
@@ -1033,7 +1033,7 @@
     ],
     "owner": "Francesco Meza",
     "us": "US21",
-    "status": "Implementado visualmente; integración pendiente",
+    "status": "Implementado con sesión y API reales; ver docs/QA-ACCESO-REAL.md",
     "contenidoImplementado": true
   },
   {
@@ -2088,7 +2088,7 @@
     ],
     "owner": "Francesco Meza",
     "us": "US22",
-    "status": "Implementado visualmente; integración pendiente",
+    "status": "Implementado con sesión y API reales; ver docs/QA-ACCESO-REAL.md",
     "contenidoImplementado": true
   },
   {
@@ -2110,7 +2110,7 @@
     ],
     "owner": "Francesco Meza",
     "us": "US22",
-    "status": "Implementado visualmente; integración pendiente",
+    "status": "Implementado con sesión y API reales; ver docs/QA-ACCESO-REAL.md",
     "contenidoImplementado": true
   },
   {
@@ -2132,7 +2132,7 @@
     ],
     "owner": "Francesco Meza",
     "us": "US22",
-    "status": "Implementado visualmente; integración pendiente",
+    "status": "Implementado con sesión y API reales; ver docs/QA-ACCESO-REAL.md",
     "contenidoImplementado": true
   },
   {
@@ -2154,7 +2154,7 @@
     ],
     "owner": "Francesco Meza",
     "us": "Transversal; US02 para sesión y permisos",
-    "status": "Implementado visualmente; integración pendiente",
+    "status": "Implementado con sesión y API reales; ver docs/QA-ACCESO-REAL.md",
     "contenidoImplementado": true
   },
   {

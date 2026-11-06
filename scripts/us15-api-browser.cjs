@@ -6,12 +6,12 @@ const output=path.resolve(process.env.RP_QA_OUTPUT||'artifacts/us15-api');fs.mkd
 async function control(mode='success',reset=false){const r=await fetch(mock+'/api/__test',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({mode,reset})});assert(r.ok);}
 async function calls(){return (await(await fetch(mock+'/api/__test')).json()).calls;}
 async function go(page,url){await page.evaluate(url=>{
- const host=document.querySelector('rp-cocina-view')||document.querySelector('rp-carrito-view');
+ const host=document.querySelector('rp-cocina-view')||document.querySelector('rp-carrito-view,rp-acceso');
  return ng.getComponent(host).router.navigateByUrl(url);
 },url);}
 async function login(page,correo='admin@example.test'){
- await page.goto(app+'/cliente/carrito');await page.locator('rp-carrito-view').waitFor();
- await page.evaluate(correo=>new Promise((resolve,reject)=>ng.getComponent(document.querySelector('rp-carrito-view')).auth.login({correo,password:'solo-prueba'}).subscribe({next:()=>resolve(),error:()=>reject(Error('Login de prueba falló'))})),correo);
+ await page.goto(app+'/cliente/carrito');await page.locator('rp-carrito-view,rp-acceso').waitFor();
+ await page.evaluate(correo=>new Promise((resolve,reject)=>ng.getComponent(document.querySelector('rp-carrito-view,rp-acceso')).auth.login({correo,password:'solo-prueba'}).subscribe({next:()=>resolve(),error:()=>reject(Error('Login de prueba falló'))})),correo);
  await go(page,'/operacion/pedidos');
 }
 async function ready(page){await page.getByRole('heading',{name:'Cola del restaurante',exact:true}).waitFor();await page.getByRole('button',{name:'Actualizar cola',exact:true}).waitFor();}

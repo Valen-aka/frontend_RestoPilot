@@ -1,24 +1,4 @@
-import {Component, ElementRef, inject, signal} from '@angular/core';
-import {FormControl, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
-import {RouterLink} from '@angular/router';
-import {MatInputModule} from '@angular/material/input';
-import {MatButtonModule} from '@angular/material/button';
-import {FormErrors} from '../../../components/form-errors/form-errors';
-import {fieldErrors, nonBlank, passwordBytes, validateForm} from '../auth-form.utils';
-
-@Component({selector: 'rp-acceso-error', imports: [ReactiveFormsModule, RouterLink, MatInputModule, MatButtonModule, FormErrors], templateUrl: './acceso-error.html', styleUrls: ['../../../layouts/auth-layout/auth-forms.css', './acceso-error.css']})
-export class AccesoErrorPage {
-  readonly form = new FormGroup({
-    correo: new FormControl('', {nonNullable: true, validators: [Validators.required, Validators.email, Validators.maxLength(100)]}),
-    password: new FormControl('', {nonNullable: true, validators: [Validators.required, nonBlank, passwordBytes]}),
-  });
-  readonly errors = fieldErrors;
-  readonly notice = signal('');
-  private readonly host = inject<ElementRef<HTMLElement>>(ElementRef);
-  submit() {
-    this.notice.set('');
-    if (!validateForm(this.form, this.host)) return;
-    this.notice.set('Los datos tienen un formato válido. El inicio de sesión estará disponible al conectar el servicio de autenticación.');
-    this.form.controls.password.reset();
-  }
-}
+import {Component} from '@angular/core';
+import {AccesoPage} from '../acceso/acceso';
+@Component({selector:'rp-acceso-error',imports:[AccesoPage],templateUrl:'./acceso-error.html',styleUrl:'./acceso-error.css'})
+export class AccesoErrorPage{}

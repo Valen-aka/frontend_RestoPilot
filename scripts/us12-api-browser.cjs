@@ -7,12 +7,12 @@ async function control(readMode='success',reset=true,seed=true){const r=await fe
 async function state(){return(await fetch(mock+'/api/__test')).json();}
 async function fits(page){assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth+1),false,'Desbordamiento horizontal');}
 async function loginCurrent(page){await page.evaluate(()=>new Promise((resolve,reject)=>{
- const host=document.querySelector('rp-carrito-view')||document.querySelector('rp-pedido-selection-view')||document.querySelector('rp-cliente-pedidos');
+ const host=document.querySelector('rp-carrito-view,rp-acceso')||document.querySelector('rp-pedido-selection-view')||document.querySelector('rp-cliente-pedidos');
  const c=ng.getComponent(host);c.auth.login({correo:'cliente@example.test',password:'solo-pruebas'}).subscribe({next:()=>resolve(),error:()=>reject(new Error('Falló login de prueba'))});
 }));}
-async function login(page){await page.goto(app+'/cliente/carrito');await page.locator('rp-carrito-view').waitFor();await loginCurrent(page);}
+async function login(page){await page.goto(app+'/cliente/carrito');await page.locator('rp-carrito-view,rp-acceso').waitFor();await loginCurrent(page);}
 async function go(page,url){await page.evaluate(url=>{
- const host=document.querySelector('rp-carrito-view')||document.querySelector('rp-pedido-selection-view')||document.querySelector('rp-cliente-pedidos');
+ const host=document.querySelector('rp-carrito-view,rp-acceso')||document.querySelector('rp-pedido-selection-view')||document.querySelector('rp-cliente-pedidos');
  return ng.getComponent(host).router.navigateByUrl(url);
 },url);}
 async function detail(page,id=900){await go(page,'/cliente/pedido?pedidoId='+id);await page.getByRole('heading',{name:'Pedido #'+id,exact:true}).waitFor();}
@@ -31,7 +31,7 @@ async function payment(page,id=900){await go(page,'/cliente/pago?pedidoId='+id);
  try{
   await run('US11 a detalle, pago y retorno conserva ID y total API',async page=>{
    await control('success',true,false);
-   await page.evaluate(()=>new Promise((resolve,reject)=>ng.getComponent(document.querySelector('rp-carrito-view')).store.prepareSelection(7,[{platoId:31,cantidad:2,notas:null}]).subscribe({next:resolve,error:reject})));
+   await page.evaluate(()=>new Promise((resolve,reject)=>ng.getComponent(document.querySelector('rp-carrito-view,rp-acceso')).store.prepareSelection(7,[{platoId:31,cantidad:2,notas:null}]).subscribe({next:resolve,error:reject})));
    await page.getByRole('button',{name:'Elegir cómo disfrutarlo',exact:true}).click();await page.getByRole('radio',{name:'Para llevar',exact:true}).click();
    await page.getByRole('button',{name:'Confirmar pedido',exact:true}).click();await page.getByRole('heading',{name:'Pedido #900',exact:true}).waitFor();
    await page.getByRole('link',{name:'Ver detalle de mi pedido',exact:true}).click();await page.locator('.selection-total').waitFor();

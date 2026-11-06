@@ -1,3 +1,4 @@
+import {sessionGuard} from '../../core/guards/session.guard';
 import {reservaFisicaGuard} from '../../core/guards/atencion-fisica.guard';
 import {reservaConsultaGuard} from '../../core/guards/reserva-consulta.guard';
 import {Routes} from '@angular/router';
@@ -23,4 +24,4 @@ const children:Routes=[
 {path:"notificaciones/ia",pathMatch:'full',loadComponent:()=>import('../../screen-host').then(m=>m.ScreenHost),data:{base:"/cliente/notificaciones/ia"}}
 ];
 
-export const ROUTES:Routes=[{path:'',component:ClienteLayout,children}];
+export const ROUTES:Routes=[{path:'',component:ClienteLayout,canActivateChild:[sessionGuard],children}];

@@ -1,0 +1,112 @@
+{
+  "passed": true,
+  "cases": 21,
+  "results": [
+    {
+      "name": "Carta, detalle e imagen alternativa responsive 320",
+      "width": 320,
+      "passed": true
+    },
+    {
+      "name": "Carta, detalle e imagen alternativa responsive 390",
+      "width": 390,
+      "passed": true
+    },
+    {
+      "name": "Carta, detalle e imagen alternativa responsive 768",
+      "width": 768,
+      "passed": true
+    },
+    {
+      "name": "Carta, detalle e imagen alternativa responsive 1440",
+      "width": 1440,
+      "passed": true
+    },
+    {
+      "name": "Filtro conserva categoría y regreso desde detalle",
+      "width": 1440,
+      "passed": true
+    },
+    {
+      "name": "Categoría sin platos informa vacío sin inventar productos",
+      "width": 1440,
+      "passed": true
+    },
+    {
+      "name": "Agotado permite detalle y bloquea agregar",
+      "width": 1440,
+      "passed": true
+    },
+    {
+      "name": "Plato inexistente no reutiliza un detalle anterior",
+      "width": 1440,
+      "passed": true
+    },
+    {
+      "name": "IDs inválidos explícitos no consultan otro plato",
+      "width": 1440,
+      "passed": true
+    },
+    {
+      "name": "Respuesta de otro restaurante se rechaza: foreignList",
+      "width": 1440,
+      "passed": true
+    },
+    {
+      "name": "Respuesta de otro restaurante se rechaza: foreignDetail",
+      "width": 1440,
+      "passed": true
+    },
+    {
+      "name": "Error permite reintentar sin datos de muestra",
+      "width": 1440,
+      "passed": true
+    },
+    {
+      "name": "Carta sin platos y sin restaurantes tienen estados reales",
+      "width": 1440,
+      "passed": true
+    },
+    {
+      "name": "Cantidad inválida bloquea selección",
+      "width": 1440,
+      "passed": true
+    },
+    {
+      "name": "Carta → detalle → carrito suma sin perder otros platos",
+      "width": 1440,
+      "passed": true
+    },
+    {
+      "name": "Cambio de restaurante requiere confirmación",
+      "width": 1440,
+      "passed": true
+    },
+    {
+      "name": "Disponibilidad actualizada antes del carrito impide agotados",
+      "width": 1440,
+      "passed": true
+    },
+    {
+      "name": "Local cerrado permite consultar y bloquea selección",
+      "width": 1440,
+      "passed": true
+    },
+    {
+      "name": "Cerrar sesión limpia la consulta y la selección",
+      "width": 1440,
+      "passed": true
+    },
+    {
+      "name": "Respuesta tardía de otro local no reemplaza la selección actual",
+      "width": 1440,
+      "passed": true
+    },
+    {
+      "name": "Las variantes muestran estados reales sin forzar muestras",
+      "width": 1440,
+      "passed": true
+    }
+  ],
+  "scope": "HTTP controlado; no se registran pedidos"
+}

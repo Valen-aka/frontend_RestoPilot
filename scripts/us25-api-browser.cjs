@@ -6,10 +6,10 @@ const output=path.resolve(process.env.RP_QA_OUTPUT||'artifacts/us25-api');fs.mkd
 async function control(mode='success',reset=false){const r=await fetch(mock+'/api/__test',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({mode,reset})});assert(r.ok);}
 async function calls(){return (await(await fetch(mock+'/api/__test')).json()).calls;}
 async function writes(){return (await calls()).filter(r=>r.method==='PATCH');}
-async function go(page,url){return page.evaluate(url=>ng.getComponent(document.querySelector('rp-reserva-atencion-view')||document.querySelector('rp-carrito-view')).router.navigateByUrl(url),url);}
+async function go(page,url){return page.evaluate(url=>ng.getComponent(document.querySelector('rp-reserva-atencion-view')||document.querySelector('rp-carrito-view,rp-acceso')).router.navigateByUrl(url),url);}
 async function login(page,correo='admin@example.test',url='/operacion/reserva/llegada?reservaId=800'){
- await page.goto(app+'/cliente/carrito');await page.locator('rp-carrito-view').waitFor();
- await page.evaluate(correo=>new Promise((resolve,reject)=>ng.getComponent(document.querySelector('rp-carrito-view')).auth.login({correo,password:'solo-prueba'}).subscribe({next:()=>resolve(),error:()=>reject(Error('Falló acceso sintético'))})),correo);
+ await page.goto(app+'/cliente/carrito');await page.locator('rp-carrito-view,rp-acceso').waitFor();
+ await page.evaluate(correo=>new Promise((resolve,reject)=>ng.getComponent(document.querySelector('rp-carrito-view,rp-acceso')).auth.login({correo,password:'solo-prueba'}).subscribe({next:()=>resolve(),error:()=>reject(Error('Falló acceso sintético'))})),correo);
  await go(page,url);
 }
 async function ready(page,id=800){await page.getByRole('heading',{name:'Reserva #'+id,exact:true}).waitFor();await page.getByRole('button',{name:'Actualizar reserva',exact:true}).waitFor();}

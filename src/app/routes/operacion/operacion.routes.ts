@@ -1,3 +1,4 @@
+import {sessionGuard} from '../../core/guards/session.guard';
 import {mesasPendingGuard} from '../../core/guards/mesas.guard';
 import {agendaPendingGuard} from '../../core/guards/agenda.guard';
 import {atencionPendingGuard} from '../../core/guards/atencion-fisica.guard';
@@ -47,4 +48,4 @@ const children:Routes=[
 {path:"asistente",pathMatch:'full',loadComponent:()=>import('../../screen-host').then(m=>m.ScreenHost),data:{base:"/operacion/asistente"}}
 ];
 
-export const ROUTES:Routes=[{path:'',component:AdminLayout,children}];
+export const ROUTES:Routes=[{path:'',component:AdminLayout,canActivateChild:[sessionGuard],children}];

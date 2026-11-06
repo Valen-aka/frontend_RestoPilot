@@ -10,18 +10,18 @@ async function control(mode='success',reset=true){const r=await fetch(mock+'/api
 async function state(){return (await fetch(mock+'/api/__test')).json();}
 async function fits(page){assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth+1),false,'Desbordamiento horizontal');}
 async function login(page){
- await page.goto(app+'/cliente/carrito');await page.locator('rp-carrito-view').waitFor();
+ await page.goto(app+'/cliente/carrito');await page.locator('rp-carrito-view,rp-acceso').waitFor();
  // Solo harness de desarrollo: llama al servicio real mediante el componente de US11.
  // No modifica la pantalla de acceso asignada a otra tarea ni introduce un acceso de prueba en producción.
  await page.evaluate(()=>new Promise((resolve,reject)=>{
-   const c=ng.getComponent(document.querySelector('rp-carrito-view'));
+   const c=ng.getComponent(document.querySelector('rp-carrito-view,rp-acceso'));
    c.auth.login({correo:'cliente@example.test',password:'solo-pruebas'}).subscribe({next:()=>resolve(),error:()=>reject(new Error('Falló el login de prueba'))});
  }));
 }
 async function prepare(page,modality='LLEVAR'){
- await login(page);
+ await login(page);await page.evaluate(()=>ng.getComponent(document.querySelector('rp-acceso')).router.navigateByUrl('/cliente/carrito'));await page.locator('rp-carrito-view').waitFor();
  await page.evaluate(()=>new Promise((resolve,reject)=>{
-   const c=ng.getComponent(document.querySelector('rp-carrito-view'));
+   const c=ng.getComponent(document.querySelector('rp-carrito-view,rp-acceso'));
    c.store.prepareSelection(7,[{platoId:31,cantidad:2,notas:null}]).subscribe({next:()=>resolve(),error:()=>reject(new Error('Falló la selección HTTP'))});
  }));
  await page.getByLabel('Cantidad de Plato de prueba',{exact:true}).waitFor();
@@ -82,16 +82,16 @@ async function prepare(page,modality='LLEVAR'){
    });
    await run('401 retira la sesión y el borrador',async page=>{
      await prepare(page);await control('unauthorized');await page.getByRole('button',{name:'Confirmar pedido',exact:true}).click();
-     await page.getByRole('link',{name:'Ir al inicio de sesión',exact:true}).waitFor();
+     await page.waitForURL(/\/auth\/login/);
      assert.equal(await page.locator('rp-carrito-table').count(),0);
    });
    await run('logout y recarga retiran la sesión, sin credenciales persistidas',async page=>{
      await prepare(page);
      assert.deepEqual(await page.evaluate(()=>({local:Object.keys(localStorage),session:Object.keys(sessionStorage)})),{local:[],session:[]});
-     await page.evaluate(()=>ng.getComponent(document.querySelector('rp-carrito-view')).auth.logout());
-     await page.getByRole('link',{name:'Ir al inicio de sesión',exact:true}).waitFor();
+     await page.evaluate(()=>ng.getComponent(document.querySelector('rp-carrito-view,rp-acceso')).auth.logout());
+     await page.waitForURL(/\/auth\/login/);
      assert.equal(await page.locator('rp-carrito-table').count(),0);
-     await login(page);await page.reload();await page.getByRole('link',{name:'Ir al inicio de sesión',exact:true}).waitFor();
+     await login(page);await page.reload();await page.waitForURL(/\/auth\/login/);
    },390);
    fs.writeFileSync(path.join(output,'results.json'),JSON.stringify(results,null,2));console.log(results.length+' recorridos HTTP simulados correctos.');
  }finally{await browser.close();}
