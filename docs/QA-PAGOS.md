@@ -110,3 +110,15 @@ no sustituyen esa aceptación. La interpretación de US28-CA02 sobre notificar
 ajustes de contenido sigue documentada; no se amplió el backend sin acuerdo.
 
 Resultado de navegador de esta funcionalidad: `evidencias/pagos-api/resultado.json`.
+
+
+### Actualizacion antes de publicar los PR
+
+Se incorporo develop 79cbc9b, con reservas, mejoras visuales y transporte
+Supabase directo. Se reutiliza el interceptor comun sin restaurar la API Spring
+como requisito de ejecucion. Las verificaciones historicas anteriores conservan
+su alcance y transporte; no equivalen a una nueva ejecucion real en Supabase.
+
+Validacion conjunta posterior a esta actualizacion: checker y build aprobados;
+271 pruebas frontend aprobadas, sin fallos. Las nuevas regresiones US28
+cubren el formato de lista y la integracion servicio/interceptor RPC.
