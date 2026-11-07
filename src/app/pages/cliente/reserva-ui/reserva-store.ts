@@ -18,6 +18,8 @@ function inferirZona(numero: number, coordX?: number): 'Terraza' | 'Salón Princ
   return 'Zona VIP';
 }
 
+import {getFechaLima} from './reserva-date.util';
+
 const MESAS_INICIALES: MesaPlano[] = [
   { id: 1, numero: 'Mesa 01', capacidad: 2, zona: 'Terraza', disponible: true, x: 10, y: 15 },
   { id: 2, numero: 'Mesa 02', capacidad: 2, zona: 'Terraza', disponible: true, x: 30, y: 15 },
@@ -137,7 +139,7 @@ export class ReservaStore {
 
   // Inicializa sin mesa preseleccionada de muestra (US06 - 026)
   readonly draft = signal<ReservaDraft>({
-    fecha: new Date().toISOString().split('T')[0],
+    fecha: getFechaLima(),
     horaInicio: '13:30',
     horaFin: '15:00',
     comensales: 4,

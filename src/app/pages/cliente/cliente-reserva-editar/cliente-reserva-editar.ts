@@ -11,6 +11,7 @@ import {ReservaStore} from '../reserva-ui/reserva-store';
 import {ReservaService} from '../../../core/services/reserva.service';
 import {ReservaItem} from '../reserva-ui/reserva.model';
 import {ReservaRequest} from '../../../core/models/reserva-api.model';
+import {getFechaLima, getHoraLima} from '../reserva-ui/reserva-date.util';
 
 /**
  * Frame: cliente-reserva-editar | "Cambiemos el plan"
@@ -40,29 +41,13 @@ export class ClienteReservaEditarPage implements OnInit {
   private readonly route = inject(ActivatedRoute);
 
   readonly cargando = signal(false);
-  readonly hoy = new Date().toISOString().split('T')[0];
+  readonly hoy = getFechaLima();
+  readonly reservaReal = signal<ReservaItem | null>(null);
 
-  readonly horasDisponibles = [
-    '12:30', '13:00', '13:30', '14:00', '14:30', '15:00',
-    '19:00', '19:30', '20:00', '20:30', '21:00', '21:30'
-  ];
-
-  readonly reserva = computed<ReservaItem | null>(() => {
-    const nav = this.router.getCurrentNavigation();
-    const stateId = (nav?.extras.state as { reservaId?: number })?.reservaId;
-    const qIdRaw = this.route.snapshot.queryParamMap.get('id');
-    const qId = qIdRaw && /^[1-9]\d*$/.test(qIdRaw) ? Number(qIdRaw) : undefined;
-    const targetId = stateId || qId;
-
-    if (targetId) {
-      return this.store.obtenerReservaPorId(targetId) ?? null;
-    }
-
-    return null;
-  });
+  readonly reserva = computed<ReservaItem | null>(() => this.reservaReal());
 
   readonly form0 = new FormGroup({
-    fecha: new FormControl('2026-11-06', { nonNullable: true, validators: [Validators.required] }),
+    fecha: new FormControl(this.hoy, { nonNullable: true, validators: [Validators.required] }),
     horaInicio: new FormControl('14:00', { nonNullable: true, validators: [Validators.required] }),
     horaFin: new FormControl('15:30', { nonNullable: true, validators: [Validators.required] }),
     comensales: new FormControl(4, { nonNullable: true, validators: [Validators.required, Validators.min(1), Validators.max(12)] }),
@@ -73,10 +58,17 @@ export class ClienteReservaEditarPage implements OnInit {
   enviado = false;
 
   ngOnInit() {
-    const qId = Number(this.route.snapshot.queryParamMap.get('id'));
-    if (qId && !this.store.obtenerReservaPorId(qId)) {
-      this.store.cargarReservaPorId(qId).subscribe(r => {
-        if (r) {
+    const qIdRaw = this.route.snapshot.queryParamMap.get('id');
+    const qId = qIdRaw && /^[1-9]\d*$/.test(qIdRaw) ? Number(qIdRaw) : undefined;
+
+    if (qId) {
+      this.cargando.set(true);
+      // US08 - 050: Cargar la reserva real por ID directamente de la API sin reutilizar muestras
+      this.reservaService.obtener(qId).subscribe({
+        next: (res) => {
+          this.cargando.set(false);
+          const r = this.store.incorporarReservaCreada(res);
+          this.reservaReal.set(r);
           this.form0.patchValue({
             fecha: r.fecha,
             horaInicio: r.horaInicio,
@@ -84,23 +76,29 @@ export class ClienteReservaEditarPage implements OnInit {
             comensales: r.comensales,
             notas: r.notas || ''
           });
+        },
+        error: () => {
+          this.cargando.set(false);
+          const local = this.store.obtenerReservaPorId(qId);
+          if (local) {
+            this.reservaReal.set(local);
+            this.form0.patchValue({
+              fecha: local.fecha,
+              horaInicio: local.horaInicio,
+              horaFin: local.horaFin,
+              comensales: local.comensales,
+              notas: local.notas || ''
+            });
+          } else {
+            this.mensajeError = 'No se pudo cargar la información de la reserva a modificar.';
+          }
         }
       });
-    } else {
-      const r = this.reserva();
-      if (r) {
-        this.form0.patchValue({
-          fecha: r.fecha,
-          horaInicio: r.horaInicio,
-          horaFin: r.horaFin,
-          comensales: r.comensales,
-          notas: r.notas || ''
-        });
-      }
     }
   }
 
   onHoraInicioChange(hora: string) {
+    if (!hora || !hora.includes(':')) return;
     const [h, m] = hora.split(':').map(Number);
     const finH = h + 1;
     const finM = m + 30;
@@ -131,10 +129,9 @@ export class ClienteReservaEditarPage implements OnInit {
     }
 
     if (val.fecha === this.hoy) {
-      const ahora = new Date();
-      const horaActual = `${String(ahora.getHours()).padStart(2, '0')}:${String(ahora.getMinutes()).padStart(2, '0')}`;
+      const horaActual = getHoraLima();
       if (val.horaInicio < horaActual) {
-        this.mensajeError = 'La hora de inicio no puede ser anterior a la hora actual.';
+        this.mensajeError = 'La hora de inicio no puede ser anterior a la hora actual de Lima.';
         return;
       }
     }
@@ -153,7 +150,7 @@ export class ClienteReservaEditarPage implements OnInit {
 
     this.cargando.set(true);
 
-    // US08 (049 y 050): Consultar disponibilidad real para el nuevo horario antes de confirmar
+    // US08 (049 y 050): Consultar disponibilidad real contemplando la propia reserva
     this.reservaService.consultarDisponibilidadDirecta(
       restauranteId,
       val.fecha,
@@ -162,19 +159,30 @@ export class ClienteReservaEditarPage implements OnInit {
       Number(val.comensales)
     ).subscribe({
       next: (disp) => {
-        const mesasAptas = disp.mesas.filter(m => m.disponible && m.capacidad >= Number(val.comensales));
+        // Comprobar la propia mesa de la reserva
+        const propiaMesaInfo = disp.mesas.find(m => m.mesaId === r.mesaId);
+        // Si es la misma reserva, su propia mesa no debe bloquear el cambio siempre que el aforo alcance
+        const mismaMesaValida = propiaMesaInfo ? propiaMesaInfo.capacidad >= Number(val.comensales) : true;
+
+        const mesasAptas = disp.mesas.filter(m => (m.disponible || m.mesaId === r.mesaId) && m.capacidad >= Number(val.comensales));
         if (mesasAptas.length === 0) {
           this.cargando.set(false);
-          this.mensajeError = `No hay disponibilidad de mesas en el horario ${val.horaInicio} - ${val.horaFin} para ${val.comensales} personas. Por favor elige otro horario.`;
+          this.mensajeError = `No hay disponibilidad en el horario ${val.horaInicio} - ${val.horaFin} para ${val.comensales} personas. Elige otro horario.`;
           return;
         }
 
-        // Si la mesa original está libre en el nuevo horario la mantiene; de lo contrario toma una mesa libre apta
-        const mesaActualLibre = disp.mesas.find(m => m.mesaId === r.mesaId && m.disponible);
-        const mesaAsignada = mesaActualLibre ? r.mesaId : mesasAptas[0].mesaId;
+        // US08 - 050: Conservar la selección válida de mesa y evitar seleccionar otra mesa automáticamente
+        if (!mismaMesaValida) {
+          this.cargando.set(false);
+          this.mensajeError = `La mesa actual (${r.mesaNumero}) no tiene capacidad para ${val.comensales} personas.`;
+          return;
+        }
+
+        // Conserva estrictamente la mesa original del usuario (no la cambia a espaldas del cliente)
+        const mesaElegidaId = r.mesaId;
 
         const request: ReservaRequest = {
-          mesaId: mesaAsignada,
+          mesaId: mesaElegidaId,
           restauranteId,
           fecha: val.fecha,
           horaInicio: val.horaInicio,

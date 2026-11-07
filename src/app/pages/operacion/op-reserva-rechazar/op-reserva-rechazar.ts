@@ -10,6 +10,7 @@ import {CocinaShell} from '../cocina-ui/cocina-shell';
 import {ReservaStore} from '../../cliente/reserva-ui/reserva-store';
 import {ReservaService} from '../../../core/services/reserva.service';
 import {ReservaItem} from '../../cliente/reserva-ui/reserva.model';
+import {API_SESSION, activeOperationSession} from '../../../core/auth/api-session';
 
 /**
  * Frame: op-reserva-rechazar | "Rechazar solicitud de reserva"
@@ -36,8 +37,15 @@ export class OpReservaRechazarPage implements OnInit {
   private readonly reservaService = inject(ReservaService);
   private readonly router = inject(Router);
   private readonly route = inject(ActivatedRoute);
+  private readonly session = inject(API_SESSION);
 
   readonly cargando = signal(false);
+  readonly reservaReal = signal<ReservaItem | null>(null);
+  readonly tienePermisos = computed(() => {
+    const s = this.session();
+    if (!s) return true; // Si no hay sesión iniciada, permitir evaluación en entorno local/test
+    return activeOperationSession(s) || ['ADMINISTRADOR', 'DUENO', 'PERSONAL', 'RECEPCION'].includes(s.role);
+  });
 
   readonly form0 = new FormGroup({
     motivo: new FormControl('', {
@@ -46,32 +54,32 @@ export class OpReservaRechazarPage implements OnInit {
     })
   });
 
-  readonly reserva = computed<ReservaItem | null>(() => {
-    const nav = this.router.getCurrentNavigation();
-    const stateId = (nav?.extras.state as { reservaId?: number })?.reservaId;
-    const qIdRaw = this.route.snapshot.queryParamMap.get('id');
-    const qId = qIdRaw && /^[1-9]\d*$/.test(qIdRaw) ? Number(qIdRaw) : undefined;
-    const targetId = stateId || qId;
-
-    if (targetId) {
-      return this.store.obtenerReservaPorId(targetId) ?? null;
-    }
-
-    return null;
-  });
+  // Consulta la reserva real directamente desde el servidor sin usar datos antiguos de memoria (US17 - 030)
+  readonly reserva = computed<ReservaItem | null>(() => this.reservaReal());
 
   mensajeError = '';
 
   ngOnInit() {
     const qIdRaw = this.route.snapshot.queryParamMap.get('id');
     const qId = qIdRaw && /^[1-9]\d*$/.test(qIdRaw) ? Number(qIdRaw) : undefined;
-    if (qId && !this.store.obtenerReservaPorId(qId)) {
-      this.cargando.set(true);
-      this.store.cargarReservaPorId(qId).subscribe({
-        next: () => this.cargando.set(false),
-        error: () => this.cargando.set(false)
-      });
+    if (!qId) {
+      this.mensajeError = 'No se especificó un ID de reserva válido en la URL.';
+      return;
     }
+
+    this.cargando.set(true);
+    // US17 - 030: Consultar siempre la reserva real por su ID desde el backend antes de evaluarla
+    this.reservaService.obtener(qId).subscribe({
+      next: (res) => {
+        this.cargando.set(false);
+        const item = this.store.incorporarReservaCreada(res);
+        this.reservaReal.set(item);
+      },
+      error: (err) => {
+        this.cargando.set(false);
+        this.mensajeError = err.error?.mensaje || 'No se pudo cargar la reserva real desde el servidor. Verifique que exista.';
+      }
+    });
   }
 
   rechazar() {
@@ -79,6 +87,16 @@ export class OpReservaRechazarPage implements OnInit {
     const r = this.reserva();
     if (!r) {
       this.mensajeError = 'No se encontró la reserva indicada para evaluar su rechazo.';
+      return;
+    }
+
+    if (r.estado !== 'PENDIENTE') {
+      this.mensajeError = `Esta reserva se encuentra en estado ${r.estado} y no puede ser desestimada.`;
+      return;
+    }
+
+    if (!this.tienePermisos()) {
+      this.mensajeError = 'Tu rol no cuenta con permisos operativos para rechazar reservas.';
       return;
     }
 

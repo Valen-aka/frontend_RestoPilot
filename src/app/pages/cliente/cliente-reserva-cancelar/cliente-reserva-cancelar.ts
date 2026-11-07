@@ -42,6 +42,7 @@ export class ClienteReservaCancelarPage implements OnInit {
 
   readonly cargando = signal(false);
   readonly errorMsg = signal<string | null>(null);
+  readonly reservaReal = signal<ReservaItem | null>(null);
 
   readonly form0 = new FormGroup({
     motivo: new FormControl('', {
@@ -50,24 +51,25 @@ export class ClienteReservaCancelarPage implements OnInit {
     })
   });
 
-  readonly reserva = computed<ReservaItem | null>(() => {
-    const nav = this.router.getCurrentNavigation();
-    const stateId = (nav?.extras.state as { reservaId?: number })?.reservaId;
-    const qIdRaw = this.route.snapshot.queryParamMap.get('id');
-    const qId = qIdRaw && /^[1-9]\d*$/.test(qIdRaw) ? Number(qIdRaw) : undefined;
-    const targetId = stateId || qId;
-
-    if (targetId) {
-      return this.store.obtenerReservaPorId(targetId) ?? null;
-    }
-
-    return null;
-  });
+  // US09 - 052: Carga la reserva real antes de cancelar, sin reutilizar muestras ni datos de otra sesión
+  readonly reserva = computed<ReservaItem | null>(() => this.reservaReal());
 
   ngOnInit() {
-    const qId = Number(this.route.snapshot.queryParamMap.get('id'));
-    if (qId && !this.store.obtenerReservaPorId(qId)) {
-      this.store.cargarReservaPorId(qId).subscribe();
+    const qIdRaw = this.route.snapshot.queryParamMap.get('id');
+    const qId = qIdRaw && /^[1-9]\d*$/.test(qIdRaw) ? Number(qIdRaw) : undefined;
+    if (qId) {
+      this.cargando.set(true);
+      this.reservaService.obtener(qId).subscribe({
+        next: (res) => {
+          this.cargando.set(false);
+          const item = this.store.incorporarReservaCreada(res);
+          this.reservaReal.set(item);
+        },
+        error: (err) => {
+          this.cargando.set(false);
+          this.errorMsg.set(err.error?.mensaje || 'No se pudo cargar la reserva real desde el servidor.');
+        }
+      });
     }
   }
 
