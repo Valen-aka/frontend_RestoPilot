@@ -1,11 +1,22 @@
-<rp-workspace-shell [role]="role" breadcrumb="Notificaciones" active="notificaciones">
+<rp-workspace-shell [role]="role()" breadcrumb="Notificaciones" active="notificaciones">
   <header class="page-heading"><p class="eyebrow">Notificaciones</p><h1>La actividad de tu cuenta</h1><p class="subtitle">Pedidos y reservas, al día.</p></header>
-  @if (initialEmpty) {
-    <section class="panel empty-result" aria-live="polite"><h2>No tienes notificaciones</h2><p>Cuando haya novedades sobre tus pedidos y reservas, aparecerán aquí.</p></section>
-  } @else {
+  <div aria-live="polite" aria-atomic="true">
+    @if(store.state()==='loading'){<p role="status" aria-busy="true">Consultando tus notificaciones…</p>}
+    @if(store.state()==='empty'){<section class="panel empty-result"><h2>No tienes notificaciones</h2><p>Los mensajes dirigidos a tu cuenta aparecerán aquí.</p><button mat-stroked-button type="button" (click)="store.load(0)">Actualizar</button></section>}
+  </div>
+  @if(store.state()==='unauthenticated') {
+    <section class="panel" role="alert"><h2>Inicia sesión para consultar tus notificaciones</h2><a mat-flat-button routerLink="/auth/login">Ir al acceso</a></section>
+  } @else if(store.state()==='forbidden') {
+    <section class="panel" role="alert"><h2>Acceso restringido</h2><p>El servidor no permitió consultar esta bandeja.</p><button mat-stroked-button type="button" (click)="store.load()">Reintentar consulta</button><a mat-button routerLink="/auth/login">Volver al acceso</a></section>
+  } @else if(store.state()==='not-found') {
+    <section class="panel" role="alert"><h2>La consulta no está disponible</h2><p>El servidor no encontró el recurso solicitado.</p><button mat-stroked-button type="button" (click)="store.load()">Reintentar consulta</button></section>
+  } @else if(store.state()==='error') {
+    <section class="panel" role="alert"><h2>No pudimos mostrar tus notificaciones</h2><p>{{store.problem()}}</p><button mat-stroked-button type="button" (click)="store.load()">Reintentar consulta</button></section>
+  } @else if(store.state()==='ready') {
     <section class="panel" aria-labelledby="activity-title"><h2 id="activity-title">Notificaciones recientes</h2>
-      <ul class="notifications">@for (message of visible(); track message.id) {<li><p class="hint">{{message.id}} · {{message.fecha}}</p><p>{{message.texto}}</p></li>}</ul>
-      <mat-paginator [length]="messages.length" [pageSize]="3" [pageIndex]="page()" [hidePageSize]="true" aria-label="Páginas de notificaciones" (page)="changePage($event)" />
+      <ul class="notifications">@for (message of store.messages(); track message.id) {<li><p class="hint">#{{message.id}} · <time [attr.datetime]="message.fechaCreacion">{{date(message.fechaCreacion)}}</time></p><p>{{message.mensaje}}</p></li>}</ul>
+      <mat-paginator [length]="store.total()" [pageSize]="store.size()" [pageIndex]="store.page()" [pageSizeOptions]="[5,10,20]" [showFirstLastButtons]="true" aria-label="Páginas de notificaciones" (page)="changePage($event)" />
+      <button mat-button type="button" (click)="store.load()">Actualizar notificaciones</button>
     </section>
   }
 </rp-workspace-shell>
