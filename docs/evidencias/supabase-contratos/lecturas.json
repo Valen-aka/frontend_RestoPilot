@@ -1,0 +1,66 @@
+{
+  "date": "2026-11-07T01:58:18.586Z",
+  "scope": "Consultas reales de solo lectura comparadas con los validadores de Angular",
+  "results": [
+    {
+      "name": "Estado de atención para cliente",
+      "passed": true
+    },
+    {
+      "name": "Estado de atención para operación",
+      "passed": true
+    },
+    {
+      "name": "Disponibilidad con mesas reales",
+      "passed": true
+    },
+    {
+      "name": "Reservas propias y detalle",
+      "passed": true
+    },
+    {
+      "name": "Agenda administrativa",
+      "passed": true
+    },
+    {
+      "name": "Categorías",
+      "passed": true
+    },
+    {
+      "name": "Mesas administrativas",
+      "passed": true
+    },
+    {
+      "name": "Pedidos propios, detalle y pago",
+      "passed": true
+    },
+    {
+      "name": "Cola de cocina",
+      "passed": true
+    },
+    {
+      "name": "Reporte CONSOLIDADO",
+      "passed": true
+    },
+    {
+      "name": "Reporte PLATOS",
+      "passed": true
+    },
+    {
+      "name": "Reporte DEMANDA",
+      "passed": true
+    },
+    {
+      "name": "Reporte ATENCIONES",
+      "passed": true
+    },
+    {
+      "name": "Reporte OCUPACION",
+      "passed": true
+    },
+    {
+      "name": "Reporte PAGOS",
+      "passed": true
+    }
+  ]
+}
