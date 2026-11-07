@@ -1,0 +1,29 @@
+{
+  "date": "2026-11-07T02:10:47.646Z",
+  "type": "real-public-signup-awaiting-mailbox-confirmation",
+  "settings": {
+    "emailEnabled": true,
+    "signupDisabled": false,
+    "automaticEmailConfirmation": false
+  },
+  "results": [
+    {
+      "role": "CLIENTE",
+      "status": 200,
+      "emailPending": true,
+      "loginStatus": 400,
+      "loginCode": "email_not_confirmed",
+      "blockedUntilConfirmation": true
+    },
+    {
+      "role": "DUENO",
+      "status": 200,
+      "emailPending": true,
+      "loginStatus": 400,
+      "loginCode": "email_not_confirmed",
+      "blockedUntilConfirmation": true
+    }
+  ],
+  "mailboxDeliveryVerified": false,
+  "confirmationClickVerified": false
+}
