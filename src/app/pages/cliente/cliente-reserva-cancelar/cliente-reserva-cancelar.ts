@@ -1,4 +1,4 @@
-import {Component, computed, inject} from '@angular/core';
+import {Component, computed, inject, OnInit, signal} from '@angular/core';
 import {FormControl, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
 import {ActivatedRoute, Router, RouterLink} from '@angular/router';
 import {MatButtonModule} from '@angular/material/button';
@@ -8,13 +8,14 @@ import {MatInputModule} from '@angular/material/input';
 import {MatDialog, MatDialogModule} from '@angular/material/dialog';
 import {MatIconModule} from '@angular/material/icon';
 import {ReservaStore} from '../reserva-ui/reserva-store';
+import {ReservaService} from '../../../core/services/reserva.service';
 import {ReservaItem} from '../reserva-ui/reserva.model';
 import {ClienteReservaCancelarDialog} from '../../../dialogs/cliente-reserva-cancelar/cliente-reserva-cancelar-dialog';
 
 /**
  * Frame: cliente-reserva-cancelar | "¿Seguro que deseas cancelar?"
  * Responsable: Cristian Condori
- * US09: Anulación voluntaria de reserva con motivo opcional (hasta 300 caracteres).
+ * US09: Anulación voluntaria de reserva con motivo opcional conectada a la API (PATCH /api/reservas/{id}/cancelar).
  * Regla de negocio: Permitida si faltan más de 2 horas. Si faltan <= 2 horas, se bloquea y deriva a recepción.
  */
 @Component({
@@ -32,11 +33,15 @@ import {ClienteReservaCancelarDialog} from '../../../dialogs/cliente-reserva-can
   templateUrl: './cliente-reserva-cancelar.html',
   styleUrls: ['../reserva-ui/reserva-view.css', './cliente-reserva-cancelar.css']
 })
-export class ClienteReservaCancelarPage {
+export class ClienteReservaCancelarPage implements OnInit {
   readonly store = inject(ReservaStore);
+  private readonly reservaService = inject(ReservaService);
   private readonly router = inject(Router);
   private readonly route = inject(ActivatedRoute);
   private readonly dialog = inject(MatDialog);
+
+  readonly cargando = signal(false);
+  readonly errorMsg = signal<string | null>(null);
 
   readonly form0 = new FormGroup({
     motivo: new FormControl('', {
@@ -60,13 +65,19 @@ export class ClienteReservaCancelarPage {
     return cancelable || this.store.reservas()[0];
   });
 
+  ngOnInit() {
+    const qId = Number(this.route.snapshot.queryParamMap.get('id'));
+    if (qId && !this.store.obtenerReservaPorId(qId)) {
+      this.store.cargarReservaPorId(qId).subscribe();
+    }
+  }
+
   /**
    * Determina si la reserva cumple la regla de más de 2 horas de anticipación.
    */
   readonly esAnticipacionValida = computed<boolean>(() => {
     const r = this.reserva();
     if (!r) return false;
-    // Si la reserva es de hoy o fecha futura, calculamos la diferencia
     try {
       const [year, month, day] = r.fecha.split('-').map(Number);
       const [hours, minutes] = r.horaInicio.split(':').map(Number);
@@ -86,7 +97,8 @@ export class ClienteReservaCancelarPage {
     // Regla US09: Si faltan 2 horas o menos, derivar a vista de bloqueo
     if (!this.esAnticipacionValida()) {
       this.router.navigate(['/cliente/reserva/cancelar'], {
-        queryParams: { vista: 'cliente-reserva-cancelacion-bloqueada', id: r.id }
+        queryParams: { vista: 'cliente-reserva-cancelacion-bloqueada', id: r.id },
+        queryParamsHandling: 'merge'
       });
       return;
     }
@@ -99,10 +111,30 @@ export class ClienteReservaCancelarPage {
     dialogRef.afterClosed().subscribe((confirmado: boolean) => {
       if (confirmado) {
         const motivo = this.form0.controls.motivo.value.trim();
-        this.store.cancelarReserva(r.id, motivo);
-        this.router.navigate(['/cliente/reserva'], {
-          queryParams: { vista: 'cliente-reserva-cancelada', id: r.id },
-          state: { reservaId: r.id }
+        this.cargando.set(true);
+        this.errorMsg.set(null);
+        this.reservaService.cancelarCliente(r.id, motivo).subscribe({
+          next: (res) => {
+            this.cargando.set(false);
+            this.store.incorporarReservaCreada(res);
+            this.router.navigate(['/cliente/reserva'], {
+              queryParams: { vista: 'cliente-reserva-cancelada', id: r.id },
+              state: { reservaId: r.id },
+              queryParamsHandling: 'merge'
+            });
+          },
+          error: (err) => {
+            this.cargando.set(false);
+            const msg = err.error?.mensaje || (err.status === 0 ? 'No se pudo conectar con el servidor (localhost:8081).' : (err.message || 'No se pudo cancelar la reserva.'));
+            if (typeof msg === 'string' && (msg.includes('2 horas') || msg.includes('anticipación'))) {
+              this.router.navigate(['/cliente/reserva/cancelar'], {
+                queryParams: { vista: 'cliente-reserva-cancelacion-bloqueada', id: r.id },
+                queryParamsHandling: 'merge'
+              });
+            } else {
+              this.errorMsg.set(msg);
+            }
+          }
         });
       }
     });
@@ -111,7 +143,8 @@ export class ClienteReservaCancelarPage {
   simularBloqueo2Horas() {
     const r = this.reserva();
     this.router.navigate(['/cliente/reserva/cancelar'], {
-      queryParams: { vista: 'cliente-reserva-cancelacion-bloqueada', id: r?.id }
+      queryParams: { vista: 'cliente-reserva-cancelacion-bloqueada', id: r?.id },
+      queryParamsHandling: 'merge'
     });
   }
 }

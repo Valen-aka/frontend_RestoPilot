@@ -85,6 +85,6 @@ test('error de refresco conserva fechas con lectura anterior y bloquea mutacione
 test('servicio usa GET y dos PATCH específicos, cuerpo nulo y estado HTTP 200',()=>{
  const requests=[],injector=createEnvironmentInjector([{provide:HttpClient,useValue:{get(url,options){requests.push({url,options});return of(reservation());},patch(url,body,options){requests.push({url,body,options});return of({status:200,body:url.endsWith('/llegada')?arrived():completed()});}}}],null);
  try{const api=runInInjectionContext(injector,()=>new ReservaService());api.obtener(800).subscribe();api.registrarLlegada(800).subscribe();api.completar(800).subscribe();
-  assert(requests[0].url.endsWith('/api/reservas/800'));assert(requests[1].url.endsWith('/reservas/800/llegada'));assert(requests[2].url.endsWith('/reservas/800/completar'));assert.equal(requests[1].body,null);assert.equal(requests[2].body,null);
+  assert(requests[0].url.endsWith('/restopilot-api/reservas/800'));assert(requests[1].url.endsWith('/reservas/800/llegada'));assert(requests[2].url.endsWith('/reservas/800/completar'));assert.equal(requests[1].body,null);assert.equal(requests[2].body,null);
  }finally{injector.destroy();}
 });

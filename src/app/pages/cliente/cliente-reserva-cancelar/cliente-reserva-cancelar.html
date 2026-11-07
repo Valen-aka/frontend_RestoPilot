@@ -63,6 +63,12 @@
             salón para liberar tu mesa asignada.</p>
         </div>
 
+        @if (errorMsg()) {
+          <div class="sample-notice error-alert" role="alert" style="background:#fee2e2;color:#991b1b;border:1px solid #f87171;padding:12px 16px;border-radius:8px;margin-bottom:16px;">
+            <strong>Error:</strong> {{ errorMsg() }}
+          </div>
+        }
+
         <!-- Acciones -->
         <div class="form-actions border-top">
           <a mat-stroked-button routerLink="/cliente/reservas" class="btn-secondary">
@@ -71,8 +77,8 @@
           <button mat-button type="button" class="btn-simulate" (click)="simularBloqueo2Horas()">
             Simular regla &le; 2 horas
           </button>
-          <button mat-flat-button color="warn" type="button" class="btn-danger" (click)="abrirDialogoCancelacion()">
-            Sí, cancelar reserva
+          <button mat-flat-button color="warn" type="button" class="btn-danger" [disabled]="cargando()" (click)="abrirDialogoCancelacion()">
+            {{ cargando() ? 'Cancelando...' : 'Sí, cancelar reserva' }}
           </button>
         </div>
       </form>

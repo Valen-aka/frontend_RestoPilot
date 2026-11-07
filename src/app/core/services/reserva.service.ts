@@ -5,7 +5,7 @@ import {HttpClient, HttpParams} from '@angular/common/http';
 import {map, Observable} from 'rxjs';
 import {environment} from '../../../environments/environment';
 import {ReservaList, ReservaDisponibilidad, readReservaList, readReservaDisponibilidad} from '../models/reserva-query.model';
-import {readReserva, ReservaContractError, ReservaResponse} from '../models/reserva-api.model';
+import {readReserva, ReservaContractError, ReservaResponse, ReservaRequest, parseReservaId, reservaTime} from '../models/reserva-api.model';
 
 @Injectable({providedIn:'root'})
 export class ReservaService {
@@ -24,6 +24,58 @@ export class ReservaService {
     const params=new HttpParams().set('restauranteId',r.restauranteId).set('fecha',r.fecha)
       .set('horaInicio',r.horaInicio).set('horaFin',r.horaFin).set('numeroComensales',r.numeroComensales);
     return this.http.get<unknown>(this.url+'/disponibilidad',{params,timeout:20000}).pipe(map(readReservaDisponibilidad));
+  }
+  consultarDisponibilidadDirecta(restauranteId:number,fecha:string,horaInicio:string,horaFin:string,numeroComensales:number):Observable<ReservaDisponibilidad> {
+    const params=new HttpParams().set('restauranteId',restauranteId).set('fecha',fecha)
+      .set('horaInicio',reservaTime(horaInicio)).set('horaFin',reservaTime(horaFin)).set('numeroComensales',numeroComensales);
+    return this.http.get<unknown>(this.url+'/disponibilidad',{params,timeout:20000}).pipe(map(readReservaDisponibilidad));
+  }
+  registrarReserva(request:ReservaRequest):Observable<ReservaResponse> {
+    const payload={
+      mesaId:request.mesaId,
+      restauranteId:request.restauranteId,
+      fecha:request.fecha,
+      horaInicio:reservaTime(request.horaInicio),
+      horaFin:reservaTime(request.horaFin),
+      numeroComensales:request.numeroComensales,
+      notas:request.notas?request.notas.trim():null
+    };
+    return this.http.post<unknown>(this.url,payload,{observe:'response',timeout:20000}).pipe(map(response=>{
+      if(response.status!==201)throw new ReservaContractError();
+      const body=response.body as {id?:unknown};
+      const id=parseReservaId(body?.id);
+      if(!id)throw new ReservaContractError();
+      return readReserva(response.body,id);
+    }));
+  }
+  modificarCliente(id:number,request:ReservaRequest):Observable<ReservaResponse> {
+    const payload={
+      mesaId:request.mesaId,
+      restauranteId:request.restauranteId,
+      fecha:request.fecha,
+      horaInicio:reservaTime(request.horaInicio),
+      horaFin:reservaTime(request.horaFin),
+      numeroComensales:request.numeroComensales,
+      notas:request.notas?request.notas.trim():null
+    };
+    return this.http.put<unknown>(this.url+'/'+id,payload,{observe:'response',timeout:20000}).pipe(map(response=>{
+      if(response.status!==200)throw new ReservaContractError();
+      return readReserva(response.body,id);
+    }));
+  }
+  cancelarCliente(id:number,motivo?:string):Observable<ReservaResponse> {
+    const body=motivo&&motivo.trim().length>0?{motivo:motivo.trim()}:{};
+    return this.http.patch<unknown>(this.url+'/'+id+'/cancelar',body,{observe:'response',timeout:20000}).pipe(map(response=>{
+      if(response.status!==200)throw new ReservaContractError();
+      return readReserva(response.body,id);
+    }));
+  }
+  evaluarPorId(id:number,estado:'CONFIRMADA'|'RECHAZADA',motivo?:string|null):Observable<ReservaResponse> {
+    const body={estado,motivo:motivo&&motivo.trim().length>0?motivo.trim():null};
+    return this.http.patch<unknown>(this.url+'/'+id+'/estado',body,{observe:'response',timeout:20000}).pipe(map(response=>{
+      if(response.status!==200)throw new ReservaContractError();
+      return readReserva(response.body,id);
+    }));
   }
   moduloPropio(restaurantId:number):Observable<AtencionFisicaResponse> {
     return this.http.get<unknown>(this.url+'/modulo/estado',{timeout:20000}).pipe(map(value=>readAtencionFisica(value,restaurantId)));

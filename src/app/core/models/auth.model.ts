@@ -1,5 +1,6 @@
 export interface LoginRequest {readonly correo: string; readonly password: string;}
 export interface AuthResponse {
+ readonly authUserId?:string;
   readonly mensaje: string;
   readonly token: string;
   readonly id: number;
