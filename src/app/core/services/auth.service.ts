@@ -1,4 +1,6 @@
 import {validSupabaseIdentity} from './supabase-auth.transport';
+import {DOCUMENT} from '@angular/common';
+import {confirmationRedirect} from './email-confirmation-return.service';
 import {DestroyRef, Injectable, inject, signal} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {defer, map, Observable} from 'rxjs';
@@ -11,10 +13,19 @@ export interface OwnerRequest extends AccountRequest {readonly restaurante:{read
 export interface AdminResponse {readonly mensaje:string;readonly id:number;readonly nombreCompleto:string;readonly correo:string;readonly rol:'ADMINISTRADOR';readonly restauranteId:number;}
 @Injectable({providedIn:'root'})
 export class AuthService {
+ private readonly document=inject(DOCUMENT,{optional:true});
  private readonly http=inject(HttpClient);private readonly current=signal<ApiSession|null>(null);private expiryTimer?:ReturnType<typeof setTimeout>;private generation=0;
  readonly session=this.current.asReadonly();readonly endedBy=signal<'manual'|'expired'|'unauthorized'|null>(null);private readonly url=environment.apiUrl.replace(/\/$/,'');
  constructor(){inject(DestroyRef).onDestroy(()=>clearTimeout(this.expiryTimer));}
  login(request:LoginRequest):Observable<AuthResponse> {return this.authenticate('/auth/login',{correo:request.correo.trim().toLowerCase(),password:request.password},200);}
+ resendConfirmation(correo:string):Observable<void> {
+  return defer(()=>{
+   const email=correo.trim().toLowerCase();
+   if(environment.transport!=='supabase'||email.length>100||!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))throw new Error('Indica un correo válido para reenviar su confirmación.');
+   const redirect=confirmationRedirect(this.document?.defaultView?.location.origin);
+   return this.http.post<unknown>(environment.supabase.url.replace(/\/$/,'')+'/auth/v1/resend'+(redirect?'?redirect_to='+encodeURIComponent(redirect):''),{type:'signup',email},{headers:{apikey:environment.supabase.publishableKey},observe:'response',timeout:20000}).pipe(map(response=>{if(response.status!==200)throw new Error('No pudimos confirmar el envío del mensaje.');}));
+  });
+ }
  register(request:AccountRequest):Observable<AuthResponse> {return this.authenticate('/auth/register',this.accountPayload(request),201,'CLIENTE');}
  registerOwner(request:OwnerRequest):Observable<AuthResponse> {
   const r=request.restaurante;
