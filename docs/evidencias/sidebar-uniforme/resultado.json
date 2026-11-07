@@ -1,0 +1,143 @@
+{
+  "date": "2026-11-07T01:40:49.714Z",
+  "results": [
+    {
+      "name": "sidebar estable /operacion",
+      "passed": true
+    },
+    {
+      "name": "sidebar estable /operacion/pedidos",
+      "passed": true
+    },
+    {
+      "name": "sidebar estable /operacion/cocina",
+      "passed": true
+    },
+    {
+      "name": "sidebar estable /operacion/platos",
+      "passed": true
+    },
+    {
+      "name": "sidebar estable /operacion/categorias",
+      "passed": true
+    },
+    {
+      "name": "sidebar estable /operacion/reservas",
+      "passed": true
+    },
+    {
+      "name": "sidebar estable /operacion/mesas",
+      "passed": true
+    },
+    {
+      "name": "sidebar estable /operacion/pagos",
+      "passed": true
+    },
+    {
+      "name": "sidebar estable /operacion/reportes",
+      "passed": true
+    },
+    {
+      "name": "sidebar estable /operacion/notificaciones",
+      "passed": true
+    },
+    {
+      "name": "desplazamiento del menú conservado entre páginas",
+      "passed": true
+    },
+    {
+      "name": "logo fijo al desplazar el contenido",
+      "passed": true
+    },
+    {
+      "name": "navegación y ancho 1024 /operacion/pedidos",
+      "passed": true
+    },
+    {
+      "name": "navegación y ancho 1024 /operacion/platos",
+      "passed": true
+    },
+    {
+      "name": "navegación y ancho 390 /operacion/pedidos",
+      "passed": true
+    },
+    {
+      "name": "navegación y ancho 390 /operacion/platos",
+      "passed": true
+    },
+    {
+      "name": "navegación y ancho 320 /operacion/pedidos",
+      "passed": true
+    },
+    {
+      "name": "navegación y ancho 320 /operacion/platos",
+      "passed": true
+    },
+    {
+      "name": "navegación del dueño conserva su inicio, administración y restaurante propio",
+      "passed": true
+    },
+    {
+      "name": "sin errores JavaScript ni solicitudes al backend local",
+      "passed": true
+    }
+  ],
+  "baseline": {
+    "width": 260,
+    "top": 0,
+    "brandX": 20,
+    "brandY": 24,
+    "brandW": 173.59375,
+    "brandH": 54.375,
+    "cardY": 102.375,
+    "cardH": 88,
+    "navY": 246.375,
+    "linkH": 46,
+    "font": "RPInterface, Roboto, Arial, Helvetica, sans-serif",
+    "name": "RestoPilot Central",
+    "links": [
+      [
+        "Vista general",
+        "/operacion"
+      ],
+      [
+        "Pedidos",
+        "/operacion/pedidos"
+      ],
+      [
+        "Cocina",
+        "/operacion/cocina"
+      ],
+      [
+        "Carta",
+        "/operacion/platos"
+      ],
+      [
+        "Reservas",
+        "/operacion/reservas"
+      ],
+      [
+        "Mesas",
+        "/operacion/mesas"
+      ],
+      [
+        "Pagos",
+        "/operacion/pagos"
+      ],
+      [
+        "Reportes",
+        "/operacion/reportes"
+      ],
+      [
+        "Notificaciones",
+        "/operacion/notificaciones"
+      ],
+      [
+        "Asistente de reportes",
+        "/operacion/asistente"
+      ]
+    ],
+    "overflow": false
+  },
+  "localApiRequests": 0
+}

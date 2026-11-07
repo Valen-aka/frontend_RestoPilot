@@ -1,8 +1,9 @@
+import {WorkspaceContext} from './workspace-context.service';
 import {BreakpointObserver} from '@angular/cdk/layout';
 import {toSignal} from '@angular/core/rxjs-interop';
 import {UiIcon} from '../ui-icon/ui-icon';
 import {Brand} from '../brand/brand';
-import {computed, inject, signal} from '@angular/core';
+import {afterNextRender, computed, inject, signal} from '@angular/core';
 import {AuthService} from '../../core/services/auth.service';
 import {Router} from '@angular/router';
 import {MatButtonModule} from '@angular/material/button';
@@ -21,7 +22,14 @@ export class WorkspaceShell {
  readonly mobile=computed(()=>this.breakpoint()?.matches??false);
  readonly menuOpen=signal(false); private readonly host=inject<ElementRef<HTMLElement>>(ElementRef);
  closeMenu(event:Event):void {if(this.mobile()&&this.menuOpen()){event.preventDefault();this.menuOpen.set(false);this.host.nativeElement.querySelector<HTMLButtonElement>('.menu-toggle')?.focus();}}
- get displayRestaurantId():number|null {return this.restaurantId??this.auth.session()?.restauranteId??null;}
+ get displayRestaurantId():number|null {return this.auth.session()?.restauranteId??this.restaurantId??null;}
+ readonly context=inject(WorkspaceContext);
+ get displayRestaurantName():string {return this.context.restaurant()?.nombre||'Mi restaurante';}
+ onNavigationClick(event:Event):void {if(this.mobile()&&(event.target as HTMLElement).closest('a')){this.menuOpen.set(false);this.host.nativeElement.querySelector<HTMLButtonElement>('.menu-toggle')?.focus();}}
+ skipToContent(event:Event):void {event.preventDefault();this.host.nativeElement.querySelector<HTMLElement>('#workspace-content')?.focus();}
+ rememberNavigation(event:Event):void {this.context.navigationScroll=(event.target as HTMLElement).scrollTop;}
+ constructor(){afterNextRender(()=>{const nav=this.host.nativeElement.querySelector<HTMLElement>('#workspace-navigation');if(nav&&!this.mobile())nav.scrollTop=this.context.navigationScroll;});}
+
 
  readonly auth=inject(AuthService);private readonly router=inject(Router);readonly ownerSession=computed(()=>this.auth.session()?.role==='DUENO');
  logout():void{this.auth.logout();this.signOut.emit();void this.router.navigate(['/auth/login']);}

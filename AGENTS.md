@@ -141,3 +141,8 @@ Consultar [la guía de conexión](docs/GUIA-INTEGRACION-PEDIDOS.md) antes de añ
 ## Conexión vigente: Supabase directo
 
 La solicitud actual autoriza toda la aplicación directamente con Supabase. Esta decisión sustituye las indicaciones anteriores que requieren iniciar Spring Boot para el frontend. Reutilizar la sesión, servicios e interceptor existentes; no añadir credenciales administrativas al cliente. Consultar [la guía de Supabase](docs/GUIA-SUPABASE-DIRECTO.md) y sus pruebas. La IA continúa fuera del alcance.
+
+
+## Navegación uniforme del panel
+
+WorkspaceShell es la única implementación del sidebar y la cabecera de operación/dueño. CocinaShell conserva sus entradas y delega en ese componente; no duplicar su HTML, estilos ni enlaces. Mantener ancho, marca, tarjeta de restaurante, orden del menú y cierre de sesión constantes entre pantallas. La identidad procede de WorkspaceContext y se limpia al cambiar de cuenta. Solo cambia la sección activa y el contenido; conservar las opciones autorizadas por rol. En móvil usar el mismo menú desplegable, con cierre por selección o Escape y foco recuperado.
