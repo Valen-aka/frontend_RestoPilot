@@ -1,0 +1,62 @@
+{
+  "date": "2026-11-07T00:34:43.263Z",
+  "type": "controlled-http-browser",
+  "results": [
+    {
+      "name": "sin sesión no consulta bandeja",
+      "passed": true
+    },
+    {
+      "name": "carga, paginación del servidor, identidad y navbar único",
+      "passed": true
+    },
+    {
+      "name": "bandeja vacía de operación consulta su cuenta",
+      "passed": true
+    },
+    {
+      "name": "variante vacia conserva consulta real y no fuerza el resultado",
+      "passed": true
+    },
+    {
+      "name": "error HTTP 403 y recuperación",
+      "passed": true
+    },
+    {
+      "name": "error HTTP 404 y recuperación",
+      "passed": true
+    },
+    {
+      "name": "error HTTP 500 y recuperación",
+      "passed": true
+    },
+    {
+      "name": "401 termina sesión mediante interceptor",
+      "passed": true
+    },
+    {
+      "name": "error de red conserva posibilidad de reintento",
+      "passed": true
+    },
+    {
+      "name": "rechaza respuesta con avisos de otra cuenta",
+      "passed": true
+    },
+    {
+      "name": "notificaciones responsive 320",
+      "passed": true
+    },
+    {
+      "name": "notificaciones responsive 390",
+      "passed": true
+    },
+    {
+      "name": "notificaciones responsive 768",
+      "passed": true
+    },
+    {
+      "name": "notificaciones responsive 1440",
+      "passed": true
+    }
+  ]
+}
