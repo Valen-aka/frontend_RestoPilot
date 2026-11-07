@@ -1,0 +1,54 @@
+{
+  "date": "2026-11-07T00:32:22.596Z",
+  "type": "controlled-HTTP-browser",
+  "results": [
+    {
+      "name": "búsqueda inválida no realiza consultas y pedido inexistente informa404",
+      "passed": true
+    },
+    {
+      "name": "consulta muestra identificador y pago reales sin1042",
+      "passed": true
+    },
+    {
+      "name": "pago efectivo confirmado usaPOST201 y muestra detalle del servidor",
+      "passed": true
+    },
+    {
+      "name": "CA12 pago pendiente electrónico no exige referencia ni fecha",
+      "passed": true
+    },
+    {
+      "name": "importe incorrecto y referencia ausente bloqueanPOST",
+      "passed": true
+    },
+    {
+      "name": "respuesta perdida bloquea repetición hasta consultar el estado",
+      "passed": true
+    },
+    {
+      "name": "doble submit y variante durantePOST no duplican registro",
+      "passed": true
+    },
+    {
+      "name": "conflicto409 se recupera consultando el pago ya confirmado",
+      "passed": true
+    },
+    {
+      "name": "permiso403 no muestra datos de pago ajenos",
+      "passed": true
+    },
+    {
+      "name": "registro responsive 390",
+      "passed": true
+    },
+    {
+      "name": "registro responsive 768",
+      "passed": true
+    },
+    {
+      "name": "registro responsive 1440",
+      "passed": true
+    }
+  ]
+}

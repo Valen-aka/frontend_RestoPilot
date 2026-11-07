@@ -1,7 +1,1 @@
-<rp-workspace-shell [role]="'operation'" breadcrumb="Pagos" active="pagos">
- <header class="page-heading"><p class="eyebrow">Pagos</p><h1>Detalle del pago</h1><p class="subtitle">Información del pago asociado al pedido.</p></header>
- <section class="panel" aria-labelledby="confirmed-title"><h2 class="panel-title" id="confirmed-title">Pedido #1042</h2><span class="badge">{{store.payment().estado === 'PAGADO' ? 'Pagado' : 'Pendiente'}}</span><p class="payment-amount">S/ {{store.payment().monto.toFixed(2)}}</p>
-  <dl class="definition-list payment-details"><div><dt>Método</dt><dd>{{store.payment().metodo || 'Sin elegir'}}</dd></div><div><dt>Referencia</dt><dd>{{store.payment().referencia || 'Sin referencia'}}</dd></div><div><dt>Fecha de pago</dt><dd>{{store.payment().fecha || 'Sin fecha de confirmación'}}</dd></div></dl>
-  <div class="actions"><a mat-stroked-button class="secondary" routerLink="/operacion/pedido/editar">Ver pedido</a><a class="text-link" routerLink="/operacion/pagos">Buscar otro pedido</a></div>
- </section>
-</rp-workspace-shell>
+<rp-pagos-view mode="detail" />
