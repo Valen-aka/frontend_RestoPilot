@@ -1,0 +1,26 @@
+{
+  "date": "2026-11-07T02:00:37.464Z",
+  "results": [
+    {
+      "name": "US27 consulta estado y contador sin error de contrato",
+      "passed": true
+    },
+    {
+      "name": "entrada del cliente verifica atención habilitada",
+      "passed": true
+    },
+    {
+      "name": "guard de reserva permite continuar a la búsqueda",
+      "passed": true
+    },
+    {
+      "name": "US26 confirma disponibilidad de la mesa expirada desde la interfaz",
+      "passed": true
+    },
+    {
+      "name": "sin escrituras de negocio ni errores JavaScript",
+      "passed": true
+    }
+  ],
+  "businessWrites": 0
+}

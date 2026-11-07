@@ -19,7 +19,7 @@ La rama feature/supabase-directo prepara el transporte común, autenticación y 
 
 ## Migración
 
-Los cinco archivos supabase/migrations se ejecutaron en orden sobre el proyecto actual. Se respaldó el esquema antes de migrar. Se conservaron las siete cuentas, roles, relaciones e identificadores; se crearon sus vínculos Auth y se renovaron todas sus contraseñas con valores distintos. La sincronización del hash anterior permite compatibilidad del registro, pero Angular ya utiliza Supabase Auth.
+Las migraciones iniciales 001–005 y la corrección 006 de supabase/migrations se ejecutaron en orden sobre el proyecto actual. Se respaldó el esquema antes de migrar. Se conservaron las siete cuentas, roles, relaciones e identificadores; se crearon sus vínculos Auth y se renovaron todas sus contraseñas con valores distintos. La sincronización del hash anterior permite compatibilidad del registro, pero Angular ya utiliza Supabase Auth.
 
 El trabajo restopilot-expiracion quedó habilitado y se comprobó una ejecución satisfactoria. La clave administrativa necesaria para crear administradores se guarda en Vault como restopilot_auth_admin_key; nunca se copia al frontend. Para repetir la instalación en otro proyecto hace falta configurar ese secreto por un canal privado.
 
@@ -30,3 +30,8 @@ Los usuarios migrados están confirmados. Las altas públicas nuevas requieren l
 Reutilizar los servicios existentes, AuthService, API_SESSION y el único interceptor. Ante nuevas operaciones, extender las funciones privadas y el contrato público con permisos explícitos; no habilitar lectura/escritura indiscriminada de tablas ni colocar una clave administrativa en Angular. Las guías antiguas que usan Spring describen el transporte anterior. Consultar primero esta guía y el SPEC de supabase-directo.
 
 Ver [pruebas y límites](QA-SUPABASE-DIRECTO.md) y [publicación](PUBLICACION.md). Esta rama no implica que se haya publicado una URL nueva ni que todas las tareas del backlog estén aceptadas.
+
+
+## Corrección de contratos de reservas
+
+La migración 006 alinea reservasActivasPendientes y mesaId con Angular, sin alterar datos ni reglas. Consultar [QA de contratos](QA-SUPABASE-CONTRATOS.md). En nuevas instalaciones aplicar también 006 después de 005.
