@@ -1,14 +1,11 @@
-<header class="client-header">
-  <a class="brand" routerLink="/cliente" aria-label="RestoPilot, inicio de cliente">
-    <img src="/assets/workspace-logo.webp" width="48" height="48" alt="">
-    <span><strong>Resto<span>Pilot</span></strong><small>Tu restaurante, en piloto automático</small></span>
-  </a>
-  <nav aria-label="Navegación de cliente">
+<header class="client-header" (keydown.escape)="closeMenu($event)">
+  <a class="brand" routerLink="/cliente" aria-label="RestoPilot, inicio de cliente"><rp-brand /></a>
+  <button mat-stroked-button class="menu-toggle" type="button" aria-controls="client-navigation" [attr.aria-expanded]="menuOpen()" (click)="menuOpen.set(!menuOpen())">{{menuOpen()?'Cerrar':'Menú'}}</button><nav id="client-navigation" aria-label="Navegación de cliente" [class.open]="menuOpen()">
     @for (link of links; track link.url) {
-      <a [routerLink]="link.url" [class.active]="active(link)" [attr.aria-current]="active(link) ? 'page' : null">{{link.label}}</a>
+      <a [routerLink]="link.url" (click)="menuOpen.set(false)" [class.active]="active(link)" [attr.aria-current]="active(link) ? 'page' : null">{{link.label}}</a>
     }
   </nav>
-  <div class="account">
+  <div class="account" [class.open]="menuOpen()">
     @if (auth.session()) {
       <span>Mi cuenta</span><button mat-button type="button" (click)="logout()">Cerrar sesión</button>
     } @else { <a mat-button routerLink="/auth/login">Iniciar sesión</a> }

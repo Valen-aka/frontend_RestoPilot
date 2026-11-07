@@ -1,0 +1,41 @@
+{
+  "date": "2026-11-07T01:10:31.363Z",
+  "result": [
+    {
+      "id": 1,
+      "rol": "ADMINISTRADOR",
+      "passed": true
+    },
+    {
+      "id": 2,
+      "rol": "CLIENTE",
+      "passed": true
+    },
+    {
+      "id": 3,
+      "rol": "DUENO",
+      "passed": true
+    },
+    {
+      "id": 4,
+      "rol": "DUENO",
+      "passed": true
+    },
+    {
+      "id": 5,
+      "rol": "ADMINISTRADOR",
+      "passed": true
+    },
+    {
+      "id": 6,
+      "rol": "CLIENTE",
+      "passed": true
+    },
+    {
+      "id": 7,
+      "rol": "CLIENTE",
+      "passed": true
+    }
+  ],
+  "anonymousRejected": true
+}

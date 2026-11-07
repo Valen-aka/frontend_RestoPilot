@@ -24,16 +24,16 @@ test('guard acepta solo cliente vigente y devuelve retorno interno para login cu
 });
 test('interceptor adjunta Bearer únicamente a apiUrl, excluyendo login y destinos parecidos/externos',()=>{
   const f=setup(client());try{
-    for(const url of ['http://localhost:8081/api/pedidos','http://localhost:8081/api/platos?restauranteId=7']){
+    for(const url of ['/restopilot-api/pedidos','/restopilot-api/platos?restauranteId=7']){
       let captured;runInInjectionContext(f.injector,()=>apiAuthInterceptor(new HttpRequest('GET',url),r=>{captured=r;return of({});})).subscribe();
       assert.equal(captured.headers.get('Authorization'),'Bearer token-sintetico');
     }
-    for(const url of ['https://example.test/api/pedidos','http://localhost:8081/api-otro/pedidos','http://localhost:8081/api/auth/login']){
+    for(const url of ['https://example.test/api/pedidos','/restopilot-api-otro/pedidos','/restopilot-api/auth/login']){
       let captured;runInInjectionContext(f.injector,()=>apiAuthInterceptor(new HttpRequest('GET',url),r=>{captured=r;return of({});})).subscribe();
       assert.equal(captured.headers.has('Authorization'),false);
     }
     f.session.set({...client(),expiresAt:0});let captured;
-    runInInjectionContext(f.injector,()=>apiAuthInterceptor(new HttpRequest('GET','http://localhost:8081/api/pedidos'),r=>{captured=r;return of({});})).subscribe();
+    runInInjectionContext(f.injector,()=>apiAuthInterceptor(new HttpRequest('GET','/restopilot-api/pedidos'),r=>{captured=r;return of({});})).subscribe();
     assert.equal(captured.headers.has('Authorization'),false);
   }finally{f.injector.destroy();}
 });
@@ -41,11 +41,11 @@ test('401 del token actual limpia sesión; un 403 o 401 anterior no borra otra s
   const f=setup(client());try{
     for(const status of [403,401]){
       f.session.set(client());let failed=false;
-      runInInjectionContext(f.injector,()=>apiAuthInterceptor(new HttpRequest('GET','http://localhost:8081/api/pedidos'),()=>throwError(()=>new HttpErrorResponse({status}))))
+      runInInjectionContext(f.injector,()=>apiAuthInterceptor(new HttpRequest('GET','/restopilot-api/pedidos'),()=>throwError(()=>new HttpErrorResponse({status}))))
         .subscribe({error:()=>failed=true});assert(failed);assert.equal(f.session()===null,status===401);
     }
     f.session.set(client());
-    runInInjectionContext(f.injector,()=>apiAuthInterceptor(new HttpRequest('GET','http://localhost:8081/api/pedidos'),()=>{
+    runInInjectionContext(f.injector,()=>apiAuthInterceptor(new HttpRequest('GET','/restopilot-api/pedidos'),()=>{
       f.session.set({...client(),accessToken:'otro-token-sintetico'});return throwError(()=>new HttpErrorResponse({status:401}));
     })).subscribe({error:()=>{}});
     assert.equal(f.session().accessToken,'otro-token-sintetico');

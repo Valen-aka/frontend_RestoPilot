@@ -1,37 +1,19 @@
 # RestoPilot — frontend y landing
 
-Una aplicación Angular para la landing pública y las pantallas de cliente, dueño
-y operación. La ruta `/` carga Home; `/estructura` permite consultar el inventario
-de 120 escenarios. Las 18 vistas IA están previstas y no forman parte de esta
-implementación visual.
+Aplicación Angular con Angular Material, rutas hijas y conexión directa a Supabase Auth y funciones PostgreSQL. La landing está en /; /estructura conserva el inventario de escenarios. Las vistas IA siguen previstas.
 
-## Ejecutar localmente
+## Ejecutar
 
-Usar la versión de Node de `.nvmrc` y los requisitos de `package.json`. Desde la
-raíz del repositorio:
+Usar Node según .nvmrc. Ejecutar desde este repositorio:
 
 ```powershell
 npm.cmd ci
-npm.cmd run dev
+npm.cmd start
 ```
 
-Abrir `http://localhost:4200`. Repetir `npm ci` cuando cambie el lockfile o al preparar
-una instalación limpia. Los recursos de la landing pertenecen a `src/app/home/`
-y `public/assets/landing/`; no hay una aplicación de landing separada.
+Abrir http://localhost:4200. No es necesario iniciar IntelliJ, Spring Boot ni pgAdmin. Se necesita conexión a Internet para acceder al proyecto Supabase configurado en environments. Los siete usuarios existentes fueron migrados a Supabase Auth conservando sus roles e identificadores.
 
-## Alcance y fuentes
-
-Consultar [AGENTS.md](AGENTS.md), [SPEC.md](SPEC.md), la
-[asignación del equipo](docs/ASIGNACION-EQUIPO.md) y su
-[versión estructurada](docs/asignacion-equipo.json). El inventario está en
-`src/app/screen-manifest.json`; sus indicadores describen el avance declarado,
-no la aceptación funcional de todas las pantallas.
-
-La solicitud visual vigente permite revisar formularios, carga, éxito, duplicado,
-rechazo, navegación y datos ilustrativos. Los avisos de demostración no crean
-cuentas, asignan permisos, registran pagos ni modifican pedidos reales. La
-infraestructura API ya existente tiene su alcance documentado en las guías de
-integración. No confundir el renderizado ni el build con una prueba de backend.
+Consultar [la guía vigente](docs/GUIA-SUPABASE-DIRECTO.md), [las pruebas realizadas](docs/QA-SUPABASE-DIRECTO.md), [AGENTS.md](AGENTS.md) y [SPEC.md](SPEC.md). No guardar contraseñas ni claves administrativas en el repositorio.
 
 ## Verificar
 
@@ -41,15 +23,8 @@ $tests = Get-ChildItem scripts -File | Where-Object Name -match '\.test\.(cjs|mj
 node --test $tests
 ```
 
-El checker conserva identificadores, archivos y los ocho modales. La compilación
-verifica compatibilidad del código. Los recorridos de navegador y sus límites
-se registran por separado en la documentación de QA.
+El inventario conserva identificadores, responsables y archivos; sus estados no sustituyen la aceptación del sprint. Las pruebas reales se documentan por separado.
 
 ## Preparar publicación
 
-Consultar [PUBLICACION.md](docs/PUBLICACION.md) para variables públicas, servicios
-externos, configuración Netlify, fallback SPA y procedimiento de revisión.
-`npm.cmd run build:publish` genera `dist/restopilot/browser` y exige una URL pública
-HTTPS de la API. No se incluyen claves privadas en Angular ni se publica un sitio
-como parte de esta preparación. La publicación única se coordina con los
-responsables definidos en AGENTS.md.
+`npm.cmd run build:publish` genera dist/restopilot/browser con Supabase. Consultar [PUBLICACION.md](docs/PUBLICACION.md). Preparar el build no publica automáticamente la web.

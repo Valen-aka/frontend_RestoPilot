@@ -27,6 +27,8 @@ export interface ReservaDraft {
   horaInicio: string; // HH:mm
   horaFin: string; // HH:mm
   comensales: number;
+  restauranteId?: number;
+  restauranteNombre?: string;
   mesaId?: number;
   mesaNumero?: string;
   zona?: string;

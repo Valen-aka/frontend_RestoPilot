@@ -1,11 +1,8 @@
 <a class="skip-link" href="#kitchen-content" (click)="skip($event)">Saltar al contenido</a>
 <div class="operation-shell">
-  <aside class="sidebar" aria-label="Espacio de trabajo" (keydown.escape)="closeMenu($event)">
-    <a class="brand" routerLink="/operacion" aria-label="RestoPilot, inicio de operación">
-      <span class="brand-image" aria-hidden="true"><img src="/assets/carrito/brand-reference.png" alt="" width="48" height="48"><span></span></span>
-      <span>Resto<span class="brand-green">Pilot</span><small>Tu restaurante, en piloto automático</small></span>
-    </a>
-    @if (mobile()) {<button mat-button id="kitchen-menu-toggle" type="button" [attr.aria-expanded]="menuOpen()" aria-controls="kitchen-navigation" (click)="menuOpen.set(!menuOpen())">{{ menuOpen() ? 'Ocultar navegación' : 'Mostrar navegación' }}</button>}
+  <aside class="sidebar" [class.menu-expanded]="menuOpen()" aria-label="Espacio de trabajo" (keydown.escape)="closeMenu($event)">
+    <a class="brand" routerLink="/operacion" aria-label="RestoPilot, inicio de operación"><rp-brand [inverse]="true" /></a>
+    @if (mobile()) {<button mat-button id="kitchen-menu-toggle" type="button" [attr.aria-expanded]="menuOpen()" aria-controls="kitchen-navigation" [attr.aria-label]="menuOpen()?'Cerrar menú de navegación':'Abrir menú de navegación'" (click)="menuOpen.set(!menuOpen())">{{ menuOpen() ? 'Cerrar' : 'Menú' }}</button>}
     @if(apiMode()) {<div class="restaurant"><span class="avatar" aria-hidden="true">RP</span><div><strong>{{ restaurantName() }}</strong><small>Restaurante ID {{ restaurantId() ?? 'no asignado' }}</small></div></div>} @else {
     <div class="restaurant"><span class="avatar" aria-hidden="true">LM</span><div><strong>La Mesa Verde</strong><small>Lima · Restaurante de muestra</small></div></div>
     }
@@ -13,7 +10,7 @@
       <p class="nav-label">TU ESPACIO DE TRABAJO</p>
       @for (link of links; track link.path) {
         <a [routerLink]="link.path" [class.active]="activePath() === link.path"
-          [attr.aria-current]="activePath() === link.path ? 'page' : null"><span aria-hidden="true">{{ link.icon }}</span>{{ link.label }}</a>
+          [attr.aria-current]="activePath() === link.path ? 'page' : null"><rp-ui-icon [name]="link.label" />{{ link.label }}</a>
       }
     </nav>
     @if(apiMode()) {<div class="sample-user"><strong>Operación del restaurante</strong><small>Sesión de la aplicación</small><button mat-button type="button" (click)="logout()">Cerrar sesión</button></div>} @else {
@@ -21,7 +18,7 @@
     }
   </aside>
   <div class="workspace">
-    <header><p>{{ apiMode() ? restaurantName() : 'La Mesa Verde' }} <span aria-hidden="true">/</span> <strong>{{ sectionLabel() }}</strong></p><span class="sample-badge">{{ apiMode() ? 'Consulta API' : 'Datos de muestra' }}</span></header>
+    <header><p>{{ apiMode() ? restaurantName() : 'La Mesa Verde' }} <span aria-hidden="true">/</span> <strong>{{ sectionLabel() }}</strong></p><span class="sample-badge">{{ apiMode() ? 'Espacio de trabajo' : 'Datos de muestra' }}</span></header>
     <main id="kitchen-content" tabindex="-1"><ng-content /></main>
   </div>
 </div>

@@ -11,7 +11,12 @@ export interface ReservaResponse {
 export class ReservaContractError extends Error {constructor(){super('La respuesta de la reserva no es compatible con el contrato.');}}
 const text=(v:unknown):v is string=>typeof v==='string'&&!!v.trim();
 const nullableText=(v:unknown):boolean=>v===null||typeof v==='string';
-const stamp=(v:unknown):boolean=>v===null||localDateTime(v);
+const stamp=(v:unknown):boolean=>v===null||v===undefined||localDateTime(v);
+export interface ReservaRequest {
+  readonly mesaId:number;readonly restauranteId:number;readonly fecha:string;
+  readonly horaInicio:string;readonly horaFin:string;readonly numeroComensales:number;
+  readonly notas?:string|null;
+}
 export function parseReservaId(value:unknown):number|undefined {
   if(positiveId(value))return value;
   if(typeof value!=='string'||! /^[1-9]\d*$/.test(value))return undefined;

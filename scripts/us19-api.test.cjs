@@ -76,6 +76,6 @@ test('confirmación incompatible se verifica en vez de inventar éxito',async()=
 test('servicio envía PATCH con query, sin cuerpo DTO, y valida identidad y estado',()=>{
  let capture;const injector=createEnvironmentInjector([{provide:HttpClient,useValue:{patch(url,body,options){capture={url,body,options};return of({status:200,body:order('EN_PREPARACION')});}}}],null);
  try{const service=runInInjectionContext(injector,()=>new PedidoService());let response;service.cambiarEstado(900,'EN_PREPARACION').subscribe(v=>response=v);
-  assert(capture.url.endsWith('/api/pedidos/900/estado'));assert.equal(capture.body,null);assert.equal(capture.options.params.get('nuevoEstado'),'EN_PREPARACION');assert.equal(response.estado,'EN_PREPARACION');
+  assert(capture.url.endsWith('/restopilot-api/pedidos/900/estado'));assert.equal(capture.body,null);assert.equal(capture.options.params.get('nuevoEstado'),'EN_PREPARACION');assert.equal(response.estado,'EN_PREPARACION');
  }finally{injector.destroy();}
 });

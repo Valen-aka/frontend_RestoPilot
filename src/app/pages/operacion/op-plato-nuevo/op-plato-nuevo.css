@@ -23,3 +23,6 @@ textarea { resize:vertical; }
 
 h1 { font-size:var(--rp-headline-size); line-height:var(--rp-headline-line); }
 button[mat-flat-button], button[mat-stroked-button], a[mat-flat-button], a[mat-stroked-button], a[mat-button] { min-height:var(--rp-control-height); }
+
+/* El marco compartido aplica el margen exterior. */
+.platos-page,.plato-page,.plato-form-page{padding:0;max-width:100%}

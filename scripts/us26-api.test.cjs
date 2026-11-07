@@ -79,7 +79,7 @@ test('roles incompatibles no realizan consultas en el contexto protegido',()=>{
 test('servicio usa solo GET, formato propio y parámetros del registro real sin Page',()=>{
  const calls=[],injector=createEnvironmentInjector([{provide:HttpClient,useValue:{get(url,options){calls.push({url,options});return of(url.endsWith('/disponibilidad')?availability():list([reservation()]));}}}],null);
  try{const api=runInInjectionContext(injector,()=>new ReservaService());api.propias().subscribe();api.restaurante().subscribe();api.disponibilidad(reservation()).subscribe();
-  assert(calls[0].url.endsWith('/api/reservas/me'));assert(calls[1].url.endsWith('/api/reservas'));assert(calls[2].url.endsWith('/api/reservas/disponibilidad'));
+  assert(calls[0].url.endsWith('/restopilot-api/reservas/me'));assert(calls[1].url.endsWith('/restopilot-api/reservas'));assert(calls[2].url.endsWith('/restopilot-api/reservas/disponibilidad'));
   const p=calls[2].options.params;assert.equal(p.get('restauranteId'),'7');assert.equal(p.get('fecha'),'2026-11-03');assert.equal(p.get('horaInicio'),'10:00:00');assert.equal(p.get('numeroComensales'),'2');assert.equal(p.has('page'),false);
  }finally{injector.destroy();}
 });
