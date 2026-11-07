@@ -24,7 +24,7 @@
   --rp-info-container: #e4eef7;
   --rp-disabled: #e2e4e1;
   --rp-on-disabled: #5a625d;
-  --rp-font: Roboto, Arial, Helvetica, sans-serif;
+  --rp-font: RPInterface, Roboto, Arial, Helvetica, sans-serif;
   --rp-weight-regular: 400;
   --rp-weight-medium: 500;
   --rp-weight-bold: 700;
@@ -228,3 +228,5 @@ textarea { resize: vertical; }
   .rp-card, .rp-feedback, .rp-badge { border: 1px solid CanvasText; }
 }
 
+
+@font-face{font-family:RPInterface;src:url('/assets/pedido/fonts/roboto.ttf') format('truetype');font-weight:100 900;font-style:normal;font-display:swap}

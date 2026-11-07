@@ -6,3 +6,4 @@
 @media(max-width:380px){dl{grid-template-columns:1fr}.full{grid-column:auto}.reservation-card,.history-card,.state-card{padding:16px}}
 
 .availability-card{margin-block:var(--rp-space-6,24px);padding:var(--rp-space-6,24px)}
+.heading-actions{display:flex;align-items:center;flex-wrap:wrap;gap:12px;margin-top:20px}.heading-actions button,.heading-actions a{min-height:44px}

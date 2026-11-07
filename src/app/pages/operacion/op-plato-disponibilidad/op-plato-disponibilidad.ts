@@ -1,3 +1,4 @@
+import {WorkspaceShell} from '../../../components/workspace-shell/workspace-shell';
 import {
   Component,
   DestroyRef,
@@ -21,7 +22,7 @@ import {
 @Component({
   selector: 'rp-op-plato-disponibilidad',
   standalone: true,
-  imports: [RouterLink, OpPlatoDisponibilidadDialog],
+  imports: [WorkspaceShell,RouterLink, OpPlatoDisponibilidadDialog],
   templateUrl: './op-plato-disponibilidad.html',
   styleUrl: './op-plato-disponibilidad.css'
 })

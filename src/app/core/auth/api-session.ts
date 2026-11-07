@@ -4,6 +4,7 @@ import {AuthService} from '../services/auth.service';
 
 /** Adaptar desde la sesión real de autenticación; nunca desde un usuario de muestra. */
 export interface ApiSession {
+  readonly authUserId?:string;
   readonly subject: string;
   readonly role: string;
   readonly accessToken: string;

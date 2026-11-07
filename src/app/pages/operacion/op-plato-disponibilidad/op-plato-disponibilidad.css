@@ -97,3 +97,6 @@
     padding: 25px 14px;
   }
 }
+
+/* El marco compartido aplica el margen exterior. */
+.platos-page,.plato-page,.plato-form-page{padding:0;max-width:100%}

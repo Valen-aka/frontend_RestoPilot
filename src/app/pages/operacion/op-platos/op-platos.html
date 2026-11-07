@@ -1,12 +1,13 @@
+<rp-workspace-shell active="carta" breadcrumb="Carta · Platos" [live]="true">
 <section class="platos-page">
   <header class="page-header">
     <div><p class="eyebrow">ADMINISTRACIÓN DE CARTA</p><h1>Gestión de platos</h1><p class="subtitle">Administra los platos, precios y disponibilidad de tu restaurante.</p></div>
     <a mat-flat-button routerLink="/operacion/plato/nuevo">+ Nuevo plato</a>
   </header>
   <div class="stats-grid">
-    <article class="stat-card"><span>Total de platos</span><strong>{{ platos().length }}</strong></article>
-    <article class="stat-card"><span>Disponibles</span><strong class="success">{{ disponibles() }}</strong></article>
-    <article class="stat-card"><span>Agotados</span><strong class="danger">{{ agotados() }}</strong></article>
+    <article class="stat-card"><span>Total de platos</span><strong>{{ cargando() || error() ? '—' : platos().length }}</strong></article>
+    <article class="stat-card"><span>Disponibles</span><strong class="success">{{ cargando() || error() ? '—' : disponibles() }}</strong></article>
+    <article class="stat-card"><span>Agotados</span><strong class="danger">{{ cargando() || error() ? '—' : agotados() }}</strong></article>
   </div>
   <div class="content-card">
     <div class="toolbar">
@@ -49,3 +50,5 @@
     }
   </div>
 </section>
+
+</rp-workspace-shell>

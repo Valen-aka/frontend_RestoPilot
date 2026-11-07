@@ -1,0 +1,55 @@
+{
+  "date": "2026-11-07T00:49:04.910Z",
+  "scope": "Formularios y consultas reales sin API local ni HTTP simulado",
+  "results": [
+    {
+      "cuentaId": 1,
+      "rol": "ADMINISTRADOR",
+      "passed": true,
+      "supabaseRequests": 8,
+      "localApiRequests": 0
+    },
+    {
+      "cuentaId": 2,
+      "rol": "CLIENTE",
+      "passed": true,
+      "supabaseRequests": 7,
+      "localApiRequests": 0
+    },
+    {
+      "cuentaId": 3,
+      "rol": "DUENO",
+      "passed": true,
+      "supabaseRequests": 8,
+      "localApiRequests": 0
+    },
+    {
+      "cuentaId": 4,
+      "rol": "DUENO",
+      "passed": true,
+      "supabaseRequests": 8,
+      "localApiRequests": 0
+    },
+    {
+      "cuentaId": 5,
+      "rol": "ADMINISTRADOR",
+      "passed": true,
+      "supabaseRequests": 8,
+      "localApiRequests": 0
+    },
+    {
+      "cuentaId": 6,
+      "rol": "CLIENTE",
+      "passed": true,
+      "supabaseRequests": 7,
+      "localApiRequests": 0
+    },
+    {
+      "cuentaId": 7,
+      "rol": "CLIENTE",
+      "passed": true,
+      "supabaseRequests": 7,
+      "localApiRequests": 0
+    }
+  ]
+}

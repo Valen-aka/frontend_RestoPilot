@@ -1,74 +1,22 @@
-# Publicación de la aplicación Angular — TEC01 / 061
+# Publicación de Angular con Supabase
 
-La landing y las pantallas se construyen como una única SPA. Esta tarea prepara la
-configuración y la documentación; no publica un sitio ni conecta los formularios
-de demostración a servicios reales.
+La landing y la aplicación son una SPA. El frontend ya no depende de una API Spring Boot publicada. La preparación de esta rama no despliega el sitio.
 
-## Desarrollo y revisión visual
-
-Usar la versión de Node indicada en `.nvmrc` y los requisitos de `package.json`.
-Desde la raíz del frontend:
+## Construir
 
 ```powershell
 npm.cmd ci
-npm.cmd run verify
-npm.cmd run dev
-```
-
-La aplicación estará en `http://localhost:4200`. `environment.development.ts`
-conserva la URL de desarrollo de la infraestructura API existente. Las interfaces
-de demostración corregidas no envían HTTP ni crean sesiones. No habilitar datos
-de muestra en el backend para presentar estas pantallas como integradas.
-
-## Build para un alojamiento público
-
-Configurar solo la URL pública de Spring Boot, nunca JDBC, una clave de Supabase,
-una contraseña de base ni `JWT_SECRET`. Todo lo incluido en Angular es público.
-
-```powershell
-$env:RP_PUBLIC_API_URL = 'https://api.tu-dominio.example/api'
 npm.cmd run build:publish
 ```
 
-Reemplazar el dominio de ejemplo por el destino acordado para la API. El script
-rechaza una variable ausente, HTTP, localhost, credenciales en URL, parámetros y
-fragmentos. No realiza solicitudes al backend. Genera temporalmente una variante
-de environment, compila con Angular y la elimina o restaura al terminar. Los
-environments versionados de desarrollo no se sobrescriben.
+El script usa el proyecto público configurado. Para otro proyecto, definir RP_PUBLIC_SUPABASE_URL (HTTPS, sin rutas ni credenciales) y RP_PUBLIC_SUPABASE_KEY (clave sb_publishable_). RP_PUBLIC_API_URL pertenece a la conexión anterior y ya no se usa. Nunca introducir claves secretas, service_role, contraseñas PostgreSQL ni credenciales de usuarios en Angular.
 
-El directorio publicable es `dist/restopilot/browser`. No publicar el repositorio,
-`node_modules`, `.env` ni la carpeta `dist` superior. El build ordinario sigue
-sirviendo para verificación local; para alojamiento público usar `build:publish`
-para que no se empaquete accidentalmente la URL local de la API.
+Se genera temporalmente environment.publish.ts y se restaura o elimina al terminar. Publicar solo dist/restopilot/browser. netlify.toml ejecuta build:publish; public/_redirects permite recargar rutas SPA. En otro proveedor configurar el mismo fallback hacia index.html después de servir archivos existentes.
 
-## Alojamiento y navegación directa
+## Proyecto Supabase
 
-`netlify.toml` utiliza `npm run build:publish` y el directorio anterior. En el panel
-del alojamiento debe existir `RP_PUBLIC_API_URL`; su ausencia hace fallar el build.
-La versión Node está fijada en la configuración. `public/_redirects` devuelve
-`index.html` para rutas Angular como `/auth/login` o `/operacion/pagos`.
+Las migraciones de supabase/migrations ya fueron aplicadas al proyecto actual. En otro proyecto, instalarlas en orden y configurar Vault, Auth y el trabajo programado según la guía. No ejecutar scripts históricos que recrean tablas existentes.
 
-En otro proveedor, configurar el mismo directorio y una regla equivalente de
-fallback SPA. Servir primero archivos existentes (`assets`, JS, CSS); el resto
-de rutas de la aplicación debe resolver a `index.html`. Esta configuración está
-preparada para la raíz del dominio, no para una subcarpeta.
+En Supabase Auth configurar Site URL y las URL de redirección del dominio final. El registro público requiere confirmar el correo; verificar entrega y redirección con ese dominio antes de anunciar el alta pública. Las siete cuentas migradas están confirmadas. La base mantiene los permisos y reglas de negocio en funciones del servidor; el navegador usa únicamente la clave publicable y la sesión del usuario.
 
-Verificar después de una publicación autorizada: `/`, `/auth/login`, rutas
-directas y recargas, recursos locales sin 404, HTTPS y ausencia de localhost en
-el bundle. Una respuesta HTML en lugar de JS suele indicar un fallback incorrecto.
-
-## Dependencias y servicios externos
-
-- Angular, Angular Material/CDK, RxJS, TypeScript, Chart.js y ng2-charts se instalan
-  desde el lockfile con `npm ci`; no se agregaron dependencias para esta tarea.
-- Los assets y las fuentes que ya incluye el proyecto se sirven localmente. No
-  se incorpora un CDN, fuente remota ni servicio de IA.
-- Cuando se autorice la integración, Spring Boot deberá estar publicado por
-  HTTPS y admitir mediante CORS el origen exacto del frontend. Los secretos
-  permanecen en el entorno del servidor. Publicar Angular no publica Spring Boot.
-- Supabase/PostgreSQL seguirá detrás del backend; la URL del pooler y su password
-  no se entregan al navegador.
-
-La publicación se coordina con los responsables de la landing y la configuración
-Angular conforme a `AGENTS.md`. Las interfaces visuales y el build aprobado no
-equivalen a autenticación, autorización ni persistencia verificadas.
+Después de publicar, verificar HTTPS, inicio de sesión, navegación por rol, recarga de rutas y ausencia de llamadas a localhost. La IA continúa fuera de esta implementación. Ver [guía](GUIA-SUPABASE-DIRECTO.md) y [evidencias](QA-SUPABASE-DIRECTO.md).

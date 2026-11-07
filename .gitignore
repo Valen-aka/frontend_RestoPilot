@@ -16,3 +16,6 @@ artifacts/us12-api/
 artifacts/us13-api/
 
 /src/environments/environment.publish.ts
+
+# Resultados y capturas locales de QA
+/artifacts/

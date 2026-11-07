@@ -2604,3 +2604,13 @@ Consultar la tabla de complementos en Fuentes y alcance para los detalles partic
 ## Integración de acceso y navegación
 
 Consultar [SPEC de acceso real](docs/specs/acceso-real/SPEC.md) para US01, US02, US21 y US22: sesión en memoria, roles, registros y paneles iniciales. La evidencia y las limitaciones se registran en [QA de acceso](docs/QA-ACCESO-REAL.md). No modifica el reparto ni acredita las integraciones de pagos, ajustes o notificaciones.
+
+
+## Revisión visual autorizada — 06/11/2026
+
+En esta revisión, la solicitud del usuario autoriza mejorar la presentación mediante inspección del navegador, sin consultar Figma. Se conserva la identidad, los tokens y las funciones existentes. Brand centraliza la marca para fondos claros/oscuros; WorkspaceShell y ClientHeader mantienen la navegación responsive y el foco. RPInterface usa la fuente Roboto local ya incluida en assets/pedido/fonts/roboto.ttf. Ver [alcance y evidencia visual](docs/QA-MEJORAS-VISUALES.md); esta revisión no certifica equivalencia con Figma ni aceptación de todo el inventario.
+
+
+## Conexión vigente: Supabase directo
+
+La solicitud actual autoriza toda la aplicación directamente con Supabase. Esta decisión sustituye las indicaciones anteriores que requieren iniciar Spring Boot para el frontend. Reutilizar la sesión, servicios e interceptor existentes; no añadir credenciales administrativas al cliente. Consultar [la guía de Supabase](docs/GUIA-SUPABASE-DIRECTO.md) y sus pruebas. La IA continúa fuera del alcance.
