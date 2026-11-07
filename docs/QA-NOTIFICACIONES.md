@@ -85,3 +85,21 @@ no sustituyen esa aceptación. La interpretación de US28-CA02 sobre notificar
 ajustes de contenido sigue documentada; no se amplió el backend sin acuerdo.
 
 Resultado de navegador de esta funcionalidad: `evidencias/notificaciones-api/resultado.json`.
+
+
+### Actualizacion antes de publicar los PR
+
+Se incorporo develop 79cbc9b, con reservas, mejoras visuales y transporte
+Supabase directo. Se reutiliza el interceptor comun sin restaurar la API Spring
+como requisito de ejecucion. Las verificaciones historicas anteriores conservan
+su alcance y transporte; no equivalen a una nueva ejecucion real en Supabase.
+
+El RPC vigente devuelve una lista personal completa ordenada. NotificacionService
+valida toda la lista, incluido usuario destinatario, y presenta sus paginas sin
+cambiar el servidor. En transporte Spring se conserva el contrato Page original.
+La prueba del servicio usa el prefijo API configurado, sin asumir /api. Se agregan
+regresiones de lista completa y de servicio a traves del interceptor RPC.
+
+Validacion conjunta posterior a esta actualizacion: checker y build aprobados;
+271 pruebas frontend aprobadas, sin fallos. Las nuevas regresiones US28
+cubren el formato de lista y la integracion servicio/interceptor RPC.

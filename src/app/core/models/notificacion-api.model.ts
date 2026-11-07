@@ -14,6 +14,15 @@ export interface NotificacionesPage {
   readonly size:number;
 }
 
+/** Supabase RPC devuelve la lista personal completa; Spring conserva Page. */
+export function readNotificacionesResponse(value:unknown,subject:string,page:number,size:number,direct=false):NotificacionesPage {
+  if(!direct||!Array.isArray(value))return readNotificacionesPage(value,subject,page,size);
+  if(!Number.isSafeInteger(page)||page<0||!Number.isSafeInteger(size)||size<=0)throw new ConsultaContractError();
+  const length=value.length,fullSize=Math.max(1,length);
+  const validated=readNotificacionesPage({content:value,number:0,size:fullSize,totalElements:length,totalPages:length?1:0},subject,0,fullSize);
+  return Object.freeze({content:Object.freeze(validated.content.slice(page*size,(page+1)*size)),number:page,size,totalElements:length,totalPages:Math.ceil(length/size)});
+}
+
 /** El backend limita la consulta a la cuenta autenticada; se valida también su respuesta. */
 export function readNotificacionesPage(value:unknown,subject:string,page:number,size:number):NotificacionesPage {
   if(!value||typeof value!=='object'||!Number.isSafeInteger(page)||page<0||!Number.isSafeInteger(size)||size<=0)throw new ConsultaContractError();
