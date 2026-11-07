@@ -1,0 +1,86 @@
+{
+  "date": "2026-11-07T01:21:42.434Z",
+  "scope": "Supabase real, usuarios y restaurante de QA aislados, sin Spring Boot",
+  "results": [
+    {
+      "name": "altas atómicas y perfiles vinculados sin Spring Boot",
+      "passed": true
+    },
+    {
+      "name": "dueño crea administrador mediante Vault y conserva su sesión",
+      "passed": true
+    },
+    {
+      "name": "aislamiento de roles y metadatos editables sin escalada",
+      "passed": true
+    },
+    {
+      "name": "carta y mesas con propietario, validaciones y duplicados",
+      "passed": true
+    },
+    {
+      "name": "cuatro modalidades, total calculado y precios históricos",
+      "passed": true
+    },
+    {
+      "name": "pedidos propios y operaciones de cocina separados por cuenta",
+      "passed": true
+    },
+    {
+      "name": "cambios de precio no alteran compras y un rechazo no crea pedidos parciales",
+      "passed": true
+    },
+    {
+      "name": "notas excesivas no generan pedidos parciales",
+      "passed": true
+    },
+    {
+      "name": "pausa bloquea nuevas operaciones físicas y conserva la gestión existente",
+      "passed": true
+    },
+    {
+      "name": "cocina conserva la cola y exige las tres transiciones",
+      "passed": true
+    },
+    {
+      "name": "pagos exactos e inamovibles, cancelación e historial preservado",
+      "passed": true
+    },
+    {
+      "name": "prioridad de cocina y concurrencia de mesas y estados",
+      "passed": true
+    },
+    {
+      "name": "reservas, solapamiento, reprogramación, capacidad y llegada",
+      "passed": true
+    },
+    {
+      "name": "finalización conserva estado y fechas al volver al historial",
+      "passed": true
+    },
+    {
+      "name": "expiración del servidor registra fecha y libera la mesa",
+      "passed": true
+    },
+    {
+      "name": "cancelación libera disponibilidad y habilita desactivar la mesa",
+      "passed": true
+    },
+    {
+      "name": "seis reportes y notificaciones propias con datos confirmados",
+      "passed": true
+    },
+    {
+      "name": "concurrencia de reserva y pago sin duplicaciones",
+      "passed": true
+    },
+    {
+      "name": "una llegada que espera un bloqueo no supera la tolerancia ni revierte la expiración",
+      "passed": true
+    },
+    {
+      "name": "salida de Supabase invalida la sesión del servidor sin servicio local",
+      "passed": true
+    }
+  ]
+}

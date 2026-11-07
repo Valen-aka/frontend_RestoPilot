@@ -1,3 +1,4 @@
+import {validSupabaseIdentity} from './supabase-auth.transport';
 import {DestroyRef, Injectable, inject, signal} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {defer, map, Observable} from 'rxjs';
@@ -29,10 +30,10 @@ export class AuthService {
    if(r.status!==status||!response||!positiveId(response.id)||typeof response.nombreCompleto!=='string'||typeof response.correo!=='string'||!['CLIENTE','ADMINISTRADOR','DUENO'].includes(response.rol)||expectedRole&&response.rol!==expectedRole||typeof response.token!=='string'||response.token.split('.').length!==3)throw new Error('La respuesta de acceso no es válida.');
    let claims:Record<string,unknown>;try{const encoded=response.token.split('.')[1].replace(/-/g,'+').replace(/_/g,'/');const bytes=Uint8Array.from(atob(encoded.padEnd(Math.ceil(encoded.length/4)*4,'=')),c=>c.charCodeAt(0));claims=JSON.parse(new TextDecoder().decode(bytes));}catch{throw new Error('No pudimos interpretar la sesión recibida.');}
    const expiresAt=typeof claims['exp']==='number'?claims['exp']*1000:0,restaurant=response.restauranteId??null;
-   if(!Number.isFinite(expiresAt)||expiresAt<=Date.now()||claims['userId']!==response.id||claims['sub']!==response.correo||claims['rol']!==response.rol||(restaurant!==null&&!positiveId(restaurant))||restaurant!==(claims['restauranteId']??null)||expectedRole==='CLIENTE'&&restaurant!==null||expectedRole==='DUENO'&&!positiveId(restaurant))throw new Error('La sesión recibida no es válida o ya expiró.');
-   this.endedBy.set(null);this.current.set(Object.freeze({subject:String(response.id),role:response.rol,accessToken:response.token,expiresAt,restauranteId:restaurant}));this.scheduleExpiry(expiresAt);return response;
+   if(!Number.isFinite(expiresAt)||expiresAt<=Date.now()||(response.authUserId!==undefined?!validSupabaseIdentity(response,claims,environment.supabase):claims['userId']!==response.id||claims['sub']!==response.correo||claims['rol']!==response.rol)||(restaurant!==null&&!positiveId(restaurant))||response.authUserId===undefined&&restaurant!==(claims['restauranteId']??null)||expectedRole==='CLIENTE'&&restaurant!==null||expectedRole==='DUENO'&&!positiveId(restaurant))throw new Error('La sesión recibida no es válida o ya expiró.');
+   this.endedBy.set(null);this.current.set(Object.freeze({subject:String(response.id),role:response.rol,accessToken:response.token,expiresAt,restauranteId:restaurant,...(response.authUserId?{authUserId:response.authUserId}:{})}));this.scheduleExpiry(expiresAt);return response;
   }));});
  }
- logout(reason:'manual'|'expired'|'unauthorized'='manual'):void {this.generation++;clearTimeout(this.expiryTimer);this.endedBy.set(reason);this.current.set(null);}
+ logout(reason:'manual'|'expired'|'unauthorized'='manual'):void {const old=this.current();this.generation++;clearTimeout(this.expiryTimer);this.endedBy.set(reason);this.current.set(null);if(old?.authUserId&&environment.transport==='supabase')this.http.post(environment.supabase.url+'/auth/v1/logout?scope=local',{}, {headers:{apikey:environment.supabase.publishableKey,Authorization:'Bearer '+old.accessToken},timeout:5000}).subscribe({error:()=>{}});}
  private scheduleExpiry(expiresAt:number):void {clearTimeout(this.expiryTimer);const remaining=expiresAt-Date.now();if(remaining<=0){this.logout('expired');return;}this.expiryTimer=setTimeout(()=>this.scheduleExpiry(expiresAt),Math.min(remaining,2147483647));}
 }

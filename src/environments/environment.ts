@@ -1,2 +1,3 @@
-// URL pública del backend; no contiene credenciales.
-export const environment={production:true,apiUrl:'http://localhost:8081/api'} as const;
+import type {EnvironmentConfig} from './environment.model';
+// Solo configuración pública. Las claves administrativas permanecen en Supabase Vault.
+export const environment:EnvironmentConfig={production:true,transport:'supabase',apiUrl:'/restopilot-api',supabase:{url:'https://unvxosrwqmcwrtxplrsf.supabase.co',publishableKey:'sb_publishable_IL42_jF4ncdOOtxCAjnooA_du9sKJul'}};
