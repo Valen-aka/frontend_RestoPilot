@@ -1,0 +1,47 @@
+<rp-workspace-shell role="operation" breadcrumb="Pagos" active="pagos" [live]="true">
+  <header class="page-heading"><p class="eyebrow">Pagos</p><h1>{{mode()==='search'?'Un pago, bien registrado':mode()==='detail'?'Detalle del pago':'Registrar pago recibido'}}</h1><p class="subtitle">Consulta y registra los importes recibidos por medios externos. RestoPilot no realiza cobros.</p></header>
+  @if(store.savingId()!==null&&store.savingId()!==id){<p class="notice" role="status">Hay un registro de pago en curso para el pedido #{{store.savingId()}}. Espera su respuesta antes de registrar otro pago. <a routerLink="/operacion/pago/registrar" [queryParams]="{pedidoId:store.savingId()}">Consultar ese pedido</a></p>}
+  @if(mode()==='search'){
+    <section class="panel" aria-labelledby="buscar-title"><h2 id="buscar-title">Buscar pedido</h2>
+      <form [formGroup]="searchForm" (ngSubmit)="search()" novalidate>
+        <mat-form-field appearance="outline"><mat-label>Número de pedido</mat-label><input matInput id="numero-pedido" formControlName="numero" inputmode="numeric" autocomplete="off"><mat-hint>Ingresa el identificador del pedido de tu restaurante.</mat-hint><mat-error>Ingresa un número de pedido entero y positivo.</mat-error></mat-form-field>
+        <div class="actions"><a mat-stroked-button routerLink="/operacion">Volver al inicio</a><button mat-flat-button type="submit" [disabled]="store.state()==='loading'">Consultar pedido</button></div>
+      </form>
+    </section>
+  }
+  @if(store.state()==='loading'){
+    <section class="panel loading" role="status" aria-busy="true"><mat-spinner diameter="32" aria-hidden="true"/><p>Consultando pedido y pago…</p></section>
+  } @else if(store.state()==='error'){
+    <section class="panel" role="alert"><h2>No pudimos consultar el pago</h2><p>{{store.problem()}}</p><button mat-stroked-button type="button" (click)="reload()" [disabled]="store.savingId()!==null">Volver a consultar</button><a mat-button routerLink="/operacion/pagos">Buscar otro pedido</a></section>
+  } @else if(store.state()==='idle'&&mode()!=='search'){
+    <section class="panel" role="status"><h2>Selecciona un pedido</h2><p>Busca el pedido para consultar sus datos reales antes de registrar un pago.</p><a mat-flat-button routerLink="/operacion/pagos">Buscar pedido</a></section>
+  } @else if(store.order();as order){
+    @if(store.payment();as payment){
+      <section class="panel" aria-labelledby="payment-title">
+        <h2 id="payment-title">Pedido #{{order.id}}</h2><p>{{order.restauranteNombre}} · {{order.clienteNombre}}</p>
+        <p class="payment-state">Pedido: {{order.estado}} · Pago: {{payment.estado==='PAGADO'?'Pagado':'Pendiente'}}</p>
+        <dl class="payment-details"><div><dt>Importe</dt><dd>{{money(payment.monto)}}</dd></div><div><dt>Método</dt><dd>{{methodLabel(payment.metodo)}}</dd></div><div><dt>Referencia</dt><dd>{{payment.codigoReferencia||'Sin referencia'}}</dd></div><div><dt>Fecha de pago</dt><dd>{{payment.fechaPago ? (payment.fechaPago | date:'dd/MM/yyyy HH:mm') : 'Sin fecha de confirmación'}}</dd></div></dl>
+        @if(store.savingId()===order.id){<p role="status" aria-live="polite">Registrando pago… No vuelvas a enviarlo.</p>}
+        @if(store.isUncertain(order.id)&&store.savingId()!==order.id){<p class="notice warning" role="alert">La respuesta del registro es incierta. Consulta su estado antes de repetirlo.</p><button mat-stroked-button type="button" (click)="reload(true)">Comprobar estado del pago</button>}
+        @if(store.problem()){<p class="notice error" role="alert">{{store.problem()}}</p>}
+        @if(store.locked()){<p class="notice" role="status">{{payment.estado==='PAGADO'?'El pago confirmado es inamovible.':'No se puede registrar un pago de un pedido cancelado.'}}</p>}
+        @if(mode()==='form'&&!store.locked()){
+          <form class="payment-form" [formGroup]="form" (ngSubmit)="submit()" novalidate [attr.aria-busy]="store.savingId()===order.id">
+            <mat-form-field appearance="outline"><mat-label>Monto (S/)</mat-label><input matInput type="number" min="0.01" step="0.01" formControlName="monto"><mat-hint>Importe exacto del pedido: {{money(order.total)}}.</mat-hint><mat-error>Indica un importe positivo de hasta dos decimales igual al total del pedido.</mat-error></mat-form-field>
+            <mat-form-field appearance="outline"><mat-label>Método de pago</mat-label><mat-select formControlName="metodo">@for(method of methods;track method.value){<mat-option [value]="method.value">{{method.label}}</mat-option>}</mat-select><mat-error>Selecciona un método válido.</mat-error></mat-form-field>
+            <mat-form-field appearance="outline"><mat-label>Estado del pago</mat-label><mat-select formControlName="estado"><mat-option value="PAGADO">Pagado: dinero recibido</mat-option><mat-option value="PENDIENTE">Pendiente</mat-option></mat-select><mat-error>Selecciona un estado válido.</mat-error></mat-form-field>
+            <mat-form-field appearance="outline"><mat-label>Código de referencia</mat-label><input matInput formControlName="referencia" maxlength="100" autocomplete="off" [required]="needsReference" aria-describedby="reference-note"><mat-hint>Hasta 100 caracteres. No ingreses datos de tarjeta.</mat-hint><mat-error>Revisa el código de referencia.</mat-error></mat-form-field>
+            <p id="reference-note" class="field-help">{{needsReference?'Al confirmar un pago electrónico, el código de referencia es obligatorio.':'La referencia es opcional para efectivo o para un pago todavía pendiente.'}}</p>
+            @if(form.touched&&form.hasError('referencia')){<p class="notice error" role="alert">Ingresa el código de referencia antes de confirmar el pago electrónico.</p>}
+            <p class="notice">{{form.controls.estado.value==='PAGADO'?'Confirma solo si el dinero ya se recibió por un medio externo.':'Guardar como pendiente no confirma la recepción de dinero ni registra fecha de pago.'}}</p>
+            <div class="actions"><button mat-flat-button type="submit" [disabled]="!canSubmit">{{form.controls.estado.value==='PAGADO'?'Confirmar pago recibido':'Guardar pago pendiente'}}</button></div>
+          </form>
+        }
+        <div class="actions">
+          @if(mode()!=='form'&&!store.locked()){<a mat-flat-button routerLink="/operacion/pago/registrar" [queryParams]="{pedidoId:order.id}">Revisar registro de pago</a>}
+          <a mat-stroked-button routerLink="/operacion/pedido/editar" [queryParams]="{pedidoId:order.id}">Ver pedido</a><button mat-button type="button" (click)="reload()" [disabled]="store.savingId()!==null">Actualizar consulta</button><a mat-button routerLink="/operacion/pagos">Buscar otro pedido</a>
+        </div>
+      </section>
+    }
+  }
+</rp-workspace-shell>
