@@ -74,3 +74,10 @@ Conservar aprendizajes verificables que ayuden a evitar errores repetidos en est
 - Evidencia: ClienteLayout incorpora ClientHeader; ExpiredClientShell conservaba una segunda cabecera. El recorrido visual detectó dos marcas en /cliente/reservas pese a que el build pasaba.
 - Aprendizaje: comprobar el layout padre antes de añadir cabeceras a pantallas o shells internos. Reutilizar Brand y comprobar contraste en fondos claros/oscuros.
 - Comprobación: scripts/visual-audit.cjs comprueba una marca y como máximo una cabecera/sidebars por ruta, además de tamaños y navegación por teclado. Su HTTP es controlado, no acredita integración real.
+
+
+### 2026-11-06 — Un solo marco de navegación de operación
+
+- Evidencia: cocina y el panel general duplicaban sidebar/cabecera con espaciados e identidad distintos. CocinaShell ahora delega en WorkspaceShell.
+- Aprendizaje: los cambios del menú se implementan en el componente compartido; no copiar su HTML/CSS en otra US. WorkspaceContext conserva la identidad de la sesión.
+- Comprobación: docs/QA-SIDEBAR-UNIFORME.md y scripts/sidebar-real-browser.cjs comparan medidas, enlaces y comportamiento entre páginas, escritorio/móvil y cuentas distintas.

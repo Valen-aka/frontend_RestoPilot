@@ -2,7 +2,7 @@
 <section class="platos-page">
   <header class="page-header">
     <div><p class="eyebrow">ADMINISTRACIÓN DE CARTA</p><h1>Gestión de platos</h1><p class="subtitle">Administra los platos, precios y disponibilidad de tu restaurante.</p></div>
-    <a mat-flat-button routerLink="/operacion/plato/nuevo">+ Nuevo plato</a>
+    <div class="page-actions"><a mat-stroked-button routerLink="/operacion/categorias">Categorías</a><a mat-flat-button routerLink="/operacion/plato/nuevo">+ Nuevo plato</a></div>
   </header>
   <div class="stats-grid">
     <article class="stat-card"><span>Total de platos</span><strong>{{ cargando() || error() ? '—' : platos().length }}</strong></article>
