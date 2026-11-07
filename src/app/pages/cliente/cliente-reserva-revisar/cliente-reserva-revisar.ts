@@ -84,7 +84,14 @@ export class ClienteReservaRevisarPage {
     }
 
     const rawRest = this.route.snapshot.queryParamMap.get('restauranteId');
-    const restauranteId = rawRest && /^[1-9]\d*$/.test(rawRest) ? Number(rawRest) : (d.restauranteId || 1);
+    const restauranteId = rawRest && /^[1-9]\d*$/.test(rawRest) ? Number(rawRest) : d.restauranteId;
+
+    if (!restauranteId) {
+      this.errorApi.set('No se identificó el restaurante seleccionado. Por favor inicia tu búsqueda desde el inicio.');
+      this.enviando.set(false);
+      this.cargando.set(false);
+      return;
+    }
 
     const request: ReservaRequest = {
       mesaId: d.mesaId,

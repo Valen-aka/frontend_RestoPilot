@@ -36,8 +36,13 @@ export class ClientePlanoPage implements OnInit {
 
   ngOnInit() {
     const rawRest = this.route.snapshot.queryParamMap.get('restauranteId');
-    const rid = rawRest && /^[1-9]\d*$/.test(rawRest) ? Number(rawRest) : (this.store.draft().restauranteId || 1);
+    const rid = rawRest && /^[1-9]\d*$/.test(rawRest) ? Number(rawRest) : this.store.draft().restauranteId;
     const d = this.store.draft();
+
+    if (!rid) {
+      this.errorMsg.set('No se especificó un restaurante válido. Por favor inicia tu búsqueda.');
+      return;
+    }
 
     // Solo consultar disponibilidad si aún no hay búsqueda vigente y tenemos los parámetros requeridos
     if (!this.store.busquedaVigente() && d.fecha && d.horaInicio && d.horaFin && d.comensales) {
