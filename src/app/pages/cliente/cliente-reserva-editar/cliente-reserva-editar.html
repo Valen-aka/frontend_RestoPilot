@@ -54,12 +54,8 @@
 
             <mat-form-field appearance="outline" class="field-item">
               <mat-label>Nueva hora de inicio</mat-label>
-              <mat-select formControlName="horaInicio" (valueChange)="onHoraInicioChange($event)">
-                @for (h of horasDisponibles; track h) {
-                  <mat-option [value]="h">{{ h }} hrs</mat-option>
-                }
-              </mat-select>
-              <mat-hint>Turnos de 1.5 horas</mat-hint>
+              <input matInput type="time" formControlName="horaInicio" (input)="onHoraInicioChange(form0.controls.horaInicio.value)" required>
+              <mat-hint>Horario flexible de reserva</mat-hint>
             </mat-form-field>
 
             <mat-form-field appearance="outline" class="field-item">
@@ -93,6 +89,17 @@
             </button>
           </div>
         </form>
+      </div>
+    } @else {
+      <div class="reserva-card error-card" role="alert" style="text-align:center;padding:48px 24px;">
+        <mat-icon style="font-size:48px;width:48px;height:48px;color:#ef4444;" aria-hidden="true">event_busy</mat-icon>
+        <h2 style="font-size:20px;color:var(--rp-navy);margin:16px 0 8px;">Reserva no encontrada</h2>
+        <p style="color:var(--reserva-muted);max-width:440px;margin:0 auto 20px;">
+          No se encontró la reserva solicitada para reprogramar. Verifica que el identificador sea correcto.
+        </p>
+        <a mat-flat-button class="btn-primary" routerLink="/cliente/reservas">
+          ← Volver a mis reservas
+        </a>
       </div>
     }
   </main>

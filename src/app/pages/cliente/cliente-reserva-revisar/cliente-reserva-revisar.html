@@ -57,8 +57,12 @@
             <div class="summary-row">
               <dt>Mesa seleccionada</dt>
               <dd>
-                <span class="table-badge">{{ store.draft().mesaNumero || 'Mesa 04' }}</span>
-                <span class="zone-text">{{ store.draft().zona || 'Salón Principal' }}</span>
+                @if (store.draft().mesaNumero) {
+                  <span class="table-badge">{{ store.draft().mesaNumero }}</span>
+                  <span class="zone-text">{{ store.draft().zona }}</span>
+                } @else {
+                  <span class="table-badge not-selected" role="alert" style="color: #b91c1c; font-weight: 600;">Sin mesa seleccionada</span>
+                }
               </dd>
             </div>
             <div class="summary-row">
@@ -115,9 +119,20 @@
               }
             </div>
 
+            @if (!store.draft().mesaId) {
+              <div class="sample-notice error-alert" role="alert" style="background:#fff3cd;color:#856404;border:1px solid #ffeeba;padding:12px 16px;border-radius:8px;margin-bottom:16px;">
+                <strong>Mesa requerida:</strong> No has seleccionado una mesa para tu reserva.
+                <div style="margin-top:8px;">
+                  <a mat-stroked-button routerLink="/cliente/plano" queryParamsHandling="preserve" class="btn-secondary">
+                    ← Seleccionar mesa en el plano
+                  </a>
+                </div>
+              </div>
+            }
+
             <div class="form-actions">
-              <button mat-flat-button type="submit" class="btn-primary" [disabled]="form0.invalid || cargando()">
-                {{ cargando() ? 'Enviando solicitud...' : 'Confirmar y enviar reserva →' }}
+              <button mat-flat-button type="submit" class="btn-primary" [disabled]="form0.invalid || cargando() || enviando() || !store.draft().mesaId">
+                {{ enviando() ? 'Enviando solicitud...' : 'Confirmar y enviar reserva →' }}
               </button>
             </div>
           </form>

@@ -64,5 +64,18 @@
         </form>
       </mat-card>
     </div>
+  } @else {
+    <div class="form-shell">
+      <mat-card appearance="outlined" class="card-container" style="text-align:center;padding:48px 24px;">
+        <mat-icon style="font-size:48px;width:48px;height:48px;color:#ef4444;margin:0 auto;" aria-hidden="true">event_busy</mat-icon>
+        <h2 style="font-size:20px;color:var(--rp-navy);margin:16px 0 8px;">Reserva no encontrada o no válida</h2>
+        <p style="color:var(--reserva-muted);max-width:440px;margin:0 auto 20px;">
+          No se encontró la reserva solicitada para evaluar su rechazo. Verifica que el identificador sea correcto.
+        </p>
+        <a mat-flat-button color="primary" routerLink="/operacion/reservas">
+          ← Volver a la agenda de reservas
+        </a>
+      </mat-card>
+    </div>
   }
 </rp-cocina-shell>

@@ -25,128 +25,152 @@
         <span class="criteria-label">Comensales</span>
         <strong>{{ store.draft().comensales }} personas</strong>
       </div>
-      <a mat-button routerLink="/cliente/reservar" class="criteria-edit">
+      <a mat-button routerLink="/cliente/reservar" queryParamsHandling="preserve" class="criteria-edit">
         Modificar fecha/hora
       </a>
     </div>
 
-    <!-- Leyenda interactiva -->
-    <div class="legend-bar" role="region" aria-label="Leyenda del plano">
-      <div class="legend-item">
-        <span class="legend-dot dot-available" aria-hidden="true"></span>
-        <span>Disponible</span>
+    @if (errorMsg()) {
+      <div class="sample-notice error-alert" role="alert" aria-live="assertive" style="background:#fee2e2;color:#991b1b;border:1px solid #f87171;padding:14px 18px;border-radius:8px;margin-bottom:20px;">
+        <strong>Aviso:</strong> {{ errorMsg() }}
       </div>
-      <div class="legend-item">
-        <span class="legend-dot dot-selected" aria-hidden="true"></span>
-        <span>Tu selección</span>
-      </div>
-      <div class="legend-item">
-        <span class="legend-dot dot-occupied" aria-hidden="true"></span>
-        <span>Ocupada / Reservada</span>
-      </div>
-    </div>
+    }
 
-    <!-- Plano del salón -->
-    <div class="reserva-card floorplan-container">
-      <div class="salon-header">
-        <div class="salon-door"><span>Acceso Principal / Recepción</span></div>
+    @if (cargando()) {
+      <div class="reserva-card" role="status" aria-live="polite" style="text-align:center;padding:48px 24px;">
+        <mat-icon style="font-size:36px;width:36px;height:36px;color:var(--rp-primary);" aria-hidden="true">sync</mat-icon>
+        <p style="margin-top:12px;font-weight:600;color:var(--rp-navy);">Consultando disponibilidad de mesas en tiempo real...</p>
+      </div>
+    } @else if (store.mesas().length === 0) {
+      <div class="reserva-card" role="region" aria-label="Sin búsqueda vigente" style="text-align:center;padding:48px 24px;">
+        <mat-icon style="font-size:48px;width:48px;height:48px;color:var(--reserva-muted);" aria-hidden="true">table_restaurant</mat-icon>
+        <h2 style="font-size:20px;color:var(--rp-navy);margin:16px 0 8px;">No hay una búsqueda de disponibilidad vigente</h2>
+        <p style="color:var(--reserva-muted);max-width:480px;margin:0 auto 20px;">
+          El plano interactivo sólo muestra las mesas libres según tu fecha y turno seleccionados.
+        </p>
+        <a mat-flat-button class="btn-primary" routerLink="/cliente/reservar" queryParamsHandling="preserve">
+          Consultar disponibilidad ahora →
+        </a>
+      </div>
+    } @else {
+      <!-- Leyenda interactiva -->
+      <div class="legend-bar" role="region" aria-label="Leyenda del plano">
+        <div class="legend-item">
+          <span class="legend-dot dot-available" aria-hidden="true"></span>
+          <span>Disponible</span>
+        </div>
+        <div class="legend-item">
+          <span class="legend-dot dot-selected" aria-hidden="true"></span>
+          <span>Tu selección</span>
+        </div>
+        <div class="legend-item">
+          <span class="legend-dot dot-occupied" aria-hidden="true"></span>
+          <span>Ocupada / Reservada</span>
+        </div>
       </div>
 
-      <!-- Cuadrícula interactiva de mesas agrupadas por zonas -->
-      <div class="zones-grid">
-        <!-- Zona 1: Terraza -->
-        <section class="zone-card" aria-label="Zona Terraza">
-          <h2 class="zone-title">Terraza al Aire Libre</h2>
-          <div class="tables-group">
-            @for (mesa of store.mesas(); track mesa.id) {
-              @if (mesa.zona === 'Terraza') {
-                <button
-                  type="button"
-                  class="table-box"
-                  [class.is-available]="mesa.disponible"
-                  [class.is-occupied]="!mesa.disponible"
-                  [class.is-selected]="store.draft().mesaId === mesa.id"
-                  [disabled]="!mesa.disponible"
-                  (click)="seleccionarMesa(mesa)"
-                  [attr.aria-label]="mesa.numero + ' en ' + mesa.zona + ', capacidad ' + mesa.capacidad + ' personas, ' + (mesa.disponible ? 'disponible' : 'ocupada')">
-                  <span class="table-num">{{ mesa.numero }}</span>
-                  <span class="table-cap">{{ mesa.capacidad }} personas</span>
-                  <span class="table-status">{{ mesa.disponible ? 'Libre' : 'Ocupada' }}</span>
-                </button>
+      <!-- Plano del salón -->
+      <div class="reserva-card floorplan-container">
+        <div class="salon-header">
+          <div class="salon-door"><span>Acceso Principal / Recepción</span></div>
+        </div>
+
+        <!-- Cuadrícula interactiva de mesas agrupadas por zonas -->
+        <div class="zones-grid">
+          <!-- Zona 1: Terraza -->
+          <section class="zone-card" aria-label="Zona Terraza">
+            <h2 class="zone-title">Terraza al Aire Libre</h2>
+            <div class="tables-group">
+              @for (mesa of store.mesas(); track mesa.id) {
+                @if (mesa.zona === 'Terraza') {
+                  <button
+                    type="button"
+                    class="table-box"
+                    [class.is-available]="mesa.disponible"
+                    [class.is-occupied]="!mesa.disponible"
+                    [class.is-selected]="store.draft().mesaId === mesa.id"
+                    [disabled]="!mesa.disponible"
+                    (click)="seleccionarMesa(mesa)"
+                    [attr.aria-label]="mesa.numero + ' en ' + mesa.zona + ', capacidad ' + mesa.capacidad + ' personas, ' + (mesa.disponible ? 'disponible' : 'ocupada')">
+                    <span class="table-num">{{ mesa.numero }}</span>
+                    <span class="table-cap">{{ mesa.capacidad }} personas</span>
+                    <span class="table-status">{{ mesa.disponible ? 'Libre' : 'Ocupada' }}</span>
+                  </button>
+                }
               }
-            }
-          </div>
-        </section>
-
-        <!-- Zona 2: Salón Principal -->
-        <section class="zone-card" aria-label="Zona Salón Principal">
-          <h2 class="zone-title">Salón Central</h2>
-          <div class="tables-group">
-            @for (mesa of store.mesas(); track mesa.id) {
-              @if (mesa.zona === 'Salón Principal') {
-                <button
-                  type="button"
-                  class="table-box"
-                  [class.is-available]="mesa.disponible"
-                  [class.is-occupied]="!mesa.disponible"
-                  [class.is-selected]="store.draft().mesaId === mesa.id"
-                  [disabled]="!mesa.disponible"
-                  (click)="seleccionarMesa(mesa)"
-                  [attr.aria-label]="mesa.numero + ' en ' + mesa.zona + ', capacidad ' + mesa.capacidad + ' personas, ' + (mesa.disponible ? 'disponible' : 'ocupada')">
-                  <span class="table-num">{{ mesa.numero }}</span>
-                  <span class="table-cap">{{ mesa.capacidad }} personas</span>
-                  <span class="table-status">{{ mesa.disponible ? 'Libre' : 'Ocupada' }}</span>
-                </button>
-              }
-            }
-          </div>
-        </section>
-
-        <!-- Zona 3: Ventanal y VIP -->
-        <section class="zone-card" aria-label="Zona Ventanal y VIP">
-          <h2 class="zone-title">Ventanal y Espacio VIP</h2>
-          <div class="tables-group">
-            @for (mesa of store.mesas(); track mesa.id) {
-              @if (mesa.zona === 'Ventanal' || mesa.zona === 'Zona VIP') {
-                <button
-                  type="button"
-                  class="table-box"
-                  [class.is-available]="mesa.disponible"
-                  [class.is-occupied]="!mesa.disponible"
-                  [class.is-selected]="store.draft().mesaId === mesa.id"
-                  [disabled]="!mesa.disponible"
-                  (click)="seleccionarMesa(mesa)"
-                  [attr.aria-label]="mesa.numero + ' en ' + mesa.zona + ', capacidad ' + mesa.capacidad + ' personas, ' + (mesa.disponible ? 'disponible' : 'ocupada')">
-                  <span class="table-num">{{ mesa.numero }}</span>
-                  <span class="table-cap">{{ mesa.capacidad }} personas</span>
-                  <span class="table-status">{{ mesa.disponible ? 'Libre' : 'Ocupada' }}</span>
-                </button>
-              }
-            }
-          </div>
-        </section>
-      </div>
-
-      <!-- Resumen inferior de la mesa elegida -->
-      @if (store.mesaSeleccionada(); as sel) {
-        <div class="selection-banner" role="status">
-          <div class="selection-details">
-            <span class="selection-icon" aria-hidden="true">✓</span>
-            <div>
-              <strong>Has elegido {{ sel.numero }} ({{ sel.zona }})</strong>
-              <small>Capacidad recomendada para {{ sel.capacidad }} comensales.</small>
             </div>
+          </section>
+
+          <!-- Zona 2: Salón Principal -->
+          <section class="zone-card" aria-label="Zona Salón Principal">
+            <h2 class="zone-title">Salón Central</h2>
+            <div class="tables-group">
+              @for (mesa of store.mesas(); track mesa.id) {
+                @if (mesa.zona === 'Salón Principal') {
+                  <button
+                    type="button"
+                    class="table-box"
+                    [class.is-available]="mesa.disponible"
+                    [class.is-occupied]="!mesa.disponible"
+                    [class.is-selected]="store.draft().mesaId === mesa.id"
+                    [disabled]="!mesa.disponible"
+                    (click)="seleccionarMesa(mesa)"
+                    [attr.aria-label]="mesa.numero + ' en ' + mesa.zona + ', capacidad ' + mesa.capacidad + ' personas, ' + (mesa.disponible ? 'disponible' : 'ocupada')">
+                    <span class="table-num">{{ mesa.numero }}</span>
+                    <span class="table-cap">{{ mesa.capacidad }} personas</span>
+                    <span class="table-status">{{ mesa.disponible ? 'Libre' : 'Ocupada' }}</span>
+                  </button>
+                }
+              }
+            </div>
+          </section>
+
+          <!-- Zona 3: Ventanal y VIP -->
+          <section class="zone-card" aria-label="Zona Ventanal y VIP">
+            <h2 class="zone-title">Ventanal y Espacio VIP</h2>
+            <div class="tables-group">
+              @for (mesa of store.mesas(); track mesa.id) {
+                @if (mesa.zona === 'Ventanal' || mesa.zona === 'Zona VIP') {
+                  <button
+                    type="button"
+                    class="table-box"
+                    [class.is-available]="mesa.disponible"
+                    [class.is-occupied]="!mesa.disponible"
+                    [class.is-selected]="store.draft().mesaId === mesa.id"
+                    [disabled]="!mesa.disponible"
+                    (click)="seleccionarMesa(mesa)"
+                    [attr.aria-label]="mesa.numero + ' en ' + mesa.zona + ', capacidad ' + mesa.capacidad + ' personas, ' + (mesa.disponible ? 'disponible' : 'ocupada')">
+                    <span class="table-num">{{ mesa.numero }}</span>
+                    <span class="table-cap">{{ mesa.capacidad }} personas</span>
+                    <span class="table-status">{{ mesa.disponible ? 'Libre' : 'Ocupada' }}</span>
+                  </button>
+                }
+              }
+            </div>
+          </section>
+        </div>
+
+        <!-- Resumen inferior de la mesa elegida -->
+        @if (store.mesaSeleccionada(); as sel) {
+          <div class="selection-banner" role="status">
+            <div class="selection-details">
+              <span class="selection-icon" aria-hidden="true">✓</span>
+              <div>
+                <strong>Has elegido {{ sel.numero }} ({{ sel.zona }})</strong>
+                <small>Capacidad recomendada para {{ sel.capacidad }} comensales.</small>
+              </div>
+            </div>
+            <button mat-flat-button class="btn-primary" (click)="continuarARevisar()">
+              Continuar con esta mesa →
+            </button>
           </div>
-          <button mat-flat-button class="btn-primary" (click)="continuarARevisar()">
-            Continuar con esta mesa →
-          </button>
-        </div>
-      } @else {
-        <div class="selection-banner warning" role="alert">
-          <p>Selecciona una mesa en color verde para continuar con tu reserva.</p>
-        </div>
-      }
-    </div>
+        } @else {
+          <div class="selection-banner warning" role="alert">
+            <p>Selecciona una mesa en color verde para continuar con tu reserva.</p>
+          </div>
+        }
+      </div>
+    }
   </main>
 
   <!-- Pie de Página -->

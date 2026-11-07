@@ -36,8 +36,13 @@ export class ClienteSinDisponibilidadPage {
 
   elegirTurnoSugerido(turno: { inicio: string; fin: string }) {
     const rawRest = this.route.snapshot.queryParamMap.get('restauranteId');
-    const rid = rawRest && /^[1-9]\d*$/.test(rawRest) ? Number(rawRest) : (this.store.draft().restauranteId || 1);
+    const rid = rawRest && /^[1-9]\d*$/.test(rawRest) ? Number(rawRest) : this.store.draft().restauranteId;
     const d = this.store.draft();
+
+    if (!rid) {
+      this.router.navigate(['/cliente/reservar'], { queryParamsHandling: 'preserve' });
+      return;
+    }
 
     this.store.setSearchCriteria({
       horaInicio: turno.inicio,

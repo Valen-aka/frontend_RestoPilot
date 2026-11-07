@@ -232,6 +232,14 @@ h1 {
   min-height: 44px;
 }
 
+.btn-primary:focus-visible,
+.btn-secondary:focus-visible,
+a:focus-visible,
+button:focus-visible {
+  outline: 3px solid var(--rp-navy) !important;
+  outline-offset: 2px !important;
+}
+
 /* Pie de página */
 .client-footer {
   display: flex;

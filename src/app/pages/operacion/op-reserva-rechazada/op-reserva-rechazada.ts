@@ -35,13 +35,12 @@ export class OpReservaRechazadaPage implements OnInit {
     }
   }
 
-  readonly reserva = computed<ReservaItem>(() => {
-    const qId = Number(this.route.snapshot.queryParamMap.get('id'));
+  readonly reserva = computed<ReservaItem | null>(() => {
+    const qIdRaw = this.route.snapshot.queryParamMap.get('id');
+    const qId = qIdRaw && /^[1-9]\d*$/.test(qIdRaw) ? Number(qIdRaw) : undefined;
     if (qId) {
-      const encontrada = this.store.obtenerReservaPorId(qId);
-      if (encontrada) return encontrada;
+      return this.store.obtenerReservaPorId(qId) ?? null;
     }
-    const rechazada = this.store.reservas().find(r => r.estado === 'RECHAZADA');
-    return rechazada || this.store.reservas()[2];
+    return null;
   });
 }

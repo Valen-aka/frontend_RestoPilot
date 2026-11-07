@@ -130,17 +130,20 @@ const RESERVAS_MUESTRA: ReservaItem[] = [
 
 @Injectable({ providedIn: 'root' })
 export class ReservaStore {
-  readonly mesas = signal<MesaPlano[]>(MESAS_INICIALES);
+  // El plano inicia sin mesas de muestra para mostrar únicamente la búsqueda vigente (US05 - 024)
+  readonly mesas = signal<MesaPlano[]>([]);
+  readonly busquedaVigente = signal<boolean>(false);
   readonly reservas = signal<ReservaItem[]>(RESERVAS_MUESTRA);
 
+  // Inicializa sin mesa preseleccionada de muestra (US06 - 026)
   readonly draft = signal<ReservaDraft>({
-    fecha: '2026-11-04',
+    fecha: new Date().toISOString().split('T')[0],
     horaInicio: '13:30',
     horaFin: '15:00',
     comensales: 4,
-    mesaId: 4,
-    mesaNumero: 'Mesa 04',
-    zona: 'Salón Principal',
+    mesaId: undefined,
+    mesaNumero: undefined,
+    zona: undefined,
     notas: '',
     nombreCliente: 'Ana Pérez',
     emailCliente: 'ana.perez@ejemplo.com',
@@ -178,7 +181,28 @@ export class ReservaStore {
   }
 
   setSearchCriteria(criteria: Partial<ReservaDraft>) {
-    this.draft.update(d => ({ ...d, ...criteria }));
+    this.draft.update(d => {
+      const cambioParametros =
+        (criteria.fecha !== undefined && criteria.fecha !== d.fecha) ||
+        (criteria.horaInicio !== undefined && criteria.horaInicio !== d.horaInicio) ||
+        (criteria.horaFin !== undefined && criteria.horaFin !== d.horaFin) ||
+        (criteria.comensales !== undefined && criteria.comensales !== d.comensales) ||
+        (criteria.restauranteId !== undefined && criteria.restauranteId !== d.restauranteId);
+
+      if (cambioParametros) {
+        // Al alterar los criterios de búsqueda, invalidamos la búsqueda anterior y limpiamos la mesa
+        this.mesas.set([]);
+        this.busquedaVigente.set(false);
+        return {
+          ...d,
+          ...criteria,
+          mesaId: undefined,
+          mesaNumero: undefined,
+          zona: undefined
+        };
+      }
+      return { ...d, ...criteria };
+    });
   }
 
   selectMesa(mesa: MesaPlano) {
@@ -203,6 +227,21 @@ export class ReservaStore {
       y: m.coordenadaY ?? ((m.numero * 22) % 65 + 15)
     }));
     this.mesas.set(mapeadas);
+    this.busquedaVigente.set(true);
+
+    // Asegurar que si la mesa seleccionada previamente ya no está disponible, se deseleccione
+    const currentMesaId = this.draft().mesaId;
+    if (currentMesaId) {
+      const match = mapeadas.find(m => m.id === currentMesaId);
+      if (!match || !match.disponible) {
+        this.draft.update(d => ({
+          ...d,
+          mesaId: undefined,
+          mesaNumero: undefined,
+          zona: undefined
+        }));
+      }
+    }
   }
 
   incorporarReservaCreada(res: ReservaResponse): ReservaItem {
@@ -210,6 +249,7 @@ export class ReservaStore {
     const nueva: ReservaItem = {
       id: res.id,
       codigo: `RES-${res.id}`,
+      restauranteId: res.restauranteId,
       fecha: res.fecha,
       horaInicio: res.horaInicio.length >= 5 ? res.horaInicio.slice(0, 5) : res.horaInicio,
       horaFin: res.horaFin.length >= 5 ? res.horaFin.slice(0, 5) : res.horaFin,
@@ -274,6 +314,7 @@ export class ReservaStore {
           const item: ReservaItem = {
             id: res.id,
             codigo: `RES-${res.id}`,
+            restauranteId: res.restauranteId,
             fecha: res.fecha,
             horaInicio: res.horaInicio.length >= 5 ? res.horaInicio.slice(0, 5) : res.horaInicio,
             horaFin: res.horaFin.length >= 5 ? res.horaFin.slice(0, 5) : res.horaFin,
@@ -345,6 +386,24 @@ export class ReservaStore {
       })
     );
     return cancelada;
+  }
+
+  actualizarEstado(id: number, nuevoEstado: EstadoReserva, motivo?: string): boolean {
+    let ok = false;
+    this.reservas.update(list =>
+      list.map(r => {
+        if (r.id === id) {
+          ok = true;
+          return {
+            ...r,
+            estado: nuevoEstado,
+            motivoRechazo: motivo !== undefined ? motivo : r.motivoRechazo
+          };
+        }
+        return r;
+      })
+    );
+    return ok;
   }
 
   crearReservaOperativa(datos: {
