@@ -39,9 +39,10 @@ export class ClientePlanoPage implements OnInit {
     const rid = rawRest && /^[1-9]\d*$/.test(rawRest) ? Number(rawRest) : (this.store.draft().restauranteId || 1);
     const d = this.store.draft();
 
-    // Si aún no se han cargado mesas de la API para esta búsqueda, consultamos
-    if (this.store.mesas().length === 0 && d.fecha && d.horaInicio && d.horaFin) {
+    // Solo consultar disponibilidad si aún no hay búsqueda vigente y tenemos los parámetros requeridos
+    if (!this.store.busquedaVigente() && d.fecha && d.horaInicio && d.horaFin && d.comensales) {
       this.cargando.set(true);
+      this.errorMsg.set(null);
       this.reservaService.consultarDisponibilidadDirecta(rid, d.fecha, d.horaInicio, d.horaFin, d.comensales).subscribe({
         next: (res) => {
           this.cargando.set(false);
@@ -57,12 +58,13 @@ export class ClientePlanoPage implements OnInit {
 
   seleccionarMesa(mesa: MesaPlano) {
     if (!mesa.disponible) return;
+    this.errorMsg.set(null);
     this.store.selectMesa(mesa);
   }
 
   continuarARevisar() {
     if (!this.store.draft().mesaId) {
-      alert('Por favor selecciona una mesa disponible antes de continuar.');
+      this.errorMsg.set('Por favor selecciona una mesa disponible antes de continuar.');
       return;
     }
     this.router.navigate(['/cliente/reserva/revisar'], { queryParamsHandling: 'merge' });
