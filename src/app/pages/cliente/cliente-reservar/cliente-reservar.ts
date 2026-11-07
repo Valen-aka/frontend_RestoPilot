@@ -9,6 +9,7 @@ import {MatSelectModule} from '@angular/material/select';
 import {MatIconModule} from '@angular/material/icon';
 import {ReservaStore} from '../reserva-ui/reserva-store';
 import {ReservaService} from '../../../core/services/reserva.service';
+import {getFechaLima, getHoraLima} from '../reserva-ui/reserva-date.util';
 
 /**
  * Frame: cliente-reservar | "Hay una mesa para ti"
@@ -39,8 +40,9 @@ export class ClienteReservarPage {
   readonly cargando = signal(false);
   readonly errorMsg = signal<string | null>(null);
 
-  // Fecha mínima: hoy (formato YYYY-MM-DD)
-  readonly hoy = new Date().toISOString().split('T')[0];
+  // Fecha mínima: hoy en hora de Lima (America/Lima, UTC-5)
+  readonly hoy = getFechaLima();
+  private searchSequence = 0;
 
   readonly form0 = new FormGroup({
     fecha: new FormControl(this.store.draft().fecha || this.hoy, {
@@ -80,10 +82,9 @@ export class ClienteReservarPage {
       return;
     }
 
-    // Validar hora de inicio no pasada si la reserva es hoy
+    // Validar hora de inicio no pasada si la reserva es hoy (en hora de Lima)
     if (fecha === this.hoy) {
-      const ahora = new Date();
-      const horaActual = `${String(ahora.getHours()).padStart(2, '0')}:${String(ahora.getMinutes()).padStart(2, '0')}`;
+      const horaActual = getHoraLima();
       if (horaInicio < horaActual) {
         this.errorMsg.set('La hora de inicio no puede ser anterior a la hora actual.');
         return;
@@ -113,9 +114,15 @@ export class ClienteReservarPage {
       restauranteId: rid
     });
 
+    const currentSearchId = ++this.searchSequence;
     this.cargando.set(true);
     this.reservaService.consultarDisponibilidadDirecta(rid, fecha, horaInicio, horaFin, comensales).subscribe({
       next: (res) => {
+        // Asegurar que una respuesta de búsqueda anterior no sobrescriba la búsqueda vigente (US05 - 024)
+        if (currentSearchId !== this.searchSequence) {
+          return;
+        }
+
         this.cargando.set(false);
         this.store.actualizarMesasDesdeDisponibilidad(res.mesas);
         const hayLibres = res.mesas.some(m => m.disponible);
@@ -132,6 +139,10 @@ export class ClienteReservarPage {
         }
       },
       error: (err) => {
+        if (currentSearchId !== this.searchSequence) {
+          return;
+        }
+
         this.cargando.set(false);
         const msg = err.error?.mensaje || (err.status === 0 ? 'No se pudo conectar con el servidor (localhost:8081). Verifique que el backend esté ejecutándose.' : (err.message || 'Error al consultar disponibilidad.'));
         this.errorMsg.set(msg);

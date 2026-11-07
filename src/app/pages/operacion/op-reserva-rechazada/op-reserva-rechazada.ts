@@ -1,10 +1,11 @@
-import {Component, computed, inject, OnInit} from '@angular/core';
+import {Component, computed, inject, OnInit, signal} from '@angular/core';
 import {ActivatedRoute, RouterLink} from '@angular/router';
 import {MatButtonModule} from '@angular/material/button';
 import {MatCardModule} from '@angular/material/card';
 import {MatIconModule} from '@angular/material/icon';
 import {CocinaShell} from '../cocina-ui/cocina-shell';
 import {ReservaStore} from '../../cliente/reserva-ui/reserva-store';
+import {ReservaService} from '../../../core/services/reserva.service';
 import {ReservaItem} from '../../cliente/reserva-ui/reserva.model';
 
 /**
@@ -26,21 +27,26 @@ import {ReservaItem} from '../../cliente/reserva-ui/reserva.model';
 })
 export class OpReservaRechazadaPage implements OnInit {
   readonly store = inject(ReservaStore);
+  private readonly reservaService = inject(ReservaService);
   private readonly route = inject(ActivatedRoute);
 
-  ngOnInit() {
-    const qId = Number(this.route.snapshot.queryParamMap.get('id'));
-    if (qId && !this.store.obtenerReservaPorId(qId)) {
-      this.store.cargarReservaPorId(qId).subscribe();
-    }
-  }
+  readonly reservaReal = signal<ReservaItem | null>(null);
 
-  readonly reserva = computed<ReservaItem | null>(() => {
+  ngOnInit() {
     const qIdRaw = this.route.snapshot.queryParamMap.get('id');
     const qId = qIdRaw && /^[1-9]\d*$/.test(qIdRaw) ? Number(qIdRaw) : undefined;
     if (qId) {
-      return this.store.obtenerReservaPorId(qId) ?? null;
+      this.reservaService.obtener(qId).subscribe({
+        next: (res) => {
+          const item = this.store.incorporarReservaCreada(res);
+          this.reservaReal.set(item);
+        },
+        error: () => {
+          this.reservaReal.set(this.store.obtenerReservaPorId(qId) ?? null);
+        }
+      });
     }
-    return null;
-  });
+  }
+
+  readonly reserva = computed<ReservaItem | null>(() => this.reservaReal());
 }
