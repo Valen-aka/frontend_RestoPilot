@@ -11,7 +11,7 @@
       <p class="subtitle">Modifica la fecha, hora o cantidad de personas de tu reserva activa.</p>
     </div>
 
-    @if (reserva(); as r) {
+    @if (!bloqueadoEdicion() && reserva(); as r) {
       <div class="reserva-card edit-card">
         <!-- Callout de advertencia de estado pendiente -->
         <div class="status-callout warning" role="alert">
@@ -84,7 +84,7 @@
             <a mat-stroked-button routerLink="/cliente/reservas" class="btn-secondary">
               ← Cancelar y volver
             </a>
-            <button mat-flat-button type="submit" class="btn-primary" [disabled]="form0.invalid || cargando()">
+            <button mat-flat-button type="submit" class="btn-primary" [disabled]="form0.invalid || cargando() || bloqueadoEdicion()">
               {{ cargando() ? 'Enviando solicitud...' : 'Solicitar cambio →' }}
             </button>
           </div>
@@ -92,10 +92,12 @@
       </div>
     } @else {
       <div class="reserva-card error-card" role="alert" style="text-align:center;padding:48px 24px;">
-        <mat-icon style="font-size:48px;width:48px;height:48px;color:#ef4444;" aria-hidden="true">event_busy</mat-icon>
-        <h2 style="font-size:20px;color:var(--rp-navy);margin:16px 0 8px;">Reserva no encontrada</h2>
+        <mat-icon style="font-size:48px;width:48px;height:48px;color:#ef4444;" aria-hidden="true">{{ bloqueadoEdicion() ? 'lock' : 'event_busy' }}</mat-icon>
+        <h2 style="font-size:20px;color:var(--rp-navy);margin:16px 0 8px;">
+          {{ bloqueadoEdicion() ? 'Edición bloqueada' : 'Reserva no encontrada' }}
+        </h2>
         <p style="color:var(--reserva-muted);max-width:440px;margin:0 auto 20px;">
-          No se encontró la reserva solicitada para reprogramar. Verifica que el identificador sea correcto.
+          {{ mensajeError || 'No se encontró la reserva solicitada para reprogramar. Verifica que el identificador sea correcto.' }}
         </p>
         <a mat-flat-button class="btn-primary" routerLink="/cliente/reservas">
           ← Volver a mis reservas

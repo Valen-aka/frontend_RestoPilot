@@ -14,6 +14,17 @@
       }
 
       <mat-card appearance="outlined" class="card-container">
+        <!-- Callout de permisos / sesión -->
+        @if (!tienePermisos()) {
+          <div class="alert-box" style="background:#fee2e2;border-color:#f87171;color:#991b1b;margin-bottom:16px;" role="alert">
+            <span class="alert-icon" aria-hidden="true">🔒</span>
+            <div>
+              <strong>Acceso no autorizado o sesión vencida</strong>
+              <p>Tu sesión ha expirado o no cuenta con los permisos operativos necesarios para evaluar o rechazar solicitudes de reserva.</p>
+            </div>
+          </div>
+        }
+
         <!-- Callout de advertencia -->
         @if (r.estado !== 'PENDIENTE') {
           <div class="alert-box" style="background:#fee2e2;border-color:#f87171;color:#991b1b;margin-bottom:16px;" role="alert">

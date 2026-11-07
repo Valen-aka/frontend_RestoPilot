@@ -22,3 +22,4 @@ export function getHoraLima(date: Date = new Date()): string {
   });
   return formatter.format(date); // Formato HH:mm en hora de Lima
 }
+
