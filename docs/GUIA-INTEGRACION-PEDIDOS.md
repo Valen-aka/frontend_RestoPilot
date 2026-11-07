@@ -168,3 +168,8 @@ La aceptación final requiere el recorrido con las pantallas de acceso/carta y l
 ## Conexión real con Supabase — 05/11/2026
 
 Se comprobó la API de IntelliJ en 8081 y el PostgreSQL remoto: 17 verificaciones HTTP y 22 de navegador correctas. Angular conserva su apiUrl del backend. Ver [conexión y límites](CONEXION-SUPABASE.md); las pruebas no conectan automáticamente las interfaces de acceso/carta todavía pendientes.
+
+
+## Conexión vigente: Supabase directo
+
+La solicitud actual autoriza toda la aplicación directamente con Supabase. Esta decisión sustituye las indicaciones anteriores que requieren iniciar Spring Boot para el frontend. Reutilizar la sesión, servicios e interceptor existentes; no añadir credenciales administrativas al cliente. Consultar [la guía de Supabase](GUIA-SUPABASE-DIRECTO.md) y sus pruebas. La IA continúa fuera del alcance.

@@ -136,3 +136,8 @@ El estado de una rama puede diferir de otra. Consultar el código y el inventari
 ## Base compartida para integrar pedidos
 
 Consultar [la guía de conexión](docs/GUIA-INTEGRACION-PEDIDOS.md) antes de añadir otra sesión, interceptor o servicio de pedidos. app.config.ts registra HTTP y apiAuthInterceptor una sola vez. Reutilizar AuthService, API_SESSION, CatalogoService, PedidoService y PagoService cuando la tarea autorice la integración; no copiar credenciales, crear sesiones de muestra ni duplicar stores. La guía delimita los puntos que deben conectar las pantallas de acceso y carta, sin reasignar sus tareas ni declararlas terminadas.
+
+
+## Conexión vigente: Supabase directo
+
+La solicitud actual autoriza toda la aplicación directamente con Supabase. Esta decisión sustituye las indicaciones anteriores que requieren iniciar Spring Boot para el frontend. Reutilizar la sesión, servicios e interceptor existentes; no añadir credenciales administrativas al cliente. Consultar [la guía de Supabase](docs/GUIA-SUPABASE-DIRECTO.md) y sus pruebas. La IA continúa fuera del alcance.

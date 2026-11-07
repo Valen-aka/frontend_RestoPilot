@@ -76,7 +76,7 @@ test('detalle LISTO se consulta fuera de cola y una transición local inválida 
 test('servicio llama endpoint de cola con página y tamaño sin sort local ni mutaciones',()=>{
  let captured;const injector=createEnvironmentInjector([{provide:HttpClient,useValue:{get(url,options){captured={url,options};return of(page([order()],0,10));}}}],null);
  try{const service=runInInjectionContext(injector,()=>new PedidoService());service.pendientesCocina(0,10).subscribe();
-  assert(captured.url.endsWith('/api/pedidos/pendientes'));assert.equal(captured.options.params.get('page'),'0');assert.equal(captured.options.params.get('size'),'10');assert.equal(captured.options.params.has('sort'),false);
+  assert(captured.url.endsWith('/restopilot-api/pedidos/pendientes'));assert.equal(captured.options.params.get('page'),'0');assert.equal(captured.options.params.get('size'),'10');assert.equal(captured.options.params.has('sort'),false);
  }finally{injector.destroy();}
 });
 test('login conserva restaurante validado y rechaza divergencia DTO/JWT sin crear otra sesión',()=>{
