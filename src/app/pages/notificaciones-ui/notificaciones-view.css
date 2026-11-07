@@ -3,3 +3,8 @@
 .notifications li:last-child {border-bottom: 0;}
 .notifications .hint {margin-bottom: var(--rp-space-2);}
 mat-paginator {background: transparent;}
+
+/* Un estado vacío ocupa la misma superficie de lectura que el listado. */
+.empty-result { width:100%; padding:clamp(2rem,5vw,4rem) var(--rp-space-6); }
+.empty-result h2 { margin-bottom:var(--rp-space-4); }
+.empty-result p { margin:0 auto var(--rp-space-6); }

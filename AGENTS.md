@@ -146,3 +146,5 @@ La solicitud actual autoriza toda la aplicación directamente con Supabase. Esta
 ## Navegación uniforme del panel
 
 WorkspaceShell es la única implementación del sidebar y la cabecera de operación/dueño. CocinaShell conserva sus entradas y delega en ese componente; no duplicar su HTML, estilos ni enlaces. Mantener ancho, marca, tarjeta de restaurante, orden del menú y cierre de sesión constantes entre pantallas. La identidad procede de WorkspaceContext y se limpia al cambiar de cuenta. Solo cambia la sección activa y el contenido; conservar las opciones autorizadas por rol. En móvil usar el mismo menú desplegable, con cierre por selección o Escape y foco recuperado.
+
+El marco cliente y cuenta estira su contenido al ancho disponible; mantener align-items:stretch al cambiar de grid a flex. Comprobar el ancho real del contenido además de la ausencia de desbordamiento: una columna estrecha puede pasar ese último chequeo.

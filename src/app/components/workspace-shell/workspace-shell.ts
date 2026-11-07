@@ -28,7 +28,7 @@ export class WorkspaceShell {
  onNavigationClick(event:Event):void {if(this.mobile()&&(event.target as HTMLElement).closest('a')){this.menuOpen.set(false);this.host.nativeElement.querySelector<HTMLButtonElement>('.menu-toggle')?.focus();}}
  skipToContent(event:Event):void {event.preventDefault();this.host.nativeElement.querySelector<HTMLElement>('#workspace-content')?.focus();}
  rememberNavigation(event:Event):void {this.context.navigationScroll=(event.target as HTMLElement).scrollTop;}
- constructor(){afterNextRender(()=>{const nav=this.host.nativeElement.querySelector<HTMLElement>('#workspace-navigation');if(nav&&!this.mobile())nav.scrollTop=this.context.navigationScroll;});}
+ constructor(){afterNextRender(()=>{const nav=this.host.nativeElement.querySelector<HTMLElement>('#workspace-navigation');if(nav&&!this.mobile()){nav.scrollTop=this.context.navigationScroll;const active=nav.querySelector<HTMLElement>('a.active');if(active){const item=active.getBoundingClientRect(),bounds=nav.getBoundingClientRect();if(item.top<bounds.top)nav.scrollTop-=bounds.top-item.top+8;else if(item.bottom>bounds.bottom)nav.scrollTop+=item.bottom-bounds.bottom+8;}}});}
 
 
  readonly auth=inject(AuthService);private readonly router=inject(Router);readonly ownerSession=computed(()=>this.auth.session()?.role==='DUENO');

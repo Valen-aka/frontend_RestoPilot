@@ -25,7 +25,8 @@ export class ReportesView {
  readonly draftValid=computed(()=>validReporteQuery(this.draft()));
  readonly changed=computed(()=>{const q=this.store.query();return !!q&&JSON.stringify(q)!==JSON.stringify(this.draft());});
  readonly queryParams=computed(()=>{const q=this.store.query()??this.draft();return {fechaInicio:q.fechaInicio||null,fechaFin:q.fechaFin||null};});
- readonly title=computed(()=>this.store.state()==='empty'?'Todavía no hay datos en este período':this.store.state()==='invalid'?'Revisa el período':this.payments()?'Los números, claros':'Decisiones con mejores ingredientes');
+ readonly validationProblem=computed(()=>this.store.state()==='invalid'?(this.draftValid()?'':!reporteDate(this.draft().fechaInicio)||!reporteDate(this.draft().fechaFin)?'Completa ambas fechas con valores válidos.':this.draft().fechaInicio>this.draft().fechaFin?'La fecha inicial no puede ser posterior a la final.':'Selecciona un tipo de reporte válido.'):this.store.problem());
+ readonly title=computed(()=>this.store.state()==='empty'?'Todavía no hay datos en este período':this.store.state()==='invalid'&&!this.draftValid()?'Revisa el período':this.payments()?'Los números, claros':'Decisiones con mejores ingredientes');
  readonly demanda=computed<readonly ReporteBar[]>(()=>Object.entries(this.store.report()?.horariosMayorDemanda??{}).map(([label,value])=>({label,value})));
  readonly metodos=computed<readonly ReporteBar[]>(()=>Object.entries(this.store.report()?.estadoPagos?.metodosPagoUtilizados??{}).map(([label,value])=>({label,value})));
  readonly atenciones=computed<readonly ReporteBar[]>(()=>{const r=this.store.report();return r?.pedidosAtendidos!==null&&r?.pedidosAtendidos!==undefined&&r.reservasCompletadas!==null?[{label:'Pedidos atendidos',value:r.pedidosAtendidos},{label:'Reservas completadas',value:r.reservasCompletadas}]:[];});
