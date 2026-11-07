@@ -41,6 +41,7 @@ export class ClienteReservaEditarPage implements OnInit {
   private readonly route = inject(ActivatedRoute);
 
   readonly cargando = signal(false);
+  readonly bloqueadoEdicion = signal(false);
   readonly hoy = getFechaLima();
   readonly reservaReal = signal<ReservaItem | null>(null);
 
@@ -67,6 +68,7 @@ export class ClienteReservaEditarPage implements OnInit {
       this.reservaService.obtener(qId).subscribe({
         next: (res) => {
           this.cargando.set(false);
+          this.bloqueadoEdicion.set(false);
           const r = this.store.incorporarReservaCreada(res);
           this.reservaReal.set(r);
           this.form0.patchValue({
@@ -77,21 +79,13 @@ export class ClienteReservaEditarPage implements OnInit {
             notas: r.notas || ''
           });
         },
-        error: () => {
+        error: (err) => {
           this.cargando.set(false);
-          const local = this.store.obtenerReservaPorId(qId);
-          if (local) {
-            this.reservaReal.set(local);
-            this.form0.patchValue({
-              fecha: local.fecha,
-              horaInicio: local.horaInicio,
-              horaFin: local.horaFin,
-              comensales: local.comensales,
-              notas: local.notas || ''
-            });
-          } else {
-            this.mensajeError = 'No se pudo cargar la información de la reserva a modificar.';
-          }
+          // US08 - 050: Si la consulta devuelve acceso denegado o error, bloquear la edición y mostrar el error (no recuperar datos locales para continuar)
+          this.reservaReal.set(null);
+          this.bloqueadoEdicion.set(true);
+          const msg = err.error?.mensaje || (err.status === 403 ? 'Acceso denegado: No tienes autorización para modificar esta reserva.' : (err.status === 404 ? 'Reserva no encontrada.' : 'No se pudo cargar la información de la reserva a modificar.'));
+          this.mensajeError = msg;
         }
       });
     }
@@ -111,6 +105,12 @@ export class ClienteReservaEditarPage implements OnInit {
   solicitarCambio() {
     this.enviado = true;
     this.mensajeError = '';
+
+    if (this.bloqueadoEdicion()) {
+      this.mensajeError = 'La edición se encuentra bloqueada por falta de autorización o restricción de la reserva.';
+      return;
+    }
+
     if (this.form0.invalid) {
       this.mensajeError = 'Por favor completa todos los campos requeridos correctamente.';
       return;

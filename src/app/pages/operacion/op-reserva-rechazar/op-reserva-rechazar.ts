@@ -43,8 +43,11 @@ export class OpReservaRechazarPage implements OnInit {
   readonly reservaReal = signal<ReservaItem | null>(null);
   readonly tienePermisos = computed(() => {
     const s = this.session();
-    if (!s) return true; // Si no hay sesión iniciada, permitir evaluación en entorno local/test
-    return activeOperationSession(s) || ['ADMINISTRADOR', 'DUENO', 'PERSONAL', 'RECEPCION'].includes(s.role);
+    // US17 - 030: Denegar cuando no existe sesión y denegar también sesiones vencidas
+    if (!s || !s.accessToken || !s.accessToken.trim()) return false;
+    if (!Number.isFinite(s.expiresAt) || s.expiresAt <= Date.now()) return false;
+    const rolesValidos = ['ADMINISTRADOR', 'DUENO', 'PERSONAL', 'RECEPCION'];
+    return rolesValidos.includes(s.role);
   });
 
   readonly form0 = new FormGroup({
@@ -96,7 +99,7 @@ export class OpReservaRechazarPage implements OnInit {
     }
 
     if (!this.tienePermisos()) {
-      this.mensajeError = 'Tu rol no cuenta con permisos operativos para rechazar reservas.';
+      this.mensajeError = 'Sesión no válida o vencida. Se requiere rol operativo con sesión activa para evaluar reservas.';
       return;
     }
 
