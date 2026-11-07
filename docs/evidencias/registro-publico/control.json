@@ -1,0 +1,54 @@
+{
+  "date": "2026-11-07T02:08:54.498Z",
+  "type": "controlled-http-browser",
+  "results": [
+    {
+      "name": "registro cliente pendiente, reenvio y acceso solo despues de confirmar",
+      "passed": true
+    },
+    {
+      "name": "dueno registra cuenta y restaurante una vez y entra tras confirmar",
+      "passed": true
+    },
+    {
+      "name": "duplicado explicito permite corregir correo sin anunciar exito",
+      "passed": true
+    },
+    {
+      "name": "duplicado opaco no anuncia cuenta creada ni inicia sesion",
+      "passed": true
+    },
+    {
+      "name": "respuesta incompleta no se confunde con confirmacion pendiente",
+      "passed": true
+    },
+    {
+      "name": "rechazo del proveedor de correo se explica sin exito falso",
+      "passed": true
+    },
+    {
+      "name": "retorno limpia tokens y pide verificar mediante login",
+      "passed": true
+    },
+    {
+      "name": "enlace vencido permite solicitar otro mensaje",
+      "passed": true
+    },
+    {
+      "name": "registro responsive 320",
+      "passed": true
+    },
+    {
+      "name": "registro responsive 390",
+      "passed": true
+    },
+    {
+      "name": "registro responsive 768",
+      "passed": true
+    },
+    {
+      "name": "registro responsive 1440",
+      "passed": true
+    }
+  ]
+}

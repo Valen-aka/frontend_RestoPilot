@@ -6,7 +6,7 @@ export interface SupabasePublicConfig {readonly url:string;readonly publishableK
 export class EmailConfirmationRequired extends Error {
  constructor(){super('Revisa tu correo para confirmar la cuenta y después inicia sesión. Si ya tenías una cuenta, usa tu contraseña actual.');}
 }
-interface AuthToken {access_token?:string;user?:{id?:string;email?:string};}
+interface AuthToken {access_token?:string;id?:string;email?:string;user?:{id?:string;email?:string};}
 const uuid=(v:unknown):v is string=>typeof v==='string'&&/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(v);
 export function jwtClaims(token:string):Record<string,unknown> {
  const parts=token.split('.');if(parts.length!==3)throw new Error('La sesión recibida no es válida.');
@@ -15,12 +15,12 @@ export function jwtClaims(token:string):Record<string,unknown> {
 export function validSupabaseIdentity(response:AuthResponse,claims:Record<string,unknown>,config:SupabasePublicConfig):boolean {
  return uuid(response.authUserId)&&claims['sub']===response.authUserId&&claims['email']===response.correo&&claims['iss']===config.url.replace(/\/$/,'')+'/auth/v1'&&claims['role']==='authenticated'&&(claims['aud']==='authenticated'||Array.isArray(claims['aud'])&&claims['aud'].includes('authenticated'));
 }
-export function supabaseAuth(http:HttpClient,config:SupabasePublicConfig,path:string,input:Record<string,unknown>):Observable<AuthResponse> {
+export function supabaseAuth(http:HttpClient,config:SupabasePublicConfig,path:string,input:Record<string,unknown>,redirectTo?:string):Observable<AuthResponse> {
  const base=config.url.replace(/\/$/,''),headers=new HttpHeaders({apikey:config.publishableKey,'Content-Type':'application/json'}),signup=path!=='/auth/login';
  const data=signup?{nombreCompleto:input['nombreCompleto'],...(path==='/auth/register-owner'?{register_owner:true,restaurante:input['restaurante']}:{})}:undefined;
- return http.post<AuthToken>(base+'/auth/v1/'+(signup?'signup':'token?grant_type=password'),{email:input['correo'],password:input['password'],...(signup?{data}:{})},{headers,timeout:20000}).pipe(
+ return http.post<AuthToken>(base+'/auth/v1/'+(signup?'signup'+(redirectTo?'?redirect_to='+encodeURIComponent(redirectTo):''):'token?grant_type=password'),{email:input['correo'],password:input['password'],...(signup?{data}:{})},{headers,timeout:20000}).pipe(
   switchMap(auth=>{
-   if(signup&&!auth.access_token)throw new EmailConfirmationRequired();
+   if(signup&&!auth?.access_token){const pending=auth?.user??auth;if(!uuid(pending?.id)||(pending.email!==undefined&&pending.email.trim().toLowerCase()!==String(input['correo']).trim().toLowerCase()))throw new Error('No pudimos verificar la respuesta del registro.');throw new EmailConfirmationRequired();}
    if(typeof auth.access_token!=='string'||!uuid(auth.user?.id))throw new Error('Supabase no devolvió una sesión verificable.');
    const token=auth.access_token,claims=jwtClaims(token);
    if(claims['sub']!==auth.user.id)throw new Error('La identidad recibida no coincide.');

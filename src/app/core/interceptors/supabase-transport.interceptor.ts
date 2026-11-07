@@ -1,8 +1,10 @@
 import {inject} from '@angular/core';
+import {DOCUMENT} from '@angular/common';
 import {HttpBackend, HttpClient, HttpErrorResponse, HttpHeaders, HttpInterceptorFn, HttpRequest, HttpResponse} from '@angular/common/http';
 import {map} from 'rxjs';
 import {environment} from '../../../environments/environment';
 import {supabaseAuth} from '../services/supabase-auth.transport';
+import {confirmationRedirect} from '../services/email-confirmation-return.service';
 
 /** Traduce el contrato interno a RPC HTTPS; nunca utiliza una API local como respaldo. */
 export const supabaseTransportInterceptor:HttpInterceptorFn=(request,next)=>{
@@ -12,7 +14,8 @@ export const supabaseTransportInterceptor:HttpInterceptorFn=(request,next)=>{
  if(!config?.url||!config.publishableKey)throw new Error('Falta la configuración pública de Supabase.');
  if(['/auth/login','/auth/register','/auth/register-owner'].includes(path)){
   if(request.method!=='POST')throw new HttpErrorResponse({status:405,error:{mensaje:'Operación no admitida.'}});
-  return supabaseAuth(new HttpClient(inject(HttpBackend)),config,path,request.body as Record<string,unknown>).pipe(map(body=>new HttpResponse({status:path==='/auth/login'?200:201,body,url:request.url})));
+  const origin=inject(DOCUMENT,{optional:true})?.defaultView?.location.origin;
+  return supabaseAuth(new HttpClient(inject(HttpBackend)),config,path,request.body as Record<string,unknown>,confirmationRedirect(origin)).pipe(map(body=>new HttpResponse({status:path==='/auth/login'?200:201,body,url:request.url})));
  }
  const query:Record<string,string>={};const url=new URL(request.urlWithParams,'https://restopilot.invalid');url.searchParams.forEach((value,key)=>query[key]=value);
  const token=request.headers.get('Authorization');if(!token)throw new HttpErrorResponse({status:401,error:{mensaje:'Inicia sesión para continuar.'}});
