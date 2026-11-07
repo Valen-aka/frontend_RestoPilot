@@ -103,3 +103,15 @@ controles Angular. El artefacto final incluye esa corrección.
 
 Total de navegador conjunto: 45 escenarios de recorrido más esta regresión
 dirigida (46 aprobados: 12 pagos, 20 pedidos, 14 notificaciones).
+
+
+### Actualizacion antes de publicar los PR
+
+Se incorporo develop 79cbc9b, con reservas, mejoras visuales y transporte
+Supabase directo. Se reutiliza el interceptor comun sin restaurar la API Spring
+como requisito de ejecucion. Las verificaciones historicas anteriores conservan
+su alcance y transporte; no equivalen a una nueva ejecucion real en Supabase.
+
+Validacion conjunta posterior a esta actualizacion: checker y build aprobados;
+271 pruebas frontend aprobadas, sin fallos. Las nuevas regresiones US28
+cubren el formato de lista y la integracion servicio/interceptor RPC.
