@@ -39,6 +39,7 @@ export class ClienteReservaRevisarPage {
   private readonly route = inject(ActivatedRoute);
 
   readonly cargando = signal(false);
+  readonly enviando = signal(false);
   readonly errorApi = signal<string | null>(null);
   readonly reservaConfirmada = signal<ReservaItem | null>(null);
 
@@ -55,16 +56,27 @@ export class ClienteReservaRevisarPage {
 
   confirmarSolicitud() {
     this.errorApi.set(null);
+
+    // Control de envíos repetidos (US06 - 026)
+    if (this.enviando() || this.cargando()) {
+      return;
+    }
+
     if (this.form0.invalid) {
       this.form0.markAllAsTouched();
       return;
     }
 
     const d = this.store.draft();
-    if (!d.mesaId) {
-      this.errorApi.set('Por favor regresa al plano y selecciona una mesa antes de confirmar.');
+
+    // Asegurar los datos de la búsqueda y selección de mesa
+    if (!d.mesaId || !d.mesaNumero || !d.fecha || !d.horaInicio || !d.horaFin || !d.comensales) {
+      this.errorApi.set('No has seleccionado una mesa o faltan datos de la búsqueda. Por favor vuelve al plano.');
       return;
     }
+
+    this.enviando.set(true);
+    this.cargando.set(true);
 
     const notas = this.form0.controls.notas.value;
     if (notas !== undefined) {
@@ -72,7 +84,14 @@ export class ClienteReservaRevisarPage {
     }
 
     const rawRest = this.route.snapshot.queryParamMap.get('restauranteId');
-    const restauranteId = rawRest && /^[1-9]\d*$/.test(rawRest) ? Number(rawRest) : (d.restauranteId || 1);
+    const restauranteId = rawRest && /^[1-9]\d*$/.test(rawRest) ? Number(rawRest) : d.restauranteId;
+
+    if (!restauranteId) {
+      this.errorApi.set('No se identificó el restaurante seleccionado. Por favor inicia tu búsqueda desde el inicio.');
+      this.enviando.set(false);
+      this.cargando.set(false);
+      return;
+    }
 
     const request: ReservaRequest = {
       mesaId: d.mesaId,
@@ -84,7 +103,6 @@ export class ClienteReservaRevisarPage {
       notas: notas ? notas.trim() : null
     };
 
-    this.cargando.set(true);
     this.reservaService.registrarReserva(request).subscribe({
       next: (res) => {
         this.cargando.set(false);
@@ -102,6 +120,7 @@ export class ClienteReservaRevisarPage {
       },
       error: (err) => {
         this.cargando.set(false);
+        this.enviando.set(false);
         const msg = err.error?.mensaje || (err.status === 0 ? 'No se pudo conectar con el servidor (localhost:8081). Verifique que el backend esté ejecutándose.' : (err.message || 'Error al procesar la reserva.'));
         this.errorApi.set(msg);
       }

@@ -143,6 +143,12 @@
   border: 1.5px solid var(--reserva-border);
 }
 
+.table-box:focus-visible {
+  outline: 3px solid var(--rp-navy) !important;
+  outline-offset: 3px !important;
+  box-shadow: 0 0 0 4px rgba(21, 50, 78, 0.2);
+}
+
 .table-box.is-available {
   background-color: #f7fdf9;
   border-color: #8ed0b0;

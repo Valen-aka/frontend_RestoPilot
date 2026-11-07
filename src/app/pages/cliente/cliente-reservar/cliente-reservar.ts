@@ -97,7 +97,12 @@ export class ClienteReservarPage {
     }
 
     const rawRest = this.route.snapshot.queryParamMap.get('restauranteId');
-    const rid = rawRest && /^[1-9]\d*$/.test(rawRest) ? Number(rawRest) : 1;
+    const rid = rawRest && /^[1-9]\d*$/.test(rawRest) ? Number(rawRest) : this.store.draft().restauranteId;
+
+    if (!rid) {
+      this.errorMsg.set('No se identificó un restaurante válido para consultar disponibilidad.');
+      return;
+    }
 
     this.store.setSearchCriteria({
       fecha,
