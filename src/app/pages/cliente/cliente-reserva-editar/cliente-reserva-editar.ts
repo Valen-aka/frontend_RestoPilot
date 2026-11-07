@@ -47,20 +47,18 @@ export class ClienteReservaEditarPage implements OnInit {
     '19:00', '19:30', '20:00', '20:30', '21:00', '21:30'
   ];
 
-  readonly reserva = computed<ReservaItem>(() => {
+  readonly reserva = computed<ReservaItem | null>(() => {
     const nav = this.router.getCurrentNavigation();
     const stateId = (nav?.extras.state as { reservaId?: number })?.reservaId;
-    const qId = Number(this.route.snapshot.queryParamMap.get('id'));
+    const qIdRaw = this.route.snapshot.queryParamMap.get('id');
+    const qId = qIdRaw && /^[1-9]\d*$/.test(qIdRaw) ? Number(qIdRaw) : undefined;
     const targetId = stateId || qId;
 
     if (targetId) {
-      const encontrada = this.store.obtenerReservaPorId(targetId);
-      if (encontrada) return encontrada;
+      return this.store.obtenerReservaPorId(targetId) ?? null;
     }
 
-    // Por defecto toma una reserva activa editable (PENDIENTE o CONFIRMADA)
-    const editable = this.store.reservas().find(r => r.estado === 'PENDIENTE' || r.estado === 'CONFIRMADA');
-    return editable || this.store.reservas()[0];
+    return null;
   });
 
   readonly form0 = new FormGroup({
@@ -122,7 +120,10 @@ export class ClienteReservaEditarPage implements OnInit {
 
     const val = this.form0.getRawValue();
     const r = this.reserva();
-    if (!r) return;
+    if (!r) {
+      this.mensajeError = 'No se encontró la reserva solicitada para reprogramar.';
+      return;
+    }
 
     if (val.fecha < this.hoy) {
       this.mensajeError = 'No se puede reprogramar a una fecha pasada.';
@@ -144,32 +145,63 @@ export class ClienteReservaEditarPage implements OnInit {
     }
 
     const rawRest = this.route.snapshot.queryParamMap.get('restauranteId');
-    const restauranteId = rawRest && /^[1-9]\d*$/.test(rawRest) ? Number(rawRest) : 1;
-
-    const request: ReservaRequest = {
-      mesaId: r.mesaId,
-      restauranteId,
-      fecha: val.fecha,
-      horaInicio: val.horaInicio,
-      horaFin: val.horaFin,
-      numeroComensales: Number(val.comensales),
-      notas: val.notas ? val.notas.trim() : null
-    };
+    const restauranteId = rawRest && /^[1-9]\d*$/.test(rawRest) ? Number(rawRest) : r.restauranteId;
+    if (!restauranteId) {
+      this.mensajeError = 'No se pudo identificar el restaurante asociado a la reserva.';
+      return;
+    }
 
     this.cargando.set(true);
-    this.reservaService.modificarCliente(r.id, request).subscribe({
-      next: (res) => {
-        this.cargando.set(false);
-        this.store.incorporarReservaCreada(res);
-        this.router.navigate(['/cliente/reserva'], {
-          queryParams: { vista: 'cliente-reserva-pendiente', id: r.id },
-          state: { reservaId: r.id, reprogramada: true },
-          queryParamsHandling: 'merge'
+
+    // US08 (049 y 050): Consultar disponibilidad real para el nuevo horario antes de confirmar
+    this.reservaService.consultarDisponibilidadDirecta(
+      restauranteId,
+      val.fecha,
+      val.horaInicio,
+      val.horaFin,
+      Number(val.comensales)
+    ).subscribe({
+      next: (disp) => {
+        const mesasAptas = disp.mesas.filter(m => m.disponible && m.capacidad >= Number(val.comensales));
+        if (mesasAptas.length === 0) {
+          this.cargando.set(false);
+          this.mensajeError = `No hay disponibilidad de mesas en el horario ${val.horaInicio} - ${val.horaFin} para ${val.comensales} personas. Por favor elige otro horario.`;
+          return;
+        }
+
+        // Si la mesa original está libre en el nuevo horario la mantiene; de lo contrario toma una mesa libre apta
+        const mesaActualLibre = disp.mesas.find(m => m.mesaId === r.mesaId && m.disponible);
+        const mesaAsignada = mesaActualLibre ? r.mesaId : mesasAptas[0].mesaId;
+
+        const request: ReservaRequest = {
+          mesaId: mesaAsignada,
+          restauranteId,
+          fecha: val.fecha,
+          horaInicio: val.horaInicio,
+          horaFin: val.horaFin,
+          numeroComensales: Number(val.comensales),
+          notas: val.notas ? val.notas.trim() : null
+        };
+
+        this.reservaService.modificarCliente(r.id, request).subscribe({
+          next: (res) => {
+            this.cargando.set(false);
+            this.store.incorporarReservaCreada(res);
+            this.router.navigate(['/cliente/reserva'], {
+              queryParams: { vista: 'cliente-reserva-pendiente', id: r.id },
+              state: { reservaId: r.id, reprogramada: true },
+              queryParamsHandling: 'merge'
+            });
+          },
+          error: (err) => {
+            this.cargando.set(false);
+            this.mensajeError = err.error?.mensaje || (err.status === 0 ? 'No se pudo conectar con el servidor (localhost:8081).' : (err.message || 'No se pudo actualizar la reserva. Intenta nuevamente.'));
+          }
         });
       },
       error: (err) => {
         this.cargando.set(false);
-        this.mensajeError = err.error?.mensaje || (err.status === 0 ? 'No se pudo conectar con el servidor (localhost:8081).' : (err.message || 'No se pudo actualizar la reserva. Intenta nuevamente.'));
+        this.mensajeError = err.error?.mensaje || 'No se pudo consultar la disponibilidad para el nuevo horario.';
       }
     });
   }

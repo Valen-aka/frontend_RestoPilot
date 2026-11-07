@@ -50,19 +50,18 @@ export class ClienteReservaCancelarPage implements OnInit {
     })
   });
 
-  readonly reserva = computed<ReservaItem>(() => {
+  readonly reserva = computed<ReservaItem | null>(() => {
     const nav = this.router.getCurrentNavigation();
     const stateId = (nav?.extras.state as { reservaId?: number })?.reservaId;
-    const qId = Number(this.route.snapshot.queryParamMap.get('id'));
+    const qIdRaw = this.route.snapshot.queryParamMap.get('id');
+    const qId = qIdRaw && /^[1-9]\d*$/.test(qIdRaw) ? Number(qIdRaw) : undefined;
     const targetId = stateId || qId;
 
     if (targetId) {
-      const encontrada = this.store.obtenerReservaPorId(targetId);
-      if (encontrada) return encontrada;
+      return this.store.obtenerReservaPorId(targetId) ?? null;
     }
 
-    const cancelable = this.store.reservas().find(r => r.estado === 'PENDIENTE' || r.estado === 'CONFIRMADA');
-    return cancelable || this.store.reservas()[0];
+    return null;
   });
 
   ngOnInit() {
@@ -117,6 +116,7 @@ export class ClienteReservaCancelarPage implements OnInit {
           next: (res) => {
             this.cargando.set(false);
             this.store.incorporarReservaCreada(res);
+            this.store.cancelarReserva(r.id, motivo);
             this.router.navigate(['/cliente/reserva'], {
               queryParams: { vista: 'cliente-reserva-cancelada', id: r.id },
               state: { reservaId: r.id },

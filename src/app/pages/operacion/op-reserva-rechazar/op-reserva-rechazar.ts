@@ -46,46 +46,55 @@ export class OpReservaRechazarPage implements OnInit {
     })
   });
 
-  readonly reserva = computed<ReservaItem>(() => {
+  readonly reserva = computed<ReservaItem | null>(() => {
     const nav = this.router.getCurrentNavigation();
     const stateId = (nav?.extras.state as { reservaId?: number })?.reservaId;
-    const qId = Number(this.route.snapshot.queryParamMap.get('id'));
+    const qIdRaw = this.route.snapshot.queryParamMap.get('id');
+    const qId = qIdRaw && /^[1-9]\d*$/.test(qIdRaw) ? Number(qIdRaw) : undefined;
     const targetId = stateId || qId;
 
     if (targetId) {
-      const encontrada = this.store.obtenerReservaPorId(targetId);
-      if (encontrada) return encontrada;
+      return this.store.obtenerReservaPorId(targetId) ?? null;
     }
 
-    const pendiente = this.store.reservas().find(r => r.estado === 'PENDIENTE');
-    return pendiente || this.store.reservas()[0];
+    return null;
   });
 
   mensajeError = '';
 
   ngOnInit() {
-    const qId = Number(this.route.snapshot.queryParamMap.get('id'));
+    const qIdRaw = this.route.snapshot.queryParamMap.get('id');
+    const qId = qIdRaw && /^[1-9]\d*$/.test(qIdRaw) ? Number(qIdRaw) : undefined;
     if (qId && !this.store.obtenerReservaPorId(qId)) {
-      this.store.cargarReservaPorId(qId).subscribe();
+      this.cargando.set(true);
+      this.store.cargarReservaPorId(qId).subscribe({
+        next: () => this.cargando.set(false),
+        error: () => this.cargando.set(false)
+      });
     }
   }
 
   rechazar() {
     this.mensajeError = '';
+    const r = this.reserva();
+    if (!r) {
+      this.mensajeError = 'No se encontró la reserva indicada para evaluar su rechazo.';
+      return;
+    }
+
     if (this.form0.invalid) {
       this.mensajeError = 'El motivo de rechazo es obligatorio (mínimo 5 caracteres) para notificar al cliente.';
       return;
     }
 
     const motivo = this.form0.controls.motivo.value.trim();
-    const r = this.reserva();
-    if (!r) return;
 
     this.cargando.set(true);
     this.reservaService.evaluarPorId(r.id, 'RECHAZADA', motivo).subscribe({
       next: (res) => {
         this.cargando.set(false);
         this.store.incorporarReservaCreada(res);
+        this.store.actualizarEstado(r.id, 'RECHAZADA', motivo);
         this.router.navigate(['/operacion/reserva'], {
           queryParams: { vista: 'op-reserva-rechazada', id: r.id },
           state: { reservaId: r.id },

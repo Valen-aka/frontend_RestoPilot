@@ -249,6 +249,7 @@ export class ReservaStore {
     const nueva: ReservaItem = {
       id: res.id,
       codigo: `RES-${res.id}`,
+      restauranteId: res.restauranteId,
       fecha: res.fecha,
       horaInicio: res.horaInicio.length >= 5 ? res.horaInicio.slice(0, 5) : res.horaInicio,
       horaFin: res.horaFin.length >= 5 ? res.horaFin.slice(0, 5) : res.horaFin,
@@ -313,6 +314,7 @@ export class ReservaStore {
           const item: ReservaItem = {
             id: res.id,
             codigo: `RES-${res.id}`,
+            restauranteId: res.restauranteId,
             fecha: res.fecha,
             horaInicio: res.horaInicio.length >= 5 ? res.horaInicio.slice(0, 5) : res.horaInicio,
             horaFin: res.horaFin.length >= 5 ? res.horaFin.slice(0, 5) : res.horaFin,
@@ -384,6 +386,24 @@ export class ReservaStore {
       })
     );
     return cancelada;
+  }
+
+  actualizarEstado(id: number, nuevoEstado: EstadoReserva, motivo?: string): boolean {
+    let ok = false;
+    this.reservas.update(list =>
+      list.map(r => {
+        if (r.id === id) {
+          ok = true;
+          return {
+            ...r,
+            estado: nuevoEstado,
+            motivoRechazo: motivo !== undefined ? motivo : r.motivoRechazo
+          };
+        }
+        return r;
+      })
+    );
+    return ok;
   }
 
   crearReservaOperativa(datos: {

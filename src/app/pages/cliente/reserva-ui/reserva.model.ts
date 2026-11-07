@@ -41,6 +41,7 @@ export interface ReservaDraft {
 export interface ReservaItem {
   id: number;
   codigo: string;
+  restauranteId?: number;
   fecha: string;
   horaInicio: string;
   horaFin: string;
