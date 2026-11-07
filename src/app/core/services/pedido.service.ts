@@ -6,10 +6,23 @@ import {confirmedPedido, PedidoProtocolError, PedidoRequest, PedidoResponse, Est
 
 import {CocinaPage, readCocinaPage, readCocinaPedido} from '../models/cocina-api.model';
 import {PedidosPage, readPedido, readPedidosPage} from '../models/pedido-query.model';
+import {confirmedAdjustment} from '../../pages/operacion/pedido-management-ui/pedido-management.model';
 
 @Injectable({providedIn: 'root'})
 export class PedidoService {
   private readonly http = inject(HttpClient);
+  ajustar(original:PedidoResponse,request:PedidoRequest):Observable<PedidoResponse> {
+    const body:PedidoRequest={restauranteId:original.restauranteId,tipoEntrega:request.tipoEntrega,mesaId:request.mesaId,direccionEntrega:request.direccionEntrega,detalles:request.detalles.map(d=>({platoId:d.platoId,cantidad:d.cantidad,notas:d.notas}))};
+    return this.http.put<unknown>(environment.apiUrl.replace(/\/$/,'')+'/pedidos/'+original.id,body,{observe:'response',timeout:20000}).pipe(map(response=>{
+      if(response.status!==200)throw new Error('No se pudo verificar el ajuste.');
+      return confirmedAdjustment(response.body,original,body);
+    }));
+  }
+  cancelarAdministrativo(id:number):Observable<void> {
+    return this.http.delete(environment.apiUrl.replace(/\/$/,'')+'/pedidos/'+id,{observe:'response',timeout:20000}).pipe(map(response=>{
+      if(response.status!==204)throw new Error('No se pudo verificar la cancelación.');
+    }));
+  }
   obtener(id:number):Observable<PedidoResponse> {
     return this.http.get<unknown>(environment.apiUrl.replace(/\/$/,'')+'/pedidos/'+id,{timeout:20000})
       .pipe(map(value=>readPedido(value,id)));
