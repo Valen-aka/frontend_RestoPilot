@@ -54,7 +54,7 @@
             @if (order.modality === 'SALON' && order.table) {<div><dt>Mesa</dt><dd>{{ order.table }}</dd></div>}
             @if (order.modality === 'DELIVERY' && order.address) {<div><dt>Dirección de entrega</dt><dd>{{ order.address }}</dd></div>}
             <div><dt>Solicitud</dt><dd>{{ date(order) }} · {{ time(order) }} · hora de Lima</dd></div>
-          </dl><p class="read-only">Los cambios de estado se registran al recibir la confirmación del servidor. No se registran cobros desde esta pantalla.</p>@if(stageMatches()) {<rp-pedido-action [orderId]="order.id" [origin]="origin"/>}</mat-card>
+          </dl>@if(order.status==='Pendiente'){<div class="actions"><a mat-stroked-button routerLink="/operacion/pedido/editar" [queryParams]="{pedidoId:order.id}">Editar pedido</a><a mat-button routerLink="/operacion/pedido/cancelar" [queryParams]="{pedidoId:order.id}">Revisar cancelación</a></div>}<p class="read-only">Los cambios de estado se registran al recibir la confirmación del servidor. No se registran cobros desde esta pantalla.</p>@if(stageMatches()) {<rp-pedido-action [orderId]="order.id" [origin]="origin"/>}</mat-card>
         </div>
       } @else {
         <mat-card appearance="outlined" class="state-card" role="status"><h2>{{ selectedId() ? 'No se encontró el pedido en este restaurante' : 'Selecciona un pedido para consultarlo' }}</h2><p>No hay información disponible para esta selección. Abre la cola o el tablero para consultar una comanda.</p></mat-card>

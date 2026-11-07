@@ -1,0 +1,10 @@
+{
+  "date": "2026-11-07T00:38:50.023Z",
+  "type": "controlled-http-browser",
+  "results": [
+    {
+      "name": "confirmacion JSON ilegible conserva incertidumbre y reconcilia",
+      "passed": true
+    }
+  ]
+}

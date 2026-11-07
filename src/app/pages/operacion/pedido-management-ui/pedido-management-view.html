@@ -1,0 +1,38 @@
+<rp-workspace-shell role="operation" active="pedidos" breadcrumb="Gestión de pedidos" [live]="true" [restaurantName]="store.order()?.restauranteNombre||'Mi restaurante'" [restaurantId]="store.order()?.restauranteId||null">
+ <section class="management" aria-labelledby="management-title">
+  <header><p class="eyebrow">PEDIDOS OPERACIÓN</p><h1 id="management-title">{{mode()==='cancel'?'Cancelar pedido pendiente':'Ajustar pedido pendiente'}}</h1><p>Solo se puede modificar o cancelar un pedido pendiente y no pagado de tu restaurante.</p></header>
+  @if(store.state()==='loading'){<div role="status" aria-busy="true" class="loading"><mat-spinner diameter="32"/><span>Consultando pedido, pago y catálogo…</span></div>}
+  @if(store.problem()){<p class="feedback error" role="alert">{{store.problem()}}</p>}
+  @if(store.notice()){<p class="feedback" role="status" aria-live="polite">{{store.notice()}}</p>}
+  @if(store.busy()){<p role="status" aria-busy="true">Procesando y verificando el resultado…</p>}
+  @if(store.uncertain()){
+   <div class="feedback" role="alert"><p>El resultado es incierto. No vuelvas a enviar la operación sin comprobarla.</p><button mat-stroked-button type="button" (click)="store.verify()" [disabled]="store.state()==='loading'">Consultar estado actual</button>
+   @if(store.state()==='ready'){<button mat-button type="button" (click)="store.allowRetryAfterReview()">Ya comprobé con el restaurante que no se aplicó; permitir otro intento</button>}</div>
+  }
+  @if(store.state()==='error'){<button mat-stroked-button type="button" (click)="store.verify()">Reintentar consulta</button>}
+  @if(store.order();as order){
+   <section class="summary" aria-labelledby="order-title"><h2 id="order-title">Pedido #{{order.id}}</h2><p>{{order.clienteNombre}} · {{order.estado}} · Pago {{store.payment()?.estado||'sin verificar'}}</p><p>Total confirmado: <strong>{{order.total|currency:'PEN':'S/ ':'1.2-2'}}</strong></p></section>
+   @if(store.blocked()){
+    <div class="feedback" role="status"><h2>Este pedido no permite cambios</h2><p>{{order.estado==='CANCELADO'?'El pedido está cancelado y conserva su historial.':store.payment()?.estado==='PAGADO'?'El pago está confirmado. No se puede editar ni cancelar.':'El pedido ya no está pendiente.'}}</p></div>
+    <ul class="confirmed-lines">@for(line of order.detalles;track line.id){<li>{{line.cantidad}} × {{line.nombrePlatoSnapshot}} · {{line.subtotal|currency:'PEN':'S/ ':'1.2-2'}}</li>}</ul>
+   } @else if(mode()==='cancel'){
+    <ul class="confirmed-lines">@for(line of order.detalles;track line.id){<li>{{line.cantidad}} × {{line.nombrePlatoSnapshot}} · {{line.subtotal|currency:'PEN':'S/ ':'1.2-2'}}</li>}</ul>
+    <p>La cancelación conserva el pedido y el registro del pago. El servidor notificará al cliente.</p><button mat-flat-button type="button" (click)="confirm()" [disabled]="!store.canMutate()">Cancelar pedido</button>
+   } @else {
+    <form [formGroup]="form" (ngSubmit)="save()" [attr.aria-busy]="store.busy()" novalidate>
+     <div formArrayName="detalles" class="lines">@for(line of form.controls.detalles.controls;track line;let i=$index){
+      <section class="line" [formGroupName]="i" [attr.aria-label]="dishName(line.controls.platoId.value)"><h3>{{dishName(line.controls.platoId.value)}}</h3><mat-form-field appearance="outline"><mat-label>Cantidad de {{dishName(line.controls.platoId.value)}}</mat-label><input matInput type="number" min="1" step="1" formControlName="cantidad"/><mat-error>Indica una cantidad entera positiva.</mat-error></mat-form-field><mat-form-field appearance="outline"><mat-label>Notas de {{dishName(line.controls.platoId.value)}}</mat-label><textarea matInput rows="2" maxlength="255" formControlName="notas"></textarea><mat-error>Las notas admiten hasta 255 caracteres.</mat-error></mat-form-field><button mat-button type="button" (click)="remove(i)" [disabled]="!store.canMutate()" [attr.aria-label]="'Quitar '+dishName(line.controls.platoId.value)">Quitar</button></section>
+     }</div>
+     <div class="add-line"><mat-form-field appearance="outline"><mat-label>Añadir plato</mat-label><mat-select [formControl]="selectedDish">@for(dish of available();track dish.id){<mat-option [value]="dish.id">{{dish.nombre}} · {{dish.precio|currency:'PEN':'S/ ':'1.2-2'}}</mat-option>}</mat-select></mat-form-field><button mat-stroked-button type="button" (click)="add()" [disabled]="!store.canMutate()||!selectedDish.value">Añadir</button></div>
+     <div class="fields"><mat-form-field appearance="outline"><mat-label>Modalidad</mat-label><mat-select formControlName="tipoEntrega">@for(modality of modalities;track modality){<mat-option [value]="modality" [disabled]="(modality==='SALON'&&!store.restaurant()?.tieneAtencionFisica)||(modality==='DELIVERY'&&!store.restaurant()?.aceptaDelivery)">{{labels[modality]}}</mat-option>}</mat-select></mat-form-field>
+     @if(form.controls.tipoEntrega.value==='SALON'){<mat-form-field appearance="outline"><mat-label>Mesa</mat-label><mat-select formControlName="mesaId">@for(table of store.tables();track table.id){@if(table.activo){<mat-option [value]="table.id">Mesa {{table.numero}}</mat-option>}}</mat-select></mat-form-field>}
+     @if(form.controls.tipoEntrega.value==='DELIVERY'){<mat-form-field appearance="outline"><mat-label>Dirección de entrega</mat-label><textarea matInput formControlName="direccionEntrega" rows="2" maxlength="255"></textarea><mat-error>La dirección admite hasta 255 caracteres.</mat-error></mat-form-field>}</div>
+     @if(form.hasError('empty')){<p class="error" role="alert">Conserva al menos un plato en el pedido.</p>}@if(form.hasError('plato')){<p class="error" role="alert">Quita los platos agotados o que ya no pertenecen al catálogo antes de guardar.</p>}@if(form.hasError('mesa')){<p class="error" role="alert">Selecciona una mesa activa con atención física habilitada.</p>}@if(form.hasError('delivery')){<p class="error" role="alert">Delivery debe estar habilitado y tener una dirección válida.</p>}
+     <p>Nuevo total estimado: <strong>{{estimated()|currency:'PEN':'S/ ':'1.2-2'}}</strong>. El servidor confirma precios e importe al guardar.</p><button mat-flat-button type="submit" [disabled]="!store.canMutate()">Guardar pedido</button>
+    </form>
+   }
+   <nav class="actions" aria-label="Acciones del pedido"><a mat-stroked-button routerLink="/operacion/pago/registrar" [queryParams]="{pedidoId:order.id}">Consultar pago</a>@if(mode()==='cancel'){<a mat-button routerLink="/operacion/pedido/editar" [queryParams]="{pedidoId:order.id}">Volver a editar</a>}@else{<a mat-button routerLink="/operacion/pedido/cancelar" [queryParams]="{pedidoId:order.id}">Revisar cancelación</a>}<button mat-button type="button" (click)="store.verify()" [disabled]="store.busy()||store.state()==='loading'">Actualizar pedido</button></nav>
+  }
+  <a mat-button routerLink="/operacion/pedidos">Volver a pedidos</a>
+ </section>
+</rp-workspace-shell>

@@ -1,3 +1,4 @@
+import {pedidoManagementPendingGuard} from '../../pages/operacion/pedido-management-ui/pedido-management.guard';
 import {sessionGuard} from '../../core/guards/session.guard';
 import {mesasPendingGuard} from '../../core/guards/mesas.guard';
 import {agendaPendingGuard} from '../../core/guards/agenda.guard';
@@ -24,8 +25,8 @@ const children:Routes=[
 {path:"pedido",canActivate:[operacionCocinaGuard],canDeactivate:[cocinaPendingGuard],pathMatch:'full',loadComponent:()=>import('../../screen-host').then(m=>m.ScreenHost),data:{base:"/operacion/pedido"}},
 {path:"pedido/listo",canActivate:[operacionCocinaGuard],canDeactivate:[cocinaPendingGuard],pathMatch:'full',loadComponent:()=>import('../../screen-host').then(m=>m.ScreenHost),data:{base:"/operacion/pedido/listo"}},
 {path:"pedido/entregar",canActivate:[operacionCocinaGuard],canDeactivate:[cocinaPendingGuard],pathMatch:'full',loadComponent:()=>import('../../screen-host').then(m=>m.ScreenHost),data:{base:"/operacion/pedido/entregar"}},
-{path:"pedido/editar",pathMatch:'full',loadComponent:()=>import('../../screen-host').then(m=>m.ScreenHost),data:{base:"/operacion/pedido/editar"}},
-{path:"pedido/cancelar",pathMatch:'full',loadComponent:()=>import('../../screen-host').then(m=>m.ScreenHost),data:{base:"/operacion/pedido/cancelar"}},
+{path:"pedido/editar",canDeactivate:[pedidoManagementPendingGuard],runGuardsAndResolvers:'paramsOrQueryParamsChange',pathMatch:'full',loadComponent:()=>import('../../screen-host').then(m=>m.ScreenHost),data:{base:"/operacion/pedido/editar"}},
+{path:"pedido/cancelar",canDeactivate:[pedidoManagementPendingGuard],runGuardsAndResolvers:'paramsOrQueryParamsChange',pathMatch:'full',loadComponent:()=>import('../../screen-host').then(m=>m.ScreenHost),data:{base:"/operacion/pedido/cancelar"}},
 {path:"pagos",pathMatch:'full',loadComponent:()=>import('../../screen-host').then(m=>m.ScreenHost),data:{base:"/operacion/pagos"}},
 {path:"pago/registrar",pathMatch:'full',loadComponent:()=>import('../../screen-host').then(m=>m.ScreenHost),data:{base:"/operacion/pago/registrar"}},
 {path:"reservas",canActivate:[operacionCocinaGuard],canDeactivate:[agendaPendingGuard],runGuardsAndResolvers:'paramsOrQueryParamsChange',pathMatch:'full',loadComponent:()=>import('../../screen-host').then(m=>m.ScreenHost),data:{base:"/operacion/reservas"}},

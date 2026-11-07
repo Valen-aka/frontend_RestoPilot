@@ -1,0 +1,82 @@
+{
+  "date": "2026-11-07T00:34:10.782Z",
+  "type": "controlled-http-browser",
+  "results": [
+    {
+      "name": "editar confirma total y pago en servidor sin precios enviados",
+      "passed": true
+    },
+    {
+      "name": "cantidades invalidas y lista vacia no envian PUT",
+      "passed": true
+    },
+    {
+      "name": "doble submit se bloquea durante PUT",
+      "passed": true
+    },
+    {
+      "name": "rechazo400 no anuncia exito ni cambia total confirmado",
+      "passed": true
+    },
+    {
+      "name": "pedido pagado y pedido en preparacion bloquean acciones",
+      "passed": true
+    },
+    {
+      "name": "pedido no pendiente no puede cancelarse",
+      "passed": true
+    },
+    {
+      "name": "cancelacion confirmada conserva entidad y pago",
+      "passed": true
+    },
+    {
+      "name": "respuesta perdida exige reconciliar y no duplica PUT",
+      "passed": true
+    },
+    {
+      "name": "GET403 tras PUT exitoso conserva incertidumbre",
+      "passed": true
+    },
+    {
+      "name": "consulta HTTP 403 sin mostrar pedido",
+      "passed": true
+    },
+    {
+      "name": "consulta HTTP 404 sin mostrar pedido",
+      "passed": true
+    },
+    {
+      "name": "identificador invalido no consulta ni permite guardar",
+      "passed": true
+    },
+    {
+      "name": "cancelar no depende del catalogo",
+      "passed": true
+    },
+    {
+      "name": "editar pedido sin salon no consulta mesas",
+      "passed": true
+    },
+    {
+      "name": "edicion responsive 320",
+      "passed": true
+    },
+    {
+      "name": "edicion responsive 390",
+      "passed": true
+    },
+    {
+      "name": "edicion responsive 768",
+      "passed": true
+    },
+    {
+      "name": "edicion responsive 1440",
+      "passed": true
+    },
+    {
+      "name": "ajuste y pago comparten identidad y bloquean nuevas ediciones",
+      "passed": true
+    }
+  ]
+}
