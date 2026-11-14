@@ -1,0 +1,776 @@
+{
+  "stage": 5,
+  "rounds": 4,
+  "elapsedMs": 21943,
+  "samples": [
+    {
+      "role": "DUENO",
+      "route": "/api/auth/me",
+      "status": 200,
+      "elapsedMs": 327
+    },
+    {
+      "role": "ADMINISTRADOR",
+      "route": "/api/auth/me",
+      "status": 200,
+      "elapsedMs": 329
+    },
+    {
+      "role": "CLIENTE",
+      "route": "/api/auth/me",
+      "status": 200,
+      "elapsedMs": 423
+    },
+    {
+      "role": "ADMINISTRADOR",
+      "route": "/api/auth/me",
+      "status": 200,
+      "elapsedMs": 646
+    },
+    {
+      "role": "CLIENTE",
+      "route": "/api/auth/me",
+      "status": 200,
+      "elapsedMs": 646
+    },
+    {
+      "role": "CLIENTE",
+      "route": "/api/restaurantes",
+      "status": 200,
+      "elapsedMs": 513
+    },
+    {
+      "role": "ADMINISTRADOR",
+      "route": "/api/restaurantes/1",
+      "status": 200,
+      "elapsedMs": 611
+    },
+    {
+      "role": "DUENO",
+      "route": "/api/notificaciones/me",
+      "status": 200,
+      "elapsedMs": 715
+    },
+    {
+      "role": "ADMINISTRADOR",
+      "route": "/api/notificaciones/me",
+      "status": 200,
+      "elapsedMs": 714
+    },
+    {
+      "role": "ADMINISTRADOR",
+      "route": "/api/restaurantes/1",
+      "status": 200,
+      "elapsedMs": 490
+    },
+    {
+      "role": "DUENO",
+      "route": "/api/restaurantes/2",
+      "status": 200,
+      "elapsedMs": 898
+    },
+    {
+      "role": "CLIENTE",
+      "route": "/api/categorias/restaurante/1",
+      "status": 200,
+      "elapsedMs": 302
+    },
+    {
+      "role": "CLIENTE",
+      "route": "/api/restaurantes",
+      "status": 200,
+      "elapsedMs": 691
+    },
+    {
+      "role": "ADMINISTRADOR",
+      "route": "/api/notificaciones/me",
+      "status": 200,
+      "elapsedMs": 797
+    },
+    {
+      "role": "CLIENTE",
+      "route": "/api/categorias/restaurante/1",
+      "status": 200,
+      "elapsedMs": 738
+    },
+    {
+      "role": "CLIENTE",
+      "route": "/api/platos/restaurante/1",
+      "status": 200,
+      "elapsedMs": 1146
+    },
+    {
+      "role": "CLIENTE",
+      "route": "/api/platos/restaurante/1",
+      "status": 200,
+      "elapsedMs": 1024
+    },
+    {
+      "role": "DUENO",
+      "route": "/api/reportes/operativos",
+      "status": 200,
+      "elapsedMs": 2149
+    },
+    {
+      "role": "ADMINISTRADOR",
+      "route": "/api/reportes/operativos",
+      "status": 200,
+      "elapsedMs": 2346
+    },
+    {
+      "role": "ADMINISTRADOR",
+      "route": "/api/reportes/operativos",
+      "status": 200,
+      "elapsedMs": 2143
+    },
+    {
+      "role": "CLIENTE",
+      "route": "/api/notificaciones/me",
+      "status": 200,
+      "elapsedMs": 499
+    },
+    {
+      "role": "CLIENTE",
+      "route": "/api/notificaciones/me",
+      "status": 200,
+      "elapsedMs": 519
+    },
+    {
+      "role": "CLIENTE",
+      "route": "/api/pedidos/me",
+      "status": 200,
+      "elapsedMs": 1018
+    },
+    {
+      "role": "CLIENTE",
+      "route": "/api/pedidos/me",
+      "status": 200,
+      "elapsedMs": 935
+    },
+    {
+      "role": "DUENO",
+      "route": "/api/pedidos/pendientes",
+      "status": 200,
+      "elapsedMs": 1123
+    },
+    {
+      "role": "ADMINISTRADOR",
+      "route": "/api/pedidos/pendientes",
+      "status": 200,
+      "elapsedMs": 1027
+    },
+    {
+      "role": "ADMINISTRADOR",
+      "route": "/api/pedidos/pendientes",
+      "status": 200,
+      "elapsedMs": 1122
+    },
+    {
+      "role": "CLIENTE",
+      "route": "/api/reservas/me",
+      "status": 200,
+      "elapsedMs": 2357
+    },
+    {
+      "role": "CLIENTE",
+      "route": "/api/reservas/me",
+      "status": 200,
+      "elapsedMs": 2368
+    },
+    {
+      "role": "CLIENTE",
+      "route": "/api/auth/me",
+      "status": 200,
+      "elapsedMs": 357
+    },
+    {
+      "role": "CLIENTE",
+      "route": "/api/auth/me",
+      "status": 200,
+      "elapsedMs": 360
+    },
+    {
+      "role": "DUENO",
+      "route": "/api/reservas",
+      "status": 200,
+      "elapsedMs": 3072
+    },
+    {
+      "role": "CLIENTE",
+      "route": "/api/restaurantes",
+      "status": 200,
+      "elapsedMs": 516
+    },
+    {
+      "role": "CLIENTE",
+      "route": "/api/restaurantes",
+      "status": 200,
+      "elapsedMs": 510
+    },
+    {
+      "role": "CLIENTE",
+      "route": "/api/categorias/restaurante/1",
+      "status": 200,
+      "elapsedMs": 293
+    },
+    {
+      "role": "ADMINISTRADOR",
+      "route": "/api/reservas",
+      "status": 200,
+      "elapsedMs": 3287
+    },
+    {
+      "role": "CLIENTE",
+      "route": "/api/categorias/restaurante/1",
+      "status": 200,
+      "elapsedMs": 354
+    },
+    {
+      "role": "DUENO",
+      "route": "/api/auth/me",
+      "status": 200,
+      "elapsedMs": 410
+    },
+    {
+      "role": "ADMINISTRADOR",
+      "route": "/api/reservas",
+      "status": 200,
+      "elapsedMs": 3614
+    },
+    {
+      "role": "ADMINISTRADOR",
+      "route": "/api/auth/me",
+      "status": 200,
+      "elapsedMs": 272
+    },
+    {
+      "role": "DUENO",
+      "route": "/api/notificaciones/me",
+      "status": 200,
+      "elapsedMs": 364
+    },
+    {
+      "role": "CLIENTE",
+      "route": "/api/platos/restaurante/1",
+      "status": 200,
+      "elapsedMs": 1115
+    },
+    {
+      "role": "DUENO",
+      "route": "/api/restaurantes/2",
+      "status": 200,
+      "elapsedMs": 589
+    },
+    {
+      "role": "ADMINISTRADOR",
+      "route": "/api/auth/me",
+      "status": 200,
+      "elapsedMs": 267
+    },
+    {
+      "role": "ADMINISTRADOR",
+      "route": "/api/notificaciones/me",
+      "status": 200,
+      "elapsedMs": 510
+    },
+    {
+      "role": "ADMINISTRADOR",
+      "route": "/api/restaurantes/1",
+      "status": 200,
+      "elapsedMs": 537
+    },
+    {
+      "role": "ADMINISTRADOR",
+      "route": "/api/notificaciones/me",
+      "status": 200,
+      "elapsedMs": 473
+    },
+    {
+      "role": "CLIENTE",
+      "route": "/api/platos/restaurante/1",
+      "status": 200,
+      "elapsedMs": 1546
+    },
+    {
+      "role": "ADMINISTRADOR",
+      "route": "/api/restaurantes/1",
+      "status": 200,
+      "elapsedMs": 593
+    },
+    {
+      "role": "CLIENTE",
+      "route": "/api/notificaciones/me",
+      "status": 200,
+      "elapsedMs": 621
+    },
+    {
+      "role": "DUENO",
+      "route": "/api/reportes/operativos",
+      "status": 200,
+      "elapsedMs": 1699
+    },
+    {
+      "role": "CLIENTE",
+      "route": "/api/pedidos/me",
+      "status": 200,
+      "elapsedMs": 921
+    },
+    {
+      "role": "CLIENTE",
+      "route": "/api/notificaciones/me",
+      "status": 200,
+      "elapsedMs": 530
+    },
+    {
+      "role": "ADMINISTRADOR",
+      "route": "/api/reportes/operativos",
+      "status": 200,
+      "elapsedMs": 1875
+    },
+    {
+      "role": "ADMINISTRADOR",
+      "route": "/api/reportes/operativos",
+      "status": 200,
+      "elapsedMs": 1824
+    },
+    {
+      "role": "CLIENTE",
+      "route": "/api/pedidos/me",
+      "status": 200,
+      "elapsedMs": 1168
+    },
+    {
+      "role": "DUENO",
+      "route": "/api/pedidos/pendientes",
+      "status": 200,
+      "elapsedMs": 829
+    },
+    {
+      "role": "ADMINISTRADOR",
+      "route": "/api/pedidos/pendientes",
+      "status": 200,
+      "elapsedMs": 907
+    },
+    {
+      "role": "CLIENTE",
+      "route": "/api/reservas/me",
+      "status": 200,
+      "elapsedMs": 2677
+    },
+    {
+      "role": "ADMINISTRADOR",
+      "route": "/api/pedidos/pendientes",
+      "status": 200,
+      "elapsedMs": 710
+    },
+    {
+      "role": "CLIENTE",
+      "route": "/api/reservas/me",
+      "status": 200,
+      "elapsedMs": 2159
+    },
+    {
+      "role": "CLIENTE",
+      "route": "/api/auth/me",
+      "status": 200,
+      "elapsedMs": 364
+    },
+    {
+      "role": "CLIENTE",
+      "route": "/api/auth/me",
+      "status": 200,
+      "elapsedMs": 377
+    },
+    {
+      "role": "CLIENTE",
+      "route": "/api/restaurantes",
+      "status": 200,
+      "elapsedMs": 410
+    },
+    {
+      "role": "DUENO",
+      "route": "/api/reservas",
+      "status": 200,
+      "elapsedMs": 2581
+    },
+    {
+      "role": "ADMINISTRADOR",
+      "route": "/api/reservas",
+      "status": 200,
+      "elapsedMs": 2242
+    },
+    {
+      "role": "CLIENTE",
+      "route": "/api/restaurantes",
+      "status": 200,
+      "elapsedMs": 621
+    },
+    {
+      "role": "CLIENTE",
+      "route": "/api/categorias/restaurante/1",
+      "status": 200,
+      "elapsedMs": 514
+    },
+    {
+      "role": "ADMINISTRADOR",
+      "route": "/api/reservas",
+      "status": 200,
+      "elapsedMs": 2261
+    },
+    {
+      "role": "DUENO",
+      "route": "/api/auth/me",
+      "status": 200,
+      "elapsedMs": 359
+    },
+    {
+      "role": "CLIENTE",
+      "route": "/api/categorias/restaurante/1",
+      "status": 200,
+      "elapsedMs": 398
+    },
+    {
+      "role": "ADMINISTRADOR",
+      "route": "/api/auth/me",
+      "status": 200,
+      "elapsedMs": 365
+    },
+    {
+      "role": "DUENO",
+      "route": "/api/notificaciones/me",
+      "status": 200,
+      "elapsedMs": 419
+    },
+    {
+      "role": "ADMINISTRADOR",
+      "route": "/api/auth/me",
+      "status": 200,
+      "elapsedMs": 264
+    },
+    {
+      "role": "CLIENTE",
+      "route": "/api/platos/restaurante/1",
+      "status": 200,
+      "elapsedMs": 1231
+    },
+    {
+      "role": "ADMINISTRADOR",
+      "route": "/api/notificaciones/me",
+      "status": 200,
+      "elapsedMs": 409
+    },
+    {
+      "role": "DUENO",
+      "route": "/api/restaurantes/2",
+      "status": 200,
+      "elapsedMs": 613
+    },
+    {
+      "role": "ADMINISTRADOR",
+      "route": "/api/restaurantes/1",
+      "status": 200,
+      "elapsedMs": 537
+    },
+    {
+      "role": "ADMINISTRADOR",
+      "route": "/api/notificaciones/me",
+      "status": 200,
+      "elapsedMs": 415
+    },
+    {
+      "role": "ADMINISTRADOR",
+      "route": "/api/restaurantes/1",
+      "status": 200,
+      "elapsedMs": 505
+    },
+    {
+      "role": "CLIENTE",
+      "route": "/api/platos/restaurante/1",
+      "status": 200,
+      "elapsedMs": 1223
+    },
+    {
+      "role": "CLIENTE",
+      "route": "/api/notificaciones/me",
+      "status": 200,
+      "elapsedMs": 404
+    },
+    {
+      "role": "CLIENTE",
+      "route": "/api/pedidos/me",
+      "status": 200,
+      "elapsedMs": 815
+    },
+    {
+      "role": "DUENO",
+      "route": "/api/reportes/operativos",
+      "status": 200,
+      "elapsedMs": 1649
+    },
+    {
+      "role": "CLIENTE",
+      "route": "/api/notificaciones/me",
+      "status": 200,
+      "elapsedMs": 514
+    },
+    {
+      "role": "ADMINISTRADOR",
+      "route": "/api/reportes/operativos",
+      "status": 200,
+      "elapsedMs": 1647
+    },
+    {
+      "role": "ADMINISTRADOR",
+      "route": "/api/reportes/operativos",
+      "status": 200,
+      "elapsedMs": 1526
+    },
+    {
+      "role": "CLIENTE",
+      "route": "/api/pedidos/me",
+      "status": 200,
+      "elapsedMs": 821
+    },
+    {
+      "role": "DUENO",
+      "route": "/api/pedidos/pendientes",
+      "status": 200,
+      "elapsedMs": 515
+    },
+    {
+      "role": "ADMINISTRADOR",
+      "route": "/api/pedidos/pendientes",
+      "status": 200,
+      "elapsedMs": 501
+    },
+    {
+      "role": "ADMINISTRADOR",
+      "route": "/api/pedidos/pendientes",
+      "status": 200,
+      "elapsedMs": 630
+    },
+    {
+      "role": "CLIENTE",
+      "route": "/api/reservas/me",
+      "status": 200,
+      "elapsedMs": 2359
+    },
+    {
+      "role": "CLIENTE",
+      "route": "/api/reservas/me",
+      "status": 200,
+      "elapsedMs": 2178
+    },
+    {
+      "role": "CLIENTE",
+      "route": "/api/auth/me",
+      "status": 200,
+      "elapsedMs": 264
+    },
+    {
+      "role": "CLIENTE",
+      "route": "/api/auth/me",
+      "status": 200,
+      "elapsedMs": 354
+    },
+    {
+      "role": "DUENO",
+      "route": "/api/reservas",
+      "status": 200,
+      "elapsedMs": 2262
+    },
+    {
+      "role": "CLIENTE",
+      "route": "/api/restaurantes",
+      "status": 200,
+      "elapsedMs": 614
+    },
+    {
+      "role": "ADMINISTRADOR",
+      "route": "/api/reservas",
+      "status": 200,
+      "elapsedMs": 2351
+    },
+    {
+      "role": "CLIENTE",
+      "route": "/api/categorias/restaurante/1",
+      "status": 200,
+      "elapsedMs": 327
+    },
+    {
+      "role": "ADMINISTRADOR",
+      "route": "/api/reservas",
+      "status": 200,
+      "elapsedMs": 2581
+    },
+    {
+      "role": "DUENO",
+      "route": "/api/auth/me",
+      "status": 200,
+      "elapsedMs": 366
+    },
+    {
+      "role": "CLIENTE",
+      "route": "/api/restaurantes",
+      "status": 200,
+      "elapsedMs": 811
+    },
+    {
+      "role": "ADMINISTRADOR",
+      "route": "/api/auth/me",
+      "status": 200,
+      "elapsedMs": 392
+    },
+    {
+      "role": "CLIENTE",
+      "route": "/api/platos/restaurante/1",
+      "status": 200,
+      "elapsedMs": 943
+    },
+    {
+      "role": "DUENO",
+      "route": "/api/notificaciones/me",
+      "status": 200,
+      "elapsedMs": 426
+    },
+    {
+      "role": "CLIENTE",
+      "route": "/api/categorias/restaurante/1",
+      "status": 200,
+      "elapsedMs": 522
+    },
+    {
+      "role": "ADMINISTRADOR",
+      "route": "/api/auth/me",
+      "status": 200,
+      "elapsedMs": 266
+    },
+    {
+      "role": "DUENO",
+      "route": "/api/restaurantes/2",
+      "status": 200,
+      "elapsedMs": 527
+    },
+    {
+      "role": "ADMINISTRADOR",
+      "route": "/api/restaurantes/1",
+      "status": 200,
+      "elapsedMs": 390
+    },
+    {
+      "role": "ADMINISTRADOR",
+      "route": "/api/notificaciones/me",
+      "status": 200,
+      "elapsedMs": 390
+    },
+    {
+      "role": "ADMINISTRADOR",
+      "route": "/api/notificaciones/me",
+      "status": 200,
+      "elapsedMs": 295
+    },
+    {
+      "role": "CLIENTE",
+      "route": "/api/platos/restaurante/1",
+      "status": 200,
+      "elapsedMs": 1038
+    },
+    {
+      "role": "ADMINISTRADOR",
+      "route": "/api/restaurantes/1",
+      "status": 200,
+      "elapsedMs": 518
+    },
+    {
+      "role": "CLIENTE",
+      "route": "/api/notificaciones/me",
+      "status": 200,
+      "elapsedMs": 612
+    },
+    {
+      "role": "DUENO",
+      "route": "/api/reportes/operativos",
+      "status": 200,
+      "elapsedMs": 1437
+    },
+    {
+      "role": "CLIENTE",
+      "route": "/api/pedidos/me",
+      "status": 200,
+      "elapsedMs": 818
+    },
+    {
+      "role": "ADMINISTRADOR",
+      "route": "/api/reportes/operativos",
+      "status": 200,
+      "elapsedMs": 1430
+    },
+    {
+      "role": "ADMINISTRADOR",
+      "route": "/api/reportes/operativos",
+      "status": 200,
+      "elapsedMs": 1425
+    },
+    {
+      "role": "CLIENTE",
+      "route": "/api/notificaciones/me",
+      "status": 200,
+      "elapsedMs": 596
+    },
+    {
+      "role": "DUENO",
+      "route": "/api/pedidos/pendientes",
+      "status": 200,
+      "elapsedMs": 529
+    },
+    {
+      "role": "CLIENTE",
+      "route": "/api/pedidos/me",
+      "status": 200,
+      "elapsedMs": 922
+    },
+    {
+      "role": "ADMINISTRADOR",
+      "route": "/api/pedidos/pendientes",
+      "status": 200,
+      "elapsedMs": 605
+    },
+    {
+      "role": "ADMINISTRADOR",
+      "route": "/api/pedidos/pendientes",
+      "status": 200,
+      "elapsedMs": 515
+    },
+    {
+      "role": "CLIENTE",
+      "route": "/api/reservas/me",
+      "status": 200,
+      "elapsedMs": 2051
+    },
+    {
+      "role": "CLIENTE",
+      "route": "/api/reservas/me",
+      "status": 200,
+      "elapsedMs": 2348
+    },
+    {
+      "role": "DUENO",
+      "route": "/api/reservas",
+      "status": 200,
+      "elapsedMs": 2388
+    },
+    {
+      "role": "ADMINISTRADOR",
+      "route": "/api/reservas",
+      "status": 200,
+      "elapsedMs": 2354
+    },
+    {
+      "role": "ADMINISTRADOR",
+      "route": "/api/reservas",
+      "status": 200,
+      "elapsedMs": 2470
+    }
+  ],
+  "failures": []
+}
