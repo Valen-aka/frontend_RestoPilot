@@ -9,13 +9,20 @@ import {confirmationRedirect} from '../services/email-confirmation-return.servic
 /** Traduce el contrato interno a RPC HTTPS; nunca utiliza una API local como respaldo. */
 export const supabaseTransportInterceptor:HttpInterceptorFn=(request,next)=>{
  const base=environment.apiUrl.replace(/\/$/,''),isApi=request.url===base||request.url.startsWith(base+'/')||request.url.startsWith(base+'?');
- if(environment.transport!=='supabase'||!isApi)return next(request);
+ if(!['supabase','hybrid'].includes(environment.transport)||!isApi)return next(request);
  const config=environment.supabase,path=request.url.slice(base.length).split('?')[0];
  if(!config?.url||!config.publishableKey)throw new Error('Falta la configuración pública de Supabase.');
  if(['/auth/login','/auth/register','/auth/register-owner'].includes(path)){
   if(request.method!=='POST')throw new HttpErrorResponse({status:405,error:{mensaje:'Operación no admitida.'}});
   const origin=inject(DOCUMENT,{optional:true})?.defaultView?.location.origin;
-  return supabaseAuth(new HttpClient(inject(HttpBackend)),config,path,request.body as Record<string,unknown>,confirmationRedirect(origin)).pipe(map(body=>new HttpResponse({status:path==='/auth/login'?200:201,body,url:request.url})));
+  const profileUrl=environment.transport==='hybrid'?environment.springApiUrl?.replace(/\/$/,''):undefined;
+  if(environment.transport==='hybrid'&&!profileUrl)throw new Error('Falta la URL de Spring.');
+  return supabaseAuth(new HttpClient(inject(HttpBackend)),config,path,request.body as Record<string,unknown>,confirmationRedirect(origin),profileUrl).pipe(map(body=>new HttpResponse({status:path==='/auth/login'?200:201,body,url:request.url})));
+ }
+ if(environment.transport==='hybrid'){
+  const spring=environment.springApiUrl?.replace(/\/$/,'');
+  if(!spring)throw new Error('Falta la URL de Spring.');
+  return next(request.clone({url:spring+request.url.slice(base.length)}));
  }
  const query:Record<string,string>={};const url=new URL(request.urlWithParams,'https://restopilot.invalid');url.searchParams.forEach((value,key)=>query[key]=value);
  const token=request.headers.get('Authorization');if(!token)throw new HttpErrorResponse({status:401,error:{mensaje:'Inicia sesión para continuar.'}});

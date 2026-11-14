@@ -21,7 +21,7 @@ export class AuthService {
  resendConfirmation(correo:string):Observable<void> {
   return defer(()=>{
    const email=correo.trim().toLowerCase();
-   if(environment.transport!=='supabase'||email.length>100||!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))throw new Error('Indica un correo válido para reenviar su confirmación.');
+   if(!['supabase','hybrid'].includes(environment.transport)||email.length>100||!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))throw new Error('Indica un correo válido para reenviar su confirmación.');
    const redirect=confirmationRedirect(this.document?.defaultView?.location.origin);
    return this.http.post<unknown>(environment.supabase.url.replace(/\/$/,'')+'/auth/v1/resend'+(redirect?'?redirect_to='+encodeURIComponent(redirect):''),{type:'signup',email},{headers:{apikey:environment.supabase.publishableKey},observe:'response',timeout:20000}).pipe(map(response=>{if(response.status!==200)throw new Error('No pudimos confirmar el envío del mensaje.');}));
   });
@@ -45,6 +45,6 @@ export class AuthService {
    this.endedBy.set(null);this.current.set(Object.freeze({subject:String(response.id),role:response.rol,accessToken:response.token,expiresAt,restauranteId:restaurant,...(response.authUserId?{authUserId:response.authUserId}:{})}));this.scheduleExpiry(expiresAt);return response;
   }));});
  }
- logout(reason:'manual'|'expired'|'unauthorized'='manual'):void {const old=this.current();this.generation++;clearTimeout(this.expiryTimer);this.endedBy.set(reason);this.current.set(null);if(old?.authUserId&&environment.transport==='supabase')this.http.post(environment.supabase.url+'/auth/v1/logout?scope=local',{}, {headers:{apikey:environment.supabase.publishableKey,Authorization:'Bearer '+old.accessToken},timeout:5000}).subscribe({error:()=>{}});}
+ logout(reason:'manual'|'expired'|'unauthorized'='manual'):void {const old=this.current();this.generation++;clearTimeout(this.expiryTimer);this.endedBy.set(reason);this.current.set(null);if(old?.authUserId&&['supabase','hybrid'].includes(environment.transport))this.http.post(environment.supabase.url+'/auth/v1/logout?scope=local',{}, {headers:{apikey:environment.supabase.publishableKey,Authorization:'Bearer '+old.accessToken},timeout:5000}).subscribe({error:()=>{}});}
  private scheduleExpiry(expiresAt:number):void {clearTimeout(this.expiryTimer);const remaining=expiresAt-Date.now();if(remaining<=0){this.logout('expired');return;}this.expiryTimer=setTimeout(()=>this.scheduleExpiry(expiresAt),Math.min(remaining,2147483647));}
 }
