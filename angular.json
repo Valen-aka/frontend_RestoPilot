@@ -51,6 +51,11 @@
                 }
               ]
             },
+            "hybrid": {
+              "optimization": false,
+              "sourceMap": true,
+              "fileReplacements": [{"replace": "src/environments/environment.ts", "with": "src/environments/environment.hybrid.ts"}]
+            },
             "publish": {
               "outputHashing": "all",
               "budgets": [
@@ -78,6 +83,9 @@
             },
             "production": {
               "buildTarget": "restopilot:build:production"
+            },
+            "hybrid": {
+              "buildTarget": "restopilot:build:hybrid"
             }
           },
           "defaultConfiguration": "development"
