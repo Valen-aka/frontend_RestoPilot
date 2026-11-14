@@ -1,0 +1,27 @@
+rol,endpoint,estado,tiempo_ms,nota
+ADMINISTRADOR,/api/notificaciones/me?page=0&size=10,200,463,primera pasada
+ADMINISTRADOR,/api/restaurantes/1,200,638,primera pasada
+ADMINISTRADOR,/api/pedidos/pendientes?page=0&size=10,200,2383,primera pasada
+ADMINISTRADOR,/api/pedidos/pendientes?page=0&size=10,200,2400,repeticion 1
+ADMINISTRADOR,/api/pedidos/pendientes?page=0&size=10,200,2131,repeticion 2
+ADMINISTRADOR,/api/reservas,200,2916,primera pasada
+ADMINISTRADOR,/api/reservas,200,3041,repeticion 1
+ADMINISTRADOR,/api/reservas,200,3180,repeticion 2
+ADMINISTRADOR,/api/reportes/operativos?tipo=CONSOLIDADO,200,1898,primera pasada; fechas omitidas del CSV
+ADMINISTRADOR,/api/reportes/operativos?tipo=CONSOLIDADO,200,1702,repeticion 1; fechas omitidas del CSV
+ADMINISTRADOR,/api/reportes/operativos?tipo=CONSOLIDADO,200,1651,repeticion 2; fechas omitidas del CSV
+ADMINISTRADOR,/api/platos/restaurante/1,200,1198,lectura adicional
+ADMINISTRADOR,/api/categorias/restaurante/1,200,367,lectura adicional
+CLIENTE,/api/notificaciones/me?page=0&size=10,200,630,primera pasada
+CLIENTE,/api/restaurantes,200,509,primera pasada
+CLIENTE,/api/restaurantes,200,738,lectura adicional
+CLIENTE,/api/pedidos/me?page=0&size=10,200,4130,primera pasada
+CLIENTE,/api/reservas/me,200,3031,primera pasada
+CLIENTE,/api/platos/restaurante/1,200,1266,lectura adicional
+CLIENTE,/api/categorias/restaurante/1,200,412,lectura adicional
+DUENO,/api/notificaciones/me?page=0&size=10,200,503,primera pasada
+DUENO,/api/restaurantes/2,200,500,primera pasada
+DUENO,/api/restaurantes/2,200,546,lectura adicional
+DUENO,/api/pedidos/pendientes?page=0&size=10,200,2460,primera pasada
+DUENO,/api/reservas,200,2899,primera pasada
+DUENO,/api/reportes/operativos?tipo=CONSOLIDADO,200,1831,lectura adicional; fechas omitidas del CSV
