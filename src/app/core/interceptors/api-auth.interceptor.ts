@@ -9,9 +9,10 @@ import {API_SESSION} from '../auth/api-session';
 export const apiAuthInterceptor: HttpInterceptorFn = (request, next) => {
   const session = inject(API_SESSION)();
   const base = environment.apiUrl.replace(/\/$/, '');
-  const isApi = request.url === base || request.url.startsWith(base + '/') || request.url.startsWith(base + '?');
+  const spring = environment.springApiUrl?.replace(/\/$/, '');
+  const isApi = request.url === base || request.url.startsWith(base + '/') || request.url.startsWith(base + '?') || !!spring && request.url.startsWith(spring + '/');
   const auth = inject(AuthService);
-  if (request.url.startsWith(base + '/auth/')) return next(request);
+  if (['/auth/login','/auth/register','/auth/register-owner'].some(path => request.url === base + path)) return next(request);
   if (!isApi || !session?.accessToken.trim() || session.expiresAt <= Date.now()) return next(request);
   return next(request.clone({setHeaders: {Authorization: 'Bearer ' + session.accessToken}})).pipe(
     catchError(error => {

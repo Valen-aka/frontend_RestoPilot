@@ -5,6 +5,7 @@ import {Routes} from '@angular/router';
 import {ClienteLayout} from '../../layouts/cliente-layout/cliente-layout';
 const children:Routes=[
 {path:"",pathMatch:'full',loadComponent:()=>import('../../screen-host').then(m=>m.ScreenHost),data:{base:"/cliente"}},
+{path:"perfil",pathMatch:'full',loadComponent:()=>import('../../pages/cliente/cliente-perfil/cliente-perfil').then(m=>m.ClientePerfilPage)},
 {path:"carta",pathMatch:'full',loadComponent:()=>import('../../screen-host').then(m=>m.ScreenHost),data:{base:"/cliente/carta"}},
 {path:"plato",pathMatch:'full',loadComponent:()=>import('../../screen-host').then(m=>m.ScreenHost),data:{base:"/cliente/plato"}},
 {path:"carrito",pathMatch:'full',loadComponent:()=>import('../../screen-host').then(m=>m.ScreenHost),data:{base:"/cliente/carrito"}},

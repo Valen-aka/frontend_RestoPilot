@@ -26,9 +26,9 @@
       }
     </div>
   }
-  <div class="account" [class.open]="menuOpen()">
-    @if (auth.session()) {
-      <span>Mi cuenta</span><button mat-button type="button" (click)="logout()">Cerrar sesión</button>
+  <div class="account">
+    @if(auth.session()) {
+      <a class="account-toggle" routerLink="/cliente/perfil" aria-label="Abrir mi perfil" [attr.title]="accountName()">{{initials()}}</a>
     } @else { <a mat-button routerLink="/auth/login">Iniciar sesión</a> }
   </div>
 </header>
