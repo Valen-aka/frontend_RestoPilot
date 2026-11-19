@@ -1,0 +1,42 @@
+<rp-workspace-shell role="client" active="perfil">
+  <main class="account-page" aria-labelledby="account-title">
+    <a class="back-link" routerLink="/cliente">‹ Volver al inicio</a>
+    <header class="account-heading">
+      <span class="profile-avatar" aria-hidden="true">{{initials()}}</span>
+      <div>
+        <p class="eyebrow">MI CUENTA</p>
+        <h1 id="account-title">{{displayName()}}</h1>
+        <button mat-button type="button" (click)="openEdit()" [disabled]="state()!=='ready'">Editar perfil <span aria-hidden="true">✎</span></button>
+      </div>
+    </header>
+
+    @if(message()){<p class="feedback success" role="status">{{message()}}</p>}
+    @if(state()==='loading'){<p class="feedback" role="status" aria-busy="true">Consultando los datos de tu perfil…</p>}
+    @if(state()==='error'){<div class="feedback problem" role="alert"><p>{{error()}}</p><button mat-stroked-button type="button" (click)="load()">Reintentar</button></div>}
+
+    @if(editing() && state()==='ready' && profile()){
+      <section class="edit-section" aria-labelledby="edit-title">
+        <h2 id="edit-title">Editar perfil</h2>
+        <form [formGroup]="form" (ngSubmit)="save()" [attr.aria-busy]="saving()" novalidate>
+          <mat-form-field appearance="outline" subscriptSizing="dynamic"><mat-label>Nombre completo</mat-label><input matInput type="text" formControlName="nombreCompleto" autocomplete="name" maxlength="150" required><mat-error>Indica un nombre de hasta 150 caracteres.</mat-error></mat-form-field>
+          <p class="help">El correo y el tipo de cuenta no se cambian desde esta pantalla.</p>
+          @if(error()){<p class="feedback problem" role="alert">{{error()}}</p>}
+          <div class="edit-actions"><button mat-stroked-button type="button" (click)="cancelEdit()" [disabled]="saving()">Cancelar</button><button mat-flat-button type="submit" [disabled]="saving()">{{saving()?'Guardando…':'Guardar cambios'}}</button></div>
+        </form>
+      </section>
+    }
+
+    <section class="account-section" aria-labelledby="orders-title">
+      <a class="feature-row featured" routerLink="/cliente/pedidos">Histórico de pedidos <span aria-hidden="true">›</span></a>
+      <h2 id="orders-title">Pedidos en curso</h2>
+      <a class="feature-row soft" routerLink="/cliente/pedidos"><span>Consulta el estado de tus pedidos en curso.</span><span aria-hidden="true">›</span></a>
+    </section>
+
+    <section class="account-section" aria-labelledby="account-options-title">
+      <h2 id="account-options-title">Mi cuenta</h2>
+      <a class="feature-row" routerLink="/cliente/reservas"><span>Mis reservas</span><span aria-hidden="true">›</span></a>
+      <a class="feature-row" routerLink="/cliente/notificaciones"><span>Notificaciones</span><span aria-hidden="true">›</span></a>
+      @if(profile();as current){<dl class="account-data"><div><dt>Correo electrónico</dt><dd>{{current.correo}}</dd></div><div><dt>Tipo de cuenta</dt><dd>Cliente</dd></div></dl>}
+    </section>
+  </main>
+</rp-workspace-shell>
