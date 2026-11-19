@@ -1,13 +1,42 @@
 <header class="client-header" (keydown.escape)="closeMenu($event)">
   <a class="brand" routerLink="/cliente" aria-label="RestoPilot, inicio de cliente"><rp-brand /></a>
-  <button mat-stroked-button class="menu-toggle" type="button" aria-controls="client-navigation" [attr.aria-expanded]="menuOpen()" (click)="menuOpen.set(!menuOpen())">{{menuOpen()?'Cerrar':'Menú'}}</button><nav id="client-navigation" aria-label="Navegación de cliente" [class.open]="menuOpen()">
+  <button mat-stroked-button class="menu-toggle" type="button" aria-controls="client-navigation" [attr.aria-label]="menuOpen()?'Cerrar menú de navegación':'Abrir menú de navegación'" [attr.aria-expanded]="menuOpen()" (click)="menuOpen.set(!menuOpen())"><span class="menu-text">{{menuOpen()?'Cerrar':'Menú'}}</span><span class="menu-symbol" aria-hidden="true">{{menuOpen()?'×':'☰'}}</span></button><nav id="client-navigation" aria-label="Navegación de cliente" [class.open]="menuOpen()">
     @for (link of links; track link.url) {
       <a [routerLink]="link.url" (click)="menuOpen.set(false)" [class.active]="active(link)" [attr.aria-current]="active(link) ? 'page' : null">{{link.label}}</a>
     }
   </nav>
+  @if(auth.session()) {
+    <div class="notification-area">
+      <button mat-icon-button class="notification-toggle" type="button" aria-label="Notificaciones" aria-controls="client-notifications" [attr.aria-expanded]="notificationsOpen()" (click)="toggleNotifications()">
+        <rp-ui-icon name="Notificaciones" />
+        @if(newCount()){<span class="notification-count" aria-label="Notificaciones nuevas">{{newCount()>9?'9+':newCount()}}</span>}
+      </button>
+      @if(notificationsOpen()) {
+        <section id="client-notifications" class="notification-panel" aria-label="Notificaciones recientes">
+          <div class="notification-panel-heading"><h2>Notificaciones</h2><button mat-button type="button" (click)="notificationsOpen.set(false)">Cerrar</button></div>
+          @if(notifications.state()==='loading'){<p role="status">Consultando tus notificaciones…</p>}
+          @else if(notifications.state()==='empty'){<p>No tienes notificaciones.</p>}
+          @else if(notifications.state()==='ready'){
+            <ul>@for(message of notifications.messages();track message.id){<li><time [attr.datetime]="message.fechaCreacion">{{date(message.fechaCreacion)}}</time><p>{{message.mensaje}}</p></li>}</ul>
+            @if(notifications.total()>notifications.messages().length){<a routerLink="/cliente/notificaciones" (click)="notificationsOpen.set(false)">Ver todas</a>}
+          }
+          @else {<p role="alert">{{notifications.problem()||'No pudimos consultar tus notificaciones.'}}</p>}
+          <button mat-stroked-button type="button" [disabled]="notifications.state()==='loading'" (click)="refreshNotifications()">Actualizar</button>
+        </section>
+      }
+    </div>
+  }
   <div class="account" [class.open]="menuOpen()">
     @if (auth.session()) {
       <span>Mi cuenta</span><button mat-button type="button" (click)="logout()">Cerrar sesión</button>
     } @else { <a mat-button routerLink="/auth/login">Iniciar sesión</a> }
   </div>
 </header>
+@if(notificationAlert()) {
+  <div class="notification-alert" role="alert">
+    <rp-ui-icon name="Notificaciones" aria-hidden="true" />
+    <p>{{notificationAlert()}}</p>
+    <button mat-button type="button" (click)="toggleNotifications()">Ver</button>
+    <button mat-icon-button type="button" aria-label="Descartar alerta" (click)="dismissAlert()">×</button>
+  </div>
+}
