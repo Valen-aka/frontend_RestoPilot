@@ -7,7 +7,7 @@
     @if(!store.hasSession()) {
       <mat-card appearance="outlined" class="feedback" role="alert"><h2>Inicia sesión como cliente</h2><p>Necesitas una sesión de cliente para consultar la carta y preparar tu pedido.</p><a mat-flat-button routerLink="/auth/login" [queryParams]="{returnUrl:router.url}">Ir al acceso</a></mat-card>
     } @else if(store.state()==='loading') {
-      <div class="feedback" role="status" aria-busy="true"><mat-spinner diameter="32" aria-hidden="true"/><p>Consultando la carta…</p></div>
+      <rp-client-loading-skeleton [kind]="mode()==='list'?'catalog':'detail'" [label]="mode()==='list'?'Consultando la carta…':'Consultando el plato…'" />
     } @else if(store.state()==='error') {
       <mat-card appearance="outlined" class="feedback" role="alert"><h2>No pudimos completar la consulta</h2><p>{{ store.problem() }}</p><button mat-stroked-button type="button" (click)="refresh()">Volver a consultar</button><a mat-button routerLink="/cliente/carta">Elegir restaurante</a></mat-card>
     } @else {

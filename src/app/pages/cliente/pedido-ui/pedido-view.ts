@@ -4,16 +4,16 @@ import {Router, RouterLink} from '@angular/router';
 import {MatButtonModule} from '@angular/material/button';
 import {MatCardModule} from '@angular/material/card';
 import {MatTableModule} from '@angular/material/table';
-import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {EMPTY_ORDER} from './pedido-api.adapter';
 import {PedidoProgress} from './pedido-progress';
 import {MODALITY_LABELS, OrderSnapshot, OrderStatus, PaymentSnapshot, PaymentState, QueryState,
   validOrderVista, vistaForStatus} from './pedido.model';
+import {ClientLoadingSkeleton} from '../../../components/client-loading-skeleton/client-loading-skeleton';
 
 @Component({
   selector: 'rp-pedido-view',
   imports: [CurrencyPipe, RouterLink, MatButtonModule, MatCardModule,
-    MatTableModule, MatProgressSpinnerModule, PedidoProgress],
+    MatTableModule, PedidoProgress, ClientLoadingSkeleton],
   templateUrl: './pedido-view.html',
   styleUrl: './pedido-view.css'
 })

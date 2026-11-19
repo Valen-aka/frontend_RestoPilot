@@ -7,6 +7,7 @@ import {MatChipsModule} from '@angular/material/chips';
 import {ReservaStore} from '../reserva-ui/reserva-store';
 import {ReservaService} from '../../../core/services/reserva.service';
 import {MesaPlano} from '../reserva-ui/reserva.model';
+import {ClientLoadingSkeleton} from '../../../components/client-loading-skeleton/client-loading-skeleton';
 
 /**
  * Frame: cliente-plano | "Elige tu lugar favorito"
@@ -20,7 +21,8 @@ import {MesaPlano} from '../reserva-ui/reserva.model';
     MatButtonModule,
     MatCardModule,
     MatIconModule,
-    MatChipsModule
+    MatChipsModule,
+    ClientLoadingSkeleton
   ],
   templateUrl: './cliente-plano.html',
   styleUrls: ['../reserva-ui/reserva-view.css', './cliente-plano.css']

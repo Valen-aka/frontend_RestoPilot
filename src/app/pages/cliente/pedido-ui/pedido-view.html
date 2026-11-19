@@ -14,10 +14,7 @@
       @case ('unauthenticated') {<mat-card appearance="outlined" class="state-card" role="status"><h2>Necesitas una sesión de cliente</h2><p>Inicia sesión para acceder a tus pedidos.</p><a mat-stroked-button routerLink="/auth/login">Ir al inicio de sesión</a></mat-card>}
       @case ('forbidden') {<mat-card appearance="outlined" class="state-card" role="alert"><h2>No tienes permiso para esta consulta</h2><p>No podemos mostrar la información de este pedido.</p><a mat-stroked-button routerLink="/cliente/pedidos">Volver a mis pedidos</a></mat-card>}
       @case ('loading') {
-        <mat-card appearance="outlined" class="state-card" role="status" aria-live="polite" aria-busy="true">
-          <mat-spinner diameter="32" aria-hidden="true"></mat-spinner>
-          <p>Consultando la información del pedido…</p>
-        </mat-card>
+        <rp-client-loading-skeleton [kind]="mode()==='payment'?'payment':'cart'" label="Consultando la información del pedido…" />
       }
       @case ('not-found') {
         <mat-card appearance="outlined" class="state-card" role="status">
@@ -37,7 +34,7 @@
         @if (mode() === 'payment') {
           <mat-card appearance="outlined" class="payment-card">
             <h2>Pedido #{{ order().id }}</h2>
-            @if (paymentQueryState() === 'loading') {<div role="status" aria-live="polite" aria-busy="true"><mat-spinner diameter="32" aria-hidden="true"/><p>Consultando el registro de pago…</p></div>}
+            @if (paymentQueryState() === 'loading') {<rp-client-loading-skeleton kind="payment" label="Consultando el registro de pago…" />}
             @else if (paymentQueryState() === 'error') {<div role="alert"><p>{{ paymentIssue() }}</p><button mat-stroked-button type="button" (click)="retryRequested.emit()">Reintentar consulta de pago</button></div>}
             @else { @switch (effectivePayment()) {
               @case ('missing') {

@@ -13,9 +13,10 @@ import {reservaSelection} from './reserva-selection';
 import {MatChipsModule} from '@angular/material/chips';
 import {attendanceDestination} from '../operacion/reserva-atencion-ui/reserva-atencion.model';
 import {ExpiryContext, expirationDate, expirationIssue, expirationReason, formatExpiryDate} from './reserva-expirada.model';
+import {ClientLoadingSkeleton} from '../../components/client-loading-skeleton/client-loading-skeleton';
 
 @Component({selector:'rp-reserva-expirada-view',
-  imports:[NgTemplateOutlet,RouterLink,MatButtonModule,MatCardModule,MatProgressSpinnerModule,MatTableModule,MatChipsModule,CocinaShell,ExpiredClientShell],
+  imports:[NgTemplateOutlet,RouterLink,MatButtonModule,MatCardModule,MatProgressSpinnerModule,MatTableModule,MatChipsModule,CocinaShell,ExpiredClientShell,ClientLoadingSkeleton],
   templateUrl:'./reserva-expirada-view.html',styleUrls:['./reserva-expirada-view.css','./restaurant-map.css']})
 export class ReservaExpiradaView {
   readonly context=input<ExpiryContext>('client');

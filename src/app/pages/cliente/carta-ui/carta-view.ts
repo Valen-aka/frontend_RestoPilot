@@ -9,7 +9,6 @@ import {MatInputModule} from '@angular/material/input';
 import {MatSelectModule} from '@angular/material/select';
 import {MatChipsModule} from '@angular/material/chips';
 import {MatCardModule} from '@angular/material/card';
-import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {MatDialog} from '@angular/material/dialog';
 import {WorkspaceShell} from '../../../components/workspace-shell/workspace-shell';
 import {AuthService} from '../../../core/services/auth.service';
@@ -17,8 +16,9 @@ import {CartaStore, cartaId} from './carta-store';
 import {PlatoImagen} from './plato-imagen';
 import {CambioRestauranteDialog} from './cambio-restaurante-dialog';
 import {validQuantity} from '../../../core/models/pedido-api.model';
+import {ClientLoadingSkeleton} from '../../../components/client-loading-skeleton/client-loading-skeleton';
 
-@Component({selector:'rp-carta-view',providers:[CartaStore],imports:[RouterLink,ReactiveFormsModule,MatButtonModule,MatFormFieldModule,MatInputModule,MatSelectModule,MatChipsModule,MatCardModule,MatProgressSpinnerModule,WorkspaceShell,PlatoImagen],templateUrl:'./carta-view.html',styleUrl:'./carta-view.css'})
+@Component({selector:'rp-carta-view',providers:[CartaStore],imports:[RouterLink,ReactiveFormsModule,MatButtonModule,MatFormFieldModule,MatInputModule,MatSelectModule,MatChipsModule,MatCardModule,WorkspaceShell,PlatoImagen,ClientLoadingSkeleton],templateUrl:'./carta-view.html',styleUrl:'./carta-view.css'})
 export class CartaView {
   readonly mode=input<'list'|'detail'>('list');readonly store=inject(CartaStore);readonly router=inject(Router);
   private readonly route=inject(ActivatedRoute);private readonly destroyRef=inject(DestroyRef);private readonly dialog=inject(MatDialog);private readonly auth=inject(AuthService);

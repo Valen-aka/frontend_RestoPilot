@@ -37,10 +37,7 @@
     }
 
     @if (cargando()) {
-      <div class="reserva-card" role="status" aria-live="polite" style="text-align:center;padding:48px 24px;">
-        <mat-icon style="font-size:36px;width:36px;height:36px;color:var(--rp-primary);" aria-hidden="true">sync</mat-icon>
-        <p style="margin-top:12px;font-weight:600;color:var(--rp-navy);">Consultando disponibilidad de mesas en tiempo real...</p>
-      </div>
+      <rp-client-loading-skeleton kind="floorplan" label="Consultando disponibilidad de mesas en tiempo real…" />
     } @else if (store.mesas().length === 0) {
       <div class="reserva-card" role="region" aria-label="Sin búsqueda vigente" style="text-align:center;padding:48px 24px;">
         <mat-icon style="font-size:48px;width:48px;height:48px;color:var(--reserva-muted);" aria-hidden="true">table_restaurant</mat-icon>
