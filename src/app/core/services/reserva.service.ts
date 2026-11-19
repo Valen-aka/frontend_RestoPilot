@@ -4,7 +4,7 @@ import {inject, Injectable} from '@angular/core';
 import {HttpClient, HttpParams} from '@angular/common/http';
 import {map, Observable} from 'rxjs';
 import {environment} from '../../../environments/environment';
-import {ReservaList, ReservaDisponibilidad, readReservaList, readReservaDisponibilidad} from '../models/reserva-query.model';
+import {ReservaList, ReservaPage, ReservaDisponibilidad, readReservaList, readReservaPage, readReservaDisponibilidad} from '../models/reserva-query.model';
 import {readReserva, ReservaContractError, ReservaResponse, ReservaRequest, parseReservaId, reservaTime} from '../models/reserva-api.model';
 
 @Injectable({providedIn:'root'})
@@ -16,6 +16,10 @@ export class ReservaService {
   }
   propias():Observable<ReservaList> {
     return this.http.get<unknown>(this.url+'/me',{timeout:20000}).pipe(map(readReservaList));
+  }
+  propiasPagina(pagina:number,tamano=10):Observable<ReservaPage> {
+    const params=new HttpParams().set('pagina',pagina).set('tamano',tamano);
+    return this.http.get<unknown>(this.url+'/me',{params,timeout:20000}).pipe(map(readReservaPage));
   }
   restaurante():Observable<ReservaList> {
     return this.http.get<unknown>(this.url,{timeout:20000}).pipe(map(readReservaList));

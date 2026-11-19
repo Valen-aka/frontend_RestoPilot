@@ -7,6 +7,7 @@ import {ReservaResponse, readReserva} from '../../core/models/reserva-api.model'
 import {readReservaList, readReservaDisponibilidad} from '../../core/models/reserva-query.model';
 import {ExpiryContext} from './reserva-expirada.model';
 import {expiryReservation} from './reserva-expirada-api.adapter';
+import {environment} from '../../../environments/environment';
 
 @Injectable({providedIn:'root'})
 export class ReservaExpiradaStore {
@@ -15,6 +16,10 @@ export class ReservaExpiradaStore {
   private readonly context=signal<ExpiryContext>('client');
   private readonly owner=signal('');
   private readonly listValue=signal<readonly ReservaResponse[]>([]);
+  readonly page=signal(0);
+  readonly pageSize=10;
+  readonly total=signal(0);
+  readonly totalPages=computed(()=>Math.ceil(this.total()/this.pageSize));
   private readonly detailValue=signal<ReservaResponse|null>(null);
   private readonly state=signal<'loading'|'ready'|'error'|'stale'>('loading');
   private request?:Subscription;
@@ -52,7 +57,7 @@ export class ReservaExpiradaStore {
   }
   private clear():void {
     this.version++;this.request?.unsubscribe();this.resetAvailability();this.availabilityRequested=false;
-    this.owner.set('');this.listValue.set([]);this.detailValue.set(null);this.state.set('loading');this.refreshing.set(false);this.issue.set('');
+    this.owner.set('');this.listValue.set([]);this.page.set(0);this.total.set(0);this.detailValue.set(null);this.state.set('loading');this.refreshing.set(false);this.issue.set('');
   }
   private authorize(r:ReservaResponse):void {
     const s=this.session();
@@ -73,10 +78,16 @@ export class ReservaExpiradaStore {
     this.state.set(keep?'ready':'loading');this.refreshing.set(true);
     const current=()=>version===this.version&&key===this.key();
     if(mode==='history'){
-      const request=context==='client'?this.api.propias():this.api.restaurante();
+      const paginated=context==='client'&&environment.transport==='hybrid';
+      const request=paginated?this.api.propiasPagina(this.page(),this.pageSize):context==='client'?this.api.propias():this.api.restaurante();
       this.request=request.subscribe({next:value=>{
         if(!current())return;
-        try{const result=readReservaList(value);result.reservas.forEach(r=>this.authorize(r));this.listValue.set(result.reservas);this.detailValue.set(null);this.state.set('ready');this.refreshing.set(false);}
+        try{const result=readReservaList(value);result.reservas.forEach(r=>this.authorize(r));
+          if(context==='client'){
+            const all=paginated?result.reservas:result.reservas.slice(this.page()*this.pageSize,(this.page()+1)*this.pageSize);
+            this.total.set(paginated?(value as unknown as {total:number}).total:result.reservas.length);this.listValue.set(all);
+          }else this.listValue.set(result.reservas);
+          this.detailValue.set(null);this.state.set('ready');this.refreshing.set(false);}
         catch(error){this.fail(error,false);}
       },error:error=>{if(current())this.fail(error,keep);}});
     }else{
@@ -89,6 +100,10 @@ export class ReservaExpiradaStore {
     }
   }
   refresh():void {if(!this.refreshing())this.load(this.context(),this.mode,this.selectedId);}
+  changePage(page:number):void {
+    if(this.context()!=='client'||this.mode!=='history'||this.refreshing()||!Number.isSafeInteger(page)||page<0||page>=this.totalPages()||page===this.page())return;
+    this.page.set(page);this.listValue.set([]);this.load('client','history');
+  }
   private fail(error:unknown,keep:boolean):void {
     const status=error instanceof HttpErrorResponse?error.status:0,restricted=[400,401,403,404].includes(status);
     if(restricted||!keep){this.listValue.set([]);this.detailValue.set(null);}
