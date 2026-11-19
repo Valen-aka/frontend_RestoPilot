@@ -7,3 +7,4 @@
 
 .availability-card{margin-block:var(--rp-space-6,24px);padding:var(--rp-space-6,24px)}
 .heading-actions{display:flex;align-items:center;flex-wrap:wrap;gap:12px;margin-top:20px}.heading-actions button,.heading-actions a{min-height:44px}
+.reservation-pagination{display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:12px;margin-top:24px}.reservation-pagination button{min-height:44px}.reservation-pagination span{min-width:110px;text-align:center}

@@ -1,6 +1,14 @@
 import {positiveId} from './pedido-api.model';
 import {readReserva, ReservaResponse, ReservaContractError} from './reserva-api.model';
 export interface ReservaList {readonly mensaje:string;readonly reservas:readonly ReservaResponse[];}
+export interface ReservaPage extends ReservaList {readonly pagina:number;readonly tamano:number;readonly total:number;readonly paginas:number;}
+export function readReservaPage(value:unknown):ReservaPage {
+  const list=readReservaList(value),page=value as Partial<ReservaPage>;
+  if(!Number.isSafeInteger(page.pagina)||!Number.isSafeInteger(page.tamano)||!Number.isSafeInteger(page.total)||!Number.isSafeInteger(page.paginas)
+    ||page.pagina!<0||page.tamano!<1||page.total!<0||page.paginas!==Math.ceil(page.total!/page.tamano!)
+    ||list.reservas.length>page.tamano!||((page.pagina!>=page.paginas!)&&list.reservas.length>0))throw new ReservaContractError();
+  return {...list,pagina:page.pagina!,tamano:page.tamano!,total:page.total!,paginas:page.paginas!};
+}
 export interface MesaDisponible {
   readonly mesaId:number;readonly numero:number;readonly capacidad:number;readonly disponible:boolean;
   readonly coordenadaX?:number;readonly coordenadaY?:number;
