@@ -16,8 +16,9 @@ export class NotificacionesStore {
   private readonly messageValues=signal<readonly Notificacion[]>([]);
   private readonly totalValue=signal(0);
   readonly state=signal<'loading'|'ready'|'empty'|'error'|'unauthenticated'|'forbidden'|'not-found'>('loading');
-  readonly messages=computed(()=>this.owner()===this.identity()?this.messageValues():[]);
-  readonly total=computed(()=>this.owner()===this.identity()?this.totalValue():0);
+  readonly current=computed(()=>this.owner()===this.identity());
+  readonly messages=computed(()=>this.current()?this.messageValues():[]);
+  readonly total=computed(()=>this.current()?this.totalValue():0);
   readonly page=signal(0);
   readonly size=signal(5);
   readonly problem=signal('');
