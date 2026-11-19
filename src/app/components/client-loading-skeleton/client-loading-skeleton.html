@@ -1,0 +1,34 @@
+<div class="loading" role="status" aria-busy="true" [attr.aria-label]="label()">
+  <span class="sr-only">{{ label() }}</span>
+  <div class="shape" aria-hidden="true">
+    @switch (kind()) {
+      @case ('catalog') {
+        <span class="bar picker"></span>
+        <div class="filters"><span class="bar"></span><span class="bar"></span><span class="bar"></span><span class="bar"></span></div>
+        <div class="catalog-grid">
+          @for (item of [1,2,3,4,5,6]; track item) {
+            <div class="card"><span class="bar image"></span><div class="card-body"><span class="bar short"></span><span class="bar title"></span><span class="bar line"></span><span class="bar line medium"></span><span class="bar button"></span></div></div>
+          }
+        </div>
+      }
+      @case ('detail') {
+        <div class="detail-grid"><span class="bar detail-image"></span><div class="card detail-body"><span class="bar short"></span><span class="bar title"></span><span class="bar line"></span><span class="bar line"></span><span class="bar line medium"></span><span class="bar button"></span></div></div>
+      }
+      @case ('table') {
+        <div class="card table"><span class="bar title"></span><span class="bar line"></span>@for (item of [1,2,3,4,5]; track item) {<div class="table-row"><span class="bar"></span><span class="bar"></span><span class="bar"></span><span class="bar"></span></div>}</div>
+      }
+      @case ('list') {
+        <div class="card list"><span class="bar title"></span>@for (item of [1,2,3,4]; track item) {<div class="list-row"><span class="bar short"></span><span class="bar line"></span></div>}</div>
+      }
+      @case ('cart') {
+        <div class="cart-grid"><div class="card cart-card"><span class="bar title"></span>@for (item of [1,2,3]; track item) {<div class="table-row"><span class="bar"></span><span class="bar"></span><span class="bar"></span></div>}</div><div class="card cart-card"><span class="bar title"></span><span class="bar line"></span><span class="bar line medium"></span><span class="bar button"></span></div></div>
+      }
+      @case ('payment') {
+        <div class="card payment"><span class="bar short"></span><span class="bar amount"></span><span class="bar line"></span><span class="bar line medium"></span><span class="bar button"></span></div>
+      }
+      @case ('floorplan') {
+        <div class="card floorplan"><span class="bar title"></span><div class="floorplan-grid">@for (item of [1,2,3,4,5,6]; track item) {<span class="bar table-shape"></span>}</div></div>
+      }
+    }
+  </div>
+</div>

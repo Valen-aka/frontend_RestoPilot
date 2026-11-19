@@ -1,6 +1,6 @@
 <rp-workspace-shell role="client" [live]="true" active="reservas"><section class="reservation-access"><header><p class="eyebrow">RESERVAS CLIENTE</p><h1>{{status()?.habilitado?'Reservas del restaurante':status()?'Por ahora, sin reservas online':'Consulta las reservas del restaurante'}}</h1><p>Te esperamos con el mismo sabor de siempre.</p></header>
 @if(!hasSession()){<div class="feedback" role="alert"><h2>Inicia sesión como cliente</h2><a mat-flat-button routerLink="/auth/login">Ir al acceso</a></div>}
-@else if(loading()){<div class="feedback" role="status" aria-busy="true"><mat-spinner diameter="32" aria-hidden="true"/><p>Consultando atención física…</p></div>}
+@else if(loading()){<rp-client-loading-skeleton kind="list" label="Consultando atención física…" />}
 @else {
  @if(restaurants().length){<mat-form-field appearance="outline" subscriptSizing="dynamic"><mat-label>Restaurante</mat-label><mat-select [value]="status()?.restauranteId??null" (selectionChange)="choose($event.value)">@for(r of restaurants();track r.id){<mat-option [value]="r.id">{{r.nombre}}</mat-option>}</mat-select></mat-form-field>}
  @if(problem()){<div class="problem" role="alert"><p>{{problem()}}</p><button mat-stroked-button type="button" (click)="refresh()">Volver a consultar</button></div>}

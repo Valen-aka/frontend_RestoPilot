@@ -5,10 +5,10 @@ import {Router, RouterLink} from '@angular/router';
 import {MatButtonModule} from '@angular/material/button';
 import {MatCardModule} from '@angular/material/card';
 import {MatTableModule} from '@angular/material/table';
-import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {MatPaginatorIntl, MatPaginatorModule, PageEvent} from '@angular/material/paginator';
 import {ClientePedidosStore} from '../pedido-ui/cliente-pedidos-store';
 import {MODALITY_LABELS, Modality, vistaForStatus} from '../pedido-ui/pedido.model';
+import {ClientLoadingSkeleton} from '../../../components/client-loading-skeleton/client-loading-skeleton';
 
 function spanishPaginator(): MatPaginatorIntl {
   const intl = new MatPaginatorIntl();
@@ -21,7 +21,7 @@ function spanishPaginator(): MatPaginatorIntl {
 
 /** Frame cliente-pedidos. Responsable: Alexandra Fong. Selección de pedidos propios consultados desde la API. */
 @Component({selector: 'rp-cliente-pedidos',
-  imports: [CurrencyPipe, RouterLink, MatButtonModule, MatCardModule, MatTableModule, MatProgressSpinnerModule, MatPaginatorModule],
+  imports: [CurrencyPipe, RouterLink, MatButtonModule, MatCardModule, MatTableModule, MatPaginatorModule, ClientLoadingSkeleton],
   providers: [{provide: MatPaginatorIntl, useFactory: spanishPaginator}],
   templateUrl: './cliente-pedidos.html', styleUrls: ['../pedido-ui/pedido-view.css', './cliente-pedidos.css']})
 export class ClientePedidosPage {

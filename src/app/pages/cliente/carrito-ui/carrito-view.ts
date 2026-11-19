@@ -13,11 +13,11 @@ import {MatDialog} from '@angular/material/dialog';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
 import {MatSelectModule} from '@angular/material/select';
-import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {CarritoStore, validQuantity} from './carrito-store';
 import {CarritoTable} from './carrito-table';
 import {VaciarDialog} from './vaciar-dialog';
 import {MODALITY_LABELS, Modality} from '../pedido-ui/pedido.model';
+import {ClientLoadingSkeleton} from '../../../components/client-loading-skeleton/client-loading-skeleton';
 
 export type CartMode = 'cart' | 'empty' | 'delivery' | 'closed' | 'created';
 const MODALITY_VISTAS: Record<Modality, string> = {
@@ -28,7 +28,7 @@ const MODALITY_VISTAS: Record<Modality, string> = {
 @Component({
   selector: 'rp-carrito-view',
   imports: [CurrencyPipe, RouterLink, ReactiveFormsModule, MatButtonModule, MatButtonToggleModule,
-    MatCardModule, MatFormFieldModule, MatInputModule, MatSelectModule, MatProgressSpinnerModule, CarritoTable],
+    MatCardModule, MatFormFieldModule, MatInputModule, MatSelectModule, CarritoTable, ClientLoadingSkeleton],
   templateUrl: './carrito-view.html',
   styleUrls: ['../pedido-ui/pedido-view.css', './carrito-view.css']
 })

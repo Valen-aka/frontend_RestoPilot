@@ -1,7 +1,10 @@
 <rp-workspace-shell [role]="role()" breadcrumb="Notificaciones" active="notificaciones">
   <header class="page-heading"><p class="eyebrow">Notificaciones</p><h1>La actividad de tu cuenta</h1><p class="subtitle">Pedidos y reservas, al día.</p></header>
   <div aria-live="polite" aria-atomic="true">
-    @if(store.state()==='loading'){<p role="status" aria-busy="true">Consultando tus notificaciones…</p>}
+    @if(store.state()==='loading'){
+      @if(role()==='client'){<rp-client-loading-skeleton kind="list" label="Consultando tus notificaciones…" />}
+      @else {<p role="status" aria-busy="true">Consultando tus notificaciones…</p>}
+    }
     @if(store.state()==='empty'){<section class="panel empty-result"><h2>No tienes notificaciones</h2><p>Los mensajes dirigidos a tu cuenta aparecerán aquí.</p><button mat-stroked-button type="button" (click)="store.load(0)">Actualizar</button></section>}
   </div>
   @if(store.state()==='unauthenticated') {

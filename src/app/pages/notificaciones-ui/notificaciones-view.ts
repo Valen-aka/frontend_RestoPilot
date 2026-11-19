@@ -4,6 +4,7 @@ import {MatButtonModule} from '@angular/material/button';
 import {MatPaginatorIntl, MatPaginatorModule, PageEvent} from '@angular/material/paginator';
 import {WorkspaceShell} from '../../components/workspace-shell/workspace-shell';
 import {NotificacionesStore} from './notificaciones-store';
+import {ClientLoadingSkeleton} from '../../components/client-loading-skeleton/client-loading-skeleton';
 
 function spanishPaginator(): MatPaginatorIntl {
   const intl = new MatPaginatorIntl();
@@ -14,7 +15,7 @@ function spanishPaginator(): MatPaginatorIntl {
   return intl;
 }
 
-@Component({selector: 'rp-notificaciones-view', imports: [WorkspaceShell, RouterLink, MatButtonModule, MatPaginatorModule], providers: [NotificacionesStore,{provide: MatPaginatorIntl, useFactory: spanishPaginator}], templateUrl: './notificaciones-view.html', styleUrls: ['../../components/workspace-shell/workspace-pages.css', './notificaciones-view.css']})
+@Component({selector: 'rp-notificaciones-view', imports: [WorkspaceShell, RouterLink, MatButtonModule, MatPaginatorModule, ClientLoadingSkeleton], providers: [NotificacionesStore,{provide: MatPaginatorIntl, useFactory: spanishPaginator}], templateUrl: './notificaciones-view.html', styleUrls: ['../../components/workspace-shell/workspace-pages.css', './notificaciones-view.css']})
 export class NotificacionesView {
   readonly role=input<'client'|'operation'>('client');
   readonly store=inject(NotificacionesStore);

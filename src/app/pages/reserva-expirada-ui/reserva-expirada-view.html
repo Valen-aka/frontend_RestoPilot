@@ -13,7 +13,8 @@
       </div>
     </div>
     @if (store.queryState() === 'loading') {
-      <mat-card appearance="outlined" class="state-card" role="status" aria-busy="true"><mat-spinner diameter="32" aria-hidden="true"/><h2>Consultando las reservas…</h2></mat-card>
+      @if(context()==='client') {<rp-client-loading-skeleton [kind]="mode()==='history'?'table':'detail'" label="Consultando las reservas…" />}
+      @else {<mat-card appearance="outlined" class="state-card" role="status" aria-busy="true"><mat-spinner diameter="32" aria-hidden="true"/><h2>Consultando las reservas…</h2></mat-card>}
     } @else if (store.queryState() === 'error' || problem()) {
       <mat-card appearance="outlined" class="state-card" role="alert"><h2>No pudimos completar la consulta</h2><p>{{ problem() || 'Puedes volver a consultar sin modificar ninguna reserva.' }}</p>
         @if (store.hasSession()) {<button mat-stroked-button type="button" (click)="store.refresh()">Volver a consultar</button>}

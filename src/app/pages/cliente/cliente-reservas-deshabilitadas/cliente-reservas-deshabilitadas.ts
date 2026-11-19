@@ -6,14 +6,14 @@ import {MatButtonModule} from '@angular/material/button';
 import {MatCardModule} from '@angular/material/card';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatSelectModule} from '@angular/material/select';
-import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {WorkspaceShell} from '../../../components/workspace-shell/workspace-shell';
 import {ReservaService} from '../../../core/services/reserva.service';
 import {CatalogoService} from '../../../core/services/catalogo.service';
 import {API_SESSION, activeClientSession} from '../../../core/auth/api-session';
 import {AtencionFisicaResponse} from '../../../core/models/atencion-fisica.model';
 import {RestauranteResponse} from '../../../core/models/catalogo-api.model';
-@Component({selector:'rp-cliente-reservas-deshabilitadas',imports:[RouterLink,MatButtonModule,MatCardModule,MatFormFieldModule,MatSelectModule,MatProgressSpinnerModule,WorkspaceShell],templateUrl:'./cliente-reservas-deshabilitadas.html',styleUrl:'./cliente-reservas-deshabilitadas.css'})
+import {ClientLoadingSkeleton} from '../../../components/client-loading-skeleton/client-loading-skeleton';
+@Component({selector:'rp-cliente-reservas-deshabilitadas',imports:[RouterLink,MatButtonModule,MatCardModule,MatFormFieldModule,MatSelectModule,WorkspaceShell,ClientLoadingSkeleton],templateUrl:'./cliente-reservas-deshabilitadas.html',styleUrl:'./cliente-reservas-deshabilitadas.css'})
 export class ClienteReservasDeshabilitadasPage {
  readonly session=inject(API_SESSION);private readonly api=inject(ReservaService);private readonly catalogo=inject(CatalogoService);private readonly router=inject(Router);private readonly route=inject(ActivatedRoute);private readonly destroyRef=inject(DestroyRef);
  readonly params=toSignal(this.route.queryParamMap,{initialValue:this.route.snapshot.queryParamMap});readonly hasSession=computed(()=>activeClientSession(this.session()));
