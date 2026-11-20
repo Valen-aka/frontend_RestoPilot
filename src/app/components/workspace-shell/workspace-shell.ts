@@ -2,6 +2,7 @@ import {WorkspaceContext} from './workspace-context.service';
 import {BreakpointObserver} from '@angular/cdk/layout';
 import {toSignal} from '@angular/core/rxjs-interop';
 import {UiIcon} from '../ui-icon/ui-icon';
+import {WorkspaceNotifications} from '../workspace-notifications/workspace-notifications';
 import {Brand} from '../brand/brand';
 import {afterNextRender, computed, inject, signal} from '@angular/core';
 import {AuthService} from '../../core/services/auth.service';
@@ -13,7 +14,7 @@ import { RouterLink } from '@angular/router';
 @Component({
   selector: 'rp-workspace-shell',
   standalone: true,
-  imports: [Brand, UiIcon,RouterLink,MatButtonModule],
+  imports: [Brand, UiIcon,RouterLink,MatButtonModule,WorkspaceNotifications],
   templateUrl: './workspace-shell.html',
   styleUrl: './workspace-shell.css'
 })
@@ -65,7 +66,6 @@ export class WorkspaceShell {
     { key: 'mesas', label: 'Mesas', icon: '⊞', url: '/operacion/mesas' },
     { key: 'pagos', label: 'Pagos', icon: '▣', url: '/operacion/pagos' },
     { key: 'reportes', label: 'Reportes', icon: '▥', url: '/operacion/reportes' },
-    { key: 'notificaciones', label: 'Notificaciones', icon: '♧', url: '/operacion/notificaciones' },
     { key: 'ia', label: 'Asistente de reportes', icon: '✦', url: '/operacion/asistente' }
   ];
 
