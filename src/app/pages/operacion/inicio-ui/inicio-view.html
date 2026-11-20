@@ -1,2 +1,99 @@
-<rp-workspace-shell [role]="owner()?'owner':'operation'" active="inicio" [breadcrumb]="owner()?'Dueño':'Operación'" [live]="true" [restaurantName]="restaurant()?.nombre||'Mi restaurante'" [restaurantId]="restaurant()?.id||null" [restaurantActive]="restaurant()?.activo??null"><header><p class="eyebrow">{{owner()?'DUEÑO':'OPERACIÓN'}}</p><h1>{{owner()?'Tu negocio, con perspectiva':'Cada servicio, bajo control'}}</h1><p>Resultados de hoy · {{today}}</p></header>@if(state()==='loading'){<p role="status">Consultando tu restaurante…</p>}@if(state()==='error'){<div class="feedback" role="alert"><p>No pudimos cargar los indicadores. Puedes seguir accediendo a tus módulos.</p><button mat-stroked-button (click)="load()">Actualizar inicio</button></div>}@if(state()==='empty'){<p class="feedback" role="status">Todavía no hay actividad registrada para hoy. Tu restaurante está listo para empezar.</p>}@if(state()==='ready'){<div class="metrics"><mat-card appearance="outlined"><mat-card-content><h2>Pagos confirmados</h2><strong>{{report()?.estadoPagos?.montoTotal|currency:'PEN':'S/ ':'1.2-2'}}</strong><p>Pedidos creados hoy</p></mat-card-content></mat-card><mat-card appearance="outlined"><mat-card-content><h2>Pedidos atendidos</h2><strong>{{report()?.pedidosAtendidos}}</strong><p>Pedidos entregados</p></mat-card-content></mat-card><mat-card appearance="outlined"><mat-card-content><h2>Reservas completadas</h2><strong>{{report()?.reservasCompletadas}}</strong><p>Atenciones independientes</p></mat-card-content></mat-card><mat-card appearance="outlined"><mat-card-content><h2>Ocupación reservada</h2><strong>{{report()?.ocupacionMesasPorcentaje|number:'1.0-2'}}%</strong><p>Por tiempo reservado</p></mat-card-content></mat-card></div>}
-<div class="columns"><mat-card appearance="outlined"><mat-card-content><h2>{{owner()?'Listo para el próximo servicio':'El pulso de tu restaurante'}}</h2>@if(hours().length){<rp-reporte-chart [rows]="hours()" title="Pedidos por horario de hoy" unit="Pedidos"/><ul>@for(h of hours();track h.label){<li>{{h.label}}: {{h.value}} pedidos</li>}</ul>}<div class="actions"><a mat-flat-button routerLink="/operacion/reportes" [queryParams]="period">Consultar resultados</a><a mat-stroked-button routerLink="/operacion/cocina">Revisar cocina</a><a mat-stroked-button routerLink="/operacion/reservas">Gestionar reservas</a><a mat-stroked-button routerLink="/operacion/mesas">Organizar mesas</a><a mat-stroked-button routerLink="/operacion/platos">Gestionar platos</a><a mat-stroked-button routerLink="/operacion/atencion">Configurar atención física</a></div></mat-card-content></mat-card><mat-card appearance="outlined"><mat-card-content><h2>{{owner()?'Un equipo bien acompañado':'Tu siguiente movimiento'}}</h2>@if(owner()){<p>Cada persona gestiona con su propia cuenta.</p><a mat-flat-button routerLink="/dueno/administradores/nuevo">Incorporar administrador</a>}@else{<p>Consulta los pedidos actualizados y las reservas de tu restaurante.</p><a mat-flat-button routerLink="/operacion/pedidos">Ver pedidos del restaurante</a>}</mat-card-content></mat-card></div></rp-workspace-shell>
+<rp-workspace-shell [role]="owner()?'owner':'operation'" active="inicio" [breadcrumb]="owner()?'Dueño':'Operación'" [live]="true" [restaurantName]="restaurant()?.nombre||'Mi restaurante'" [restaurantId]="restaurant()?.id||null" [restaurantActive]="restaurant()?.activo??null">
+  @if (owner()) {
+    <div class="owner-dashboard">
+      <header class="owner-hero">
+        <div>
+          <h1>Vista general</h1>
+          <p>{{ restaurant()?.nombre || 'Mi restaurante' }} · <time [attr.datetime]="today">{{ ownerDate }}</time></p>
+        </div>
+        <a mat-flat-button routerLink="/operacion/reportes" [queryParams]="period">
+          <rp-ui-icon name="Reportes" /> Ver reportes
+        </a>
+      </header>
+
+      <section aria-labelledby="owner-summary">
+        <h2 class="owner-section-title" id="owner-summary">Resumen de hoy</h2>
+        @switch (state()) {
+          @case ('loading') {
+            <p class="owner-status" role="status">Cargando los indicadores de hoy…</p>
+          }
+          @case ('error') {
+            <div class="owner-status owner-error" role="alert">
+              <p>No pudimos cargar los indicadores de hoy.</p>
+              <button mat-stroked-button type="button" (click)="load()">Reintentar</button>
+            </div>
+          }
+          @default {
+            @if (report(); as summary) {
+              @if (state() === 'empty') {
+                <p class="owner-status" role="status">Aún no hay actividad registrada hoy.</p>
+              }
+              <div class="owner-metrics">
+                <mat-card appearance="outlined"><mat-card-content>
+                  <span class="owner-icon"><rp-ui-icon name="Pagos" /></span>
+                  <h3>Pagos confirmados</h3>
+                  <strong>{{ (summary.estadoPagos?.montoTotal ?? 0) | currency:'PEN':'S/ ':'1.2-2' }}</strong>
+                </mat-card-content></mat-card>
+                <mat-card appearance="outlined"><mat-card-content>
+                  <span class="owner-icon"><rp-ui-icon name="Pedidos" /></span>
+                  <h3>Pedidos entregados</h3>
+                  <strong>{{ summary.pedidosAtendidos ?? 0 }}</strong>
+                </mat-card-content></mat-card>
+                <mat-card appearance="outlined"><mat-card-content>
+                  <span class="owner-icon"><rp-ui-icon name="Reservas" /></span>
+                  <h3>Reservas completadas</h3>
+                  <strong>{{ summary.reservasCompletadas ?? 0 }}</strong>
+                </mat-card-content></mat-card>
+                <mat-card appearance="outlined"><mat-card-content>
+                  <span class="owner-icon"><rp-ui-icon name="Mesas" /></span>
+                  <h3>Ocupación reservada</h3>
+                  <strong>{{ (summary.ocupacionMesasPorcentaje ?? 0) | number:'1.0-2' }}%</strong>
+                </mat-card-content></mat-card>
+              </div>
+            }
+          }
+        }
+      </section>
+
+      @if (hours().length) {
+        <mat-card appearance="outlined" class="owner-demand">
+          <mat-card-content>
+            <h2 class="owner-section-title">Pedidos por horario</h2>
+            <rp-reporte-chart [rows]="hours()" title="Pedidos por horario de hoy" unit="Pedidos" />
+            <ul class="owner-hours">
+              @for (hour of hours(); track hour.label) {
+                <li>{{ hour.label }} · {{ hour.value }}</li>
+              }
+            </ul>
+          </mat-card-content>
+        </mat-card>
+      }
+
+      <div class="owner-tools">
+        <mat-card appearance="outlined">
+          <mat-card-content>
+            <h2 class="owner-section-title">Accesos rápidos</h2>
+            <div class="owner-shortcuts">
+              @for (shortcut of ownerShortcuts; track shortcut.url) {
+                <a mat-stroked-button [routerLink]="shortcut.url">
+                  <rp-ui-icon [name]="shortcut.icon" /> {{ shortcut.label }}
+                </a>
+              }
+            </div>
+          </mat-card-content>
+        </mat-card>
+        <mat-card appearance="outlined" class="owner-team">
+          <mat-card-content>
+            <span class="owner-icon"><rp-ui-icon name="Incorporar administrador" /></span>
+            <h2 class="owner-section-title">Equipo</h2>
+            <p>Da acceso a la operación de tu restaurante.</p>
+            <a mat-stroked-button routerLink="/dueno/administradores/nuevo">Incorporar administrador</a>
+          </mat-card-content>
+        </mat-card>
+      </div>
+    </div>
+  } @else {
+<header><p class="eyebrow">{{owner()?'DUEÑO':'OPERACIÓN'}}</p><h1>{{owner()?'Tu negocio, con perspectiva':'Cada servicio, bajo control'}}</h1><p>Resultados de hoy · {{today}}</p></header>@if(state()==='loading'){<p role="status">Consultando tu restaurante…</p>}@if(state()==='error'){<div class="feedback" role="alert"><p>No pudimos cargar los indicadores. Puedes seguir accediendo a tus módulos.</p><button mat-stroked-button (click)="load()">Actualizar inicio</button></div>}@if(state()==='empty'){<p class="feedback" role="status">Todavía no hay actividad registrada para hoy. Tu restaurante está listo para empezar.</p>}@if(state()==='ready'){<div class="metrics"><mat-card appearance="outlined"><mat-card-content><h2>Pagos confirmados</h2><strong>{{report()?.estadoPagos?.montoTotal|currency:'PEN':'S/ ':'1.2-2'}}</strong><p>Pedidos creados hoy</p></mat-card-content></mat-card><mat-card appearance="outlined"><mat-card-content><h2>Pedidos atendidos</h2><strong>{{report()?.pedidosAtendidos}}</strong><p>Pedidos entregados</p></mat-card-content></mat-card><mat-card appearance="outlined"><mat-card-content><h2>Reservas completadas</h2><strong>{{report()?.reservasCompletadas}}</strong><p>Atenciones independientes</p></mat-card-content></mat-card><mat-card appearance="outlined"><mat-card-content><h2>Ocupación reservada</h2><strong>{{report()?.ocupacionMesasPorcentaje|number:'1.0-2'}}%</strong><p>Por tiempo reservado</p></mat-card-content></mat-card></div>}
+<div class="columns"><mat-card appearance="outlined"><mat-card-content><h2>{{owner()?'Listo para el próximo servicio':'El pulso de tu restaurante'}}</h2>@if(hours().length){<rp-reporte-chart [rows]="hours()" title="Pedidos por horario de hoy" unit="Pedidos"/><ul>@for(h of hours();track h.label){<li>{{h.label}}: {{h.value}} pedidos</li>}</ul>}<div class="actions"><a mat-flat-button routerLink="/operacion/reportes" [queryParams]="period">Consultar resultados</a><a mat-stroked-button routerLink="/operacion/cocina">Revisar cocina</a><a mat-stroked-button routerLink="/operacion/reservas">Gestionar reservas</a><a mat-stroked-button routerLink="/operacion/mesas">Organizar mesas</a><a mat-stroked-button routerLink="/operacion/platos">Gestionar platos</a><a mat-stroked-button routerLink="/operacion/atencion">Configurar atención física</a></div></mat-card-content></mat-card><mat-card appearance="outlined"><mat-card-content><h2>{{owner()?'Un equipo bien acompañado':'Tu siguiente movimiento'}}</h2>@if(owner()){<p>Cada persona gestiona con su propia cuenta.</p><a mat-flat-button routerLink="/dueno/administradores/nuevo">Incorporar administrador</a>}@else{<p>Consulta los pedidos actualizados y las reservas de tu restaurante.</p><a mat-flat-button routerLink="/operacion/pedidos">Ver pedidos del restaurante</a>}</mat-card-content></mat-card></div>
+  }
+</rp-workspace-shell>
