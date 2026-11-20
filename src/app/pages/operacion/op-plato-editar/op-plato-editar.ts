@@ -1,3 +1,4 @@
+import {ClientLoadingSkeleton} from '../../../components/client-loading-skeleton/client-loading-skeleton';
 import {WorkspaceShell} from '../../../components/workspace-shell/workspace-shell';
 import {MatButtonModule} from '@angular/material/button';
 import {MatFormFieldModule} from '@angular/material/form-field';
@@ -35,7 +36,7 @@ import {
 @Component({
   selector: 'rp-op-plato-editar',
   standalone: true,
-  imports: [WorkspaceShell,ReactiveFormsModule, RouterLink, MatButtonModule, MatFormFieldModule, MatInputModule, MatSelectModule, MatCheckboxModule],
+  imports: [ClientLoadingSkeleton,WorkspaceShell,ReactiveFormsModule, RouterLink, MatButtonModule, MatFormFieldModule, MatInputModule, MatSelectModule, MatCheckboxModule],
   templateUrl: './op-plato-editar.html',
   styleUrl: './op-plato-editar.css'
 })

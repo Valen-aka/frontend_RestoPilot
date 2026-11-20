@@ -1,3 +1,4 @@
+import {ClientLoadingSkeleton} from '../../../components/client-loading-skeleton/client-loading-skeleton';
 import {Component, DestroyRef, DOCUMENT, computed, effect, inject, input, untracked} from '@angular/core';
 import {toSignal, takeUntilDestroyed} from '@angular/core/rxjs-interop';
 import {ActivatedRoute, Router, RouterLink} from '@angular/router';
@@ -7,7 +8,6 @@ import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
 import {MatCardModule} from '@angular/material/card';
 import {MatTableModule} from '@angular/material/table';
-import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {MatDialog} from '@angular/material/dialog';
 import {WorkspaceShell} from '../../../components/workspace-shell/workspace-shell';
 import {AuthService} from '../../../core/services/auth.service';
@@ -15,7 +15,7 @@ import {MesaRequest, mesaInteger, mesaRequestValid} from '../../../core/models/m
 import {MesasMode, MesasStore} from './mesas-store';
 import {PlanoMesas} from './plano-mesas';
 import {OpMesaDesactivarDialog} from '../../../dialogs/op-mesa-desactivar/op-mesa-desactivar-dialog';
-@Component({selector:'rp-mesas-view',imports:[RouterLink,ReactiveFormsModule,MatButtonModule,MatFormFieldModule,MatInputModule,MatCardModule,MatTableModule,MatProgressSpinnerModule,WorkspaceShell,PlanoMesas],templateUrl:'./mesas-view.html',styleUrl:'./mesas-view.css'})
+@Component({selector:'rp-mesas-view',imports:[ClientLoadingSkeleton,RouterLink,ReactiveFormsModule,MatButtonModule,MatFormFieldModule,MatInputModule,MatCardModule,MatTableModule,WorkspaceShell,PlanoMesas],templateUrl:'./mesas-view.html',styleUrl:'./mesas-view.css'})
 export class MesasView {
  readonly mode=input<MesasMode>('map');readonly store=inject(MesasStore);readonly router=inject(Router);
  private readonly route=inject(ActivatedRoute);private readonly destroyRef=inject(DestroyRef);private readonly document=inject(DOCUMENT);private readonly dialog=inject(MatDialog);private readonly auth=inject(AuthService);

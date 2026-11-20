@@ -6,7 +6,7 @@
     <p>Actualiza la información del plato seleccionado.</p>
   </header>
   @if (cargando()) {
-    <div class="message" role="status" aria-busy="true">Cargando información del plato…</div>
+    <rp-client-loading-skeleton kind="payment" label="Cargando información del plato…" />
   } @else if (platoId()) {
     @if (error()) {<div class="message error" role="alert">{{ error() }}</div>}
     @if (exito()) {<div class="message success" role="status">{{ exito() }}</div>}

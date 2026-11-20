@@ -2,7 +2,7 @@
  <section class="attention-page"><header><p class="eyebrow">RESERVAS OPERACIÓN</p><h1>{{confirm()?'Pausar nuevas reservas':'Reservas a tu ritmo'}}</h1><p>Controla cuándo aceptar nuevas solicitudes.</p></header>
  @if(!store.hasSession()){<mat-card appearance="outlined" class="feedback" role="alert"><h2>Acceso de gestión requerido</h2><p>{{store.problem()}}</p><a mat-flat-button routerLink="/auth/login">Ir al acceso</a></mat-card>}
  @else {
-  @if(store.state()==='loading'){<div class="feedback" role="status" aria-busy="true"><mat-spinner diameter="32" aria-hidden="true"/><p>Consultando el estado del restaurante…</p></div>}
+  @if(store.state()==='loading'){<rp-client-loading-skeleton kind="payment" label="Consultando el estado del restaurante…" />}
   @if(store.problem()){<div class="problem" role="alert"><p>{{store.problem()}}</p><button mat-stroked-button type="button" (click)="store.load()" [disabled]="store.busy()">Consultar estado actual</button></div>}
   @if(store.notice()){<p class="success" role="status">{{store.notice()}}</p>}
   @if(store.data();as status){<mat-card appearance="outlined" class="module-card"><mat-card-content>

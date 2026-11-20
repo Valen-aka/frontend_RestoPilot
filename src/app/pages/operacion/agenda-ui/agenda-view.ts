@@ -1,3 +1,4 @@
+import {ClientLoadingSkeleton} from '../../../components/client-loading-skeleton/client-loading-skeleton';
 import {Component, DestroyRef, DOCUMENT, computed, effect, inject, input, untracked} from '@angular/core';
 import {toSignal, takeUntilDestroyed} from '@angular/core/rxjs-interop';
 import {ActivatedRoute, Router, RouterLink} from '@angular/router';
@@ -8,14 +9,13 @@ import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
 import {MatSelectModule} from '@angular/material/select';
 import {MatTableModule} from '@angular/material/table';
-import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {MatDialog, MatDialogRef} from '@angular/material/dialog';
 import {WorkspaceShell} from '../../../components/workspace-shell/workspace-shell';
 import {AuthService} from '../../../core/services/auth.service';
 import {AgendaMode, AgendaStore} from './agenda-store';
 import {ReservaUpdate, agendaDate, agendaTime, availabilityKey, reservaEstados, validUpdate} from '../../../core/models/reserva-agenda.model';
 import {OpReservaCancelarDialog} from '../../../dialogs/op-reserva-cancelar/op-reserva-cancelar-dialog';
-@Component({selector:'rp-agenda-view',imports:[RouterLink,ReactiveFormsModule,MatButtonModule,MatCardModule,MatFormFieldModule,MatInputModule,MatSelectModule,MatTableModule,MatProgressSpinnerModule,WorkspaceShell],templateUrl:'./agenda-view.html',styleUrl:'./agenda-view.css'})
+@Component({selector:'rp-agenda-view',imports:[ClientLoadingSkeleton,RouterLink,ReactiveFormsModule,MatButtonModule,MatCardModule,MatFormFieldModule,MatInputModule,MatSelectModule,MatTableModule,WorkspaceShell],templateUrl:'./agenda-view.html',styleUrl:'./agenda-view.css'})
 export class AgendaView {
  readonly mode=input<AgendaMode>('agenda');readonly store=inject(AgendaStore);readonly router=inject(Router);
  private readonly route=inject(ActivatedRoute);private readonly auth=inject(AuthService);private readonly document=inject(DOCUMENT);private readonly destroyRef=inject(DestroyRef);private readonly dialog=inject(MatDialog);private returnFocus=false;private dialogRef?:MatDialogRef<OpReservaCancelarDialog,string|false>;

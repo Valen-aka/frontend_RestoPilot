@@ -1,15 +1,15 @@
+import {ClientLoadingSkeleton} from '../../../components/client-loading-skeleton/client-loading-skeleton';
 import {Component, DestroyRef, DOCUMENT, effect, inject, input, untracked} from '@angular/core';
 import {Router, RouterLink} from '@angular/router';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 import {MatButtonModule} from '@angular/material/button';
 import {MatCardModule} from '@angular/material/card';
-import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {MatDialog, MatDialogRef} from '@angular/material/dialog';
 import {WorkspaceShell} from '../../../components/workspace-shell/workspace-shell';
 import {AtencionFisicaStore} from './atencion-fisica-store';
 import {OpReservasModuloConfirmarDialog} from '../../../dialogs/op-reservas-modulo-confirmar/op-reservas-modulo-confirmar-dialog';
 import {AuthService} from '../../../core/services/auth.service';
-@Component({selector:'rp-atencion-fisica-view',imports:[RouterLink,MatButtonModule,MatCardModule,MatProgressSpinnerModule,WorkspaceShell],templateUrl:'./atencion-fisica-view.html',styleUrl:'./atencion-fisica-view.css'})
+@Component({selector:'rp-atencion-fisica-view',imports:[ClientLoadingSkeleton,RouterLink,MatButtonModule,MatCardModule,WorkspaceShell],templateUrl:'./atencion-fisica-view.html',styleUrl:'./atencion-fisica-view.css'})
 export class AtencionFisicaView {
  readonly confirm=input(false);readonly store=inject(AtencionFisicaStore);private readonly router=inject(Router);private readonly dialog=inject(MatDialog);private readonly destroyRef=inject(DestroyRef);private readonly document=inject(DOCUMENT);private readonly auth=inject(AuthService);
  private focusRestored=false;private opened=false;private dialogRef?:MatDialogRef<OpReservasModuloConfirmarDialog>;

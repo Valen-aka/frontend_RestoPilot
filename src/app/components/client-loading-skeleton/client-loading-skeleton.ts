@@ -1,6 +1,6 @@
 import {Component, input} from '@angular/core';
 
-export type ClientSkeletonKind = 'catalog' | 'detail' | 'table' | 'list' | 'cart' | 'payment' | 'floorplan';
+export type ClientSkeletonKind = 'dashboard' | 'catalog' | 'detail' | 'table' | 'list' | 'cart' | 'payment' | 'floorplan';
 
 @Component({
   selector: 'rp-client-loading-skeleton',

@@ -1,3 +1,4 @@
+import {ClientLoadingSkeleton} from '../../../components/client-loading-skeleton/client-loading-skeleton';
 import {Component, DestroyRef, DOCUMENT, computed, effect, inject, input, untracked} from '@angular/core';
 import {toSignal} from '@angular/core/rxjs-interop';
 import {ActivatedRoute, Router, RouterLink} from '@angular/router';
@@ -9,13 +10,12 @@ import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
 import {MatSelectModule} from '@angular/material/select';
 import {MatTableModule} from '@angular/material/table';
-import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {WorkspaceShell} from '../../../components/workspace-shell/workspace-shell';
 import {AuthService} from '../../../core/services/auth.service';
 import {ReportesStore} from './reportes-store';
 import {ReporteChart, ReporteBar} from './reporte-chart';
 import {ReporteQuery, TipoReporte, reporteDate, reporteTipos, validReporteQuery} from '../../../core/models/reporte-api.model';
-@Component({selector:'rp-reportes-view',imports:[RouterLink,ReactiveFormsModule,CurrencyPipe,DecimalPipe,MatButtonModule,MatCardModule,MatFormFieldModule,MatInputModule,MatSelectModule,MatTableModule,MatProgressSpinnerModule,WorkspaceShell,ReporteChart],providers:[ReportesStore],templateUrl:'./reportes-view.html',styleUrl:'./reportes-view.css'})
+@Component({selector:'rp-reportes-view',imports:[ClientLoadingSkeleton,RouterLink,ReactiveFormsModule,CurrencyPipe,DecimalPipe,MatButtonModule,MatCardModule,MatFormFieldModule,MatInputModule,MatSelectModule,MatTableModule,WorkspaceShell,ReporteChart],providers:[ReportesStore],templateUrl:'./reportes-view.html',styleUrl:'./reportes-view.css'})
 export class ReportesView {
  readonly payments=input(false);readonly store=inject(ReportesStore);readonly router=inject(Router);private readonly route=inject(ActivatedRoute);private readonly auth=inject(AuthService);private readonly document=inject(DOCUMENT);private readonly destroyRef=inject(DestroyRef);
  readonly params=toSignal(this.route.queryParamMap,{initialValue:this.route.snapshot.queryParamMap});readonly tipos=reporteTipos;

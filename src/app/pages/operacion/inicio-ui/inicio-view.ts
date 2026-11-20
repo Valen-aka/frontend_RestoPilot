@@ -1,3 +1,4 @@
+import {ClientLoadingSkeleton} from '../../../components/client-loading-skeleton/client-loading-skeleton';
 import {Component, DestroyRef, computed, effect, inject, input, signal, untracked} from '@angular/core';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 import {RouterLink} from '@angular/router';
@@ -13,7 +14,7 @@ import {ReporteService} from '../../../core/services/reporte.service';
 import {RestauranteResponse} from '../../../core/models/catalogo-api.model';
 import {ReporteResponse, emptyReporte} from '../../../core/models/reporte-api.model';
 import {ReporteChart} from '../reportes-ui/reporte-chart';
-@Component({selector:'rp-inicio-view',imports:[RouterLink,CurrencyPipe,DecimalPipe,MatButtonModule,MatCardModule,WorkspaceShell,ReporteChart,UiIcon],templateUrl:'./inicio-view.html',styleUrl:'./inicio-view.css'})
+@Component({selector:'rp-inicio-view',imports:[ClientLoadingSkeleton,RouterLink,CurrencyPipe,DecimalPipe,MatButtonModule,MatCardModule,WorkspaceShell,ReporteChart,UiIcon],templateUrl:'./inicio-view.html',styleUrl:'./inicio-view.css'})
 export class InicioView {
  readonly owner=input(false);readonly auth=inject(AuthService);readonly restaurant=signal<RestauranteResponse|null>(null);readonly report=signal<ReporteResponse|null>(null);readonly state=signal<'loading'|'ready'|'empty'|'error'>('loading');private readonly catalog=inject(CatalogoService);private readonly reports=inject(ReporteService);private readonly destroyRef=inject(DestroyRef);private request?:Subscription;
  readonly today=new Intl.DateTimeFormat('en-CA',{timeZone:'America/Lima',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date());readonly period={fechaInicio:this.today,fechaFin:this.today};readonly hours=computed(()=>Object.entries(this.report()?.horariosMayorDemanda??{}).map(([label,value])=>({label,value})));

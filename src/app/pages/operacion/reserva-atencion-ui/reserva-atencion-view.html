@@ -11,7 +11,7 @@
     <p id="attendance-feedback" class="feedback" tabindex="-1" [class.error]="message.kind === 'error'" [attr.role]="message.kind === 'error' ? 'alert' : 'status'" aria-live="polite">{{ message.text }}</p>
   }
   @if (store.queryState() === 'loading') {
-    <mat-card appearance="outlined" class="state-card" role="status" aria-busy="true"><mat-spinner diameter="32" aria-hidden="true"/><h2>Consultando la reserva…</h2></mat-card>
+    <rp-client-loading-skeleton kind="payment" label="Consultando la reserva…" />
   } @else if (store.queryState() === 'error' || store.problem()) {
     <mat-card appearance="outlined" class="state-card" role="alert"><h2>No pudimos mostrar la reserva</h2><p>{{ store.problem() || 'No se pudo completar la consulta.' }}</p><button mat-stroked-button type="button" (click)="store.refresh()">Volver a consultar</button></mat-card>
   } @else {
