@@ -1,3 +1,4 @@
+import {ClientLoadingSkeleton} from '../../../components/client-loading-skeleton/client-loading-skeleton';
 import {Component,DestroyRef,ElementRef,computed,effect,inject,input,signal,untracked} from '@angular/core';
 import {ActivatedRoute,Router,RouterLink,NavigationStart,NavigationCancel,NavigationError} from '@angular/router';
 import {FormControl,FormGroup,ReactiveFormsModule,Validators} from '@angular/forms';
@@ -16,7 +17,7 @@ import {RestauranteResponse} from '../../../core/models/catalogo-api.model';
 import {CategoriasStore} from './categorias-store';
 import {OpCategoriaEliminarDialog} from '../../../dialogs/op-categoria-eliminar/op-categoria-eliminar-dialog';
 
-@Component({selector:'rp-categorias-view',imports:[WorkspaceShell,RouterLink,ReactiveFormsModule,MatInputModule,MatButtonModule,MatTableModule,MatSnackBarModule,MatDialogModule,OpCategoriaEliminarDialog],providers:[CategoriasStore],templateUrl:'./categorias-view.html',styleUrls:['./categorias-view.css','./categorias-material.scss']})
+@Component({selector:'rp-categorias-view',imports:[ClientLoadingSkeleton,WorkspaceShell,RouterLink,ReactiveFormsModule,MatInputModule,MatButtonModule,MatTableModule,MatSnackBarModule,MatDialogModule,OpCategoriaEliminarDialog],providers:[CategoriasStore],templateUrl:'./categorias-view.html',styleUrls:['./categorias-view.css','./categorias-material.scss']})
 export class CategoriasView {
  readonly mode=input<'list'|'create'|'edit'|'delete'>('list');
  readonly store=inject(CategoriasStore);

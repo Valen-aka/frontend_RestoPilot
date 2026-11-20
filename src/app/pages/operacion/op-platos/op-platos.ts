@@ -1,3 +1,4 @@
+import {ClientLoadingSkeleton} from '../../../components/client-loading-skeleton/client-loading-skeleton';
 import {WorkspaceShell} from '../../../components/workspace-shell/workspace-shell';
 import {MatButtonModule} from '@angular/material/button';
 import {MatFormFieldModule} from '@angular/material/form-field';
@@ -14,7 +15,7 @@ import {PlatoResponse} from '../../../core/models/catalogo-api.model';
 @Component({
   selector: 'rp-op-platos',
   standalone: true,
-  imports: [WorkspaceShell,RouterLink, MatButtonModule, MatFormFieldModule, MatInputModule, MatSelectModule, MatTableModule],
+  imports: [ClientLoadingSkeleton,WorkspaceShell,RouterLink, MatButtonModule, MatFormFieldModule, MatInputModule, MatSelectModule, MatTableModule],
   templateUrl: './op-platos.html',
   styleUrl: './op-platos.css'
 })

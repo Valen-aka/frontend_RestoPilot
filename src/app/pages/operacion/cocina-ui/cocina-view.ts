@@ -1,3 +1,4 @@
+import {ClientLoadingSkeleton} from '../../../components/client-loading-skeleton/client-loading-skeleton';
 import {Component, DOCUMENT, afterNextRender, computed, effect, inject, input, untracked} from '@angular/core';
 import {toSignal} from '@angular/core/rxjs-interop';
 import {MatPaginatorIntl, MatPaginatorModule, PageEvent} from '@angular/material/paginator';
@@ -7,7 +8,6 @@ import {ActivatedRoute, Router, RouterLink} from '@angular/router';
 import {MatButtonModule} from '@angular/material/button';
 import {MatCardModule} from '@angular/material/card';
 import {MatTableModule} from '@angular/material/table';
-import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {cocinaPaginator} from './cocina-paginator';
 import {CocinaShell} from './cocina-shell';
 import {CocinaCard} from './cocina-card';
@@ -17,7 +17,7 @@ import {KitchenOrder, MODALITY_LABELS, isActive, kitchenDestination, orderUnits,
 
 @Component({selector: 'rp-cocina-view',
   providers:[{provide:MatPaginatorIntl,useFactory:cocinaPaginator}],
-  imports: [CurrencyPipe, RouterLink, MatButtonModule, MatCardModule, MatTableModule, MatProgressSpinnerModule, CocinaShell, CocinaCard, MatPaginatorModule, PedidoAction],
+  imports: [ClientLoadingSkeleton,CurrencyPipe, RouterLink, MatButtonModule, MatCardModule, MatTableModule, CocinaShell, CocinaCard, MatPaginatorModule, PedidoAction],
   templateUrl: './cocina-view.html', styleUrl: './cocina-view.css'})
 export class CocinaView {
   readonly mode = input<'queue' | 'board' | 'detail' | 'preparation' | 'delivery' | 'delivered'>('queue');

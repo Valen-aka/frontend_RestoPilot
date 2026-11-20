@@ -17,7 +17,7 @@
     </p>
   }
   @if (store.queryState() === 'loading') {
-    <mat-card appearance="outlined" class="state-card" role="status" aria-busy="true"><mat-spinner diameter="32" aria-hidden="true"/><h2>Consultando pedidos…</h2></mat-card>
+    <rp-client-loading-skeleton kind="list" label="Consultando pedidos…" />
   } @else if (store.queryState() === 'error' || (store.queryState() !== 'stale' && store.problem())) {
     <mat-card appearance="outlined" class="state-card" role="alert"><h2>No pudimos mostrar la cola</h2><p>{{ store.problem() || 'No se pudo completar la consulta.' }}</p><button mat-stroked-button type="button" (click)="store.refresh()">Volver a consultar</button></mat-card>
   } @else {

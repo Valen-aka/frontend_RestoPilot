@@ -1,3 +1,4 @@
+import {ClientLoadingSkeleton} from '../../../components/client-loading-skeleton/client-loading-skeleton';
 import {Component, DestroyRef, ElementRef, effect, inject, input, untracked} from '@angular/core';
 import {toSignal} from '@angular/core/rxjs-interop';
 import {ActivatedRoute, Router, RouterLink} from '@angular/router';
@@ -7,12 +8,11 @@ import {MatButtonModule} from '@angular/material/button';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
 import {MatSelectModule} from '@angular/material/select';
-import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {WorkspaceShell} from '../../../components/workspace-shell/workspace-shell';
 import {EstadoPago, MetodoPago} from '../../../core/models/pago-api.model';
 import {PagosStore, paymentId} from './pagos-store';
 
-@Component({selector:'rp-pagos-view',imports:[RouterLink,ReactiveFormsModule,DatePipe,MatButtonModule,MatFormFieldModule,MatInputModule,MatSelectModule,MatProgressSpinnerModule,WorkspaceShell],templateUrl:'./pagos-view.html',styleUrls:['../../../components/workspace-shell/workspace-pages.css','./pagos-view.css']})
+@Component({selector:'rp-pagos-view',imports:[ClientLoadingSkeleton,RouterLink,ReactiveFormsModule,DatePipe,MatButtonModule,MatFormFieldModule,MatInputModule,MatSelectModule,WorkspaceShell],templateUrl:'./pagos-view.html',styleUrls:['../../../components/workspace-shell/workspace-pages.css','./pagos-view.css']})
 export class PagosView {
   readonly mode=input<'search'|'form'|'detail'>('search');
   readonly store=inject(PagosStore);

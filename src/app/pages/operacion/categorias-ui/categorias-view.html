@@ -3,7 +3,7 @@
  @if(!store.hasSession()){
   <section class="panel feedback" role="alert"><h2>Acceso restringido</h2><p>{{store.problem()}}</p><a mat-flat-button routerLink="/auth/login" [queryParams]="{returnUrl:'/operacion/categorias'}">Iniciar sesión</a></section>
  }@else if(store.state()==='loading'||store.state()==='idle'){
-  <section class="panel feedback" role="status" aria-live="polite" aria-busy="true">Cargando categorías…</section>
+  <rp-client-loading-skeleton kind="table" label="Cargando categorías…" />
  }@else if(store.state()==='error'){
   <section class="panel feedback" role="alert"><p>{{store.problem()}}</p><button mat-stroked-button (click)="load()">Reintentar</button><a mat-button routerLink="/operacion/categorias">Volver a categorías</a></section>
  }@else{

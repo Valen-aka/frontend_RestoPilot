@@ -3,7 +3,7 @@
  @if(!store.hasSession()){<mat-card appearance="outlined" class="feedback" role="alert"><h2>Acceso de gestión requerido</h2><p>{{store.problem()}}</p><a mat-flat-button routerLink="/auth/login">Ir al acceso</a></mat-card>}
  @else{
   <nav class="actions" aria-label="Navegación de reservas"><a mat-stroked-button routerLink="/operacion/reservas" [queryParams]="query()">Volver a la agenda</a><button mat-button type="button" (click)="store.refresh()" [disabled]="store.busy()">Actualizar consulta</button></nav>
-  @if(store.state()==='loading'){<div class="feedback" role="status" aria-busy="true"><mat-spinner diameter="32" aria-hidden="true"/><p>Consultando reservas…</p></div>}
+  @if(store.state()==='loading'){<rp-client-loading-skeleton kind="table" label="Consultando reservas…" />}
   @if(store.problem()){<div id="agenda-problem" class="problem" role="alert"><p>{{store.problem()}}</p><button mat-stroked-button type="button" (click)="store.refresh()" [disabled]="store.busy()">Consultar situación actual</button></div>}
   @if(store.notice()){<p class="notice" role="status">{{store.notice()}}</p>}
   @if(store.busy()){<p role="status" aria-busy="true">Guardando y consultando el estado actual…</p>}
@@ -38,7 +38,7 @@
     <mat-form-field appearance="outline" subscriptSizing="dynamic"><mat-label>Comensales</mat-label><input matInput type="number" min="1" step="1" formControlName="numeroComensales" required/><mat-error>Indica un entero positivo hasta 2147483647.</mat-error></mat-form-field>
     </div>@if(!periodValid()){<p class="warning">Revisa la fecha, las horas y los comensales. La hora de fin debe ser posterior al inicio.</p>}
     <button mat-stroked-button type="button" (click)="checkAvailability()" [disabled]="!periodValid()||!store.canManage()||store.availabilityState()==='loading'">Consultar disponibilidad</button>
-    @if(store.availabilityState()==='loading'){<p role="status">Consultando mesas para este horario…</p>}@if(store.availabilityProblem()){<p class="problem" role="alert">{{store.availabilityProblem()}}</p>}
+    @if(store.availabilityState()==='loading'){<rp-client-loading-skeleton kind="list" label="Consultando mesas para este horario…" />}@if(store.availabilityProblem()){<p class="problem" role="alert">{{store.availabilityProblem()}}</p>}
     @if(matchingAvailability()){
      <mat-form-field appearance="outline" class="wide" subscriptSizing="dynamic"><mat-label>Mesa</mat-label><mat-select formControlName="mesaId" required>@for(m of store.availability();track m.mesaId){<mat-option [value]="m.mesaId" [disabled]="m.capacidad<request().numeroComensales||(!m.disponible&&m.mesaId!==r.mesaId)">Mesa {{m.numero}} · {{m.capacidad}} personas · {{m.disponible?'Disponible':m.mesaId===r.mesaId?'Mesa actual; verificar al guardar':'No disponible'}}</mat-option>}</mat-select><mat-error>Selecciona una mesa compatible.</mat-error></mat-form-field>
      <p class="hint">La ocupación de la mesa actual puede incluir esta misma reserva. El servidor vuelve a comprobar capacidad y solapamientos al guardar.</p>@if(!store.availability().length){<p role="status">No hay mesas para el horario consultado.</p>}

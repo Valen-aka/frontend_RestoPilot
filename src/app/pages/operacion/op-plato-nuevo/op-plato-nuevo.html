@@ -9,7 +9,7 @@
   <form [formGroup]="form" (ngSubmit)="guardar()" class="form-card" [attr.aria-busy]="guardando()">
     <h2>Información del plato</h2>
     @if (error()) {<div class="message error" role="alert">{{ error() }}</div>}
-    @if (cargandoCategorias()) {<p class="message" role="status">Cargando categorías…</p>}
+    @if (cargandoCategorias()) {<rp-client-loading-skeleton kind="list" label="Cargando categorías…" />}
 
     <div class="form-grid">
       <mat-form-field appearance="outline" subscriptSizing="dynamic">

@@ -1,3 +1,4 @@
+import {ClientLoadingSkeleton} from '../../../components/client-loading-skeleton/client-loading-skeleton';
 import {WorkspaceShell} from '../../../components/workspace-shell/workspace-shell';
 import {
   Component,
@@ -21,7 +22,7 @@ import {
 @Component({
   selector: 'rp-op-plato-eliminar',
   standalone: true,
-  imports: [WorkspaceShell,RouterLink, OpPlatoEliminarDialog],
+  imports: [ClientLoadingSkeleton,WorkspaceShell,RouterLink, OpPlatoEliminarDialog],
   templateUrl: './op-plato-eliminar.html',
   styleUrl: './op-plato-eliminar.css'
 })

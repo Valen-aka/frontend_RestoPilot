@@ -1,9 +1,9 @@
+import {ClientLoadingSkeleton} from '../../../components/client-loading-skeleton/client-loading-skeleton';
 import {Component, DestroyRef, DOCUMENT, afterNextRender, computed, effect, inject, input, untracked} from '@angular/core';
 import {toSignal, takeUntilDestroyed} from '@angular/core/rxjs-interop';
 import {ActivatedRoute, Router, RouterLink} from '@angular/router';
 import {MatButtonModule} from '@angular/material/button';
 import {MatCardModule} from '@angular/material/card';
-import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {MatDialog, MatDialogRef} from '@angular/material/dialog';
 import {CocinaShell} from '../cocina-ui/cocina-shell';
 import {ReservaAtencionStore} from './reserva-atencion-store';
@@ -13,7 +13,7 @@ import {AttendanceAction, AttendanceCommand, AttendanceReservation, attendanceDa
 import {ReservaAtencionDialog} from './reserva-atencion-dialog';
 
 @Component({selector:'rp-reserva-atencion-view',
-  imports:[RouterLink,MatButtonModule,MatCardModule,MatProgressSpinnerModule,CocinaShell],
+  imports:[ClientLoadingSkeleton,RouterLink,MatButtonModule,MatCardModule,CocinaShell],
   templateUrl:'./reserva-atencion-view.html',styleUrl:'./reserva-atencion-view.css'})
 export class ReservaAtencionView {
   readonly mode=input<'arrival'|'attending'|'completed'>('arrival');

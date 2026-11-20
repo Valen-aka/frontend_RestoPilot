@@ -1,3 +1,4 @@
+import {ClientLoadingSkeleton} from '../../../components/client-loading-skeleton/client-loading-skeleton';
 import {Component, DestroyRef, ElementRef, computed, effect, inject, input, untracked} from '@angular/core';
 import {toSignal, takeUntilDestroyed} from '@angular/core/rxjs-interop';
 import {ActivatedRoute, RouterLink} from '@angular/router';
@@ -7,7 +8,6 @@ import {MatButtonModule} from '@angular/material/button';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
 import {MatSelectModule} from '@angular/material/select';
-import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {MatDialog} from '@angular/material/dialog';
 import {WorkspaceShell} from '../../../components/workspace-shell/workspace-shell';
 import {TipoEntrega, validQuantity, PedidoRequest} from '../../../core/models/pedido-api.model';
@@ -15,7 +15,7 @@ import {OpPedidoCancelarDialog} from '../../../dialogs/op-pedido-cancelar/op-ped
 import {PedidoManagementStore} from './pedido-management.store';
 
 const newLine=(platoId:number,cantidad:number,notas:string|null)=>new FormGroup({platoId:new FormControl(platoId,{nonNullable:true}),cantidad:new FormControl(cantidad,{nonNullable:true,validators:[Validators.required,c=>validQuantity(c.value)?null:{cantidad:true}]}),notas:new FormControl(notas??'',{nonNullable:true,validators:Validators.maxLength(255)})});
-@Component({selector:'rp-pedido-management-view',imports:[RouterLink,ReactiveFormsModule,CurrencyPipe,MatButtonModule,MatFormFieldModule,MatInputModule,MatSelectModule,MatProgressSpinnerModule,WorkspaceShell],templateUrl:'./pedido-management-view.html',styleUrl:'./pedido-management-view.css'})
+@Component({selector:'rp-pedido-management-view',imports:[ClientLoadingSkeleton,RouterLink,ReactiveFormsModule,CurrencyPipe,MatButtonModule,MatFormFieldModule,MatInputModule,MatSelectModule,WorkspaceShell],templateUrl:'./pedido-management-view.html',styleUrl:'./pedido-management-view.css'})
 export class PedidoManagementView {
  readonly mode=input<'edit'|'cancel'|'blocked'>('edit');readonly store=inject(PedidoManagementStore);private readonly route=inject(ActivatedRoute);private readonly dialog=inject(MatDialog);private readonly destroyRef=inject(DestroyRef);private readonly host=inject<ElementRef<HTMLElement>>(ElementRef);
  readonly params=toSignal(this.route.queryParamMap,{initialValue:this.route.snapshot.queryParamMap});
