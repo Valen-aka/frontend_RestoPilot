@@ -10,7 +10,23 @@
    @for(item of navigation;track item.key){<a [routerLink]="item.key==='inicio' && (role==='owner'||ownerSession())?'/dueno':item.url" [class.active]="active===item.key" [attr.aria-current]="active===item.key?'page':null"><rp-ui-icon [name]="item.label" /><span>{{item.label}}</span></a>}
    @if((role==='owner'||ownerSession())){<a routerLink="/dueno/administradores/nuevo" [class.active]="active==='administradores'" [attr.aria-current]="active==='administradores'?'page':null"><rp-ui-icon name="Incorporar administrador" /><span>Incorporar administrador</span></a>}
   </nav>
-  <div class="sidebar-footer"><div class="profile"><span class="avatar" aria-hidden="true">RP</span><div><strong>Mi cuenta</strong><small>{{(role==='owner'||ownerSession())?'Dueño':'Administración'}}</small></div></div>
+  <div class="sidebar-footer">
+    @if (auth.session(); as account) {
+      <button mat-button class="profile-trigger" type="button" [matMenuTriggerFor]="accountMenu"
+        aria-label="Abrir menú de mi cuenta">
+        <span class="profile">
+          <span class="avatar" aria-hidden="true">RP</span>
+          <span class="profile-text">
+            <strong>{{ account.nombreCompleto }}</strong>
+            <small>{{ ownerSession() ? 'Dueño' : 'Administración' }}</small>
+          </span>
+          <span class="profile-chevron" aria-hidden="true">⌄</span>
+        </span>
+      </button>
+      <mat-menu #accountMenu="matMenu" yPosition="above">
+        <button mat-menu-item type="button" (click)="openProfile()">Mis datos personales</button>
+      </mat-menu>
+    }
   @if(auth.session()){<button mat-button type="button" class="access-link logout" (click)="logout()">Cerrar sesión →</button>}@else{<a class="access-link" routerLink="/auth/login">Ir al acceso</a>}</div>
  </aside>
  } @else if(role==='account') {

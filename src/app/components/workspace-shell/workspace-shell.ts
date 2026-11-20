@@ -2,6 +2,9 @@ import {WorkspaceContext} from './workspace-context.service';
 import {BreakpointObserver} from '@angular/cdk/layout';
 import {toSignal} from '@angular/core/rxjs-interop';
 import {UiIcon} from '../ui-icon/ui-icon';
+import {MatMenuModule} from '@angular/material/menu';
+import {MatDialog} from '@angular/material/dialog';
+import {AdminProfile} from '../admin-profile/admin-profile';
 import {Brand} from '../brand/brand';
 import {afterNextRender, computed, inject, signal} from '@angular/core';
 import {AuthService} from '../../core/services/auth.service';
@@ -13,7 +16,7 @@ import { RouterLink } from '@angular/router';
 @Component({
   selector: 'rp-workspace-shell',
   standalone: true,
-  imports: [Brand, UiIcon,RouterLink,MatButtonModule],
+  imports: [Brand, UiIcon,RouterLink,MatButtonModule,MatMenuModule],
   templateUrl: './workspace-shell.html',
   styleUrl: './workspace-shell.css'
 })
@@ -34,6 +37,14 @@ export class WorkspaceShell {
  readonly auth=inject(AuthService);private readonly router=inject(Router);readonly ownerSession=computed(()=>this.auth.session()?.role==='DUENO');
  logout():void{this.auth.logout();this.signOut.emit();void this.router.navigate(['/auth/login']);}
 
+
+  private readonly dialog = inject(MatDialog);
+  openProfile(): void {
+    const role = this.auth.session()?.role;
+    if (role === 'ADMINISTRADOR' || role === 'DUENO') {
+      this.dialog.open(AdminProfile, {width: '28rem', maxWidth: 'calc(100vw - 2rem)'});
+    }
+  }
 
   // Configuración general
   @Input() role: 'owner' | 'operation' | 'client' | 'account' = 'operation';
