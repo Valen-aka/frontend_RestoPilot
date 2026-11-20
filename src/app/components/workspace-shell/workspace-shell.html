@@ -19,7 +19,7 @@
  </header>
  }
  <div class="workspace-body">
- @if(role!=='client' && role!=='account'){<header class="topbar"><div><span>{{displayRestaurantName}}</span><span class="separator" aria-hidden="true">/</span><strong>{{breadcrumb}}</strong></div><div class="topbar-actions"><span class="current-date">{{currentDate}}</span><a class="bell" routerLink="/operacion/notificaciones" aria-label="Notificaciones"><rp-ui-icon name="Notificaciones" /></a></div></header>}
+ @if(role!=='client' && role!=='account'){<header class="topbar"><div><span>{{displayRestaurantName}}</span><span class="separator" aria-hidden="true">/</span><strong>{{breadcrumb}}</strong></div><div class="topbar-actions"><span class="current-date">{{currentDate}}</span><rp-workspace-notifications /></div></header>}
  <main id="workspace-content" tabindex="-1"><ng-content /></main>
  @if(role==='client'){<footer><span>RestoPilot</span><span>Tu restaurante, en piloto automático.</span><a routerLink="/auth/login">Ir al acceso</a></footer>}
  </div>
