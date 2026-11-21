@@ -1,2 +1,2 @@
-:host{display:block}
-/* TODO: estilos responsive exclusivos de esta pantalla; utilizar variables globales. */
+:host { display: block; }
+h1 { color: var(--rp-navy); margin-bottom: var(--rp-space-4); }
