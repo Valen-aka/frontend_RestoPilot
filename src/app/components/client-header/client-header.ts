@@ -26,8 +26,7 @@ export class ClientHeader {
     {label:'Inicio',url:'/cliente',paths:['/cliente']},
     {label:'La carta',url:'/cliente/carta',paths:['/cliente/carta','/cliente/plato']},
     {label:'Mis reservas',url:'/cliente/reservas',paths:['/cliente/reservas','/cliente/reservar','/cliente/reserva','/cliente/plano']},
-    {label:'Mis pedidos',url:'/cliente/pedidos',paths:['/cliente/pedidos','/cliente/pedido','/cliente/carrito','/cliente/entrega','/cliente/pago']},
-    {label:'Asistente IA',url:'/cliente/asistente',paths:['/cliente/asistente','/cliente/notificaciones/ia']}
+    {label:'Mis pedidos',url:'/cliente/pedidos',paths:['/cliente/pedidos','/cliente/pedido','/cliente/carrito','/cliente/entrega','/cliente/pago']}
   ];
   active(link: typeof this.links[number]): boolean {
     const path = this.currentUrl().split(/[?#]/)[0];

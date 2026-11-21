@@ -97,3 +97,8 @@ button:focus-visible, textarea:focus-visible { outline: 2px solid var(--rp-prima
   .launcher { padding-inline: 4px; }
   .launcher img { margin: 0; }
 }
+.restaurant-picker {
+  padding: var(--rp-space-3) var(--rp-space-4) 0;
+  flex: none;
+}
+.restaurant-picker mat-form-field { width: 100%; }

@@ -1,3 +1,8 @@
-<!-- FRAME: cliente-ia | Un asistente a tu gusto -->
-<!-- TODO: implementar Desktop y Mobile con Angular Material. -->
-<!-- No hay campos, datos ni contenido visual implementados. -->
+<rp-workspace-shell role="client" breadcrumb="Asistente IA">
+  <h1>Asistente IA</h1>
+  @if (available) {
+    <p>Usa la burbuja del asistente para hacer una consulta.</p>
+  } @else {
+    <p role="status">El asistente no está disponible en este entorno.</p>
+  }
+</rp-workspace-shell>

@@ -3,14 +3,35 @@
     <aside class="panel" aria-labelledby="assistant-title" (keydown.escape)="close()">
       <header class="header">
         <img src="assets/asistente/mascota.svg" alt="" width="44" height="44">
-        <h2 id="assistant-title">Asistente de reportes</h2>
+        <h2 id="assistant-title">{{ client() ? 'Asistente de cliente' : 'Asistente de reportes' }}</h2>
         <button mat-icon-button type="button" aria-label="Cerrar chat" (click)="close()">
           <img src="assets/asistente/cerrar.svg" alt="" width="24" height="24">
         </button>
       </header>
+      @if (client()) {
+        <div class="restaurant-picker">
+          @if (restaurantState() === 'loading') {
+            <p role="status">Cargando restaurantes…</p>
+          } @else if (restaurantState() === 'error') {
+            <p role="status">No pudimos cargar los restaurantes.</p>
+            <button mat-button type="button" (click)="loadRestaurants()">Reintentar</button>
+          } @else if (restaurants().length) {
+            <mat-form-field appearance="outline" subscriptSizing="dynamic">
+              <mat-label>Restaurante para tus preguntas</mat-label>
+              <mat-select [formControl]="restaurant">
+                @for (local of restaurants(); track local.id) {
+                  <mat-option [value]="local.id">{{ local.nombre }}</mat-option>
+                }
+              </mat-select>
+            </mat-form-field>
+          } @else if (restaurantState() === 'ready') {
+            <p role="status">No hay restaurantes disponibles para consultar.</p>
+          }
+        </div>
+      }
       <div class="chat-log" role="log" aria-label="Conversación">
         @if (!messages().length) {
-          <p class="assistant-message">Hola. Puedes consultarme por los platos más vendidos o los pagos de un período.</p>
+          <p class="assistant-message">{{ client() ? 'Hola. Pregúntame por tu último pedido, tu reserva más reciente o por los datos del restaurante seleccionado.' : 'Hola. Puedes consultarme por los platos más vendidos o los pagos de un período.' }}</p>
         }
         @for (message of messages(); track $index) {
           @if ('usuario' in message) {

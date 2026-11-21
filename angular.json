@@ -80,6 +80,7 @@
           "configurations": {
             "development": {
               "buildTarget": "restopilot:build:development",
+              "proxyConfig": "proxy.assistant.json"
             },
             "production": {
               "buildTarget": "restopilot:build:production"

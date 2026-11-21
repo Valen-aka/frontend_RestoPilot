@@ -1,13 +1,17 @@
 import { DOCUMENT, KeyValuePipe } from '@angular/common';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { Component, DestroyRef, ElementRef, computed, effect, inject, signal } from '@angular/core';
+import { Component, DestroyRef, ElementRef, computed, effect, inject, signal, untracked } from '@angular/core';
 import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatSelectModule } from '@angular/material/select';
+import { CatalogoService } from '../../core/services/catalogo.service';
+import { RestauranteResponse } from '../../core/models/catalogo-api.model';
 import { NavigationEnd, Router } from '@angular/router';
 import { filter, map, Subscription } from 'rxjs';
 import { environment } from '../../../environments/environment';
-import { activeOperationSession, API_SESSION } from '../../core/auth/api-session';
+import { activeClientSession, activeOperationSession, API_SESSION } from '../../core/auth/api-session';
 
 const CHAT_TIMEOUT_MS = 60_000;
 
@@ -41,12 +45,13 @@ interface Dictation {
 
 @Component({
   selector: 'rp-assistant-chat',
-  imports: [MatButtonModule, ReactiveFormsModule, KeyValuePipe],
+  imports: [MatButtonModule, MatFormFieldModule, MatSelectModule, ReactiveFormsModule, KeyValuePipe],
   templateUrl: './assistant-chat.html',
   styleUrl: './assistant-chat.css',
 })
 export class AssistantChat {
   private readonly http = inject(HttpClient);
+  private readonly catalog = inject(CatalogoService);
   private readonly router = inject(Router);
   private readonly session = inject(API_SESSION);
   private readonly host = inject<ElementRef<HTMLElement>>(ElementRef);
@@ -65,8 +70,13 @@ export class AssistantChat {
   private recognition?: Dictation;
   private request?: Subscription;
 
-  readonly available = computed(() => !!environment.assistantApiUrl &&
-    /^\/(dueno|operacion)(\/|[?#]|$)/.test(this.route()) && activeOperationSession(this.session()));
+  private restaurantRequest?: Subscription;
+  readonly client = computed(() => /^\/cliente(\/|[?#]|$)/.test(this.route()) && activeClientSession(this.session()));
+  readonly available = computed(() => !!environment.assistantApiUrl && (this.client() ||
+    /^\/(dueno|operacion)(\/|[?#]|$)/.test(this.route()) && activeOperationSession(this.session())));
+  readonly restaurants = signal<readonly RestauranteResponse[]>([]);
+  readonly restaurant = new FormControl<number | null>(null);
+  readonly restaurantState = signal<'idle' | 'loading' | 'ready' | 'error'>('idle');
   readonly open = signal(false);
   readonly busy = signal(false);
   readonly listening = signal(false);
@@ -83,6 +93,10 @@ export class AssistantChat {
       this.session();
       onCleanup(() => {
         this.request?.unsubscribe();
+        this.restaurantRequest?.unsubscribe();
+        this.restaurants.set([]);
+        this.restaurant.reset();
+        this.restaurantState.set('idle');
         this.stopAudio();
         this.messages.set([]);
         this.draft.reset();
@@ -93,6 +107,24 @@ export class AssistantChat {
     });
     effect(() => {
       if (!this.available()) this.close(false);
+      else if (this.client() && this.route().split(/[?#]/)[0] === '/cliente/asistente') this.open.set(true);
+    });
+    effect(() => {
+      if (this.client() && this.open() && this.restaurantState() === 'idle') {
+        untracked(() => this.loadRestaurants());
+      }
+    });
+  }
+
+  loadRestaurants(): void {
+    if (!this.client() || this.restaurantState() === 'loading') return;
+    this.restaurantState.set('loading');
+    this.restaurantRequest = this.catalog.restaurantes().pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
+      next: restaurants => {
+        this.restaurants.set(restaurants.filter(restaurant => restaurant.activo));
+        this.restaurantState.set('ready');
+      },
+      error: () => this.restaurantState.set('error'),
     });
   }
 
@@ -113,14 +145,14 @@ export class AssistantChat {
   send(): void {
     const user = this.session();
     const mensaje = this.draft.value.trim();
-    if (!this.available() || !activeOperationSession(user) || this.busy() || this.listening() ||
+    if (!this.available() || (!user || (this.client() ? !activeClientSession(user) : !activeOperationSession(user))) || this.busy() || this.listening() ||
         !mensaje || mensaje.length > 2000) return;
     this.error.set('');
     this.busy.set(true);
     this.draft.reset();
     this.append({ usuario: mensaje });
-    this.request = this.http.post<ChatReply>(environment.assistantApiUrl + '/admin/chat',
-      { mensaje, restauranteId: user.restauranteId },
+    this.request = this.http.post<ChatReply>(environment.assistantApiUrl + (this.client() ? '/cliente/chat' : '/admin/chat'),
+      this.client() ? { mensaje, restauranteId: this.restaurant.value } : { mensaje, restauranteId: user.restauranteId },
       { headers: { Authorization: 'Bearer ' + user.accessToken }, timeout: CHAT_TIMEOUT_MS },
     ).pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
       next: reply => {
