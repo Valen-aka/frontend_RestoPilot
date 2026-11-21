@@ -79,7 +79,7 @@
           "builder": "@angular/build:dev-server",
           "configurations": {
             "development": {
-              "buildTarget": "restopilot:build:development"
+              "buildTarget": "restopilot:build:development",
             },
             "production": {
               "buildTarget": "restopilot:build:production"

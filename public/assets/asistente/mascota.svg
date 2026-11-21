@@ -1,0 +1,18 @@
+<svg preserveAspectRatio="none" overflow="visible" style="display: block;" width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="RestoPilot / Mascota chef piloto" clip-path="url(#clip0_0_23)">
+<path id="Vector" d="M32 64C49.6731 64 64 49.6731 64 32C64 14.3269 49.6731 0 32 0C14.3269 0 0 14.3269 0 32C0 49.6731 14.3269 64 32 64Z" fill="#1B7954"/>
+<path id="Vector_2" d="M32 58C46.3594 58 58 46.3594 58 32C58 17.6406 46.3594 6 32 6C17.6406 6 6 17.6406 6 32C6 46.3594 17.6406 58 32 58Z" fill="#BFE8CF"/>
+<path id="Vector_3" d="M17 24C13 19 20 13 25 16C28 10 38 10 41 16C48 13 53 21 48 24L45 26V31H20V26L17 24Z" fill="#FFFBF7" stroke-width="2" stroke="#15324E"/>
+<path id="Vector_4" d="M37 29H28C23.5817 29 20 32.5817 20 37V40C20 44.4183 23.5817 48 28 48H37C41.4183 48 45 44.4183 45 40V37C45 32.5817 41.4183 29 37 29Z" fill="#FFF0DA" stroke-width="2" stroke="#15324E"/>
+<path id="Vector_5" d="M19 34V42M46 34V42M44 43C43.3333 47 41 49 37 49M29 41C31 43.6667 33.3333 43.6667 36 41" stroke-width="2" stroke-linecap="round" stroke="#15324E"/>
+<path id="Vector_6" d="M28 37.6C28.8837 37.6 29.6 36.8837 29.6 36C29.6 35.1163 28.8837 34.4 28 34.4C27.1163 34.4 26.4 35.1163 26.4 36C26.4 36.8837 27.1163 37.6 28 37.6Z" fill="#15324E"/>
+<path id="Vector_7" d="M37 37.6C37.8837 37.6 38.6 36.8837 38.6 36C38.6 35.1163 37.8837 34.4 37 34.4C36.1163 34.4 35.4 35.1163 35.4 36C35.4 36.8837 36.1163 37.6 37 37.6Z" fill="#15324E"/>
+<path id="Vector_8" d="M18 54C27.3333 48 36.6667 48 46 54L39 58H25L18 54Z" fill="#15324E"/>
+<path id="Vector_9" d="M32 49L36 52L32 57L28 52L32 49Z" fill="#F3AA63"/>
+</g>
+<defs>
+<clipPath id="clip0_0_23">
+<rect width="64" height="64" fill="white"/>
+</clipPath>
+</defs>
+</svg>
