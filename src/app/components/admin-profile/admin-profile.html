@@ -1,0 +1,36 @@
+<h2 mat-dialog-title>Mis datos personales</h2>
+<form (ngSubmit)="save()">
+  <mat-dialog-content>
+    @if (editing()) {
+      <mat-form-field appearance="outline">
+        <mat-label>Nombre completo</mat-label>
+        <input matInput [formControl]="name" autocomplete="name" maxlength="150" [readOnly]="saving()" />
+        @if (name.invalid) {
+          <mat-error>Indica un nombre completo de hasta 150 caracteres.</mat-error>
+        }
+      </mat-form-field>
+    } @else {
+      <dl>
+        <dt>Nombre completo</dt>
+        <dd>{{ name.value }}</dd>
+      </dl>
+    }
+    @if (email) {
+      <dl>
+        <dt>Correo electrónico</dt>
+        <dd>{{ email }}</dd>
+      </dl>
+    }
+    @if (error()) {
+      <p role="alert" class="rp-field-error">{{ error() }}</p>
+    }
+  </mat-dialog-content>
+  <mat-dialog-actions align="end">
+    <button mat-button mat-dialog-close type="button" [disabled]="saving()">{{ editing() ? 'Cancelar' : 'Cerrar' }}</button>
+    @if (editing()) {
+      <button mat-flat-button type="submit" [disabled]="saving()">{{ saving() ? 'Guardando…' : 'Guardar cambios' }}</button>
+    } @else {
+      <button mat-flat-button type="button" (click)="editing.set(true)">Editar datos</button>
+    }
+  </mat-dialog-actions>
+</form>

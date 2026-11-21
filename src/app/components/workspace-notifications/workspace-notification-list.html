@@ -1,0 +1,29 @@
+<section class="notification-panel" id="workspace-notifications-panel" role="dialog"
+  aria-modal="true" aria-labelledby="workspace-notifications-title" cdkTrapFocus [cdkTrapFocusAutoCapture]="true">
+  <header>
+    <h2 id="workspace-notifications-title">Notificaciones recientes</h2>
+    <button mat-button type="button" cdkFocusInitial (click)="dismiss.emit()">Cerrar</button>
+  </header>
+
+  @if (!notifications.current() || notifications.state() === 'loading') {
+    <p role="status">Cargando notificaciones…</p>
+  } @else if (notifications.state() === 'empty') {
+    <p role="status">Todavía no tienes notificaciones.</p>
+  } @else if (notifications.state() === 'ready') {
+    <ul>
+      @for (message of notifications.messages(); track message.id) {
+        <li>
+          <p>{{ message.mensaje }}</p>
+          <time [attr.datetime]="message.fechaCreacion">{{ message.fechaCreacion | date:'dd/MM/yyyy HH:mm' }}</time>
+        </li>
+      }
+    </ul>
+  } @else {
+    <p role="alert">{{ notifications.problem() || 'No pudimos consultar tus notificaciones.' }}</p>
+    <button mat-stroked-button type="button" (click)="notifications.load(0)">Reintentar</button>
+  }
+
+  <footer>
+    <a mat-flat-button [routerLink]="historyUrl()" (click)="dismiss.emit()">Ver más</a>
+  </footer>
+</section>

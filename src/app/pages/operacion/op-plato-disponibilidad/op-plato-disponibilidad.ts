@@ -1,3 +1,4 @@
+import {ClientLoadingSkeleton} from '../../../components/client-loading-skeleton/client-loading-skeleton';
 import {WorkspaceShell} from '../../../components/workspace-shell/workspace-shell';
 import {
   Component,
@@ -22,7 +23,7 @@ import {
 @Component({
   selector: 'rp-op-plato-disponibilidad',
   standalone: true,
-  imports: [WorkspaceShell,RouterLink, OpPlatoDisponibilidadDialog],
+  imports: [ClientLoadingSkeleton,WorkspaceShell,RouterLink, OpPlatoDisponibilidadDialog],
   templateUrl: './op-plato-disponibilidad.html',
   styleUrl: './op-plato-disponibilidad.css'
 })

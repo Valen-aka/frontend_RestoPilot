@@ -2,6 +2,16 @@
   <span class="sr-only">{{ label() }}</span>
   <div class="shape" aria-hidden="true">
     @switch (kind()) {
+      @case ('dashboard') {
+        <div class="dashboard-grid">
+          @for (item of [1, 2, 3, 4]; track item) {
+            <div class="card card-body">
+              <span class="bar short"></span>
+              <span class="bar title"></span>
+            </div>
+          }
+        </div>
+      }
       @case ('catalog') {
         <span class="bar picker"></span>
         <div class="filters"><span class="bar"></span><span class="bar"></span><span class="bar"></span><span class="bar"></span></div>

@@ -20,9 +20,7 @@
 
   <main class="confirmation-area">
     @if (cargando()) {
-    <div class="state-message" role="status">
-      Cargando información del plato...
-    </div>
+    <rp-client-loading-skeleton kind="payment" label="Cargando información del plato..." />
     } @else if (plato(); as seleccionado) {
     <div class="confirmation-content">
       @if (error()) {

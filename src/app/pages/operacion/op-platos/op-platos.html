@@ -25,7 +25,7 @@
       <button mat-stroked-button type="button" (click)="cargarPlatos()" [disabled]="cargando()">Actualizar</button>
     </div>
     @if (cargando()) {
-      <div class="state-message" role="status" aria-busy="true">Cargando platos…</div>
+      <rp-client-loading-skeleton kind="table" label="Cargando platos…" />
     } @else if (error()) {
       <div class="state-message error" role="alert"><p>{{ error() }}</p><button mat-stroked-button type="button" (click)="cargarPlatos()">Reintentar</button></div>
     } @else if (platosFiltrados().length === 0) {

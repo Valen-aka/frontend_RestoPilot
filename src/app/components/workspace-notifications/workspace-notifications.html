@@ -1,0 +1,18 @@
+<button #bell cdkOverlayOrigin #origin="cdkOverlayOrigin" mat-icon-button class="bell" type="button"
+  [attr.aria-label]="unread() ? 'Notificaciones, hay avisos nuevos' : 'Notificaciones'" [class.has-unread]="unread()" [class.bell-alert]="showAlert()" aria-haspopup="dialog" [attr.aria-expanded]="open()"
+  [attr.aria-controls]="open() ? 'workspace-notifications-panel' : null"
+  (click)="toggle()">
+  <rp-ui-icon name="Notificaciones" />
+  @if (unread()) { <span class="notification-dot" aria-hidden="true"></span> }
+</button>
+<div class="notification-live" role="status" aria-atomic="true">
+  @if (showAlert()) { <span class="notification-toast">Notificación nueva</span> }
+</div>
+
+<ng-template cdkConnectedOverlay [cdkConnectedOverlayOrigin]="origin" [cdkConnectedOverlayOpen]="open()"
+  [cdkConnectedOverlayHasBackdrop]="true" cdkConnectedOverlayBackdropClass="cdk-overlay-transparent-backdrop"
+  [cdkConnectedOverlayOffsetY]="8" [cdkConnectedOverlayPush]="true" [cdkConnectedOverlayViewportMargin]="16"
+  [cdkConnectedOverlayPositions]="[{originX: 'end', originY: 'bottom', overlayX: 'end', overlayY: 'top'}]"
+  (backdropClick)="close()" (overlayKeydown)="$event.key === 'Escape' && close()" (detach)="open.set(false)">
+  <rp-workspace-notification-list [historyUrl]="historyUrl()" (dismiss)="close()" />
+</ng-template>

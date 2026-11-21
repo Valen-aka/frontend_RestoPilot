@@ -10,7 +10,7 @@
     </section>
   }
   @if(store.state()==='loading'){
-    <section class="panel loading" role="status" aria-busy="true"><mat-spinner diameter="32" aria-hidden="true"/><p>Consultando pedido y pago…</p></section>
+    <rp-client-loading-skeleton kind="payment" label="Consultando pedido y pago…" />
   } @else if(store.state()==='error'){
     <section class="panel" role="alert"><h2>No pudimos consultar el pago</h2><p>{{store.problem()}}</p><button mat-stroked-button type="button" (click)="reload()" [disabled]="store.savingId()!==null">Volver a consultar</button><a mat-button routerLink="/operacion/pagos">Buscar otro pedido</a></section>
   } @else if(store.state()==='idle'&&mode()!=='search'){
