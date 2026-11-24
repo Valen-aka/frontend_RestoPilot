@@ -1,6 +1,7 @@
     <aside class="panel" [attr.aria-labelledby]="titleId" (keydown.escape)="close()">
       <header class="header">
         <h2 [id]="titleId">{{ title() }}</h2>
+        <button mat-button class="new-conversation" type="button" [disabled]="busy()" (click)="newConversation()">＋ Nueva consulta</button>
         <button mat-icon-button class="close" type="button" aria-label="Cerrar chat" (click)="close()">
           <img src="assets/asistente/cerrar.svg" alt="" width="24" height="24">
         </button>
