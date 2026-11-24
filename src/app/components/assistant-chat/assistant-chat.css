@@ -3,13 +3,12 @@
   --assistant-shadow: 0 12px 28px rgb(13 41 33 / 20%);
 }
 
-.launcher, .panel {
+.launcher, rp-chat-panel {
   position: fixed;
   z-index: 90;
   inset-inline-end: var(--assistant-gap);
   inset-block-end: max(var(--assistant-gap), env(safe-area-inset-bottom));
 }
-
 .launcher {
   min-height: 64px;
   padding-inline: 14px 4px;
@@ -19,79 +18,15 @@
   color: var(--rp-primary);
   font-weight: 700;
 }
-
-.launcher img, .assistant-message button img { vertical-align: middle; }
-.launcher img { margin-inline-start: 8px; }
-
-.panel {
+.launcher img { vertical-align: middle; margin-inline-start: 8px; }
+.launcher:focus-visible { outline: 2px solid var(--rp-primary); outline-offset: 2px; }
+rp-chat-panel {
   width: min(400px, calc(100vw - 2 * var(--assistant-gap)));
-  height: min(530px, calc(100dvh - 2 * var(--assistant-gap)));
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-  color: var(--rp-ink);
-  background: var(--rp-surface-raised);
-  border-radius: 20px;
-  box-shadow: var(--assistant-shadow);
+  height: min(620px, calc(100dvh - 2 * var(--assistant-gap)));
 }
-
-.header {
-  display: flex;
-  flex: 0 0 auto;
-  align-items: center;
-  gap: 12px;
-  padding: 16px;
-  background: var(--rp-navy);
-  color: var(--rp-on-primary);
-}
-.header h2 { flex: 1; margin: 0; font-size: 1.125rem; color: inherit; }
-.header button { background: rgb(255 255 255 / 9%); }
-.chat-log {
-  display: flex;
-  flex: 1 1 auto;
-  flex-direction: column;
-  gap: 12px;
-  min-height: 0;
-  overflow: auto;
-  padding: 16px;
-  overflow-wrap: anywhere;
-}
-.chat-log p { margin: 0; }
-.chat-log .user-message, .assistant-message { padding: 12px 14px; border-radius: 15px; }
-.chat-log .user-message { align-self: flex-end; max-width: 88%; background: var(--rp-container); color: var(--rp-on-container); white-space: pre-wrap; }
-.assistant-message { background: color-mix(in srgb, var(--rp-container) 42%, white); }
-.assistant-message > p:first-child { white-space: pre-wrap; }
-.assistant-message button { color: var(--rp-primary); margin-block-start: 6px; }
-.chat-log .period, .status { color: var(--rp-muted); font-size: .875rem; }
-.chat-log .period { margin-block-start: 6px; }
-.ranking, dl { margin: 8px 0; padding: 0; }
-.ranking { list-style: none; }
-.ranking li, dl div { padding-block: 5px; border-top: 1px solid var(--rp-outline); }
-dl div { display: flex; justify-content: space-between; gap: 8px; }
-dd { margin: 0; font-weight: 700; }
-.error { margin: 0; padding: 8px 16px; color: var(--rp-error); font-size: .875rem; }
-.composer { display: flex; align-items: center; gap: 6px; padding: 12px; border-top: 1px solid var(--rp-outline); }
-.composer textarea {
-  flex: 1;
-  min-width: 0;
-  min-height: 44px;
-  max-height: 90px;
-  padding: 10px;
-  border: 1px solid var(--rp-outline);
-  border-radius: 12px;
-  resize: vertical;
-  font: inherit;
-}
-.composer button, .header button { flex: 0 0 auto; width: 44px; height: 44px; border-radius: 12px; }
-.microphone { background: color-mix(in srgb, var(--rp-container) 42%, white); }
-.microphone[aria-pressed="true"] { background: var(--rp-container); box-shadow: inset 0 0 0 2px var(--rp-primary); }
-.send { background: var(--rp-primary); }
-.send:disabled { opacity: .5; }
-button:focus-visible, textarea:focus-visible { outline: 2px solid var(--rp-primary); outline-offset: 2px; }
-.header button:focus-visible { outline-color: white; }
 @media (max-width: 560px) {
   :host { --assistant-gap: 8px; }
-  .panel { width: calc(100vw - 16px); height: min(530px, calc(100dvh - 16px)); }
+  rp-chat-panel { width: calc(100vw - 16px); height: min(620px, calc(100dvh - 16px)); }
   .launcher { inset-inline-end: 12px; }
   .launcher span { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
   .launcher { padding-inline: 4px; }
