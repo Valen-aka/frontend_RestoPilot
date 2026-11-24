@@ -74,3 +74,17 @@ button:focus-visible, textarea:focus-visible { outline: 2px solid var(--rp-prima
 .welcome > p { max-width: 440px; font-size: .875rem; line-height: 1.5; color: var(--rp-muted); }
 .suggestions { display: grid; grid-template-columns: 1fr; gap: 10px; width: 100%; max-width: 460px; margin-top: 25px; }
 .suggestions button { width: 100%; height: auto; min-height: 46px; padding: 15px; border-color: var(--rp-outline); border-radius: 10px; color: var(--rp-navy); font-size: .75rem; text-align: left; justify-content: flex-start; white-space: normal; }
+@container (min-width: 600px) {
+  .header { padding: 24px 28px; }
+  .header h2 { font-size: 1rem; }
+  .chat-log { padding: 27px 28px; }
+  .welcome { padding: 40px 10px 25px; }
+  .welcome h3 { font-size: 29px; }
+  .suggestions { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .composer { margin-inline: 28px; }
+}
+@media (max-height: 450px) {
+  .header { padding: 8px; }
+  .composer { padding: 4px 8px; }
+  .help { font-size: .6875rem; }
+}
