@@ -3,9 +3,10 @@
     <rp-chat-panel
       [title]="client() ? 'Tu asistente de carta' : 'Tu asistente de reportes'"
       [welcomeTitle]="client() ? 'Tu carta, conversada.' : 'Tu restaurante, en perspectiva.'"
-      [suggestions]="client() ? ['¿Cuál es el estado de mi último pedido?', '¿Cuál es el estado de mi reserva?', '¿Cuál es el horario del restaurante?'] : ['¿Qué platos se vendieron más este mes?', '¿Cuáles fueron los pagos de este mes?']"
-      [greeting]="client() ? 'Hola. Pregúntame por tu último pedido, tu reserva más reciente o por los datos del restaurante seleccionado.' : 'Hola. Puedes consultarme por los platos más vendidos o los pagos de un período.'"
-      [messages]="messages()" [busy]="busy()" [error]="error()" [draft]="draft"
+      [suggestions]="client() ? ['Soy vegetariana, ¿qué puedo pedir?', '¿Qué opciones veganas sin maní hay?', '¿Qué ingredientes tiene un plato de la carta?', '¿Cuál es el estado de mi último pedido?'] : ['¿Qué platos se vendieron más este mes?', '¿Cuáles fueron los pagos de este mes?']"
+      [greeting]="client() ? 'Selecciona un restaurante y consulta su carta, ingredientes o recomendaciones según tus preferencias. También puedes consultar tus pedidos.' : 'Hola. Puedes consultarme por los platos más vendidos o los pagos de un período.'"
+      [messages]="messages()" [busy]="busy()" [error]="error()" [draft]="draft" [sendBlocked]="sendBlocked()"
+      [contextKey]="client() ? restaurant.value : null"
       (messageSent)="send($event)" (closed)="close()" (resetRequested)="resetConversation()">
       <div chat-context>
       @if (client()) {
@@ -24,6 +25,8 @@
                 }
               </mat-select>
             </mat-form-field>
+            <p class="restaurant-context" role="status">{{ selectedRestaurant() ? 'Consultando: ' + selectedRestaurant()!.nombre : 'Selecciona un restaurante para enviar tu consulta.' }}</p>
+            <p class="restaurant-help">Al cambiar de restaurante se inicia una nueva conversación.</p>
           } @else if (restaurantState() === 'ready') {
             <p role="status">No hay restaurantes disponibles para consultar.</p>
           }
