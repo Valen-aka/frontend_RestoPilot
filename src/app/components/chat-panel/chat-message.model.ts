@@ -1,6 +1,7 @@
 export interface ChatReply {
   estado: 'ANSWER' | 'CLARIFICATION_REQUIRED' | 'NO_DATA';
   mensaje: string;
+  pedidoId?: number | null;
   datos?: {
     fechaInicio: string;
     fechaFin: string;
