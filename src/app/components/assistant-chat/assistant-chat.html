@@ -1,13 +1,13 @@
 @if (available()) {
   @if (open()) {
-    <aside class="panel" aria-labelledby="assistant-title" (keydown.escape)="close()">
-      <header class="header">
-        <img src="assets/asistente/mascota.svg" alt="" width="44" height="44">
-        <h2 id="assistant-title">{{ client() ? 'Asistente de cliente' : 'Asistente de reportes' }}</h2>
-        <button mat-icon-button type="button" aria-label="Cerrar chat" (click)="close()">
-          <img src="assets/asistente/cerrar.svg" alt="" width="24" height="24">
-        </button>
-      </header>
+    <rp-chat-panel
+      [title]="client() ? 'Tu asistente de carta' : 'Tu asistente de reportes'"
+      [welcomeTitle]="client() ? 'Tu carta, conversada.' : 'Tu restaurante, en perspectiva.'"
+      [suggestions]="client() ? ['¿Cuál es el estado de mi último pedido?', '¿Cuál es el estado de mi reserva?', '¿Cuál es el horario del restaurante?'] : ['¿Qué platos se vendieron más este mes?', '¿Cuáles fueron los pagos de este mes?']"
+      [greeting]="client() ? 'Hola. Pregúntame por tu último pedido, tu reserva más reciente o por los datos del restaurante seleccionado.' : 'Hola. Puedes consultarme por los platos más vendidos o los pagos de un período.'"
+      [messages]="messages()" [busy]="busy()" [error]="error()" [draft]="draft"
+      (messageSent)="send($event)" (closed)="close()" (resetRequested)="resetConversation()">
+      <div chat-context>
       @if (client()) {
         <div class="restaurant-picker">
           @if (restaurantState() === 'loading') {
@@ -29,67 +29,8 @@
           }
         </div>
       }
-      <div class="chat-log" role="log" aria-label="Conversación">
-        @if (!messages().length) {
-          <p class="assistant-message">{{ client() ? 'Hola. Pregúntame por tu último pedido, tu reserva más reciente o por los datos del restaurante seleccionado.' : 'Hola. Puedes consultarme por los platos más vendidos o los pagos de un período.' }}</p>
-        }
-        @for (message of messages(); track $index) {
-          @if ('usuario' in message) {
-            <p class="user-message">{{ message.usuario }}</p>
-          } @else {
-            <div class="assistant-message">
-              <p>{{ message.asistente.mensaje }}</p>
-              @if (message.asistente.datos; as data) {
-                <p class="period">{{ data.fechaInicio }} a {{ data.fechaFin }}</p>
-                @if (data.platosMasVendidos; as dishes) {
-                  <ul class="ranking">
-                    @for (dish of dishes; track $index) { <li>{{ dish }}</li> }
-                  </ul>
-                }
-                @if (data.estadoPagos; as payments) {
-                  <dl>
-                    <div><dt>Monto confirmado</dt><dd>{{ formatMoney(payments.montoTotal) }}</dd></div>
-                    <div><dt>Pedidos pagados</dt><dd>{{ payments.pedidosPagados }}</dd></div>
-                    <div><dt>Pagos pendientes</dt><dd>{{ payments.pagosPendientes }}</dd></div>
-                  </dl>
-                  @if (payments.metodosPagoUtilizados | keyvalue; as methods) {
-                    @if (methods.length) {
-                      <p class="period">Métodos de pago</p>
-                      <ul class="ranking">
-                        @for (method of methods; track method.key) { <li>{{ method.key }} · {{ method.value }}</li> }
-                      </ul>
-                    }
-                  }
-                }
-              }
-              @if (canSpeak) {
-                <button mat-button type="button" (click)="speak(message.asistente)">
-                  <img src="assets/asistente/escuchar.svg" alt="" width="20" height="20">
-                  Escuchar respuesta
-                </button>
-              }
-            </div>
-          }
-        }
-        @if (busy()) { <p class="status">Consultando al asistente…</p> }
-        @if (listening()) { <p class="status">Escuchando… Revisa el texto antes de enviarlo.</p> }
       </div>
-      @if (error()) { <p class="error" role="alert">{{ error() }}</p> }
-      <form class="composer" [formGroup]="composer" (ngSubmit)="send()">
-        <textarea aria-label="Mensaje para el asistente" rows="1" maxlength="2000"
-          placeholder="Escribe un mensaje…" formControlName="mensaje"></textarea>
-        @if (canDictate) {
-          <button mat-icon-button class="microphone" type="button" [attr.aria-pressed]="listening()"
-            [attr.aria-label]="listening() ? 'Detener dictado' : 'Dictar mensaje'" (click)="dictate()">
-            <img src="assets/asistente/microfono.svg" alt="" width="24" height="24">
-          </button>
-        }
-        <button mat-icon-button class="send" type="submit" aria-label="Enviar mensaje"
-          [disabled]="busy() || listening() || !draft.value.trim()">
-          <img src="assets/asistente/enviar.svg" alt="" width="24" height="24">
-        </button>
-      </form>
-    </aside>
+    </rp-chat-panel>
   } @else {
     <button mat-button class="launcher" type="button" (click)="show()">
       <span>Abrir asistente</span>

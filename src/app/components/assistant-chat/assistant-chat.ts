@@ -1,8 +1,10 @@
-import { DOCUMENT, KeyValuePipe } from '@angular/common';
+import { ChatPanel } from '../chat-panel/chat-panel';
+import { ChatMessage, ChatReply } from '../chat-panel/chat-message.model';
+import { DOCUMENT } from '@angular/common';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Component, DestroyRef, ElementRef, computed, effect, inject, signal, untracked } from '@angular/core';
 import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
-import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
@@ -15,37 +17,9 @@ import { activeClientSession, activeOperationSession, API_SESSION } from '../../
 
 const CHAT_TIMEOUT_MS = 60_000;
 
-interface ChatReply {
-  estado: 'ANSWER' | 'CLARIFICATION_REQUIRED' | 'NO_DATA';
-  mensaje: string;
-  datos?: {
-    fechaInicio: string;
-    fechaFin: string;
-    moneda: string | null;
-    platosMasVendidos?: string[] | null;
-    estadoPagos?: {
-      montoTotal: number;
-      pedidosPagados: number;
-      pagosPendientes: number;
-      metodosPagoUtilizados: Record<string, number>;
-    } | null;
-  } | null;
-}
-
-type ChatMessage = { usuario: string } | { asistente: ChatReply };
-interface Dictation {
-  lang: string;
-  onresult?: (event: { results: ArrayLike<ArrayLike<{ transcript: string }>> }) => void;
-  onend?: () => void;
-  onerror?: () => void;
-  start(): void;
-  stop(): void;
-  abort(): void;
-}
-
 @Component({
   selector: 'rp-assistant-chat',
-  imports: [MatButtonModule, MatFormFieldModule, MatSelectModule, ReactiveFormsModule, KeyValuePipe],
+  imports: [MatButtonModule, MatFormFieldModule, MatSelectModule, ReactiveFormsModule, ChatPanel],
   templateUrl: './assistant-chat.html',
   styleUrl: './assistant-chat.css',
 })
@@ -61,13 +35,6 @@ export class AssistantChat {
     filter((event): event is NavigationEnd => event instanceof NavigationEnd),
     map(event => event.urlAfterRedirects),
   ), { initialValue: this.router.url });
-  private readonly Dictation = (this.browser as (Window & {
-    SpeechRecognition?: new () => Dictation;
-    webkitSpeechRecognition?: new () => Dictation;
-  }) | null)?.SpeechRecognition ?? (this.browser as (Window & {
-    webkitSpeechRecognition?: new () => Dictation;
-  }) | null)?.webkitSpeechRecognition;
-  private recognition?: Dictation;
   private request?: Subscription;
 
   private restaurantRequest?: Subscription;
@@ -79,15 +46,9 @@ export class AssistantChat {
   readonly restaurantState = signal<'idle' | 'loading' | 'ready' | 'error'>('idle');
   readonly open = signal(false);
   readonly busy = signal(false);
-  readonly listening = signal(false);
   readonly error = signal('');
   readonly messages = signal<ChatMessage[]>([]);
   readonly draft = new FormControl('', { nonNullable: true });
-  readonly composer = new FormGroup({ mensaje: this.draft });
-  readonly canDictate = !!this.Dictation;
-  readonly canSpeak = !!this.browser?.speechSynthesis && typeof SpeechSynthesisUtterance !== 'undefined';
-  private readonly money = new Intl.NumberFormat('es-PE', { style: 'currency', currency: 'PEN' });
-
   constructor() {
     effect(onCleanup => {
       this.session();
@@ -97,7 +58,6 @@ export class AssistantChat {
         this.restaurants.set([]);
         this.restaurant.reset();
         this.restaurantState.set('idle');
-        this.stopAudio();
         this.messages.set([]);
         this.draft.reset();
         this.error.set('');
@@ -135,21 +95,18 @@ export class AssistantChat {
 
   close(restoreFocus = true): void {
     this.open.set(false);
-    this.stopAudio();
     if (restoreFocus) {
       this.browser?.requestAnimationFrame(() =>
         this.host.nativeElement.querySelector<HTMLButtonElement>('.launcher')?.focus());
     }
   }
 
-  send(): void {
+  send(mensaje: string): void {
     const user = this.session();
-    const mensaje = this.draft.value.trim();
-    if (!this.available() || (!user || (this.client() ? !activeClientSession(user) : !activeOperationSession(user))) || this.busy() || this.listening() ||
+    if (!this.available() || (!user || (this.client() ? !activeClientSession(user) : !activeOperationSession(user))) || this.busy() ||
         !mensaje || mensaje.length > 2000) return;
     this.error.set('');
     this.busy.set(true);
-    this.draft.reset();
     this.append({ usuario: mensaje });
     this.request = this.http.post<ChatReply>(environment.assistantApiUrl + (this.client() ? '/cliente/chat' : '/admin/chat'),
       this.client() ? { mensaje, restauranteId: this.restaurant.value } : { mensaje, restauranteId: user.restauranteId },
@@ -183,73 +140,14 @@ export class AssistantChat {
     });
   }
 
-  dictate(): void {
-    if (this.listening()) {
-      this.recognition?.stop();
-      return;
-    }
-    if (!this.Dictation) return;
+  resetConversation(): void {
+    if (this.busy()) return;
+    this.messages.set([]);
     this.error.set('');
-    const recognition = new this.Dictation();
-    const initial = this.draft.value.trim();
-    this.recognition = recognition;
-    recognition.lang = 'es-PE';
-    recognition.onresult = event => {
-      if (this.recognition !== recognition) return;
-      const text = Array.from(event.results, result => result[0].transcript).join(' ');
-      this.draft.setValue([initial, text].filter(Boolean).join(' ').slice(0, 2000));
-    };
-    recognition.onend = () => this.finishDictation(recognition);
-    recognition.onerror = () => {
-      if (this.recognition !== recognition) return;
-      this.finishDictation(recognition);
-      this.error.set('No se pudo usar el micrófono. Puedes escribir el mensaje.');
-    };
-    try {
-      recognition.start();
-      this.listening.set(true);
-    } catch {
-      recognition.onerror();
-    }
-  }
-
-  speak(reply: ChatReply): void {
-    const synthesis = this.browser?.speechSynthesis;
-    if (!this.canSpeak || !synthesis) return;
-    synthesis.cancel();
-    const data = reply.datos;
-    const amounts = data?.estadoPagos;
-    const details = amounts
-      ? `Monto confirmado: ${this.formatMoney(amounts.montoTotal)}. ${amounts.pedidosPagados} pagados, ${amounts.pagosPendientes} pendientes.`
-      : data?.platosMasVendidos?.join('. ') ?? '';
-    const speech = new SpeechSynthesisUtterance([reply.mensaje, details].filter(Boolean).join(' '));
-    speech.lang = 'es-PE';
-    synthesis.speak(speech);
-  }
-
-  formatMoney(amount: number): string {
-    return this.money.format(amount);
-  }
-
-  private finishDictation(recognition: Dictation): void {
-    if (this.recognition !== recognition) return;
-    this.recognition = undefined;
-    this.listening.set(false);
-  }
-
-  private stopAudio(): void {
-    const recognition = this.recognition;
-    this.recognition = undefined;
-    recognition?.abort();
-    this.listening.set(false);
-    this.browser?.speechSynthesis?.cancel();
+    this.draft.reset();
   }
 
   private append(message: ChatMessage): void {
     this.messages.update(messages => [...messages, message]);
-    this.browser?.requestAnimationFrame(() => {
-      const log = this.host.nativeElement.querySelector('.chat-log');
-      if (log) log.scrollTop = log.scrollHeight;
-    });
   }
 }
