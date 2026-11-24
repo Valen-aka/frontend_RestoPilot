@@ -90,7 +90,7 @@
           </button>
         }
         <button mat-icon-button class="send" type="submit" aria-label="Enviar mensaje"
-          [disabled]="busy() || listening() || !draft().value.trim() || draft().value.length > 2000">
+          [disabled]="busy() || sendBlocked() || listening() || !draft().value.trim() || draft().value.length > 2000">
           <img src="assets/asistente/enviar.svg" alt="" width="24" height="24">
         </button>
       </form>

@@ -33,6 +33,8 @@ export class ChatPanel {
   readonly suggestions = input<readonly string[]>([]);
   readonly messages = input<readonly ChatMessage[]>([]);
   readonly busy = input(false);
+  readonly sendBlocked = input(false);
+  readonly contextKey = input<number | null>(null);
   readonly error = input('');
   readonly draft = input(new FormControl('', { nonNullable: true }));
   readonly messageSent = output<string>();
@@ -61,6 +63,11 @@ export class ChatPanel {
   constructor() {
     this.destroyRef.onDestroy(() => this.stopAudio());
     effect(() => {
+      this.contextKey();
+      this.stopAudio();
+      this.voiceError.set('');
+    });
+    effect(() => {
       const hasMessages = this.messages().length > 0;
       this.busy();
       this.browser?.requestAnimationFrame(() => {
@@ -73,7 +80,7 @@ export class ChatPanel {
 
   send(): void {
     const text = this.draft().value.trim();
-    if (this.busy() || this.listening() || !text || text.length > 2000) return;
+    if (this.busy() || this.sendBlocked() || this.listening() || !text || text.length > 2000) return;
     this.voiceError.set('');
     this.stopSpeaking();
     this.draft().reset();
