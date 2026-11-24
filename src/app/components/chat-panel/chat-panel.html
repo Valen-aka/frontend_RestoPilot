@@ -1,1 +1,86 @@
-<!-- TODO: componente reutilizable chat-panel. Sin contenido implementado. -->
+    <aside class="panel" [attr.aria-labelledby]="titleId" (keydown.escape)="close()">
+      <header class="header">
+        <h2 [id]="titleId">{{ title() }}</h2>
+        <button mat-icon-button class="close" type="button" aria-label="Cerrar chat" (click)="close()">
+          <img src="assets/asistente/cerrar.svg" alt="" width="24" height="24">
+        </button>
+      </header>
+      <ng-content select="[chat-context]" />
+      <div class="chat-log" role="log" aria-label="Conversación">
+        @if (!messages().length) {
+          <p class="assistant-message">{{ greeting() }}</p>
+        }
+        @for (message of messages(); track $index) {
+          @if ('usuario' in message) {
+            <p class="user-message">{{ message.usuario }}</p>
+          } @else {
+            <div class="assistant-message">
+              @if (message.asistente.estado === 'CLARIFICATION_REQUIRED') {
+                <p class="response-state">Necesito una aclaración</p>
+              } @else if (message.asistente.estado === 'NO_DATA') {
+                <p class="response-state">Sin información suficiente</p>
+              }
+              <p class="reply-text">{{ message.asistente.mensaje }}</p>
+              @if (message.asistente.datos; as data) {
+                <p class="period">{{ data.fechaInicio }} a {{ data.fechaFin }}</p>
+                @if (data.platosMasVendidos; as dishes) {
+                  <ul class="ranking">
+                    @for (dish of dishes; track $index) { <li>{{ dish }}</li> }
+                  </ul>
+                }
+                @if (data.estadoPagos; as payments) {
+                  <dl>
+                    <div><dt>Monto confirmado</dt><dd>{{ formatMoney(payments.montoTotal) }}</dd></div>
+                    <div><dt>Pedidos pagados</dt><dd>{{ payments.pedidosPagados }}</dd></div>
+                    <div><dt>Pagos pendientes</dt><dd>{{ payments.pagosPendientes }}</dd></div>
+                  </dl>
+                  @if (payments.metodosPagoUtilizados | keyvalue; as methods) {
+                    @if (methods.length) {
+                      <p class="period">Métodos de pago</p>
+                      <ul class="ranking">
+                        @for (method of methods; track method.key) { <li>{{ method.key }} · {{ method.value }}</li> }
+                      </ul>
+                    }
+                  }
+                }
+              }
+              @if (canSpeak) {
+                <button mat-button type="button" (click)="speak(message.asistente)">
+                  <img src="assets/asistente/escuchar.svg" alt="" width="20" height="20">
+                  Escuchar respuesta
+                </button>
+              }
+            </div>
+          }
+        }
+      </div>
+      <div class="status" role="status" aria-live="polite">
+        @if (busy()) { <p>Consultando al asistente…</p> }
+        @if (listening()) { <p>Escuchando… Detén el dictado para revisar y editar el texto.</p> }
+      </div>
+      @if (speaking()) {
+        <button mat-button type="button" (click)="stopSpeaking()">Detener lectura</button>
+      }
+      @if (error()) { <p class="error" role="alert">{{ error() }}</p> }
+      @if (voiceError()) { <p class="error" role="alert">{{ voiceError() }}</p> }
+      <form class="composer" (submit)="$event.preventDefault(); send()">
+        <mat-form-field appearance="outline" subscriptSizing="dynamic">
+          <mat-label>Mensaje para el asistente</mat-label>
+          <textarea matInput rows="2" maxlength="2000" [readonly]="listening()"
+            [attr.aria-describedby]="helpId" [formControl]="draft()"></textarea>
+        </mat-form-field>
+        @if (canDictate) {
+          <button mat-icon-button class="microphone" type="button" [attr.aria-pressed]="listening()"
+            [disabled]="busy()"
+            [attr.aria-label]="listening() ? 'Detener dictado' : 'Dictar mensaje'" (click)="dictate()">
+            <img src="assets/asistente/microfono.svg" alt="" width="24" height="24">
+          </button>
+        }
+        <button mat-icon-button class="send" type="submit" aria-label="Enviar mensaje"
+          [disabled]="busy() || listening() || !draft().value.trim() || draft().value.length > 2000">
+          <img src="assets/asistente/enviar.svg" alt="" width="24" height="24">
+        </button>
+      </form>
+      <p class="help" [id]="helpId">{{ canDictate ? 'Puedes editar el texto dictado antes de enviarlo.' : 'Dictado no disponible en este navegador. Puedes escribir tu mensaje.' }} Máximo 2000 caracteres.</p>
+      @if (!canSpeak) { <p class="help">Lectura en voz alta no disponible en este navegador.</p> }
+    </aside>
