@@ -8,7 +8,19 @@
       <ng-content select="[chat-context]" />
       <div class="chat-log" role="log" aria-label="Conversación">
         @if (!messages().length) {
-          <p class="assistant-message">{{ greeting() }}</p>
+          <div class="welcome">
+            <span class="welcome-symbol" aria-hidden="true">✦</span>
+            <h3>{{ welcomeTitle() }}</h3>
+            <p>{{ greeting() }}</p>
+            @if (suggestions().length) {
+              <div class="suggestions" aria-label="Consultas sugeridas">
+                @for (suggestion of suggestions(); track suggestion) {
+                  <button mat-stroked-button type="button" [disabled]="busy() || listening()"
+                    (click)="chooseSuggestion(suggestion)">{{ suggestion }}</button>
+                }
+              </div>
+            }
+          </div>
         }
         @for (message of messages(); track $index) {
           @if ('usuario' in message) {

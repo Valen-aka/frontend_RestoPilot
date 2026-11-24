@@ -3,6 +3,7 @@
     <rp-chat-panel
       [title]="client() ? 'Tu asistente de carta' : 'Tu asistente de reportes'"
       [welcomeTitle]="client() ? 'Tu carta, conversada.' : 'Tu restaurante, en perspectiva.'"
+      [suggestions]="client() ? ['¿Cuál es el estado de mi último pedido?', '¿Cuál es el estado de mi reserva?', '¿Cuál es el horario del restaurante?'] : ['¿Qué platos se vendieron más este mes?', '¿Cuáles fueron los pagos de este mes?']"
       [greeting]="client() ? 'Hola. Pregúntame por tu último pedido, tu reserva más reciente o por los datos del restaurante seleccionado.' : 'Hola. Puedes consultarme por los platos más vendidos o los pagos de un período.'"
       [messages]="messages()" [busy]="busy()" [error]="error()" [draft]="draft"
       (messageSent)="send($event)" (closed)="close()">
