@@ -35,6 +35,8 @@ const server = http.createServer((req, res) => {
       return req.request.body.restauranteId;
     });
     assert.equal(account, null);
+    await page.getByText('Tu pedido propio', { exact: true }).waitFor();
+    assert.equal(await page.getByRole('link', { name: /^Ver pedido/ }).count(), 0);
     await input.fill('Opciones veganas');
     await send.click();
     await page.evaluate(() => window.clientQA.http.expectOne('/api/ia/cliente/chat').flush({
@@ -58,6 +60,13 @@ const server = http.createServer((req, res) => {
     assert.deepEqual(request, { method: 'POST', body: { mensaje: 'Opciones veganas', restauranteId: 1 }, auth: 'Bearer qa-token' });
     await page.getByText('Opciones del restaurante uno', { exact: true }).waitFor();
     assert.equal(await page.evaluate(() => window.clientQA.chat().messages().at(-1).asistente.pedidoId), 42);
+    const orderLink = page.getByRole('link', { name: 'Ver pedido 42', exact: true });
+    assert.equal(await orderLink.getAttribute('href'), '/cliente/pedido?pedidoId=42');
+    await page.setViewportSize({ width: 390, height: 844 });
+    await orderLink.click();
+    await page.waitForURL('**/cliente/pedido?pedidoId=42');
+    await page.locator('rp-chat-panel').waitFor({ state: 'detached' });
+    await page.getByRole('button', { name: 'Abrir asistente', exact: true }).click();
     console.log('OK cuenta sin restaurante, seleccion contextual, POST autenticado y pedidoId conservado');
     for (const estado of ['CLARIFICATION_REQUIRED', 'NO_DATA']) {
       await input.fill('Consulta ' + estado);

@@ -3,15 +3,18 @@ import { Component, inject, signal, viewChild } from '@angular/core';
 import { bootstrapApplication } from '@angular/platform-browser';
 import { provideHttpClient } from '@angular/common/http';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
-import { Router } from '@angular/router';
-import { EMPTY, of } from 'rxjs';
+import { RouterOutlet, provideRouter } from '@angular/router';
+import { of } from 'rxjs';
 import { AssistantChat } from '../../src/app/components/assistant-chat/assistant-chat';
 import { API_SESSION, ApiSession } from '../../src/app/core/auth/api-session';
 import { CatalogoService } from '../../src/app/core/services/catalogo.service';
 import { AssistantClientService } from '../../src/app/core/services/assistant-client.service';
 
 const session = signal<ApiSession | null>({ subject: 'qa', role: 'CLIENTE', accessToken: 'qa-token', expiresAt: Date.now() + 3600000 });
-@Component({ selector: 'rp-root', imports: [AssistantChat], template: '<rp-assistant-chat />' })
+@Component({ template: '' })
+class ClientFixtureRoute {}
+
+@Component({ selector: 'rp-root', imports: [AssistantChat, RouterOutlet], template: '<router-outlet /><rp-assistant-chat />' })
 class ClientChatFixture {
   readonly chat = viewChild.required(AssistantChat);
   readonly http = inject(HttpTestingController);
@@ -21,7 +24,11 @@ class ClientChatFixture {
 }
 bootstrapApplication(ClientChatFixture, { providers: [
   provideHttpClient(), provideHttpClientTesting(),
-  { provide: Router, useValue: { events: EMPTY, url: '/cliente' } },
+  provideRouter([
+    { path: '', redirectTo: 'cliente', pathMatch: 'full' },
+    { path: 'cliente', component: ClientFixtureRoute },
+    { path: 'cliente/pedido', component: ClientFixtureRoute },
+  ]),
   { provide: API_SESSION, useValue: session },
   { provide: CatalogoService, useValue: { restaurantes: () => of([
     { id: 1, nombre: 'Restaurante uno', activo: true },

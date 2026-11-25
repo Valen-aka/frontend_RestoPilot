@@ -1,11 +1,20 @@
 @if (available()) {
   @if (open()) {
+    <ng-template #orderActions let-reply>
+      @if (reply.pedidoId; as pedidoId) {
+        <a mat-stroked-button routerLink="/cliente/pedido" [queryParams]="{ pedidoId }"
+          [attr.aria-label]="'Ver pedido ' + pedidoId" (click)="onOrderLinkClick($event)">
+          Ver pedido
+        </a>
+      }
+    </ng-template>
     <rp-chat-panel
       [title]="client() ? 'Tu asistente RestoPilot' : 'Tu asistente de reportes'"
       [welcomeTitle]="client() ? '¿Qué hacemos hoy?' : 'Tu restaurante, en perspectiva.'"
       [suggestions]="client() ? ['¿Cuál es el estado de mi último pedido?', '¿Cuál es mi última reserva?', '¿Qué platos me recomiendas?', '¿Cuál es el horario del restaurante?'] : ['¿Qué platos se vendieron más este mes?', '¿Cuáles fueron los pagos de este mes?']"
       [greeting]="client() ? 'Consulta tus pedidos o reservas. Para preguntar por la carta o el local, selecciona un restaurante.' : 'Hola. Puedes consultarme por los platos más vendidos o los pagos de un período.'"
       [messages]="messages()" [busy]="busy()" [error]="error()" [draft]="draft"
+      [replyActions]="client() ? orderActions : null"
       [contextKey]="client() ? restaurant.value : null"
       (messageSent)="send($event)" (closed)="close()" (resetRequested)="resetConversation()">
       <div chat-context>

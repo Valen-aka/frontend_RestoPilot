@@ -1,5 +1,5 @@
-import { DOCUMENT, KeyValuePipe } from '@angular/common';
-import { Component, DestroyRef, ElementRef, effect, inject, input, output, signal } from '@angular/core';
+import { DOCUMENT, KeyValuePipe, NgTemplateOutlet } from '@angular/common';
+import { Component, DestroyRef, ElementRef, TemplateRef, effect, inject, input, output, signal } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -22,7 +22,7 @@ let nextPanelId = 0;
 
 @Component({
   selector: 'rp-chat-panel',
-  imports: [ReactiveFormsModule, MatButtonModule, MatFormFieldModule, MatInputModule, KeyValuePipe],
+  imports: [ReactiveFormsModule, MatButtonModule, MatFormFieldModule, MatInputModule, KeyValuePipe, NgTemplateOutlet],
   templateUrl: './chat-panel.html',
   styleUrl: './chat-panel.css',
 })
@@ -32,6 +32,7 @@ export class ChatPanel {
   readonly welcomeTitle = input('Tu carta, conversada.');
   readonly suggestions = input<readonly string[]>([]);
   readonly messages = input<readonly ChatMessage[]>([]);
+  readonly replyActions = input<TemplateRef<{ $implicit: ChatReply }> | null>(null);
   readonly busy = input(false);
   readonly sendBlocked = input(false);
   readonly contextKey = input<number | null>(null);
