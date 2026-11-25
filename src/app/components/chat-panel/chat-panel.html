@@ -60,30 +60,120 @@
               }
               <p class="reply-text">{{ message.asistente.mensaje }}</p>
               @if (message.asistente.datos; as data) {
-                <p class="period">{{ data.fechaInicio }} a {{ data.fechaFin }}</p>
+                <p class="period">Período consultado: {{ data.fechaInicio }} a {{ data.fechaFin }}</p>
+
                 @if (data.platosMasVendidos; as dishes) {
-                  <ul class="ranking">
-                    @for (dish of dishes; track $index) { <li>{{ dish }}</li> }
-                  </ul>
+                  @if (dishes.length) {
+                    <div class="report-block">
+                      <p class="indicator-title">Platos más vendidos</p>
+                      <table class="report-table" aria-label="Platos más vendidos">
+                        <thead>
+                          <tr>
+                            <th scope="col" class="th-num">#</th>
+                            <th scope="col">Plato</th>
+                            <th scope="col" class="th-qty">Cantidad</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          @for (dish of parseDishes(dishes); track $index) {
+                            <tr>
+                              <td class="td-num">{{ $index + 1 }}</td>
+                              <td>{{ dish.nombre }}</td>
+                              <td class="td-qty"><strong>{{ dish.cantidad }}</strong></td>
+                            </tr>
+                          }
+                        </tbody>
+                      </table>
+                    </div>
+                  }
                 }
+
                 @if (data.estadoPagos; as payments) {
-                  <dl>
-                    <div><dt>Monto confirmado</dt><dd>{{ formatMoney(payments.montoTotal) }}</dd></div>
-                    <div><dt>Pedidos pagados</dt><dd>{{ payments.pedidosPagados }}</dd></div>
-                    <div><dt>Pagos pendientes</dt><dd>{{ payments.pagosPendientes }}</dd></div>
-                  </dl>
-                  @if (payments.metodosPagoUtilizados | keyvalue; as methods) {
-                    @if (methods.length) {
-                      <p class="period">Métodos de pago</p>
-                      <ul class="ranking">
-                        @for (method of methods; track method.key) { <li>{{ method.key }} · {{ method.value }}</li> }
-                      </ul>
+                  <div class="report-block">
+                    <p class="indicator-title">Resumen de pagos</p>
+                    <div class="kpi-cards">
+                      <div class="kpi-card highlight">
+                        <span class="kpi-label">Monto confirmado</span>
+                        <span class="kpi-value">{{ formatMoney(payments.montoTotal) }}</span>
+                      </div>
+                      <div class="kpi-card">
+                        <span class="kpi-label">Pedidos pagados</span>
+                        <span class="kpi-value">{{ payments.pedidosPagados }}</span>
+                      </div>
+                      <div class="kpi-card">
+                        <span class="kpi-label">Pagos pendientes</span>
+                        <span class="kpi-value">{{ payments.pagosPendientes }}</span>
+                      </div>
+                    </div>
+                    @if (payments.metodosPagoUtilizados | keyvalue; as methods) {
+                      @if (methods.length) {
+                        <p class="indicator-subtitle">Métodos de pago utilizados</p>
+                        <table class="report-table" aria-label="Métodos de pago">
+                          <thead>
+                            <tr>
+                              <th scope="col">Método</th>
+                              <th scope="col" class="th-qty">Operaciones</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            @for (method of methods; track method.key) {
+                              <tr>
+                                <td>{{ method.key }}</td>
+                                <td class="td-qty"><strong>{{ method.value }}</strong></td>
+                              </tr>
+                            }
+                          </tbody>
+                        </table>
+                      }
+                    }
+                  </div>
+                }
+
+                @if (data.pedidosAtendidos != null || data.reservasCompletadas != null) {
+                  <div class="report-block">
+                    <p class="indicator-title">Volumen de atención</p>
+                    <div class="kpi-cards">
+                      <div class="kpi-card">
+                        <span class="kpi-label">Pedidos atendidos</span>
+                        <span class="kpi-value">{{ data.pedidosAtendidos ?? 0 }}</span>
+                      </div>
+                      <div class="kpi-card">
+                        <span class="kpi-label">Reservas completadas</span>
+                        <span class="kpi-value">{{ data.reservasCompletadas ?? 0 }}</span>
+                      </div>
+                      @if (data.volumenAtenciones != null) {
+                        <div class="kpi-card highlight">
+                          <span class="kpi-label">Total atenciones</span>
+                          <span class="kpi-value">{{ data.volumenAtenciones }}</span>
+                        </div>
+                      }
+                    </div>
+                  </div>
+                }
+
+                @if (data.horariosMayorDemanda; as demand) {
+                  @if (getDemandEntries(demand); as items) {
+                    @if (items.length) {
+                      <div class="report-block">
+                        <p class="indicator-title">Horarios de mayor demanda</p>
+                        <div class="chart-bars" role="region" aria-label="Gráfico de horarios de mayor demanda">
+                          @for (item of items; track item.hora) {
+                            <div class="chart-bar-row" [class.is-peak]="item.isPeak">
+                              <span class="chart-bar-label">{{ item.hora }}</span>
+                              <div class="chart-bar-track">
+                                <div class="chart-bar-fill" [style.width.%]="item.percent"></div>
+                              </div>
+                              <span class="chart-bar-val">{{ item.cantidad }}</span>
+                            </div>
+                          }
+                        </div>
+                      </div>
                     }
                   }
                 }
               }
-              @if (canSpeak && mode() === 'voice') {
-                <button mat-button type="button" (click)="speak(message.asistente)">
+              @if (canSpeak) {
+                <button mat-button class="listen-reply" type="button" (click)="speak(message.asistente)">
                   <img src="assets/asistente/escuchar.svg" alt="" width="20" height="20">
                   Escuchar respuesta
                 </button>

@@ -42,6 +42,8 @@ export class AssistantChat {
   private request?: Subscription;
   private contextVersion = 0;
 
+  readonly reportUrl = computed(() => this.route().startsWith('/dueno') ? '/dueno/reportes' : '/operacion/reportes');
+
   private restaurantRequest?: Subscription;
   readonly client = computed(() => /^\/cliente(\/|[?#]|$)/.test(this.route()) && activeClientSession(this.session()));
   readonly available = computed(() => !!environment.assistantApiUrl && (this.client() ||
@@ -139,6 +141,12 @@ export class AssistantChat {
   }
 
   onOrderLinkClick(event: MouseEvent): void {
+    if (event.button === 0 && !event.ctrlKey && !event.metaKey && !event.shiftKey && !event.altKey) {
+      this.close(false);
+    }
+  }
+
+  onReportLinkClick(event: MouseEvent): void {
     if (event.button === 0 && !event.ctrlKey && !event.metaKey && !event.shiftKey && !event.altKey) {
       this.close(false);
     }

@@ -66,3 +66,6 @@ rp-chat-panel { animation: chat-open .28s cubic-bezier(.2,.8,.2,1) both; transfo
 .restaurant-summary button { min-width: 0; max-width: 100%; min-height: 44px; padding-inline: 8px; font-size: .8125rem; }
 .restaurant-name { display: inline-block; max-width: 140px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; vertical-align: middle; }
 @media (max-width: 380px) { .restaurant-name { max-width: 116px; } }
+
+.admin-report-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-block-start: 8px; }
+.admin-report-actions a { font-size: .8125rem; border-color: var(--rp-outline); color: var(--rp-primary); }
