@@ -6,9 +6,34 @@
           <img src="assets/asistente/cerrar.svg" alt="" width="24" height="24">
         </button>
       </header>
+      <div class="chat-controls">
+      <nav class="mode-bar" aria-label="Modo del asistente">
+        <button mat-button type="button" [class.active]="mode() === 'text'"
+          [attr.aria-pressed]="mode() === 'text'" (click)="setMode('text')">
+          <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 11.5a8.5 8.5 0 0 1-12.6 7.4L3 21l1.8-5.6A8.5 8.5 0 1 1 21 11.5Z"/></svg> Chat
+        </button>
+        <button mat-button type="button" [class.active]="mode() === 'voice'"
+          [attr.aria-pressed]="mode() === 'voice'" (click)="setMode('voice')">
+          <img src="assets/asistente/microfono.svg" alt="" width="20" height="20"> Voz
+        </button>
+      </nav>
       <ng-content select="[chat-context]" />
+      </div>
       <div class="chat-log" role="log" aria-label="Conversación">
-        @if (!messages().length) {
+        @if (mode() === 'voice') {
+          <section class="voice-stage" aria-label="Consulta por voz" [class.is-listening]="listening()">
+            <div class="voice-avatar"><img src="assets/asistente/mascota.svg" alt="" width="72" height="72"></div>
+            <h3>{{ listening() ? 'Te escucho' : 'Hablemos' }}</h3>
+            <p>{{ canDictate ? 'Activa el micrófono. Podrás revisar lo que dijiste antes de enviarlo.' : 'Tu navegador no admite dictado. Puedes continuar en Chat.' }}</p>
+            @if (canDictate) {
+              <button mat-flat-button class="voice-record" type="button" [disabled]="busy()"
+                [attr.aria-pressed]="listening()" (click)="dictate()">
+                {{ listening() ? 'Detener dictado' : 'Hablar con el asistente' }}
+              </button>
+            }
+          </section>
+        }
+        @if (!messages().length && mode() === 'text') {
           <div class="welcome">
             <span class="welcome-symbol" aria-hidden="true">✦</span>
             <h3>{{ welcomeTitle() }}</h3>
@@ -57,7 +82,7 @@
                   }
                 }
               }
-              @if (canSpeak) {
+              @if (canSpeak && mode() === 'voice') {
                 <button mat-button type="button" (click)="speak(message.asistente)">
                   <img src="assets/asistente/escuchar.svg" alt="" width="20" height="20">
                   Escuchar respuesta
@@ -66,6 +91,7 @@
             </div>
           }
         }
+        <ng-content select="[chat-actions]" />
       </div>
       <div class="status" role="status" aria-live="polite">
         @if (busy()) { <p>Consultando al asistente…</p> }
@@ -78,22 +104,15 @@
       @if (voiceError()) { <p class="error" role="alert">{{ voiceError() }}</p> }
       <form class="composer" (submit)="$event.preventDefault(); send()">
         <mat-form-field appearance="outline" subscriptSizing="dynamic">
-          <mat-label>Mensaje para el asistente</mat-label>
-          <textarea matInput rows="2" maxlength="2000" [readonly]="listening()"
-            [attr.aria-describedby]="helpId" [formControl]="draft()"></textarea>
-        </mat-form-field>
-        @if (canDictate) {
-          <button mat-icon-button class="microphone" type="button" [attr.aria-pressed]="listening()"
-            [disabled]="busy()"
-            [attr.aria-label]="listening() ? 'Detener dictado' : 'Dictar mensaje'" (click)="dictate()">
-            <img src="assets/asistente/microfono.svg" alt="" width="24" height="24">
+          <mat-label>{{ mode() === 'voice' ? 'Revisa tu mensaje dictado' : 'Pregunta lo que necesites' }}</mat-label>
+          <textarea matInput rows="1" maxlength="2000" [readonly]="listening()"
+            aria-label="Mensaje para el asistente"
+            (keydown)="onComposerKeydown($event)" [attr.aria-describedby]="helpId" [formControl]="draft()"></textarea>
+          <button mat-icon-button matSuffix class="send" type="submit" aria-label="Enviar mensaje"
+            [disabled]="busy() || sendBlocked() || listening() || !draft().value.trim() || draft().value.length > 2000">
+            <img src="assets/asistente/enviar.svg" alt="" width="24" height="24">
           </button>
-        }
-        <button mat-icon-button class="send" type="submit" aria-label="Enviar mensaje"
-          [disabled]="busy() || sendBlocked() || listening() || !draft().value.trim() || draft().value.length > 2000">
-          <img src="assets/asistente/enviar.svg" alt="" width="24" height="24">
-        </button>
+        </mat-form-field>
       </form>
-      <p class="help" [id]="helpId">{{ canDictate ? 'Puedes editar el texto dictado antes de enviarlo.' : 'Dictado no disponible en este navegador. Puedes escribir tu mensaje.' }} Máximo 2000 caracteres.</p>
-      @if (!canSpeak) { <p class="help">Lectura en voz alta no disponible en este navegador.</p> }
+      <p class="help" [id]="helpId">{{ mode() === 'voice' ? 'Revisa el texto y pulsa enviar.' : 'Enter para enviar. Shift + Enter para una nueva línea.' }} Máximo 2000 caracteres.</p>
     </aside>

@@ -7,6 +7,7 @@ import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { CatalogoService } from '../../core/services/catalogo.service';
 import { AssistantClientService } from '../../core/services/assistant-client.service';
@@ -21,7 +22,7 @@ const CHAT_TIMEOUT_MS = 60_000;
 
 @Component({
   selector: 'rp-assistant-chat',
-  imports: [MatButtonModule, MatFormFieldModule, MatSelectModule, ReactiveFormsModule, ChatPanel],
+  imports: [MatButtonModule, MatFormFieldModule, MatSelectModule, MatInputModule, ReactiveFormsModule, ChatPanel],
   templateUrl: './assistant-chat.html',
   styleUrl: './assistant-chat.css',
 })
@@ -50,6 +51,34 @@ export class AssistantChat {
   private readonly selectedRestaurantId = toSignal(this.restaurant.valueChanges, { initialValue: null });
   readonly selectedRestaurant = computed(() => this.restaurants().find(local => local.id === this.selectedRestaurantId()) ?? null);
   readonly restaurantState = signal<'idle' | 'loading' | 'ready' | 'error'>('idle');
+  readonly choosingRestaurant = signal(false);
+  readonly restaurantSearch = new FormControl('', { nonNullable: true });
+  private readonly search = toSignal(this.restaurantSearch.valueChanges, { initialValue: '' });
+  readonly matchingRestaurants = computed(() => {
+    const query = this.normalize(this.search());
+    return this.restaurants().filter(local => this.normalize(local.nombre).includes(query));
+  });
+  private pendingQuestion = '';
+  private normalize(value: string): string {
+    return value.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().trim();
+  }
+  chooseRestaurant(id: number): void {
+    if (this.busy() || !this.restaurants().some(local => local.id === id)) return;
+    const question = this.pendingQuestion;
+    this.restaurant.setValue(id);
+    this.choosingRestaurant.set(false);
+    this.restaurantSearch.reset();
+    this.pendingQuestion = '';
+    this.append({ asistente: { estado: 'ANSWER', mensaje: 'Ahora consultamos ' + this.selectedRestaurant()!.nombre + '.' } });
+    if (question) this.send(question);
+  }
+  useAccount(): void {
+    if (this.busy()) return;
+    this.restaurant.setValue(null);
+    this.pendingQuestion = '';
+    this.restaurantSearch.reset();
+    this.choosingRestaurant.set(false);
+  }
   readonly open = signal(false);
   readonly busy = signal(false);
   readonly error = signal('');
@@ -57,8 +86,10 @@ export class AssistantChat {
   readonly draft = new FormControl('', { nonNullable: true });
   constructor() {
     this.restaurant.valueChanges.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(() => {
-      this.clearConversation();
-      this.draft.reset();
+      this.contextVersion++;
+      this.request?.unsubscribe();
+      this.busy.set(false);
+      this.error.set('');
     });
     effect(onCleanup => {
       this.session();
@@ -125,6 +156,24 @@ export class AssistantChat {
       this.error.set('Revisa tu sesión y el mensaje antes de enviar.');
       return;
     }
+    if (this.client() && this.choosingRestaurant()) {
+      const name = this.normalize(mensaje).replace(/^(elige|selecciona|cambia a|quiero)\s+/, '');
+      const exact = this.restaurants().filter(local => this.normalize(local.nombre) === name);
+      const matches = exact.length ? exact : name.length >= 3
+        ? this.restaurants().filter(local => this.normalize(local.nombre).includes(name)) : [];
+      if (matches.length === 1) { this.chooseRestaurant(matches[0].id); return; }
+      if (/restaurante|cambiar|elegir|seleccionar/.test(name)) {
+        this.restaurantSearch.setValue('');
+      } else if (!/pedido|reserva|cancel|backend|servidor|clave|contrasena/.test(name)) {
+        this.restaurantSearch.setValue(mensaje);
+        return;
+      }
+    }
+    if (this.client() && /^(cambiar|elegir|seleccionar) (el )?restaurante[.!?]*$/i.test(mensaje)) {
+      this.choosingRestaurant.set(true);
+      this.pendingQuestion = '';
+      return;
+    }
     const isClient = this.client();
     const restaurantId = isClient ? this.selectedRestaurant()?.id ?? null : user.restauranteId!;
     const version = this.contextVersion;
@@ -141,11 +190,16 @@ export class AssistantChat {
         if (this.session() !== user || version !== this.contextVersion || this.client() !== isClient) return;
         this.busy.set(false);
         this.append({ asistente: reply });
+        if (isClient && reply.estado === 'CLARIFICATION_REQUIRED' &&
+            /selecciona|elige/i.test(reply.mensaje) && /restaurante/i.test(reply.mensaje)) {
+          this.pendingQuestion = mensaje;
+          this.restaurantSearch.reset();
+          this.choosingRestaurant.set(true);
+        }
       },
       error: (failure: unknown) => {
         if (this.session() !== user || version !== this.contextVersion || this.client() !== isClient) return;
         this.busy.set(false);
-        if (!this.draft.value) this.draft.setValue(mensaje);
         if (isClient) {
           this.error.set(clientChatErrorMessage(failure));
           return;
@@ -176,6 +230,9 @@ export class AssistantChat {
   }
 
   private clearConversation(): void {
+    this.pendingQuestion = '';
+    this.choosingRestaurant.set(false);
+    this.restaurantSearch.reset();
     this.contextVersion++;
     this.request?.unsubscribe();
     this.request = undefined;
