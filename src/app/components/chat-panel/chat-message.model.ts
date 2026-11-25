@@ -3,8 +3,10 @@ export interface ChatReply {
   mensaje: string;
   pedidoId?: number | null;
   datos?: {
+    tipo?: string | null;
     fechaInicio: string;
     fechaFin: string;
+    unidad?: string | null;
     moneda: string | null;
     platosMasVendidos?: string[] | null;
     estadoPagos?: {
@@ -13,6 +15,10 @@ export interface ChatReply {
       pagosPendientes: number;
       metodosPagoUtilizados: Record<string, number>;
     } | null;
+    horariosMayorDemanda?: Record<string, number> | null;
+    pedidosAtendidos?: number | null;
+    reservasCompletadas?: number | null;
+    volumenAtenciones?: number | null;
   } | null;
 }
 

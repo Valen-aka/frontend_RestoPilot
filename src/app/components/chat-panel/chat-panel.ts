@@ -1,5 +1,5 @@
-import { DOCUMENT, KeyValuePipe } from '@angular/common';
-import { Component, DestroyRef, ElementRef, effect, inject, input, output, signal } from '@angular/core';
+import { DOCUMENT, KeyValuePipe, NgTemplateOutlet } from '@angular/common';
+import { Component, DestroyRef, ElementRef, TemplateRef, effect, inject, input, output, signal } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -22,7 +22,7 @@ let nextPanelId = 0;
 
 @Component({
   selector: 'rp-chat-panel',
-  imports: [ReactiveFormsModule, MatButtonModule, MatFormFieldModule, MatInputModule, KeyValuePipe],
+  imports: [ReactiveFormsModule, MatButtonModule, MatFormFieldModule, MatInputModule, KeyValuePipe, NgTemplateOutlet],
   templateUrl: './chat-panel.html',
   styleUrl: './chat-panel.css',
 })
@@ -32,6 +32,7 @@ export class ChatPanel {
   readonly welcomeTitle = input('Tu carta, conversada.');
   readonly suggestions = input<readonly string[]>([]);
   readonly messages = input<readonly ChatMessage[]>([]);
+  readonly replyActions = input<TemplateRef<{ $implicit: ChatReply }> | null>(null);
   readonly busy = input(false);
   readonly sendBlocked = input(false);
   readonly contextKey = input<number | null>(null);
@@ -176,10 +177,21 @@ export class ChatPanel {
     this.voiceError.set('');
     synthesis.cancel();
     const data = reply.datos;
-    const amounts = data?.estadoPagos;
-    const details = amounts
-      ? `Monto confirmado: ${this.formatMoney(amounts.montoTotal)}. ${amounts.pedidosPagados} pagados, ${amounts.pagosPendientes} pendientes.`
-      : data?.platosMasVendidos?.join('. ') ?? '';
+    let details = '';
+    if (data?.estadoPagos) {
+      const p = data.estadoPagos;
+      details = `Monto confirmado: ${this.formatMoney(p.montoTotal)}. ${p.pedidosPagados} pagados, ${p.pagosPendientes} pendientes.`;
+    } else if (data?.platosMasVendidos?.length) {
+      details = data.platosMasVendidos.join('. ');
+    } else if (data?.pedidosAtendidos != null || data?.reservasCompletadas != null) {
+      details = `${data?.pedidosAtendidos ?? 0} pedidos atendidos y ${data?.reservasCompletadas ?? 0} reservas completadas.`;
+    } else if (data?.horariosMayorDemanda) {
+      const entries = Object.entries(data.horariosMayorDemanda);
+      if (entries.length) {
+        const top = entries.reduce((max, curr) => curr[1] > max[1] ? curr : max, entries[0]);
+        details = `El pico de demanda fue a las ${top[0]} con ${top[1]} pedidos.`;
+      }
+    }
     const speech = new SpeechSynthesisUtterance([reply.mensaje, details].filter(Boolean).join(' '));
     speech.lang = 'es-PE';
     this.utterance = speech;
@@ -191,6 +203,28 @@ export class ChatPanel {
     };
     this.speaking.set(true);
     try { synthesis.speak(speech); } catch { speech.onerror?.(new Event('error') as SpeechSynthesisErrorEvent); }
+  }
+
+  parseDishes(dishes: readonly string[]): { nombre: string; cantidad: string }[] {
+    return dishes.map(dish => {
+      const match = dish.match(/^(.*?)\s*\((\d+)\s*unidades?\)$/i);
+      if (match) {
+        return { nombre: match[1], cantidad: `${match[2]} uds.` };
+      }
+      return { nombre: dish, cantidad: '-' };
+    });
+  }
+
+  getDemandEntries(demand: Record<string, number>): { hora: string; cantidad: number; percent: number; isPeak: boolean }[] {
+    const entries = Object.entries(demand);
+    if (!entries.length) return [];
+    const max = Math.max(...entries.map(([, v]) => v), 1);
+    return entries.map(([hora, cantidad]) => ({
+      hora,
+      cantidad,
+      percent: Math.max(12, Math.round((cantidad / max) * 100)),
+      isPeak: cantidad === max && max > 0,
+    }));
   }
 
   formatMoney(amount: number): string {

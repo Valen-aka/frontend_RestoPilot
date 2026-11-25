@@ -1,11 +1,46 @@
 @if (available()) {
   @if (open()) {
+    <ng-template #orderActions let-reply>
+      @if (reply.pedidoId; as pedidoId) {
+        <a mat-stroked-button routerLink="/cliente/pedido" [queryParams]="{ pedidoId }"
+          [attr.aria-label]="'Ver pedido ' + pedidoId" (click)="onOrderLinkClick($event)">
+          Ver pedido
+        </a>
+      }
+    </ng-template>
+    <ng-template #adminActions let-reply>
+      @if (reply.datos; as data) {
+        <div class="admin-report-actions">
+          @if (data.platosMasVendidos?.length) {
+            <a mat-stroked-button [routerLink]="reportUrl()" [queryParams]="{ tipo: 'PLATOS', fechaInicio: data.fechaInicio, fechaFin: data.fechaFin }" (click)="onReportLinkClick($event)">
+              Abrir reporte operativo
+            </a>
+          }
+          @if (data.estadoPagos) {
+            <a mat-stroked-button [routerLink]="reportUrl()" [queryParams]="{ tipo: 'PAGOS', fechaInicio: data.fechaInicio, fechaFin: data.fechaFin }" (click)="onReportLinkClick($event)">
+              Ver reporte de pagos
+            </a>
+          }
+          @if (data.pedidosAtendidos != null || data.reservasCompletadas != null) {
+            <a mat-stroked-button [routerLink]="reportUrl()" [queryParams]="{ tipo: 'ATENCIONES', fechaInicio: data.fechaInicio, fechaFin: data.fechaFin }" (click)="onReportLinkClick($event)">
+              Ver detalle del período
+            </a>
+          }
+          @if (data.horariosMayorDemanda) {
+            <a mat-stroked-button [routerLink]="reportUrl()" [queryParams]="{ tipo: 'DEMANDA', fechaInicio: data.fechaInicio, fechaFin: data.fechaFin }" (click)="onReportLinkClick($event)">
+              Consultar reporte de demanda
+            </a>
+          }
+        </div>
+      }
+    </ng-template>
     <rp-chat-panel
       [title]="client() ? 'Tu asistente RestoPilot' : 'Tu asistente de reportes'"
       [welcomeTitle]="client() ? '¿Qué hacemos hoy?' : 'Tu restaurante, en perspectiva.'"
-      [suggestions]="client() ? ['¿Cuál es el estado de mi último pedido?', '¿Cuál es mi última reserva?', '¿Qué platos me recomiendas?', '¿Cuál es el horario del restaurante?'] : ['¿Qué platos se vendieron más este mes?', '¿Cuáles fueron los pagos de este mes?']"
-      [greeting]="client() ? 'Consulta tus pedidos o reservas. Para preguntar por la carta o el local, selecciona un restaurante.' : 'Hola. Puedes consultarme por los platos más vendidos o los pagos de un período.'"
+      [suggestions]="client() ? ['¿Cuál es el estado de mi último pedido?', '¿Cuál es mi última reserva?', '¿Qué platos me recomiendas?', '¿Cuál es el horario del restaurante?'] : ['¿Qué platos se vendieron más este mes?', '¿Cuáles fueron los pagos de este mes?', '¿Cuál fue el volumen de atención?', '¿Cuáles son las horas de mayor demanda?']"
+      [greeting]="client() ? 'Consulta tus pedidos o reservas. Para preguntar por la carta o el local, selecciona un restaurante.' : 'Hola. Puedes consultarme por los platos más vendidos, pagos, volumen de atención o demanda de un período.'"
       [messages]="messages()" [busy]="busy()" [error]="error()" [draft]="draft"
+      [replyActions]="client() ? orderActions : adminActions"
       [contextKey]="client() ? restaurant.value : null"
       (messageSent)="send($event)" (closed)="close()" (resetRequested)="resetConversation()">
       <div chat-context>

@@ -138,3 +138,31 @@ button:focus-visible { outline: 2px solid var(--rp-primary); outline-offset: 2px
 /* Material keeps the rounded outline as the field's focus indicator. */
 .composer textarea:focus, .composer textarea:focus-visible { outline: none; box-shadow: none; }
 @media (forced-colors: active) { .composer:focus-within { outline: 2px solid Highlight; border-radius: 28px; } }
+
+/* Report Data Presentation (Tables, KPI Cards, Bar Charts) */
+.report-block { margin-block-start: 10px; padding-block-start: 8px; border-block-start: 1px solid var(--rp-outline); }
+.indicator-title { margin: 0 0 6px; font-size: .8125rem; font-weight: 700; color: var(--rp-navy); text-transform: uppercase; letter-spacing: .03em; }
+.indicator-subtitle { margin: 8px 0 4px; font-size: .75rem; font-weight: 600; color: var(--rp-muted); }
+
+.report-table { width: 100%; border-collapse: collapse; font-size: .8125rem; margin-block: 6px; }
+.report-table th { text-align: left; font-weight: 600; color: var(--rp-muted); padding: 5px 8px; border-block-end: 1px solid var(--rp-outline); font-size: .75rem; }
+.report-table td { padding: 6px 8px; border-block-end: 1px solid color-mix(in srgb, var(--rp-outline) 40%, transparent); }
+.report-table .th-num, .report-table .td-num { width: 28px; text-align: center; color: var(--rp-muted); }
+.report-table .th-qty, .report-table .td-qty { text-align: right; }
+
+.kpi-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(105px, 1fr)); gap: 8px; margin-block: 8px; }
+.kpi-card { background: var(--rp-surface-raised); border: 1px solid var(--rp-outline); border-radius: 10px; padding: 10px; display: flex; flex-direction: column; gap: 3px; }
+.kpi-card.highlight { border-color: var(--rp-primary); background: color-mix(in srgb, var(--rp-container) 60%, white); }
+.kpi-label { font-size: .6875rem; color: var(--rp-muted); font-weight: 600; text-transform: uppercase; }
+.kpi-value { font-size: 1.05rem; font-weight: 700; color: var(--rp-navy); }
+
+.chart-bars { display: flex; flex-direction: column; gap: 6px; margin-block: 8px; }
+.chart-bar-row { display: flex; align-items: center; gap: 8px; font-size: .75rem; }
+.chart-bar-label { min-width: 82px; color: var(--rp-muted); font-size: .75rem; white-space: nowrap; }
+.chart-bar-track { flex: 1 1 auto; height: 16px; background: color-mix(in srgb, var(--rp-container) 50%, transparent); border-radius: 6px; overflow: hidden; }
+.chart-bar-fill { height: 100%; background: var(--rp-primary); border-radius: 6px; min-width: 6px; }
+.chart-bar-row.is-peak .chart-bar-fill { background: linear-gradient(90deg, var(--rp-primary), #2e7d32); }
+.chart-bar-row.is-peak .chart-bar-label { font-weight: 700; color: var(--rp-navy); }
+.chart-bar-val { min-width: 24px; text-align: right; font-weight: 700; color: var(--rp-navy); }
+
+.listen-reply { margin-block-start: 8px; font-size: .8125rem; color: var(--rp-primary); }

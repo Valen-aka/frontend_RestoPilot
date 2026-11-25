@@ -13,7 +13,7 @@ import { CatalogoService } from '../../core/services/catalogo.service';
 import { AssistantClientService } from '../../core/services/assistant-client.service';
 import { clientChatErrorMessage } from '../../core/models/assistant-client-error';
 import { RestauranteResponse } from '../../core/models/catalogo-api.model';
-import { NavigationEnd, Router } from '@angular/router';
+import { NavigationEnd, Router, RouterLink } from '@angular/router';
 import { filter, map, Observable, Subscription } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { activeClientSession, activeOperationSession, API_SESSION } from '../../core/auth/api-session';
@@ -22,7 +22,7 @@ const CHAT_TIMEOUT_MS = 60_000;
 
 @Component({
   selector: 'rp-assistant-chat',
-  imports: [MatButtonModule, MatFormFieldModule, MatSelectModule, MatInputModule, ReactiveFormsModule, ChatPanel],
+  imports: [MatButtonModule, MatFormFieldModule, MatSelectModule, MatInputModule, ReactiveFormsModule, ChatPanel, RouterLink],
   templateUrl: './assistant-chat.html',
   styleUrl: './assistant-chat.css',
 })
@@ -41,6 +41,8 @@ export class AssistantChat {
   ), { initialValue: this.router.url });
   private request?: Subscription;
   private contextVersion = 0;
+
+  readonly reportUrl = computed(() => this.route().startsWith('/dueno') ? '/dueno/reportes' : '/operacion/reportes');
 
   private restaurantRequest?: Subscription;
   readonly client = computed(() => /^\/cliente(\/|[?#]|$)/.test(this.route()) && activeClientSession(this.session()));
@@ -136,6 +138,18 @@ export class AssistantChat {
   show(): void {
     this.open.set(true);
     this.browser?.requestAnimationFrame(() => this.host.nativeElement.querySelector('textarea')?.focus());
+  }
+
+  onOrderLinkClick(event: MouseEvent): void {
+    if (event.button === 0 && !event.ctrlKey && !event.metaKey && !event.shiftKey && !event.altKey) {
+      this.close(false);
+    }
+  }
+
+  onReportLinkClick(event: MouseEvent): void {
+    if (event.button === 0 && !event.ctrlKey && !event.metaKey && !event.shiftKey && !event.altKey) {
+      this.close(false);
+    }
   }
 
   close(restoreFocus = true): void {
