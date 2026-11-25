@@ -21,12 +21,12 @@
 .launcher img { vertical-align: middle; margin-inline-start: 8px; }
 .launcher:focus-visible { outline: 2px solid var(--rp-primary); outline-offset: 2px; }
 rp-chat-panel {
-  width: min(400px, calc(100vw - 2 * var(--assistant-gap)));
-  height: min(620px, calc(100dvh - 2 * var(--assistant-gap)));
+  width: min(560px, calc(100vw - 2 * var(--assistant-gap)));
+  height: min(800px, calc(100dvh - 2 * var(--assistant-gap)));
 }
 @media (max-width: 560px) {
   :host { --assistant-gap: 8px; }
-  rp-chat-panel { width: calc(100vw - 16px); height: min(620px, calc(100dvh - 16px)); }
+  rp-chat-panel { width: calc(100vw - 16px); height: min(800px, calc(100dvh - 16px)); }
   .launcher { inset-inline-end: 12px; }
   .launcher span { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
   .launcher { padding-inline: 4px; }
@@ -40,3 +40,29 @@ rp-chat-panel {
 .restaurant-context, .restaurant-help { margin: 6px 0; font-size: .75rem; line-height: 1.4; overflow-wrap: anywhere; }
 .restaurant-context { color: var(--rp-primary); }
 .restaurant-help { color: var(--rp-muted); }
+
+.restaurant-summary { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 8px 24px; border-bottom: 1px solid var(--rp-outline); font-size: .875rem; }
+.restaurant-summary span { min-width: 0; overflow-wrap: anywhere; }
+.restaurant-picker { padding: 24px; border: 1px solid var(--rp-outline); border-radius: 12px; background: var(--rp-surface-raised); }
+.restaurant-picker h3 { margin: 0 0 12px; }
+.restaurant-picker p { margin: 0 0 16px; line-height: 1.5; }
+.restaurant-options { display: grid; gap: 12px; margin: 16px 0; }
+.restaurant-options button { height: auto; min-height: 44px; white-space: normal; }
+@media (max-width: 600px) {
+  rp-chat-panel { inset: 0; width: 100%; height: 100dvh; }
+  .restaurant-summary { padding: 8px 16px; }
+}
+
+.launcher img { animation: mascot-float 3.6s ease-in-out infinite; transform-origin: center bottom; }
+.launcher:hover img { animation: mascot-wave .65s ease-in-out; }
+rp-chat-panel { animation: chat-open .28s cubic-bezier(.2,.8,.2,1) both; transform-origin: bottom right; }
+@keyframes mascot-float { 0%, 100% { transform: translateY(0) rotate(-3deg); } 50% { transform: translateY(-5px) rotate(3deg); } }
+@keyframes mascot-wave { 25%, 75% { transform: rotate(-10deg); } 50% { transform: rotate(10deg) translateY(-4px); } }
+@keyframes chat-open { from { opacity: 0; transform: translateY(16px) scale(.96); } to { opacity: 1; transform: translateY(0) scale(1); } }
+@media (prefers-reduced-motion: reduce) { .launcher img, .launcher:hover img, rp-chat-panel { animation: none; } }
+
+[chat-context] { flex: 1 1 auto; min-width: 0; }
+.restaurant-summary { min-width: 0; padding: 0; border: 0; justify-content: flex-end; }
+.restaurant-summary button { min-width: 0; max-width: 100%; min-height: 44px; padding-inline: 8px; font-size: .8125rem; }
+.restaurant-name { display: inline-block; max-width: 140px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; vertical-align: middle; }
+@media (max-width: 380px) { .restaurant-name { max-width: 116px; } }

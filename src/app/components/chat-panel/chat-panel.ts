@@ -42,6 +42,7 @@ export class ChatPanel {
   readonly resetRequested = output<void>();
   readonly titleId = `chat-title-${++nextPanelId}`;
   readonly helpId = `${this.titleId}-help`;
+  readonly mode = signal<'text' | 'voice'>('text');
   readonly listening = signal(false);
   readonly speaking = signal(false);
   readonly voiceError = signal('');
@@ -76,6 +77,21 @@ export class ChatPanel {
         if (log) log.scrollTop = hasMessages ? log.scrollHeight : 0;
       });
     });
+  }
+
+  setMode(mode: 'text' | 'voice'): void {
+    if (this.mode() === mode) return;
+    this.stopAudio();
+    this.voiceError.set('');
+    this.mode.set(mode);
+    if (mode === 'text') this.focusComposer();
+  }
+
+  onComposerKeydown(event: KeyboardEvent): void {
+    if (event.key === 'Enter' && !event.shiftKey && !event.isComposing) {
+      event.preventDefault();
+      this.send();
+    }
   }
 
   send(): void {

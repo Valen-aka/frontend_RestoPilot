@@ -52,7 +52,8 @@ const server = http.createServer((req, res) => {
     await input.fill('   ');
     assert(await send.isDisabled());
     await input.fill('Quiero');
-    await page.getByRole('button', { name: 'Dictar mensaje', exact: true }).click();
+    await page.getByRole('button', { name: 'Voz', exact: true }).click();
+    await page.getByRole('button', { name: 'Hablar con el asistente', exact: true }).click();
     await page.evaluate(() => window.recognitionQA.onresult({ results: [[{ transcript: 'opciones vegetarianas' }]] }));
     assert(await send.isDisabled());
     assert.equal(await input.inputValue(), 'Quiero opciones vegetarianas');
@@ -76,7 +77,8 @@ const server = http.createServer((req, res) => {
     await page.evaluate(() => window.chatQA.error.set('No se pudo consultar. Vuelve a enviar el mensaje.'));
     await page.getByRole('alert').waitFor();
     await input.fill('Mi borrador');
-    await page.getByRole('button', { name: 'Dictar mensaje', exact: true }).click();
+    await page.getByRole('button', { name: 'Voz', exact: true }).click();
+    await page.getByRole('button', { name: 'Hablar con el asistente', exact: true }).click();
     await page.evaluate(() => window.recognitionQA.onerror());
     await page.getByText('No se pudo usar el micrófono. Puedes escribir el mensaje.', { exact: true }).waitFor();
     assert.equal(await input.inputValue(), 'Mi borrador');
@@ -100,7 +102,8 @@ const server = http.createServer((req, res) => {
       ok(`panel y texto largo sin desbordamiento horizontal ${width}x${height}`);
     }
     await page.setViewportSize({ width: 390, height: 844 });
-    await page.getByRole('button', { name: 'Dictar mensaje', exact: true }).click();
+    await page.getByRole('button', { name: 'Voz', exact: true }).click();
+    await page.getByRole('button', { name: 'Hablar con el asistente', exact: true }).click();
     await input.press('Escape');
     await page.locator('rp-chat-panel').waitFor({ state: 'detached' });
     assert.equal(await page.locator('rp-chat-panel').count(), 0);

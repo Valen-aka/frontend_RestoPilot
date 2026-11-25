@@ -23,13 +23,29 @@ const server = http.createServer((req, res) => {
     const input = page.getByRole('textbox', { name: 'Mensaje para el asistente' });
     const send = page.getByRole('button', { name: 'Enviar mensaje', exact: true });
     const select = async name => {
-      await page.locator('mat-form-field').filter({ has: page.getByRole('combobox', { name: 'Restaurante para tus preguntas' }) }).click();
-      assert.equal(await page.getByRole('option', { name: 'Restaurante inactivo', exact: true }).count(), 0);
-      await page.getByRole('option', { name, exact: true }).click();
+      await page.getByRole('button', { name: 'Cambiar restaurante', exact: true }).click();
+      assert.equal(await page.getByRole('button', { name: 'Restaurante inactivo', exact: true }).count(), 0);
+      await page.getByRole('button', { name, exact: true }).click();
     };
+    await input.fill('Mi ultimo pedido');
+    await input.press('Enter');
+    const account = await page.evaluate(() => {
+      const req = window.clientQA.http.expectOne('/api/ia/cliente/chat');
+      req.flush({ estado: 'ANSWER', mensaje: 'Tu pedido propio' });
+      return req.request.body.restauranteId;
+    });
+    assert.equal(account, null);
     await input.fill('Opciones veganas');
-    assert(await send.isDisabled());
-    await select('Restaurante uno');
+    await send.click();
+    await page.evaluate(() => window.clientQA.http.expectOne('/api/ia/cliente/chat').flush({
+      estado: 'CLARIFICATION_REQUIRED', mensaje: 'Selecciona un restaurante para consultar la carta.'
+    }));
+    await page.getByRole('button', { name: 'Restaurante uno', exact: true }).click();
+    await page.evaluate(() => {
+      const req = window.clientQA.http.expectOne('/api/ia/cliente/chat');
+      if (req.request.body.restauranteId !== 1 || req.request.body.mensaje !== 'Opciones veganas') throw new Error('No retoma consulta');
+      req.flush({ estado: 'ANSWER', mensaje: 'Consulta retomada' });
+    });
     await input.fill('  Opciones veganas  ');
     await send.click();
     assert(await send.isDisabled());
@@ -42,7 +58,7 @@ const server = http.createServer((req, res) => {
     assert.deepEqual(request, { method: 'POST', body: { mensaje: 'Opciones veganas', restauranteId: 1 }, auth: 'Bearer qa-token' });
     await page.getByText('Opciones del restaurante uno', { exact: true }).waitFor();
     assert.equal(await page.evaluate(() => window.clientQA.chat().messages().at(-1).asistente.pedidoId), 42);
-    console.log('OK selección obligatoria, POST autenticado y pedidoId conservado');
+    console.log('OK cuenta sin restaurante, seleccion contextual, POST autenticado y pedidoId conservado');
     for (const estado of ['CLARIFICATION_REQUIRED', 'NO_DATA']) {
       await input.fill('Consulta ' + estado);
       await send.click();
@@ -54,23 +70,24 @@ const server = http.createServer((req, res) => {
       await send.click();
       await page.evaluate(status => window.clientQA.http.expectOne('/api/ia/cliente/chat').flush({ message: 'PRIVATE SERVER DETAIL' }, { status, statusText: 'Test error' }), status);
       await page.getByRole('alert').waitFor();
-      assert.equal(await input.inputValue(), 'Consulta ' + status);
+      assert.equal(await input.inputValue(), '');
       assert(!(await page.getByRole('alert').innerText()).includes('PRIVATE'));
     }
-    console.log('OK estados de respuesta y errores HTTP conservan el borrador');
+    console.log('OK estados de respuesta y errores HTTP mantienen el campo vacio');
     for (const body of [null, {}, { estado: 'UNKNOWN', mensaje: 'Incorrecto' }, { estado: 'ANSWER', mensaje: '' }, { estado: 'ANSWER', mensaje: 'Incorrecto', pedidoId: -1 }, { estado: 'ANSWER', mensaje: 'Incorrecto', datos: { inesperado: true } }]) {
       await input.fill('Validar contrato');
       await send.click();
       await page.evaluate(body => window.clientQA.http.expectOne('/api/ia/cliente/chat').flush(body), body);
       await page.getByText('El asistente devolvió una respuesta no válida. Inténtalo de nuevo.', { exact: true }).waitFor();
-      assert.equal(await input.inputValue(), 'Validar contrato');
+      assert.equal(await input.inputValue(), '');
     }
+    await input.fill('Consulta pendiente');
     await send.click();
     await page.evaluate(() => { window.pendingQA = window.clientQA.http.expectOne('/api/ia/cliente/chat'); });
-    await select('Restaurante dos');
+    await page.evaluate(() => window.clientQA.chat().restaurant.setValue(2));
     assert(await page.evaluate(() => window.pendingQA.cancelled));
-    assert.equal(await input.inputValue(), '');
-    assert.deepEqual(await page.evaluate(() => window.clientQA.chat().messages()), []);
+    assert((await page.evaluate(() => window.clientQA.chat().messages().length)) > 0);
+    await input.fill('');
     await input.fill('Carta del segundo restaurante');
     await send.click();
     assert.equal(await page.evaluate(() => {

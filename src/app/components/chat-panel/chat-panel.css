@@ -58,7 +58,7 @@ dd { margin: 0; font-weight: 700; }
 .microphone[aria-pressed="true"] { background: var(--rp-container); box-shadow: inset 0 0 0 2px var(--rp-primary); }
 .send { background: var(--rp-primary); }
 .send:disabled { opacity: .5; }
-button:focus-visible, textarea:focus-visible { outline: 2px solid var(--rp-primary); outline-offset: 2px; }
+button:focus-visible { outline: 2px solid var(--rp-primary); outline-offset: 2px; }
 .header .close:focus-visible { outline-color: var(--rp-primary); }
 
 :host { display: block; min-width: 0; min-height: 0; height: 100%; container-type: inline-size; }
@@ -88,3 +88,53 @@ button:focus-visible, textarea:focus-visible { outline: 2px solid var(--rp-prima
   .composer { padding: 4px 8px; }
   .help { font-size: .6875rem; }
 }
+
+/* Keep context and composer fixed while only the conversation scrolls. */
+.panel { overflow: hidden; }
+.chat-log { min-height: 0; gap: 24px; padding: 24px; overscroll-behavior: contain; }
+.welcome { padding: 24px 0; gap: 20px; }
+.welcome-symbol, .welcome h3 { margin: 0; }
+.suggestions { margin-top: 8px; gap: 16px; }
+.suggestions button { padding: 16px 20px; font-size: .875rem; line-height: 1.5; min-height: 64px; }
+.composer { gap: 12px; margin: 16px 24px 8px; padding: 12px; }
+.help { padding: 0 24px 16px; }
+@media (max-width: 600px) {
+  .panel { border-radius: 0; padding-top: env(safe-area-inset-top); padding-bottom: env(safe-area-inset-bottom); box-sizing: border-box; }
+  .header { padding: 12px 16px; gap: 8px; }
+  .chat-log { padding: 20px 16px; }
+  .composer { margin-inline: 12px; padding: 8px; gap: 8px; }
+  .help { padding-inline: 16px; }
+}
+
+.mode-bar { display: flex; flex: none; gap: 8px; padding: 4px; margin: 16px 24px 8px; border-radius: 28px; background: var(--rp-container); }
+.mode-bar button { flex: 1; min-height: 44px; border-radius: 24px; color: var(--rp-on-container); }
+.mode-bar button.active { background: var(--rp-surface-raised); color: var(--rp-navy); box-shadow: 0 2px 6px rgb(13 41 33 / 10%); }
+.mode-bar img { vertical-align: middle; margin-inline-end: 8px; }
+.composer { border: 0; padding: 0; box-shadow: none; margin: 12px 24px; }
+.composer mat-form-field { width: 100%; --mat-form-field-outlined-container-shape: 28px; }
+.composer textarea { max-height: 128px; line-height: 1.5; }
+.composer .send { margin: 6px; border-radius: 50%; }
+.voice-stage { display: flex; flex-direction: column; align-items: center; gap: 16px; text-align: center; padding: 24px 8px; }
+.voice-stage h3 { margin: 0; color: var(--rp-navy); font-size: 1.5rem; }
+.voice-stage p { max-width: 340px; color: var(--rp-muted); line-height: 1.5; }
+.voice-avatar { display: grid; place-items: center; width: 104px; height: 104px; border-radius: 50%; background: var(--rp-container); }
+.is-listening .voice-avatar { animation: voice-pulse 1.4s ease-in-out infinite; }
+@keyframes voice-pulse { 50% { box-shadow: 0 0 0 12px color-mix(in srgb, var(--rp-container) 40%, transparent); } }
+@media (max-width: 600px) {
+  .mode-bar { margin-inline: 16px; }
+  .composer { margin-inline: 12px; padding: 0; }
+}
+@media (prefers-reduced-motion: reduce) { .is-listening .voice-avatar { animation: none; } }
+
+.chat-controls { display: flex; align-items: center; flex: none; gap: 8px; padding: 8px 16px; border-bottom: 1px solid var(--rp-outline); }
+.chat-controls .mode-bar { flex: 0 0 auto; gap: 0; margin: 0; padding: 2px; border-radius: 24px; }
+.chat-controls .mode-bar button { flex: none; min-width: 64px; min-height: 44px; padding-inline: 10px; font-size: .8125rem; }
+.chat-controls .mode-bar img, .chat-controls .mode-bar svg { width: 16px; height: 16px; vertical-align: middle; margin-inline-end: 4px; }
+@media (max-width: 380px) {
+  .chat-controls { padding-inline: 8px; gap: 4px; }
+  .chat-controls .mode-bar button { min-width: 56px; padding-inline: 8px; }
+}
+
+/* Material keeps the rounded outline as the field's focus indicator. */
+.composer textarea:focus, .composer textarea:focus-visible { outline: none; box-shadow: none; }
+@media (forced-colors: active) { .composer:focus-within { outline: 2px solid Highlight; border-radius: 28px; } }
