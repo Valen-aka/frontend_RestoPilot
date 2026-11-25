@@ -49,7 +49,6 @@ export class AssistantChat {
   readonly restaurant = new FormControl<number | null>(null);
   private readonly selectedRestaurantId = toSignal(this.restaurant.valueChanges, { initialValue: null });
   readonly selectedRestaurant = computed(() => this.restaurants().find(local => local.id === this.selectedRestaurantId()) ?? null);
-  readonly sendBlocked = computed(() => this.client() && (this.restaurantState() !== 'ready' || !this.selectedRestaurant()));
   readonly restaurantState = signal<'idle' | 'loading' | 'ready' | 'error'>('idle');
   readonly open = signal(false);
   readonly busy = signal(false);
@@ -121,13 +120,13 @@ export class AssistantChat {
     const user = this.session();
     if (this.busy()) return;
     if (!this.available() || (!user || (this.client() ? !activeClientSession(user) : !activeOperationSession(user))) ||
-        !mensaje || mensaje.length > 2000 || this.sendBlocked()) {
+        !mensaje || mensaje.length > 2000) {
       if (!this.draft.value) this.draft.setValue(mensaje);
-      this.error.set(this.sendBlocked() ? 'Selecciona un restaurante disponible antes de enviar.' : 'Revisa tu sesión y el mensaje antes de enviar.');
+      this.error.set('Revisa tu sesión y el mensaje antes de enviar.');
       return;
     }
     const isClient = this.client();
-    const restaurantId = isClient ? this.restaurant.value! : user.restauranteId!;
+    const restaurantId = isClient ? this.selectedRestaurant()?.id ?? null : user.restauranteId!;
     const version = this.contextVersion;
     this.error.set('');
     this.busy.set(true);

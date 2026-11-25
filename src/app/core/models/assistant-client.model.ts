@@ -1,6 +1,6 @@
 export interface ClientChatRequest {
   readonly mensaje: string;
-  readonly restauranteId: number;
+  readonly restauranteId?: number | null;
 }
 
 export interface ClientChatResponse {

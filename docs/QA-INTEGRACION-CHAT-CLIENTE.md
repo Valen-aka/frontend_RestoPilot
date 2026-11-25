@@ -1,6 +1,6 @@
 # Integración del chat del cliente
 
-La rama `feature/integracion-chat-cliente` conecta el panel a `POST {assistantApiUrl}/cliente/chat`. Envía únicamente `{ mensaje, restauranteId }`, con el token vigente de `API_SESSION` en `Authorization: Bearer`. Requiere sesión CLIENTE activa, mensaje de 1 a 2000 caracteres después de recortar espacios y un restaurante activo seleccionado del catálogo.
+La rama `feature/integracion-chat-cliente` conecta el panel a `POST {assistantApiUrl}/cliente/chat`. Envía únicamente `{ mensaje, restauranteId }`, con el token vigente de `API_SESSION` en `Authorization: Bearer`. Requiere sesión CLIENTE activa, mensaje de 1 a 2000 caracteres después de recortar espacios y permite restaurante omitido o nulo para consultas personales. Si se proporciona un identificador, debe ser positivo.
 
 El servicio valida `ANSWER`, `CLARIFICATION_REQUIRED` y `NO_DATA`, un mensaje no vacío y `pedidoId` positivo cuando existe. Conserva ese identificador para la tarea de enlace a pedidos; esta entrega no implementa el enlace. Los errores HTTP o respuestas inválidas se muestran sin detalles internos y recuperan el borrador si el usuario no escribió otro texto.
 

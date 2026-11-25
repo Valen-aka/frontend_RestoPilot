@@ -16,7 +16,7 @@ export class AssistantClientService {
       const base = environment.assistantApiUrl?.trim().replace(/\/+$/, '');
       const mensaje = request.mensaje.trim();
       if (!base || !activeClientSession(session) || !mensaje || mensaje.length > 2000
-          || !Number.isSafeInteger(request.restauranteId) || request.restauranteId <= 0) {
+          || request.restauranteId != null && (!Number.isSafeInteger(request.restauranteId) || request.restauranteId <= 0)) {
         return throwError(() => new Error('Consulta de asistente no válida.'));
       }
       // La identidad procede exclusivamente de API_SESSION; nunca del cuerpo del mensaje.
