@@ -9,9 +9,11 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { CatalogoService } from '../../core/services/catalogo.service';
+import { AssistantClientService } from '../../core/services/assistant-client.service';
+import { clientChatErrorMessage } from '../../core/models/assistant-client-error';
 import { RestauranteResponse } from '../../core/models/catalogo-api.model';
 import { NavigationEnd, Router } from '@angular/router';
-import { filter, map, Subscription } from 'rxjs';
+import { filter, map, Observable, Subscription } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { activeClientSession, activeOperationSession, API_SESSION } from '../../core/auth/api-session';
 
@@ -25,6 +27,7 @@ const CHAT_TIMEOUT_MS = 60_000;
 })
 export class AssistantChat {
   private readonly http = inject(HttpClient);
+  private readonly clientApi = inject(AssistantClientService);
   private readonly catalog = inject(CatalogoService);
   private readonly router = inject(Router);
   private readonly session = inject(API_SESSION);
@@ -36,6 +39,7 @@ export class AssistantChat {
     map(event => event.urlAfterRedirects),
   ), { initialValue: this.router.url });
   private request?: Subscription;
+  private contextVersion = 0;
 
   private restaurantRequest?: Subscription;
   readonly client = computed(() => /^\/cliente(\/|[?#]|$)/.test(this.route()) && activeClientSession(this.session()));
@@ -43,6 +47,8 @@ export class AssistantChat {
     /^\/(dueno|operacion)(\/|[?#]|$)/.test(this.route()) && activeOperationSession(this.session())));
   readonly restaurants = signal<readonly RestauranteResponse[]>([]);
   readonly restaurant = new FormControl<number | null>(null);
+  private readonly selectedRestaurantId = toSignal(this.restaurant.valueChanges, { initialValue: null });
+  readonly selectedRestaurant = computed(() => this.restaurants().find(local => local.id === this.selectedRestaurantId()) ?? null);
   readonly restaurantState = signal<'idle' | 'loading' | 'ready' | 'error'>('idle');
   readonly open = signal(false);
   readonly busy = signal(false);
@@ -50,13 +56,18 @@ export class AssistantChat {
   readonly messages = signal<ChatMessage[]>([]);
   readonly draft = new FormControl('', { nonNullable: true });
   constructor() {
+    this.restaurant.valueChanges.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(() => {
+      this.clearConversation();
+      this.draft.reset();
+    });
     effect(onCleanup => {
       this.session();
+      this.client();
       onCleanup(() => {
-        this.request?.unsubscribe();
+        this.clearConversation();
         this.restaurantRequest?.unsubscribe();
         this.restaurants.set([]);
-        this.restaurant.reset();
+        this.restaurant.reset(null, { emitEvent: true });
         this.restaurantState.set('idle');
         this.messages.set([]);
         this.draft.reset();
@@ -79,12 +90,15 @@ export class AssistantChat {
   loadRestaurants(): void {
     if (!this.client() || this.restaurantState() === 'loading') return;
     this.restaurantState.set('loading');
+    const user = this.session();
     this.restaurantRequest = this.catalog.restaurantes().pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
       next: restaurants => {
+        if (this.session() !== user || !this.client()) return;
         this.restaurants.set(restaurants.filter(restaurant => restaurant.activo));
+        if (!this.restaurants().some(local => local.id === this.restaurant.value)) this.restaurant.reset();
         this.restaurantState.set('ready');
       },
-      error: () => this.restaurantState.set('error'),
+      error: () => { if (this.session() === user && this.client()) this.restaurantState.set('error'); },
     });
   }
 
@@ -102,25 +116,40 @@ export class AssistantChat {
   }
 
   send(mensaje: string): void {
+    mensaje = mensaje.trim();
     const user = this.session();
-    if (!this.available() || (!user || (this.client() ? !activeClientSession(user) : !activeOperationSession(user))) || this.busy() ||
-        !mensaje || mensaje.length > 2000) return;
+    if (this.busy()) return;
+    if (!this.available() || (!user || (this.client() ? !activeClientSession(user) : !activeOperationSession(user))) ||
+        !mensaje || mensaje.length > 2000) {
+      if (!this.draft.value) this.draft.setValue(mensaje);
+      this.error.set('Revisa tu sesión y el mensaje antes de enviar.');
+      return;
+    }
+    const isClient = this.client();
+    const restaurantId = isClient ? this.selectedRestaurant()?.id ?? null : user.restauranteId!;
+    const version = this.contextVersion;
     this.error.set('');
     this.busy.set(true);
     this.append({ usuario: mensaje });
-    this.request = this.http.post<ChatReply>(environment.assistantApiUrl + (this.client() ? '/cliente/chat' : '/admin/chat'),
-      this.client() ? { mensaje, restauranteId: this.restaurant.value } : { mensaje, restauranteId: user.restauranteId },
+    const response: Observable<ChatReply> = isClient ? this.clientApi.send({ mensaje, restauranteId: restaurantId })
+      : this.http.post<ChatReply>(environment.assistantApiUrl + '/admin/chat',
+      { mensaje, restauranteId: restaurantId },
       { headers: { Authorization: 'Bearer ' + user.accessToken }, timeout: CHAT_TIMEOUT_MS },
-    ).pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
+    );
+    this.request = response.pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
       next: reply => {
-        if (this.session() !== user) return;
+        if (this.session() !== user || version !== this.contextVersion || this.client() !== isClient) return;
         this.busy.set(false);
         this.append({ asistente: reply });
       },
       error: (failure: unknown) => {
-        if (this.session() !== user) return;
+        if (this.session() !== user || version !== this.contextVersion || this.client() !== isClient) return;
         this.busy.set(false);
         if (!this.draft.value) this.draft.setValue(mensaje);
+        if (isClient) {
+          this.error.set(clientChatErrorMessage(failure));
+          return;
+        }
         const status = failure instanceof HttpErrorResponse ? failure.status : 0;
         if (status === 401) {
           this.error.set('El asistente rechazó la autenticación de esta sesión (401). Tu sesión en RestoPilot sigue activa.');
@@ -142,9 +171,17 @@ export class AssistantChat {
 
   resetConversation(): void {
     if (this.busy()) return;
+    this.clearConversation();
+    this.draft.reset();
+  }
+
+  private clearConversation(): void {
+    this.contextVersion++;
+    this.request?.unsubscribe();
+    this.request = undefined;
+    this.busy.set(false);
     this.messages.set([]);
     this.error.set('');
-    this.draft.reset();
   }
 
   private append(message: ChatMessage): void {

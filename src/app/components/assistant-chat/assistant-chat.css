@@ -37,3 +37,6 @@ rp-chat-panel {
   flex: none;
 }
 .restaurant-picker mat-form-field { width: 100%; }
+.restaurant-context, .restaurant-help { margin: 6px 0; font-size: .75rem; line-height: 1.4; overflow-wrap: anywhere; }
+.restaurant-context { color: var(--rp-primary); }
+.restaurant-help { color: var(--rp-muted); }

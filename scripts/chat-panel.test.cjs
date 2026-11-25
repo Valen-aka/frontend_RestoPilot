@@ -111,6 +111,8 @@ const server = http.createServer((req, res) => {
     await launcher.click();
     await input.waitFor();
     await page.waitForFunction(() => document.activeElement?.tagName === 'TEXTAREA');
+    await page.locator('mat-form-field').filter({ has: page.getByRole('combobox', { name: 'Restaurante para tus preguntas' }) }).click();
+    await page.getByRole('option', { name: 'Restaurante de prueba', exact: true }).click();
     const position = await page.locator('rp-chat-panel').boundingBox();
     assert(position.width > 350 && position.x >= 0 && position.y >= 0);
     await input.fill('Consulta que falla');

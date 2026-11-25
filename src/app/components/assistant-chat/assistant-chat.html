@@ -3,9 +3,10 @@
     <rp-chat-panel
       [title]="client() ? 'Tu asistente de carta' : 'Tu asistente de reportes'"
       [welcomeTitle]="client() ? 'Tu carta, conversada.' : 'Tu restaurante, en perspectiva.'"
-      [suggestions]="client() ? ['¿Cuál es el estado de mi último pedido?', '¿Cuál es el estado de mi reserva?', '¿Cuál es el horario del restaurante?'] : ['¿Qué platos se vendieron más este mes?', '¿Cuáles fueron los pagos de este mes?']"
-      [greeting]="client() ? 'Hola. Pregúntame por tu último pedido, tu reserva más reciente o por los datos del restaurante seleccionado.' : 'Hola. Puedes consultarme por los platos más vendidos o los pagos de un período.'"
+      [suggestions]="client() ? ['Soy vegetariana, ¿qué puedo pedir?', '¿Qué opciones veganas sin maní hay?', '¿Qué ingredientes tiene un plato de la carta?', '¿Cuál es el estado de mi último pedido?'] : ['¿Qué platos se vendieron más este mes?', '¿Cuáles fueron los pagos de este mes?']"
+      [greeting]="client() ? 'Consulta tus pedidos o reservas. Para preguntar por la carta o el local, selecciona un restaurante.' : 'Hola. Puedes consultarme por los platos más vendidos o los pagos de un período.'"
       [messages]="messages()" [busy]="busy()" [error]="error()" [draft]="draft"
+      [contextKey]="client() ? restaurant.value : null"
       (messageSent)="send($event)" (closed)="close()" (resetRequested)="resetConversation()">
       <div chat-context>
       @if (client()) {
@@ -18,12 +19,14 @@
           } @else if (restaurants().length) {
             <mat-form-field appearance="outline" subscriptSizing="dynamic">
               <mat-label>Restaurante para tus preguntas</mat-label>
-              <mat-select [formControl]="restaurant">
+              <mat-select [formControl]="restaurant"><mat-option [value]="null">Mi cuenta, sin restaurante</mat-option>
                 @for (local of restaurants(); track local.id) {
                   <mat-option [value]="local.id">{{ local.nombre }}</mat-option>
                 }
               </mat-select>
             </mat-form-field>
+            <p class="restaurant-context" role="status">{{ selectedRestaurant() ? 'Consultando: ' + selectedRestaurant()!.nombre : 'Puedes consultar tus pedidos y reservas sin elegir un restaurante.' }}</p>
+            <p class="restaurant-help">Al cambiar de restaurante se inicia una nueva conversación.</p>
           } @else if (restaurantState() === 'ready') {
             <p role="status">No hay restaurantes disponibles para consultar.</p>
           }
