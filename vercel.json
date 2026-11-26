@@ -1,0 +1,21 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "framework": null,
+  "installCommand": "npm ci",
+  "buildCommand": "npm run check && npm run build:publish",
+  "outputDirectory": "dist/restopilot/browser",
+  "rewrites": [
+    {
+      "source": "/api/auth/me",
+      "destination": "https://backend-restopilot.onrender.com/api/auth/me"
+    },
+    {
+      "source": "/api/ia/:path*",
+      "destination": "https://backend-restopilot.onrender.com/api/ia/:path*"
+    },
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
+    }
+  ]
+}

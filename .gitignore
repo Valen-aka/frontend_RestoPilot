@@ -19,3 +19,6 @@ artifacts/us13-api/
 
 # Resultados y capturas locales de QA
 /artifacts/
+
+# Vercel local project metadata
+.vercel/
