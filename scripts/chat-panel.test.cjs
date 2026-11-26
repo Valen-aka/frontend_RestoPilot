@@ -93,9 +93,14 @@ const server = http.createServer((req, res) => {
       window.chatQA.error.set('');
       window.chatQA.reply('ANSWER', 'Respuesta larga '.repeat(60));
     });
+    await expect(page.getByText('Respuesta larga '.repeat(60).trim(), { exact: true })).toBeVisible();
     for (const [width, height] of [[1440, 900], [768, 900], [390, 844], [320, 640], [640, 320]]) {
       await page.setViewportSize({ width, height });
       await input.scrollIntoViewIfNeeded();
+      await expect.poll(() => page.locator('rp-chat-panel').evaluate(el => {
+        const box = el.getBoundingClientRect();
+        return Math.abs(box.width - Math.min(912, innerWidth - 16)) < 1;
+      }), { message: `El panel debe ajustarse al viewport ${width}x${height}` }).toBe(true);
       const metrics = await page.locator('rp-chat-panel').evaluate(el => {
         const box = el.getBoundingClientRect();
         const panel = el.querySelector('.panel');
@@ -103,7 +108,7 @@ const server = http.createServer((req, res) => {
       });
       assert(!metrics.overflow && !metrics.panelOverflow, JSON.stringify({ width, height, metrics }));
       assert(metrics.width >= Math.min(400, width - 16) - 1);
-      assert(await input.isVisible());
+      await expect(input).toBeVisible();
       await page.screenshot({ path: path.join(output, `${width}x${height}.png`) });
       ok(`panel y texto largo sin desbordamiento horizontal ${width}x${height}`);
     }
