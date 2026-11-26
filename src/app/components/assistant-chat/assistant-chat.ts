@@ -1,3 +1,4 @@
+import { WorkspaceContext } from '../workspace-shell/workspace-context.service';
 import { ChatPanel } from '../chat-panel/chat-panel';
 import { ChatMessage, ChatReply } from '../chat-panel/chat-message.model';
 import { DOCUMENT } from '@angular/common';
@@ -30,6 +31,12 @@ const reportMonthFormat = new Intl.DateTimeFormat('es-PE', {
   styleUrl: './assistant-chat.css',
 })
 export class AssistantChat {
+  readonly workspace = inject(WorkspaceContext);
+  readonly administrativeRestaurant = computed(() => {
+    const restaurant = this.workspace.restaurant();
+    return activeOperationSession(this.session()) && restaurant?.id === this.session()?.restauranteId
+      ? restaurant : null;
+  });
   private readonly http = inject(HttpClient);
   private readonly clientApi = inject(AssistantClientService);
   private readonly catalog = inject(CatalogoService);
@@ -210,8 +217,12 @@ export class AssistantChat {
       this.pendingQuestion = '';
       return;
     }
+    if (!this.client() && !this.administrativeRestaurant()) {
+      this.error.set('Espera a que cargue tu restaurante o reintenta la consulta del local.');
+      return;
+    }
     const isClient = this.client();
-    const restaurantId = isClient ? this.selectedRestaurant()?.id ?? null : user.restauranteId!;
+    const restaurantId = isClient ? this.selectedRestaurant()?.id ?? null : this.administrativeRestaurant()!.id;
     const version = this.contextVersion;
     this.error.set('');
     this.busy.set(true);

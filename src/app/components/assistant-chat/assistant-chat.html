@@ -40,7 +40,7 @@
       [welcomeTitle]="client() ? '¿Qué hacemos hoy?' : 'Tus datos, con perspectiva.'"
       [suggestions]="client() ? ['¿Cuál es el estado de mi último pedido?', '¿Cuál es mi última reserva?', '¿Qué platos me recomiendas?', '¿Cuál es el horario del restaurante?'] : reportSuggestions()"
       [greeting]="client() ? 'Consulta tus pedidos o reservas. Para preguntar por la carta o el local, selecciona un restaurante.' : 'Hola. Puedes consultarme por los platos más vendidos, pagos, volumen de atención o demanda de un período.'"
-      [messages]="messages()" [busy]="busy()" [error]="error()" [draft]="draft"
+      [sendBlocked]="!client() && !administrativeRestaurant()" [messages]="messages()" [busy]="busy()" [error]="error()" [draft]="draft"
       [replyActions]="client() ? orderActions : adminActions"
       [contextKey]="client() ? restaurant.value : null"
       (messageSent)="send($event)" (closed)="close()" (resetRequested)="resetConversation()">
@@ -54,7 +54,18 @@
             <span aria-hidden="true">⌄</span>
           </button>
         </div>
-      }
+      } @else {
+          <div class="admin-restaurant" role="status">
+            @if (administrativeRestaurant(); as local) {
+              <span>Restaurante activo: <strong>{{ local.nombre }}</strong></span>
+            } @else if (workspace.state() === 'error') {
+              <span>No pudimos cargar tu restaurante.</span>
+              <button mat-button type="button" (click)="workspace.reload()">Reintentar</button>
+            } @else {
+              <span>Cargando tu restaurante…</span>
+            }
+          </div>
+        }
       </div>
       <div chat-actions>
       @if (client()) {
