@@ -14,6 +14,12 @@ Conservar aprendizajes verificables que ayuden a evitar errores repetidos en est
 
 ## Aprendizajes verificados
 
+### 2026-11-25 — Sincronización de QA del panel de chat
+
+- Evidencia: la suite original consultaba `isDisabled()` inmediatamente después del callback de dictado y fallaba antes del render de Angular. Las comprobaciones de desaparición y valor también leían instantáneas del DOM.
+- Aprendizaje: usar aserciones Playwright que esperan el estado observable; no pausas fijas ni cambios del producto para satisfacer selectores obsoletos. Contrastar el flujo vigente con su documentación: el chat actual mantiene el campo vacío tras errores HTTP.
+- Comprobación: `npm run qa:chat:build` y `npm run qa:chat:repeat`, con Playwright externo y Chrome. Registrar por separado voz simulada, viewports y confirmaciones humanas de dispositivos reales; ver `docs/QA-PANEL-CHAT.md` y `docs/QA-VOZ-DISPOSITIVOS.md`.
+
 ### 2026-11-01 — Fuente de diseño autorizada
 
 - Contexto/evidencia: el usuario indicó expresamente usar solo el Figma original wBq85sZ8G5W5RQ1RmQmdqg.
