@@ -1,5 +1,0 @@
-{
-  "extends": "../../tsconfig.json",
-  "compilerOptions": { "types": [], "outDir": "../../out-tsc/admin-chat" },
-  "files": ["admin-chat.ts"]
-}

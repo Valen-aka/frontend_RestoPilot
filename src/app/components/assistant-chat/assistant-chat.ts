@@ -2,7 +2,7 @@ import { ChatPanel } from '../chat-panel/chat-panel';
 import { ChatMessage, ChatReply } from '../chat-panel/chat-message.model';
 import { DOCUMENT } from '@angular/common';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { Component, DestroyRef, ElementRef, computed, effect, inject, input, signal, untracked } from '@angular/core';
+import { Component, DestroyRef, ElementRef, computed, effect, inject, signal, untracked } from '@angular/core';
 import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
@@ -19,9 +19,6 @@ import { environment } from '../../../environments/environment';
 import { activeClientSession, activeOperationSession, API_SESSION } from '../../core/auth/api-session';
 
 const CHAT_TIMEOUT_MS = 60_000;
-const reportMonthFormat = new Intl.DateTimeFormat('es-PE', {
-  month: 'long', year: 'numeric', timeZone: 'America/Lima',
-});
 
 @Component({
   selector: 'rp-assistant-chat',
@@ -45,31 +42,12 @@ export class AssistantChat {
   private request?: Subscription;
   private contextVersion = 0;
 
-  readonly embedded = input(false);
-  private readonly reportPage = computed(() => this.route().split(/[?#]/, 1)[0] === '/operacion/asistente');
-  readonly reportSuggestions = computed(() => {
-    if (!this.embedded() && !this.open()) return [];
-    const period = reportMonthFormat.format(new Date());
-    return [
-      `¿Qué platos se vendieron más en ${period}?`,
-      `¿Cuáles fueron los pagos de ${period}?`,
-      `¿Cuál fue el volumen de atención en ${period}?`,
-      `¿Cuáles fueron las horas de mayor demanda en ${period}?`,
-    ];
-  });
   readonly reportUrl = computed(() => this.route().startsWith('/dueno') ? '/dueno/reportes' : '/operacion/reportes');
 
   private restaurantRequest?: Subscription;
   readonly client = computed(() => /^\/cliente(\/|[?#]|$)/.test(this.route()) && activeClientSession(this.session()));
-  readonly available = computed(() => {
-    if (!environment.assistantApiUrl) return false;
-    if (this.embedded()) return activeOperationSession(this.session());
-    if (this.reportPage()) {
-      const view = this.router.parseUrl(this.route()).queryParamMap.get('vista') ?? '';
-      if (!/^op-ia-(platos|atenciones|demanda|pagos|sin-datos|aclarar|error)$/.test(view)) return false;
-    }
-    return this.client() || /^\/(dueno|operacion)(\/|[?#]|$)/.test(this.route()) && activeOperationSession(this.session());
-  });
+  readonly available = computed(() => !!environment.assistantApiUrl && (this.client() ||
+    /^\/(dueno|operacion)(\/|[?#]|$)/.test(this.route()) && activeOperationSession(this.session())));
   readonly restaurants = signal<readonly RestauranteResponse[]>([]);
   readonly restaurant = new FormControl<number | null>(null);
   private readonly selectedRestaurantId = toSignal(this.restaurant.valueChanges, { initialValue: null });

@@ -2506,8 +2506,8 @@
     ],
     "owner": "Valentina Montenegro",
     "us": "US04 · Funcionalidad prevista",
-    "status": "Interfaz integrada con la API. Validación de producción pendiente.",
-    "contenidoImplementado": true
+    "status": "Pendiente",
+    "contenidoImplementado": false
   },
   {
     "slug": "op-ia-platos",

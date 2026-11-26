@@ -1,5 +1,5 @@
 @if (available()) {
-  @if (embedded() || open()) {
+  @if (open()) {
     <ng-template #orderActions let-reply>
       @if (reply.pedidoId; as pedidoId) {
         <a mat-stroked-button routerLink="/cliente/pedido" [queryParams]="{ pedidoId }"
@@ -35,10 +35,9 @@
       }
     </ng-template>
     <rp-chat-panel
-      [class.embedded]="embedded()" [dismissible]="!embedded()"
       [title]="client() ? 'Tu asistente RestoPilot' : 'Tu asistente de reportes'"
-      [welcomeTitle]="client() ? '¿Qué hacemos hoy?' : 'Tus datos, con perspectiva.'"
-      [suggestions]="client() ? ['¿Cuál es el estado de mi último pedido?', '¿Cuál es mi última reserva?', '¿Qué platos me recomiendas?', '¿Cuál es el horario del restaurante?'] : reportSuggestions()"
+      [welcomeTitle]="client() ? '¿Qué hacemos hoy?' : 'Tu restaurante, en perspectiva.'"
+      [suggestions]="client() ? ['¿Cuál es el estado de mi último pedido?', '¿Cuál es mi última reserva?', '¿Qué platos me recomiendas?', '¿Cuál es el horario del restaurante?'] : ['¿Qué platos se vendieron más este mes?', '¿Cuáles fueron los pagos de este mes?', '¿Cuál fue el volumen de atención?', '¿Cuáles son las horas de mayor demanda?']"
       [greeting]="client() ? 'Consulta tus pedidos o reservas. Para preguntar por la carta o el local, selecciona un restaurante.' : 'Hola. Puedes consultarme por los platos más vendidos, pagos, volumen de atención o demanda de un período.'"
       [messages]="messages()" [busy]="busy()" [error]="error()" [draft]="draft"
       [replyActions]="client() ? orderActions : adminActions"
@@ -94,6 +93,4 @@
       <img src="assets/asistente/mascota.svg" alt="" width="56" height="56">
     </button>
   }
-} @else if (embedded()) {
-  <p class="rp-feedback" role="status">El asistente de reportes no está disponible para esta sesión.</p>
 }
