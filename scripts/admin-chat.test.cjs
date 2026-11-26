@@ -46,6 +46,11 @@ const reports = [
     await page.goto(`http://127.0.0.1:${server.address().port}/operacion/asistente`);
     await page.getByRole('heading', { name: 'Una pregunta. Una mejor perspectiva.' }).waitFor();
     await page.getByRole('heading', { name: 'Tu asistente de reportes' }).waitFor();
+    await page.evaluate(() => window.adminChatHttp.expectOne('/restopilot-api/restaurantes/21').flush({
+      id: 21, nombre: 'Local activo QA', direccion: '', activo: true, abierto: true,
+      aceptaDelivery: true, tieneAtencionFisica: true, horaApertura: null, horaCierre: null
+    }));
+    await page.getByText('Local activo QA', { exact: true }).first().waitFor();
     assert.equal(await page.locator('rp-chat-panel').count(), 1);
     assert.equal(await page.getByRole('button', { name: 'Abrir asistente' }).count(), 0);
     const input = page.getByRole('textbox', { name: 'Mensaje para el asistente' });

@@ -84,3 +84,6 @@ rp-chat-panel.embedded {
 @media (max-width: 600px) {
   rp-chat-panel.embedded { height: max(39rem, 75dvh); }
 }
+
+.admin-restaurant { font-size: .8125rem; line-height: 1.4; overflow-wrap: anywhere; padding-inline: 8px; color: var(--rp-muted); }
+.admin-restaurant strong { color: var(--rp-navy); }
