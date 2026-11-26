@@ -76,7 +76,7 @@
           <mat-form-field appearance="outline" class="field-item">
             <mat-label>Mesa asignada</mat-label>
             <mat-select formControlName="mesaId">
-              @for (m of store.mesas(); track m.id) {
+              @for (m of mesasCatalogo(); track m.id) {
                 <mat-option [value]="m.id">
                   {{ m.numero }} ({{ m.zona }}) · Capacidad: {{ m.capacidad }} personas
                 </mat-option>

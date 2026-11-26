@@ -1,4 +1,4 @@
-import {Component, inject} from '@angular/core';
+import {Component, computed, inject} from '@angular/core';
 import {FormControl, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
 import {Router, RouterLink} from '@angular/router';
 import {MatButtonModule} from '@angular/material/button';
@@ -36,6 +36,11 @@ export class OpReservaNuevaPage {
   readonly store = inject(ReservaStore);
   private readonly router = inject(Router);
 
+  readonly mesasCatalogo = computed(() => {
+    const list = this.store.mesas();
+    return list.length > 0 ? list : this.store.catalogoMesas;
+  });
+
   readonly horasDisponibles = [
     '12:30', '13:00', '13:30', '14:00', '14:30', '15:00',
     '19:00', '19:30', '20:00', '20:30', '21:00', '21:30'
@@ -71,7 +76,7 @@ export class OpReservaNuevaPage {
     }
 
     const val = this.form0.getRawValue();
-    const mesa = this.store.mesas().find(m => m.id === Number(val.mesaId));
+    const mesa = this.mesasCatalogo().find(m => m.id === Number(val.mesaId));
 
     const nueva = this.store.crearReservaOperativa({
       nombreCliente: val.nombreCliente.trim(),

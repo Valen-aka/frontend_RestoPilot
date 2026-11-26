@@ -1,2 +1,483 @@
-:host{display:block}
-/* TODO: estilos del componente. */
+:host {
+  display: block;
+  width: 100%;
+}
+
+.floor-plan-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+/* ==========================================================================
+   Marcadores Arquitectónicos (Recepción, Entrada, Pasillo)
+   ========================================================================== */
+.architectural-marker {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.entrance-marker .door-frame {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: #f1f5f9;
+  border: 1.5px dashed #cbd5e1;
+  padding: 8px 22px;
+  border-radius: 9999px;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: #475569;
+}
+
+.entrance-marker .marker-icon {
+  font-size: 18px;
+  width: 18px;
+  height: 18px;
+  color: #1b7954;
+}
+
+.back-marker .back-frame {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  padding: 6px 18px;
+  border-radius: 8px;
+  font-size: 12px;
+  color: #64748b;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.service-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 500;
+}
+
+.service-icon {
+  font-size: 16px;
+  width: 16px;
+  height: 16px;
+  color: #15324e;
+}
+
+.service-divider {
+  color: #cbd5e1;
+  font-weight: bold;
+}
+
+/* ==========================================================================
+   Rejilla Arquitectónica de Zonas (Distribución 2x2 equilibrada)
+   ========================================================================== */
+.zones-architectural-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 20px;
+}
+
+.zone-card {
+  background: #ffffff;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 14px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  transition: box-shadow 0.2s ease, border-color 0.2s ease;
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04);
+}
+
+.zone-card:hover {
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.06);
+}
+
+/* Colores de acento por zona */
+.zone-card.zone-terraza {
+  border-top: 4px solid #1b7954;
+  background: linear-gradient(180deg, #f7fdf9 0%, #ffffff 45px);
+}
+.zone-card.zone-terraza .zone-icon {
+  color: #1b7954;
+}
+
+.zone-card.zone-salon {
+  border-top: 4px solid #15324e;
+  background: linear-gradient(180deg, #f8fafc 0%, #ffffff 45px);
+}
+.zone-card.zone-salon .zone-icon {
+  color: #15324e;
+}
+
+.zone-card.zone-ventanal {
+  border-top: 4px solid #0284c7;
+  background: linear-gradient(180deg, #f0f9ff 0%, #ffffff 45px);
+}
+.zone-card.zone-ventanal .zone-icon {
+  color: #0284c7;
+}
+
+.zone-card.zone-vip {
+  border-top: 4px solid #7c3aed;
+  background: linear-gradient(180deg, #faf5ff 0%, #ffffff 45px);
+}
+.zone-card.zone-vip .zone-icon {
+  color: #7c3aed;
+}
+
+/* Encabezado de la zona */
+.zone-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+  border-bottom: 1px solid #f1f5f9;
+  padding-bottom: 12px;
+}
+
+.zone-info {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.zone-title-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.zone-icon {
+  font-size: 20px;
+  width: 20px;
+  height: 20px;
+}
+
+.zone-title {
+  font: 700 15px/1.3 'Roboto', Arial, sans-serif;
+  color: #15324e;
+  margin: 0;
+  letter-spacing: 0.2px;
+}
+
+.zone-sub {
+  font-size: 11px;
+  color: #64748b;
+  margin: 0;
+  line-height: 1.35;
+}
+
+.zone-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: #ecfdf5;
+  color: #065f46;
+  border: 1px solid #a7f3d0;
+  padding: 4px 10px;
+  border-radius: 9999px;
+  font-size: 11px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.zone-badge .badge-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background-color: #10b981;
+}
+
+.zone-badge.badge-empty {
+  background: #f1f5f9;
+  color: #64748b;
+  border-color: #e2e8f0;
+}
+
+.zone-badge.badge-empty .badge-dot {
+  background-color: #94a3b8;
+}
+
+/* ==========================================================================
+   Distribución de Mesas dentro de la Zona
+   ========================================================================== */
+.tables-layout {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+  gap: 12px;
+}
+
+.no-tables-in-zone {
+  grid-column: 1 / -1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 24px 12px;
+  background: #f8fafc;
+  border-radius: 8px;
+  color: #94a3b8;
+  font-size: 12px;
+}
+
+.muted-icon {
+  font-size: 20px;
+  width: 20px;
+  height: 20px;
+}
+
+/* Tarjeta individual de Mesa */
+.table-card {
+  background: #ffffff;
+  border: 1.5px solid #cbd5e1;
+  border-radius: 12px;
+  padding: 12px 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  min-height: 104px;
+  position: relative;
+  text-align: center;
+}
+
+.table-card:focus-visible {
+  outline: 3px solid #15324e !important;
+  outline-offset: 2px !important;
+  box-shadow: 0 0 0 4px rgba(21, 50, 78, 0.2);
+}
+
+/* Estados de Mesa */
+.table-card.is-available {
+  background-color: #f7fdf9;
+  border-color: #86efac;
+}
+
+.table-card.is-available:hover {
+  transform: translateY(-2px);
+  border-color: #1b7954;
+  box-shadow: 0 6px 16px rgba(27, 121, 84, 0.16);
+}
+
+.table-card.is-selected {
+  background-color: #15324e !important;
+  border-color: #15324e !important;
+  box-shadow: 0 6px 16px rgba(21, 50, 78, 0.3) !important;
+  transform: translateY(-2px);
+}
+
+.table-card.is-selected .table-top {
+  background: #ffffff !important;
+  border-color: #ffffff !important;
+}
+
+.table-card.is-selected .table-top-num {
+  color: #15324e !important;
+}
+
+.table-card.is-selected .chair-point {
+  background-color: #38bdf8 !important;
+}
+
+.table-card.is-selected .table-capacity,
+.table-card.is-selected .meta-icon {
+  color: #e2e8f0 !important;
+}
+
+.table-card.is-selected .table-status-pill {
+  background: #22c55e !important;
+  color: #ffffff !important;
+  border-color: #16a34a !important;
+}
+
+.table-card.is-occupied {
+  background-color: #f8fafc;
+  border-color: #e2e8f0;
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.table-card.is-insufficient {
+  opacity: 0.85;
+}
+
+/* Representación Gráfica (Tablero + Sillas) */
+.table-visual {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  width: 100%;
+}
+
+.table-top {
+  width: 54px;
+  height: 38px;
+  background: #f1f5f9;
+  border: 2px solid #94a3b8;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.05);
+  transition: all 0.2s ease;
+}
+
+.table-card.shape-round .table-top {
+  border-radius: 50%;
+  width: 44px;
+  height: 44px;
+}
+
+.table-card.shape-square .table-top {
+  border-radius: 8px;
+  width: 48px;
+  height: 40px;
+}
+
+.table-card.shape-rect .table-top {
+  border-radius: 8px;
+  width: 68px;
+  height: 38px;
+}
+
+.table-top-num {
+  font-weight: 700;
+  font-size: 11px;
+  color: #15324e;
+  letter-spacing: -0.2px;
+}
+
+/* Puntos de sillas */
+.chairs-row {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+  justify-content: center;
+}
+
+.chair-point {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: #94a3b8;
+  display: inline-block;
+  transition: background-color 0.2s ease;
+}
+
+.table-card.is-available .chair-point {
+  background-color: #22c55e;
+}
+
+.table-card.is-occupied .chair-point {
+  background-color: #cbd5e1;
+}
+
+/* Metadatos */
+.table-meta {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  width: 100%;
+}
+
+.table-capacity {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  font-size: 11px;
+  font-weight: 500;
+  color: #475569;
+}
+
+.meta-icon {
+  font-size: 13px;
+  width: 13px;
+  height: 13px;
+  color: #64748b;
+}
+
+.table-status-pill {
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  padding: 2px 7px;
+  border-radius: 9999px;
+  display: inline-block;
+}
+
+.table-card.is-available .table-status-pill {
+  background: #dcfce7;
+  color: #15803d;
+}
+
+.table-card.is-occupied .table-status-pill {
+  background: #f1f5f9;
+  color: #94a3b8;
+}
+
+/* ==========================================================================
+   Adaptaciones Responsivas
+   ========================================================================== */
+@media (max-width: 900px) {
+  .zones-architectural-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+}
+
+@media (max-width: 600px) {
+  .floor-plan-wrapper {
+    gap: 14px;
+  }
+
+  .zone-card {
+    padding: 14px 12px;
+  }
+
+  .tables-layout {
+    grid-template-columns: repeat(auto-fill, minmax(105px, 1fr));
+    gap: 8px;
+  }
+
+  .table-card {
+    min-height: 96px;
+    padding: 10px 6px;
+  }
+
+  .table-top {
+    width: 44px;
+    height: 34px;
+  }
+
+  .table-card.shape-round .table-top {
+    width: 38px;
+    height: 38px;
+  }
+
+  .table-card.shape-rect .table-top {
+    width: 56px;
+    height: 34px;
+  }
+
+  .table-top-num {
+    font-size: 10px;
+  }
+
+  .table-capacity {
+    font-size: 10px;
+  }
+
+  .table-status-pill {
+    font-size: 9px;
+  }
+}

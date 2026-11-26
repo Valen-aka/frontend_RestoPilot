@@ -8,6 +8,7 @@ import {ReservaStore} from '../reserva-ui/reserva-store';
 import {ReservaService} from '../../../core/services/reserva.service';
 import {MesaPlano} from '../reserva-ui/reserva.model';
 import {ClientLoadingSkeleton} from '../../../components/client-loading-skeleton/client-loading-skeleton';
+import {FloorPlan} from '../../../components/floor-plan/floor-plan';
 
 /**
  * Frame: cliente-plano | "Elige tu lugar favorito"
@@ -22,7 +23,8 @@ import {ClientLoadingSkeleton} from '../../../components/client-loading-skeleton
     MatCardModule,
     MatIconModule,
     MatChipsModule,
-    ClientLoadingSkeleton
+    ClientLoadingSkeleton,
+    FloorPlan
   ],
   templateUrl: './cliente-plano.html',
   styleUrls: ['../reserva-ui/reserva-view.css', './cliente-plano.css']

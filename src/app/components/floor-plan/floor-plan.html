@@ -1,1 +1,102 @@
-<!-- TODO: componente reutilizable floor-plan. Sin contenido implementado. -->
+<div class="floor-plan-wrapper" role="region" aria-label="Plano de distribución del salón">
+  <!-- Acceso Principal / Recepción -->
+  <div class="architectural-marker entrance-marker">
+    <div class="door-frame">
+      <mat-icon class="marker-icon" aria-hidden="true">sensor_door</mat-icon>
+      <span class="marker-label">Acceso Principal & Recepción de Comensales</span>
+    </div>
+  </div>
+
+  <!-- Rejilla arquitectónica simétrica de 4 Zonas -->
+  <div class="zones-architectural-grid">
+    @for (z of zonas; track z.id) {
+      <section class="zone-card" [ngClass]="z.accentClass" [attr.aria-label]="z.nombre">
+        <header class="zone-header">
+          <div class="zone-info">
+            <div class="zone-title-row">
+              <mat-icon class="zone-icon" aria-hidden="true">{{ z.icono }}</mat-icon>
+              <h2 class="zone-title">{{ z.nombre }}</h2>
+            </div>
+            <p class="zone-sub">{{ z.subtitulo }}</p>
+          </div>
+          <div class="zone-badge" [class.badge-empty]="conteoLibres(z.id) === 0">
+            <span class="badge-dot" aria-hidden="true"></span>
+            {{ conteoLibres(z.id) }} libre{{ conteoLibres(z.id) === 1 ? '' : 's' }}
+          </div>
+        </header>
+
+        <div class="tables-layout">
+          @for (mesa of mesasPorZona(z.id); track mesa.id) {
+            <button
+              type="button"
+              class="table-card"
+              [ngClass]="[
+                obtenerClaseForma(mesa.capacidad),
+                mesa.disponible ? 'is-available' : 'is-occupied',
+                mesaSeleccionadaId === mesa.id ? 'is-selected' : '',
+                esMesaInsuficiente(mesa) ? 'is-insufficient' : ''
+              ]"
+              [disabled]="soloLectura || !mesa.disponible"
+              (click)="onSeleccionarMesa(mesa)"
+              [attr.aria-label]="mesa.numero + ' en ' + mesa.zona + ', capacidad ' + mesa.capacidad + ' personas, ' + (mesa.disponible ? 'disponible' : 'ocupada')">
+
+              <!-- Representación gráfica de la mesa del restaurante -->
+              <div class="table-visual" aria-hidden="true">
+                <div class="table-top">
+                  <span class="table-top-num">{{ mesa.numero }}</span>
+                </div>
+                <!-- Puntos representativos de sillas -->
+                <div class="chairs-row chairs-cap-{{ mesa.capacidad }}">
+                  @for (i of obtenerPuntosSillas(mesa.capacidad); track i) {
+                    <span class="chair-point"></span>
+                  }
+                </div>
+              </div>
+
+              <!-- Metadatos de la mesa -->
+              <div class="table-meta">
+                <span class="table-capacity">
+                  <mat-icon class="meta-icon" aria-hidden="true">group</mat-icon>
+                  {{ mesa.capacidad }} pers.
+                </span>
+                <span class="table-status-pill">
+                  @if (mesaSeleccionadaId === mesa.id) {
+                    ★ Elegida
+                  } @else if (mesa.disponible) {
+                    @if (esMesaInsuficiente(mesa)) {
+                      Cap. baja
+                    } @else {
+                      ✓ Libre
+                    }
+                  } @else {
+                    ✕ Ocupada
+                  }
+                </span>
+              </div>
+            </button>
+          } @empty {
+            <div class="no-tables-in-zone">
+              <mat-icon class="muted-icon" aria-hidden="true">table_restaurant</mat-icon>
+              <span>Sin mesas asignadas a esta zona</span>
+            </div>
+          }
+        </div>
+      </section>
+    }
+  </div>
+
+  <!-- Pasillo Central & Servicios en el fondo del plano -->
+  <div class="architectural-marker back-marker">
+    <div class="back-frame">
+      <span class="service-tag">
+        <mat-icon class="service-icon" aria-hidden="true">local_bar</mat-icon>
+        Barra de Coctelería
+      </span>
+      <span class="service-divider" aria-hidden="true">·</span>
+      <span class="service-tag">
+        <mat-icon class="service-icon" aria-hidden="true">restaurant_menu</mat-icon>
+        Cocina Central La Mesa Verde
+      </span>
+    </div>
+  </div>
+</div>

@@ -7,27 +7,31 @@ import {ReservaService} from '../../../core/services/reserva.service';
 
 function inferirZona(numero: number, coordX?: number): 'Terraza' | 'Salón Principal' | 'Ventanal' | 'Zona VIP' {
   if (coordX !== undefined && coordX !== null) {
-    if (coordX <= 30) return 'Terraza';
-    if (coordX <= 60) return 'Salón Principal';
-    if (coordX <= 80) return 'Ventanal';
+    // Si la coordenada viene en escala de píxeles (ej. 60, 240, 420 px de la BD), normalizar a 0..100
+    const normX = coordX > 100 ? (coordX / 500) * 100 : coordX;
+    if (normX <= 25) return 'Terraza';
+    if (normX <= 50) return 'Salón Principal';
+    if (normX <= 75) return 'Ventanal';
     return 'Zona VIP';
   }
-  if (numero <= 2) return 'Terraza';
-  if (numero <= 5) return 'Salón Principal';
-  if (numero <= 7) return 'Ventanal';
+  // Mapeo balanceado y armónico por número de mesa en 4 zonas simétricas
+  const mod = ((numero - 1) % 8) + 1;
+  if (mod <= 2) return 'Terraza';
+  if (mod <= 4) return 'Salón Principal';
+  if (mod <= 6) return 'Ventanal';
   return 'Zona VIP';
 }
 
 import {getFechaLima} from './reserva-date.util';
 
-const MESAS_INICIALES: MesaPlano[] = [
+export const MESAS_CATALOGO: MesaPlano[] = [
   { id: 1, numero: 'Mesa 01', capacidad: 2, zona: 'Terraza', disponible: true, x: 10, y: 15 },
-  { id: 2, numero: 'Mesa 02', capacidad: 2, zona: 'Terraza', disponible: true, x: 30, y: 15 },
-  { id: 3, numero: 'Mesa 03', capacidad: 4, zona: 'Salón Principal', disponible: false, motivoNoDisponible: 'Ocupada en este turno', x: 55, y: 15 },
-  { id: 4, numero: 'Mesa 04', capacidad: 4, zona: 'Salón Principal', disponible: true, x: 80, y: 15 },
+  { id: 2, numero: 'Mesa 02', capacidad: 4, zona: 'Terraza', disponible: true, x: 25, y: 15 },
+  { id: 3, numero: 'Mesa 03', capacidad: 4, zona: 'Salón Principal', disponible: false, motivoNoDisponible: 'Ocupada en este turno', x: 45, y: 15 },
+  { id: 4, numero: 'Mesa 04', capacidad: 4, zona: 'Salón Principal', disponible: true, x: 60, y: 15 },
   { id: 5, numero: 'Mesa 05', capacidad: 4, zona: 'Ventanal', disponible: true, x: 10, y: 55 },
-  { id: 6, numero: 'Mesa 06', capacidad: 6, zona: 'Ventanal', disponible: false, motivoNoDisponible: 'Reserva confirmada', x: 40, y: 55 },
-  { id: 7, numero: 'Mesa 07', capacidad: 6, zona: 'Salón Principal', disponible: true, x: 65, y: 55 },
+  { id: 6, numero: 'Mesa 06', capacidad: 6, zona: 'Ventanal', disponible: false, motivoNoDisponible: 'Reserva confirmada', x: 30, y: 55 },
+  { id: 7, numero: 'Mesa 07', capacidad: 6, zona: 'Zona VIP', disponible: true, x: 75, y: 55 },
   { id: 8, numero: 'Mesa 08', capacidad: 8, zona: 'Zona VIP', disponible: true, x: 90, y: 55 }
 ];
 
@@ -132,6 +136,7 @@ const RESERVAS_MUESTRA: ReservaItem[] = [
 
 @Injectable({ providedIn: 'root' })
 export class ReservaStore {
+  readonly catalogoMesas = MESAS_CATALOGO;
   // El plano inicia sin mesas de muestra para mostrar únicamente la búsqueda vigente (US05 - 024)
   readonly mesas = signal<MesaPlano[]>([]);
   readonly busquedaVigente = signal<boolean>(false);
