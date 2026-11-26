@@ -8,6 +8,9 @@
     "build": "ng build",
     "build:development": "ng build --configuration development",
     "check": "node scripts/check-structure.mjs",
+    "qa:chat:build": "ng build --configuration development --browser scripts/fixtures/chat-panel.ts --ts-config scripts/fixtures/tsconfig.chat-panel.json --output-path artifacts/chat-panel-app",
+    "qa:chat": "node scripts/chat-panel.test.cjs",
+    "qa:chat:repeat": "node scripts/repeat-chat-panel.cjs",
     "verify": "npm run check && npm run build",
     "build:publish": "node scripts/build-publish.mjs"
   },
