@@ -8,7 +8,7 @@
       <div class="heading-actions">      <button mat-stroked-button type="button" (click)="store.refresh()" [disabled]="!store.hasSession() || store.refreshing()">{{ store.refreshing() ? 'Actualizando…' : 'Actualizar reservas' }}</button>
       @if(mode()==='history') {
         @if(context()==='operation'){<a mat-stroked-button routerLink="/operacion/atencion">Configurar atención física</a>}
-        @else {<a mat-stroked-button routerLink="/cliente/reservar" [queryParams]="{restauranteId: 1}">Nueva reserva</a>}
+        @else {<a mat-stroked-button routerLink="/cliente/reservar">Nueva reserva</a>}
       }
       </div>
     </div>
