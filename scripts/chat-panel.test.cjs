@@ -160,16 +160,23 @@ const server = http.createServer((req, res) => {
       Object.defineProperty(window, 'speechSynthesis', { value: undefined });
     });
     const other = await fallback.newPage();
+    other.on('pageerror', error => errors.push(error.message));
     await other.goto(url);
     await expect(other.getByRole('textbox', { name: 'Mensaje para el asistente' })).toBeVisible();
-    assert.equal(await other.getByRole('button', { name: 'Dictar mensaje' }).count(), 0);
+    await other.getByRole('button', { name: 'Voz', exact: true }).click();
+    await expect(other.getByText('Tu navegador no admite dictado. Puedes continuar en Chat.', { exact: true })).toBeVisible();
+    await expect(other.getByRole('button', { name: 'Hablar con el asistente', exact: true })).toHaveCount(0);
+    await other.getByRole('button', { name: 'Chat', exact: true }).click();
     await other.getByRole('textbox', { name: 'Mensaje para el asistente' }).fill('Consulta escrita');
     await other.getByRole('button', { name: 'Enviar mensaje' }).click();
     assert.deepEqual(await other.evaluate(() => window.chatQA.sent), ['Consulta escrita']);
+    await other.evaluate(() => window.chatQA.reply('ANSWER', 'Respuesta sin audio'));
+    await expect(other.getByText('Respuesta sin audio', { exact: true })).toBeVisible();
+    await expect(other.getByRole('button', { name: 'Escuchar respuesta', exact: true })).toHaveCount(0);
     ok('navegador sin voz conserva envío escrito y explica la limitación');
     assert.deepEqual(errors, []);
     for (const image of await other.locator('img').all()) {
-      assert(await image.evaluate(el => el.complete && el.naturalWidth > 0));
+      await expect.poll(() => image.evaluate(el => el.complete && el.naturalWidth > 0)).toBe(true);
       const box = await image.boundingBox();
       assert(box && box.width > 0 && box.height > 0);
     }
