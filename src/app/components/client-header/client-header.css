@@ -10,7 +10,7 @@ a:focus-visible,button:focus-visible{outline:3px solid var(--rp-focus-color);out
 
 .notification-area{position:relative;flex:none;order:0}.menu-symbol{display:none}
 @media(max-width:900px){.notification-area{order:3}.menu-toggle{order:2}nav{order:4}.account{order:5}}
-@media(max-width:400px){.client-header{gap:8px}.menu-toggle{width:44px;min-width:44px;padding-inline:0}.menu-text{display:none}.menu-symbol{display:inline;font-size:20px}}
+@media(max-width:400px){.client-header{padding:12px 14px;min-height:auto;gap:8px}.menu-toggle{width:44px;min-width:44px;padding-inline:0}.menu-text{display:none}.menu-symbol{display:inline;font-size:20px}}
 .account{display:flex;align-items:center;flex:none}
 .account-toggle{display:grid;place-items:center;width:44px;height:44px;border:1px solid var(--rp-primary);border-radius:50%;background:var(--rp-container,#d8f2e3);color:var(--rp-primary);font:700 14px var(--rp-font);letter-spacing:.02em;text-decoration:none}
 .account-toggle:hover,.account-toggle[aria-current="page"]{background:var(--rp-primary);color:#fff}

@@ -1,8 +1,6 @@
 <a class="skip-link" href="#plano-content">Saltar al contenido</a>
 
 <div class="reserva-shell">
-  <!-- Cabecera de Cliente -->
-
   <!-- Contenido Principal -->
   <main id="plano-content" tabindex="-1" class="reserva-main">
     <div class="page-heading">
@@ -50,22 +48,6 @@
         </a>
       </div>
     } @else {
-      <!-- Leyenda interactiva -->
-      <div class="legend-bar" role="region" aria-label="Leyenda del plano">
-        <div class="legend-item">
-          <span class="legend-dot dot-available" aria-hidden="true"></span>
-          <span>Disponible</span>
-        </div>
-        <div class="legend-item">
-          <span class="legend-dot dot-selected" aria-hidden="true"></span>
-          <span>Tu selección</span>
-        </div>
-        <div class="legend-item">
-          <span class="legend-dot dot-occupied" aria-hidden="true"></span>
-          <span>Ocupada / Reservada</span>
-        </div>
-      </div>
-
       <!-- Contenedor del plano del salón -->
       <div class="reserva-card floorplan-container">
         <!-- Componente reutilizable y arquitectónico FloorPlan -->
@@ -73,6 +55,8 @@
           [mesas]="store.mesas()"
           [mesaSeleccionadaId]="store.draft().mesaId"
           [comensalesMinimos]="store.draft().comensales"
+          [fecha]="store.draft().fecha"
+          [horario]="store.draft().horaInicio ? (store.draft().horaInicio + '–' + store.draft().horaFin) : ''"
           (mesaSeleccionada)="seleccionarMesa($event)" />
 
         <!-- Resumen inferior de la mesa elegida -->
@@ -81,7 +65,7 @@
             <div class="selection-details">
               <span class="selection-icon" aria-hidden="true">✓</span>
               <div>
-                <strong>Has elegido {{ sel.numero }} ({{ sel.zona }})</strong>
+                <strong>Has elegido {{ sel.numero }}</strong>
                 <small>Capacidad recomendada para {{ sel.capacidad }} comensales.</small>
               </div>
             </div>

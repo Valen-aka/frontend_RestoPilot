@@ -15,7 +15,7 @@
 
 .reserva-shell {
   background: var(--reserva-bg);
-  min-height: 100dvh;
+  min-height: auto;
   display: flex;
   flex-direction: column;
 }
@@ -352,12 +352,12 @@ button:focus-visible {
   }
 
   .reserva-main {
-    padding: 18px 12px 32px;
+    padding: 12px 12px 32px;
     width: 100%;
   }
 
   .page-heading {
-    margin-bottom: 20px;
+    margin-bottom: 14px;
   }
 
   h1 {
