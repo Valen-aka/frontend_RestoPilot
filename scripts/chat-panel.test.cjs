@@ -55,6 +55,8 @@ const server = http.createServer((req, res) => {
     await input.fill('Quiero');
     await page.getByRole('button', { name: 'Voz', exact: true }).click();
     await page.getByRole('button', { name: 'Hablar con el asistente', exact: true }).click();
+    await expect(page.getByRole('button', { name: 'Detener dictado', exact: true })).toBeVisible();
+    await expect(input).not.toBeEditable();
     await page.evaluate(() => window.recognitionQA.onresult({ results: [[{ transcript: 'opciones vegetarianas' }]] }));
     await expect(send).toBeDisabled();
     await expect(input).toHaveValue('Quiero opciones vegetarianas');
@@ -72,8 +74,9 @@ const server = http.createServer((req, res) => {
     await page.getByText('Necesito una aclaración', { exact: true }).waitFor();
     await page.getByRole('button', { name: 'Escuchar respuesta', exact: true }).click();
     assert.equal(await page.evaluate(() => window.speechQA.text), '¿Qué restricción deseas consultar?');
+    await expect(page.getByRole('button', { name: 'Detener lectura', exact: true })).toBeVisible();
     await page.getByRole('button', { name: 'Detener lectura', exact: true }).click();
-    assert.equal(await page.getByRole('button', { name: 'Detener lectura', exact: true }).count(), 0);
+    await expect(page.getByRole('button', { name: 'Detener lectura', exact: true })).toHaveCount(0);
     ok('aclaración explícita y lectura que se puede detener');
     await page.evaluate(() => window.chatQA.reply('NO_DATA', 'Faltan ingredientes registrados.'));
     await page.getByText('Sin información suficiente', { exact: true }).waitFor();
