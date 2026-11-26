@@ -160,6 +160,7 @@ const server = http.createServer((req, res) => {
     await page.waitForFunction(() => document.querySelector('.chat-log').scrollTop === 0);
     await page.screenshot({ path: path.join(output, 'chat-integrado-mobile.png') });
     ok('contenedor existente: posición móvil, foco, respuesta, reintento y borrador al reabrir');
+    await page.evaluate(() => window.chatQA.verifyRequests());
     await context.close();
     const fallback = await browser.newContext();
     fallback.setDefaultTimeout(10000);

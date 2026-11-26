@@ -1,4 +1,4 @@
-// Isolated UI fixture: no session, HTTP provider or backend credentials.
+// Isolated fixture: fake session and HTTP test backend, never real credentials.
 import { Component, inject, signal } from '@angular/core';
 import { provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting, HttpTestingController } from '@angular/common/http/testing';
@@ -15,6 +15,13 @@ import { ChatMessage, ChatReply } from '../../src/app/components/chat-panel/chat
   selector: 'rp-root',
   imports: [ChatPanel, AssistantChat],
   template: `
+    @if (manual) {
+      <section aria-label="Prueba manual de voz">
+        <h1>Prueba local de voz — Windows y Chrome</h1>
+        <p>Usa Voz, permite el micrófono y dicta. Detén el dictado, edita el texto y envíalo.
+          Después pulsa Escuchar respuesta. La respuesta es fija de prueba, sin Gemini.</p>
+      </section>
+    }
     @if (wrapper) {
       <rp-assistant-chat />
     } @else if (visible()) {
@@ -29,6 +36,7 @@ import { ChatMessage, ChatReply } from '../../src/app/components/chat-panel/chat
 })
 class ChatPanelFixture {
   readonly wrapper = new URLSearchParams(location.search).has('wrapper');
+  readonly manual = new URLSearchParams(location.search).has('manual');
   readonly http = inject(HttpTestingController);
   readonly messages = signal<ChatMessage[]>([]);
   readonly busy = signal(false);
@@ -40,6 +48,7 @@ class ChatPanelFixture {
     this.sent.push(text);
     this.messages.update(messages => [...messages, { usuario: text }]);
     this.busy.set(true);
+    if (this.manual) this.reply('ANSWER', 'Esta es una respuesta de prueba de RestoPilot. Comprueba que puedes escucharla y detener la lectura.');
   }
   reply(estado: ChatReply['estado'], mensaje: string): void {
     this.busy.set(false);
@@ -51,11 +60,12 @@ class ChatPanelFixture {
   resolveRequest(): void {
     this.http.expectOne('/api/ia/cliente/chat').flush({ estado: 'ANSWER', mensaje: 'Respuesta de prueba' });
   }
+  verifyRequests(): void { this.http.verify(); }
 }
 
 bootstrapApplication(ChatPanelFixture, { providers: [
   provideHttpClient(), provideHttpClientTesting(),
   { provide: Router, useValue: { events: EMPTY, url: '/cliente' } },
-  { provide: API_SESSION, useValue: signal({ subject: 'qa-only', role: 'CLIENTE', accessToken: 'test-not-a-credential', expiresAt: Date.now() + 60_000 }) },
+  { provide: API_SESSION, useValue: signal({ subject: 'qa-only', role: 'CLIENTE', accessToken: 'test-not-a-credential', expiresAt: Date.now() + 3_600_000 }) },
   { provide: CatalogoService, useValue: { restaurantes: () => of([{ id: 1, nombre: 'Restaurante de prueba', activo: true }]) } },
 ] }).catch(console.error);
