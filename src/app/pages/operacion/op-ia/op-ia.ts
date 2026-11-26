@@ -1,7 +1,10 @@
-import {Component} from '@angular/core';
-import {FormGroup,ReactiveFormsModule} from '@angular/forms';
-/** Frame: op-ia. Responsable: Valentina Montenegro. Implementación pendiente. */
-@Component({selector:'rp-op-ia',imports:[ReactiveFormsModule],templateUrl:'./op-ia.html',styleUrl:'./op-ia.css'})
-export class OpIaPage{
- readonly form0=new FormGroup({}); // TODO: campos y validaciones del frame.
-}
+import { Component } from '@angular/core';
+import { AssistantChat } from '../../../components/assistant-chat/assistant-chat';
+
+@Component({
+  selector: 'rp-op-ia',
+  imports: [AssistantChat],
+  templateUrl: './op-ia.html',
+  styleUrl: './op-ia.css',
+})
+export class OpIaPage {}

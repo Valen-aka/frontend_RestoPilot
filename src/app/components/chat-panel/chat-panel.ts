@@ -34,6 +34,7 @@ export class ChatPanel {
   readonly messages = input<readonly ChatMessage[]>([]);
   readonly replyActions = input<TemplateRef<{ $implicit: ChatReply }> | null>(null);
   readonly busy = input(false);
+  readonly dismissible = input(true);
   readonly sendBlocked = input(false);
   readonly contextKey = input<number | null>(null);
   readonly error = input('');
@@ -107,7 +108,7 @@ export class ChatPanel {
 
   close(): void {
     this.stopAudio();
-    this.closed.emit();
+    if (this.dismissible()) this.closed.emit();
   }
 
   chooseSuggestion(text: string): void {
