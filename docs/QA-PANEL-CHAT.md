@@ -1,5 +1,26 @@
 # Panel reutilizable de chat
 
+## Corrección de QA — 25/11/2026
+
+Revisión en `fix/qa-panel-chat`, desde `develop` 0c1d52e. Se reprodujo el fallo original en `assert(await send.isDisabled())` después del resultado de dictado (línea 58 en esa revisión). Las lecturas inmediatas del DOM podían adelantarse a la actualización de Angular. Se sustituyeron por aserciones Playwright que esperan valores, disponibilidad, edición, foco y aparición/desaparición de controles. No se introducen pausas fijas ni reintentos que oculten ejecuciones fallidas.
+
+También se actualizan el selector contextual, el título de bienvenida y el modo sin voz para la interfaz vigente. Según `QA-CHAT-CONTEXTO.md`, el campo permanece vacío tras un error HTTP: el recorrido vuelve a escribir antes de reintentar. Esta corrección no cambia código de producción ni el diseño. Las descripciones de la implementación inicial más abajo son históricas y no sustituyen este comportamiento vigente.
+
+La prueba registra errores de página de ambos contextos, comprueba las solicitudes HTTP pendientes, espera que las imágenes carguen y verifica el ancho antes de medir cinco viewports. La fixture usa una sesión ficticia de una hora para evitar expiraciones accidentales en pruebas lentas. El ejecutor repetido crea un navegador nuevo por vuelta, alterna CPU normal/x4 y se detiene al primer fallo; conserva resultados y captura del fallo por ejecución.
+
+Resultado: `npm run verify` correcto y cinco vueltas consecutivas aprobadas, con 12 grupos de comprobaciones por vuelta. CPU: 1, 4, 1, 4 y 1. Evidencia local: `artifacts/chat-panel-repeated/2026-11-26T02-14-03-610Z/summary.json` (marca UTC, correspondiente al 25/11 en Lima). Los fallos de las ejecuciones de diagnóstico anteriores se conservaron en sus carpetas; no se contabilizan como vueltas aprobadas.
+
+```powershell
+npm run qa:chat:build
+npm run qa:chat
+npm run qa:chat:repeat
+npm run verify
+```
+
+Se requiere Playwright con sus aserciones de `playwright/test`, disponible mediante `PLAYWRIGHT_MODULE`; no se agregan dependencias de producción. `BROWSER_EXECUTABLE` selecciona Chrome/Chromium. `CHAT_PANEL_RUNS` permite de 1 a 20 vueltas (5 por defecto). Para una sola ejecución, `CHAT_PANEL_CPU_RATE` acepta 1 a 8 y `CHAT_PANEL_OUTPUT` selecciona la carpeta de evidencia. El resumen de repeticiones se guarda bajo `artifacts/chat-panel-repeated/<fecha>/summary.json`.
+
+La voz real en Windows con Chrome fue confirmada por la usuaria: dictado, edición, envío manual, reproducción, detención, cierre, cambio de modo y denegación del permiso. Detalles y alcance en [QA de dispositivos](QA-VOZ-DISPOSITIVOS.md). Los cinco tamaños automatizados no constituyen una prueba física en Android/iOS. No se volvió a comparar Figma porque esta entrega corrige QA sin cambios visuales.
+
 Implementación de S3-TSK-005 en `feature/panel-chat`, basada en `develop` (8c26551). Fecha: 23/11/2026, Lima.
 
 ## Alcance
