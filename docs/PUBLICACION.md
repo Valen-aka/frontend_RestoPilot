@@ -1,6 +1,6 @@
 # Publicación de Angular con Supabase
 
-La landing y la aplicación son una SPA. El frontend ya no depende de una API Spring Boot publicada. La preparación de esta rama no despliega el sitio.
+La landing y la aplicación son una SPA. Los flujos de negocio usan Supabase directamente y los chats usan la API Spring de asistentes.
 
 ## Construir
 
@@ -13,10 +13,16 @@ El script usa el proyecto público configurado. Para otro proyecto, definir RP_P
 
 Se genera temporalmente environment.publish.ts y se restaura o elimina al terminar. Publicar solo dist/restopilot/browser. netlify.toml ejecuta build:publish; public/_redirects permite recargar rutas SPA. En otro proveedor configurar el mismo fallback hacia index.html después de servir archivos existentes.
 
+## API de asistentes
+
+Configura `RP_PUBLIC_ASSISTANT_API_URL` en las variables de build de Netlify para el contexto de producción. Usa la URL pública HTTPS de Spring terminada en `/api/ia`. Angular añade `/cliente/chat` y `/admin/chat` y envía el token del usuario autenticado. Si omites la variable, el build emite un aviso y el asistente queda deshabilitado.
+
+En Spring, incluye el origen HTTPS de la Web Application en `RESTOPILOT_CORS_ALLOWED_ORIGINS` y configura la autenticación Supabase para el mismo proyecto que Angular. Activa Gemini en el servidor. Cada cambio de la URL requiere recompilar y volver a publicar la SPA.
+
 ## Proyecto Supabase
 
 Las migraciones de supabase/migrations ya fueron aplicadas al proyecto actual. En otro proyecto, instalarlas en orden y configurar Vault, Auth y el trabajo programado según la guía. No ejecutar scripts históricos que recrean tablas existentes.
 
 En Supabase Auth configurar Site URL y las URL de redirección del dominio final. El registro público requiere confirmar el correo; verificar entrega y redirección con ese dominio antes de anunciar el alta pública. Las siete cuentas migradas están confirmadas. La base mantiene los permisos y reglas de negocio en funciones del servidor; el navegador usa únicamente la clave publicable y la sesión del usuario.
 
-Después de publicar, verificar HTTPS, inicio de sesión, navegación por rol, recarga de rutas y ausencia de llamadas a localhost. La IA continúa fuera de esta implementación. Ver [guía](GUIA-SUPABASE-DIRECTO.md) y [evidencias](QA-SUPABASE-DIRECTO.md).
+Después de publicar, verifica HTTPS, inicio de sesión, navegación por rol, recarga de rutas y ausencia de llamadas a localhost. Prueba una consulta con una sesión de cliente y un reporte con una sesión de dueño o administrador. Comprueba que ambos POST llegan a la URL Spring configurada y devuelven una respuesta. Consulta la [guía de Supabase](GUIA-SUPABASE-DIRECTO.md) y sus [evidencias](QA-SUPABASE-DIRECTO.md).
