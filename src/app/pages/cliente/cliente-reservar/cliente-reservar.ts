@@ -116,7 +116,8 @@ export class ClienteReservarPage {
 
     const currentSearchId = ++this.searchSequence;
     this.cargando.set(true);
-    this.reservaService.consultarDisponibilidadDirecta(rid, fecha, horaInicio, horaFin, comensales).subscribe({
+    // Consultar disponibilidad con 1 comensal para obtener todas las mesas del plano desde la Mesa 01
+    this.reservaService.consultarDisponibilidadDirecta(rid, fecha, horaInicio, horaFin, 1).subscribe({
       next: (res) => {
         // Asegurar que una respuesta de búsqueda anterior no sobrescriba la búsqueda vigente (US05 - 024)
         if (currentSearchId !== this.searchSequence) {
@@ -125,7 +126,7 @@ export class ClienteReservarPage {
 
         this.cargando.set(false);
         this.store.actualizarMesasDesdeDisponibilidad(res.mesas);
-        const hayLibres = res.mesas.some(m => m.disponible);
+        const hayLibres = res.mesas.some(m => m.disponible && m.capacidad >= comensales);
         if (!hayLibres || res.mesas.length === 0) {
           this.router.navigate(['/cliente/reservar'], {
             queryParams: { vista: 'cliente-sin-disponibilidad', restauranteId: rid },

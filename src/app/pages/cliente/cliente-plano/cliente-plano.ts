@@ -52,7 +52,7 @@ export class ClientePlanoPage implements OnInit {
     if (!this.store.busquedaVigente() && d.fecha && d.horaInicio && d.horaFin && d.comensales) {
       this.cargando.set(true);
       this.errorMsg.set(null);
-      this.reservaService.consultarDisponibilidadDirecta(rid, d.fecha, d.horaInicio, d.horaFin, d.comensales).subscribe({
+      this.reservaService.consultarDisponibilidadDirecta(rid, d.fecha, d.horaInicio, d.horaFin, 1).subscribe({
         next: (res) => {
           this.cargando.set(false);
           this.store.actualizarMesasDesdeDisponibilidad(res.mesas);

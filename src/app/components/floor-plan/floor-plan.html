@@ -30,7 +30,8 @@
           }"
           [disabled]="soloLectura || !mesa.disponible"
           (click)="onSeleccionarMesa(mesa)"
-          [attr.aria-label]="'Mesa ' + obtenerNumeroDosDigitos(mesa.numero) + ', ' + mesa.capacidad + ' personas, ' + (mesa.disponible ? 'disponible' : 'no disponible') + (mesaSeleccionadaId === mesa.id ? ', seleccionada' : '')">
+          [attr.title]="mesa.motivoNoDisponible || null"
+          [attr.aria-label]="'Mesa ' + obtenerNumeroDosDigitos(mesa.numero) + ', ' + mesa.capacidad + ' personas, ' + (mesa.disponible ? 'disponible' : 'no disponible' + (mesa.motivoNoDisponible ? ' (' + mesa.motivoNoDisponible + ')' : '')) + (mesaSeleccionadaId === mesa.id ? ', seleccionada' : '')">
 
           <!-- Pestaña superior de silla -->
           <span class="chair-tab top" aria-hidden="true"></span>
@@ -45,16 +46,16 @@
           <span class="chair-tab bottom" aria-hidden="true"></span>
         </button>
       }
-
-      <!-- Puesto de Recepción en la 3ra columna de la última fila -->
-      <div class="reception-box" aria-label="Recepción del local">
-        <span class="reception-text">Recepción</span>
-      </div>
     </div>
 
     <!-- Pared Inferior: Entrada principal -->
     <div class="wall-bottom" aria-hidden="true">
       <span class="wall-label">ENTRADA PRINCIPAL</span>
+    </div>
+
+    <!-- Puesto de Recepción fijo en la esquina inferior derecha -->
+    <div class="reception-box" aria-label="Recepción del local">
+      <span class="reception-text">Recepción</span>
     </div>
   </div>
 

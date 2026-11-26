@@ -49,7 +49,7 @@ export class ClienteSinDisponibilidadPage {
       horaFin: turno.fin
     });
 
-    this.reservaService.consultarDisponibilidadDirecta(rid, d.fecha, turno.inicio, turno.fin, d.comensales).subscribe({
+    this.reservaService.consultarDisponibilidadDirecta(rid, d.fecha, turno.inicio, turno.fin, 1).subscribe({
       next: (res) => {
         this.store.actualizarMesasDesdeDisponibilidad(res.mesas);
         this.router.navigate(['/cliente/plano'], { queryParams: { restauranteId: rid }, queryParamsHandling: 'merge' });

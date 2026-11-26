@@ -225,16 +225,25 @@ export class ReservaStore {
   }
 
   actualizarMesasDesdeDisponibilidad(mesasDisponibles: readonly MesaDisponible[]) {
-    const mapeadas: MesaPlano[] = mesasDisponibles.map(m => ({
-      id: m.mesaId,
-      numero: `Mesa ${String(m.numero).padStart(2, '0')}`,
-      capacidad: m.capacidad,
-      zona: inferirZona(m.numero, m.coordenadaX),
-      disponible: m.disponible,
-      motivoNoDisponible: m.disponible ? undefined : 'Ocupada en este horario',
-      x: m.coordenadaX ?? ((m.numero * 18) % 85 + 5),
-      y: m.coordenadaY ?? ((m.numero * 22) % 65 + 15)
-    }));
+    const minCap = this.draft().comensales || 1;
+    const mapeadas: MesaPlano[] = mesasDisponibles.map(m => {
+      const tieneCapacidad = m.capacidad >= minCap;
+      const estaDisponible = m.disponible && tieneCapacidad;
+      const motivo = !m.disponible
+        ? 'Ocupada en este horario'
+        : (!tieneCapacidad ? 'Capacidad insuficiente para tu grupo' : undefined);
+
+      return {
+        id: m.mesaId,
+        numero: `Mesa ${String(m.numero).padStart(2, '0')}`,
+        capacidad: m.capacidad,
+        zona: inferirZona(m.numero, m.coordenadaX),
+        disponible: estaDisponible,
+        motivoNoDisponible: motivo,
+        x: m.coordenadaX ?? ((m.numero * 18) % 85 + 5),
+        y: m.coordenadaY ?? ((m.numero * 22) % 65 + 15)
+      };
+    });
     this.mesas.set(mapeadas);
     this.busquedaVigente.set(true);
 
