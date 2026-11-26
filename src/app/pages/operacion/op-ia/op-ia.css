@@ -1,2 +1,5 @@
-:host{display:block}
-/* TODO: estilos responsive exclusivos de esta pantalla; utilizar variables globales. */
+:host { display: block; }
+
+section { display: grid; gap: var(--rp-space-6); }
+h1 { margin: 0; color: var(--rp-navy); font-size: clamp(1.5rem, 4vw, 2rem); line-height: 1.25; }
+header p { margin: var(--rp-space-2) 0 0; color: var(--rp-muted); }
