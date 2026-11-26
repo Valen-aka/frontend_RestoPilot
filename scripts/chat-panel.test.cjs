@@ -6,7 +6,9 @@ const http = require('node:http');
 const { chromium } = require(process.env.PLAYWRIGHT_MODULE || 'playwright');
 const { expect } = require((process.env.PLAYWRIGHT_MODULE || 'playwright') + '/test');
 const root = path.resolve('artifacts/chat-panel-app/browser');
-const output = path.resolve('artifacts/chat-panel');
+const output = path.resolve(process.env.CHAT_PANEL_OUTPUT || 'artifacts/chat-panel');
+const cpuRate = Number(process.env.CHAT_PANEL_CPU_RATE || 1);
+if (!Number.isFinite(cpuRate) || cpuRate < 1 || cpuRate > 8) throw new Error('CHAT_PANEL_CPU_RATE debe estar entre 1 y 8.');
 fs.mkdirSync(output, { recursive: true });
 const server = http.createServer((req, res) => {
   const file = path.resolve(root, '.' + new URL(req.url, 'http://localhost').pathname.replace(/\/$/, '/index.html'));
@@ -17,11 +19,15 @@ const server = http.createServer((req, res) => {
 
 (async () => {
   await new Promise(resolve => server.listen(0, '127.0.0.1', resolve));
-  const browser = await chromium.launch({ headless: true, executablePath: process.env.BROWSER_EXECUTABLE || 'C:/Program Files/Google/Chrome/Application/chrome.exe' });
+  let browser;
+  let page;
+  const startedAt = new Date().toISOString();
   const results = [];
   const ok = name => { results.push(name); console.log('OK ' + name); };
   try {
+    browser = await chromium.launch({ headless: true, executablePath: process.env.BROWSER_EXECUTABLE || 'C:/Program Files/Google/Chrome/Application/chrome.exe' });
     const context = await browser.newContext();
+    context.setDefaultTimeout(10000);
     await context.addInitScript(() => {
       window.SpeechRecognition = class {
         start() { window.recognitionQA = this; }
@@ -33,7 +39,9 @@ const server = http.createServer((req, res) => {
         cancel() { window.cancelledQA = true; },
       } });
     });
-    const page = await context.newPage();
+    page = await context.newPage();
+    const cdp = await context.newCDPSession(page);
+    await cdp.send('Emulation.setCPUThrottlingRate', { rate: cpuRate });
     const errors = [];
     page.on('pageerror', error => errors.push(error.message));
     const url = `http://127.0.0.1:${server.address().port}`;
@@ -154,6 +162,7 @@ const server = http.createServer((req, res) => {
     ok('contenedor existente: posición móvil, foco, respuesta, reintento y borrador al reabrir');
     await context.close();
     const fallback = await browser.newContext();
+    fallback.setDefaultTimeout(10000);
     await fallback.addInitScript(() => {
       Object.defineProperty(window, 'SpeechRecognition', { value: undefined });
       Object.defineProperty(window, 'webkitSpeechRecognition', { value: undefined });
@@ -180,7 +189,13 @@ const server = http.createServer((req, res) => {
       const box = await image.boundingBox();
       assert(box && box.width > 0 && box.height > 0);
     }
-    fs.writeFileSync(path.join(output, 'resultado.json'), JSON.stringify({ scope: 'UI aislada; voz controlada, sin backend real ni reconocimiento físico', results }, null, 2));
+    fs.writeFileSync(path.join(output, 'resultado.json'), JSON.stringify({ passed: true, startedAt, cpuRate, scope: 'UI aislada; voz controlada, sin backend real ni reconocimiento físico', results }, null, 2));
     await fallback.close();
-  } finally { await browser.close(); server.close(); }
+  } catch (error) {
+    fs.writeFileSync(path.join(output, 'resultado.json'), JSON.stringify({ passed: false, startedAt, cpuRate, results, error: String(error) }, null, 2));
+    if (page && !page.isClosed()) await page.screenshot({ path: path.join(output, 'fallo.png') }).catch(() => {});
+    throw error;
+  } finally {
+    try { await browser?.close(); } finally { server.close(); }
+  }
 })().catch(error => { console.error(error); server.close(); process.exitCode = 1; });
