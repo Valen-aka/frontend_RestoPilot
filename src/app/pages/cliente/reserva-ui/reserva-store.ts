@@ -148,6 +148,8 @@ export class ReservaStore {
     horaInicio: '13:30',
     horaFin: '15:00',
     comensales: 4,
+    restauranteId: 1,
+    restauranteNombre: 'La Mesa Verde',
     mesaId: undefined,
     mesaNumero: undefined,
     zona: undefined,
