@@ -333,22 +333,12 @@ button:focus-visible {
     font-size: 9px;
   }
 
-  .client-header nav {
-    order: 3;
-    width: 100%;
-    gap: 12px;
-    overflow-x: auto;
-    padding: 8px 0 4px;
-    border-top: 1px solid #f0f3f2;
-    -webkit-overflow-scrolling: touch;
-    flex-wrap: nowrap;
-  }
-
-  .client-header nav a {
-    font-size: 11px;
-    min-height: 36px;
-    white-space: nowrap;
-    flex-shrink: 0;
+  .client-header nav:not(.open) {
+    display: none !important;
+    height: 0 !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    border: 0 !important;
   }
 
   .reserva-main {
