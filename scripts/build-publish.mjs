@@ -26,7 +26,8 @@ function main(){
  const supabase={url:publicSupabaseUrl(process.env.RP_PUBLIC_SUPABASE_URL||'https://unvxosrwqmcwrtxplrsf.supabase.co'),publishableKey:publicSupabaseKey(process.env.RP_PUBLIC_SUPABASE_KEY||'sb_publishable_IL42_jF4ncdOOtxCAjnooA_du9sKJul')};
  const assistantApiUrl = publicAssistantApiUrl(process.env.RP_PUBLIC_ASSISTANT_API_URL);
  if (!assistantApiUrl) console.warn('RP_PUBLIC_ASSISTANT_API_URL está sin configurar. El asistente queda deshabilitado en este build.');
- const environment = { production: true, transport: 'supabase', apiUrl: '/restopilot-api', assistantApiUrl, supabase };
+ const springApiUrl = assistantApiUrl?.replace(/\/ia$/, '');
+ const environment = { production: true, transport: 'supabase', apiUrl: '/restopilot-api', assistantApiUrl, springApiUrl, supabase };
  const target=resolve(root,'src/environments/environment.publish.ts'),previous=existsSync(target)?readFileSync(target):null;
  try{writeFileSync(target,`import type {EnvironmentConfig} from './environment.model';\n// Public configuration only.\nexport const environment:EnvironmentConfig=${JSON.stringify(environment)};\n`);const r=spawnSync(process.execPath,[resolve(root,'node_modules/@angular/cli/bin/ng.js'),'build','--configuration','publish'],{cwd:root,stdio:'inherit'});if(r.error)throw r.error;process.exitCode=r.status??1;}
  finally{if(previous)writeFileSync(target,previous);else if(existsSync(target))unlinkSync(target);}
