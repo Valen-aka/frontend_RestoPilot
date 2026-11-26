@@ -2,11 +2,9 @@
       <header class="header">
         <h2 [id]="titleId">{{ title() }}</h2>
         <button mat-button class="new-conversation" type="button" [disabled]="busy()" (click)="newConversation()">＋ Nueva consulta</button>
-        @if (dismissible()) {
-          <button mat-icon-button class="close" type="button" aria-label="Cerrar chat" (click)="close()">
-            <img src="assets/asistente/cerrar.svg" alt="" width="24" height="24">
-          </button>
-        }
+        <button mat-icon-button class="close" type="button" aria-label="Cerrar chat" (click)="close()">
+          <img src="assets/asistente/cerrar.svg" alt="" width="24" height="24">
+        </button>
       </header>
       <div class="chat-controls">
       <nav class="mode-bar" aria-label="Modo del asistente">
