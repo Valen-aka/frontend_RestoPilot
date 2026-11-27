@@ -1,4 +1,4 @@
-import {Component, inject, signal} from '@angular/core';
+import {Component, inject, OnInit, signal} from '@angular/core';
 import {FormControl, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
 import {ActivatedRoute, Router, RouterLink} from '@angular/router';
 import {MatButtonModule} from '@angular/material/button';
@@ -9,6 +9,10 @@ import {MatCheckboxModule} from '@angular/material/checkbox';
 import {MatIconModule} from '@angular/material/icon';
 import {ReservaStore} from '../reserva-ui/reserva-store';
 import {ReservaService} from '../../../core/services/reserva.service';
+import {CatalogoService} from '../../../core/services/catalogo.service';
+import {AuthService} from '../../../core/services/auth.service';
+import {ClientePerfilService} from '../../../core/services/cliente-perfil.service';
+import {activeClientSession} from '../../../core/auth/api-session';
 import {ReservaItem} from '../reserva-ui/reserva.model';
 import {ReservaRequest} from '../../../core/models/reserva-api.model';
 
@@ -32,9 +36,12 @@ import {ReservaRequest} from '../../../core/models/reserva-api.model';
   templateUrl: './cliente-reserva-revisar.html',
   styleUrls: ['../reserva-ui/reserva-view.css', './cliente-reserva-revisar.css']
 })
-export class ClienteReservaRevisarPage {
+export class ClienteReservaRevisarPage implements OnInit {
   readonly store = inject(ReservaStore);
   private readonly reservaService = inject(ReservaService);
+  private readonly catalogoService = inject(CatalogoService);
+  private readonly clientePerfil = inject(ClientePerfilService);
+  readonly auth = inject(AuthService);
   private readonly router = inject(Router);
   private readonly route = inject(ActivatedRoute);
 
@@ -53,6 +60,36 @@ export class ClienteReservaRevisarPage {
       validators: [Validators.requiredTrue]
     })
   });
+
+  ngOnInit(): void {
+    const rawRest = this.route.snapshot.queryParamMap.get('restauranteId');
+    const rid = rawRest && /^[1-9]\d*$/.test(rawRest) ? Number(rawRest) : this.store.draft().restauranteId || 1;
+    this.store.setRestaurante(rid);
+    this.catalogoService.restaurantes().subscribe({
+      next: (list) => {
+        const match = list.find(r => r.id === rid);
+        if (match) this.store.setRestaurante(match.id, match.nombre);
+      },
+      error: () => {}
+    });
+
+    const s = this.auth.session();
+    if (s) {
+      this.store.actualizarDatosUsuarioDesdeSesion(s);
+    }
+    if (activeClientSession(s)) {
+      this.clientePerfil.consultar().subscribe({
+        next: (p) => {
+          this.store.draft.update(d => ({
+            ...d,
+            nombreCliente: p.nombreCompleto || d.nombreCliente,
+            emailCliente: p.correo || d.emailCliente
+          }));
+        },
+        error: () => {}
+      });
+    }
+  }
 
   confirmarSolicitud() {
     this.errorApi.set(null);

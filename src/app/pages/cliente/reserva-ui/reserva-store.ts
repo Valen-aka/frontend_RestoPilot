@@ -4,35 +4,26 @@ import {EstadoReserva, MesaPlano, ReservaDraft, ReservaItem} from './reserva.mod
 import {MesaDisponible} from '../../../core/models/reserva-query.model';
 import {ReservaResponse} from '../../../core/models/reserva-api.model';
 import {ReservaService} from '../../../core/services/reserva.service';
+import {AuthService} from '../../../core/services/auth.service';
+import {CatalogoService} from '../../../core/services/catalogo.service';
+import {ApiSession} from '../../../core/auth/api-session';
 
 function inferirZona(numero: number, coordX?: number): 'Terraza' | 'Salón Principal' | 'Ventanal' | 'Zona VIP' {
-  if (coordX !== undefined && coordX !== null) {
-    // Si la coordenada viene en escala de píxeles (ej. 60, 240, 420 px de la BD), normalizar a 0..100
-    const normX = coordX > 100 ? (coordX / 500) * 100 : coordX;
-    if (normX <= 25) return 'Terraza';
-    if (normX <= 50) return 'Salón Principal';
-    if (normX <= 75) return 'Ventanal';
-    return 'Zona VIP';
-  }
-  // Mapeo balanceado y armónico por número de mesa en 4 zonas simétricas
-  const mod = ((numero - 1) % 8) + 1;
-  if (mod <= 2) return 'Terraza';
-  if (mod <= 4) return 'Salón Principal';
-  if (mod <= 6) return 'Ventanal';
-  return 'Zona VIP';
+  // Estandarización de recinto común sin subdivisiones de zonas
+  return 'Salón Principal';
 }
 
 import {getFechaLima} from './reserva-date.util';
 
 export const MESAS_CATALOGO: MesaPlano[] = [
-  { id: 1, numero: 'Mesa 01', capacidad: 2, zona: 'Terraza', disponible: true, x: 10, y: 15 },
-  { id: 2, numero: 'Mesa 02', capacidad: 4, zona: 'Terraza', disponible: true, x: 25, y: 15 },
+  { id: 1, numero: 'Mesa 01', capacidad: 2, zona: 'Salón Principal', disponible: true, x: 10, y: 15 },
+  { id: 2, numero: 'Mesa 02', capacidad: 4, zona: 'Salón Principal', disponible: true, x: 25, y: 15 },
   { id: 3, numero: 'Mesa 03', capacidad: 4, zona: 'Salón Principal', disponible: false, motivoNoDisponible: 'Ocupada en este turno', x: 45, y: 15 },
   { id: 4, numero: 'Mesa 04', capacidad: 4, zona: 'Salón Principal', disponible: true, x: 60, y: 15 },
-  { id: 5, numero: 'Mesa 05', capacidad: 4, zona: 'Ventanal', disponible: true, x: 10, y: 55 },
-  { id: 6, numero: 'Mesa 06', capacidad: 6, zona: 'Ventanal', disponible: false, motivoNoDisponible: 'Reserva confirmada', x: 30, y: 55 },
-  { id: 7, numero: 'Mesa 07', capacidad: 6, zona: 'Zona VIP', disponible: true, x: 75, y: 55 },
-  { id: 8, numero: 'Mesa 08', capacidad: 8, zona: 'Zona VIP', disponible: true, x: 90, y: 55 }
+  { id: 5, numero: 'Mesa 05', capacidad: 4, zona: 'Salón Principal', disponible: true, x: 10, y: 55 },
+  { id: 6, numero: 'Mesa 06', capacidad: 6, zona: 'Salón Principal', disponible: false, motivoNoDisponible: 'Reserva confirmada', x: 30, y: 55 },
+  { id: 7, numero: 'Mesa 07', capacidad: 6, zona: 'Salón Principal', disponible: true, x: 75, y: 55 },
+  { id: 8, numero: 'Mesa 08', capacidad: 8, zona: 'Salón Principal', disponible: true, x: 90, y: 55 }
 ];
 
 const RESERVAS_MUESTRA: ReservaItem[] = [
@@ -142,22 +133,71 @@ export class ReservaStore {
   readonly busquedaVigente = signal<boolean>(false);
   readonly reservas = signal<ReservaItem[]>(RESERVAS_MUESTRA);
 
-  // Inicializa sin mesa preseleccionada de muestra (US06 - 026)
+  private readonly auth = inject(AuthService);
+  private readonly catalogo = inject(CatalogoService);
+
+  // Inicializa con restaurante estándar y datos reactivos del titular (US06)
   readonly draft = signal<ReservaDraft>({
     fecha: getFechaLima(),
     horaInicio: '13:30',
     horaFin: '15:00',
     comensales: 4,
     restauranteId: 1,
-    restauranteNombre: 'La Mesa Verde',
+    restauranteNombre: 'RESTOPILOT CENTRAL',
     mesaId: undefined,
     mesaNumero: undefined,
     zona: undefined,
     notas: '',
-    nombreCliente: 'Ana Pérez',
-    emailCliente: 'ana.perez@ejemplo.com',
-    telefonoCliente: '+51 987 654 321'
+    nombreCliente: '',
+    emailCliente: '',
+    telefonoCliente: ''
   });
+
+  constructor() {
+    const s = this.auth.session();
+    if (s) {
+      this.actualizarDatosUsuarioDesdeSesion(s);
+    }
+    this.catalogo.restaurantes().subscribe({
+      next: (list) => {
+        const rid = this.draft().restauranteId || 1;
+        const match = list.find(r => r.id === rid);
+        if (match) {
+          this.setRestaurante(match.id, match.nombre);
+        }
+      },
+      error: () => {}
+    });
+  }
+
+  setRestaurante(id: number, nombre?: string) {
+    const fallback = id === 2 ? 'RestoPilotDemo' : 'RESTOPILOT CENTRAL';
+    this.draft.update(d => ({
+      ...d,
+      restauranteId: id,
+      restauranteNombre: nombre || (id === d.restauranteId && d.restauranteNombre ? d.restauranteNombre : fallback)
+    }));
+  }
+
+  actualizarDatosUsuarioDesdeSesion(session: ApiSession | null) {
+    if (!session) return;
+    const nombre = session.nombreCompleto?.trim();
+    let email = '';
+    if (session.accessToken && session.accessToken.includes('.')) {
+      try {
+        const part = session.accessToken.split('.')[1].replace(/-/g, '+').replace(/_/g, '/');
+        const claims = JSON.parse(atob(part.padEnd(Math.ceil(part.length / 4) * 4, '=')));
+        if (typeof claims['sub'] === 'string' && claims['sub'].includes('@')) {
+          email = claims['sub'];
+        }
+      } catch {}
+    }
+    this.draft.update(d => ({
+      ...d,
+      nombreCliente: nombre || d.nombreCliente || 'Cliente',
+      emailCliente: email || d.emailCliente || ''
+    }));
+  }
 
   // Filtro activo en el listado
   readonly filtroEstado = signal<string>('TODAS');
@@ -202,9 +242,14 @@ export class ReservaStore {
         // Al alterar los criterios de búsqueda, invalidamos la búsqueda anterior y limpiamos la mesa
         this.mesas.set([]);
         this.busquedaVigente.set(false);
+        const rid = criteria.restauranteId ?? d.restauranteId ?? 1;
+        const fallback = rid === 2 ? 'RestoPilotDemo' : 'RESTOPILOT CENTRAL';
+        const nombreRest = criteria.restauranteNombre || (rid === d.restauranteId && d.restauranteNombre ? d.restauranteNombre : fallback);
         return {
           ...d,
           ...criteria,
+          restauranteId: rid,
+          restauranteNombre: nombreRest,
           mesaId: undefined,
           mesaNumero: undefined,
           zona: undefined
