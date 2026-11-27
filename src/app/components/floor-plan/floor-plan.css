@@ -1,2 +1,376 @@
-:host{display:block}
-/* TODO: estilos del componente. */
+:host {
+  display: block;
+  width: 100%;
+}
+
+.floor-plan-card {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 100%;
+}
+
+/* ==========================================================================
+   Encabezado del Salón
+   ========================================================================== */
+.floor-header {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.salon-title {
+  font: 700 18px/1.3 'Roboto', Arial, sans-serif;
+  color: #15324e;
+  margin: 0;
+  letter-spacing: -0.3px;
+}
+
+/* ==========================================================================
+   Recinto Arquitectónico del Salón
+   ========================================================================== */
+.floor-room {
+  background-color: #fbfcfa;
+  border: 1.5px solid #dce5df;
+  border-radius: 16px;
+  padding: 12px 20px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.02);
+}
+
+/* Pared Superior: Ventana con vista al jardín */
+.wall-top {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding-top: 2px;
+}
+
+.window-panes {
+  display: flex;
+  gap: 4px;
+  width: 100%;
+}
+
+.window-pane {
+  flex: 1;
+  height: 9px;
+  background-color: #bcdccb;
+  border-radius: 2px;
+  opacity: 0.9;
+}
+
+.wall-label {
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: 2.2px;
+  text-transform: uppercase;
+  color: #7b9286;
+  text-align: center;
+}
+
+/* Pared Inferior: Entrada principal */
+.wall-bottom {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  padding-top: 6px;
+  padding-bottom: 2px;
+}
+
+/* ==========================================================================
+   Cuadrícula de Mesas (3 Columnas simétricas)
+   ========================================================================== */
+.tables-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 22px 18px;
+  align-items: center;
+  justify-items: center;
+  padding: 12px 14px;
+}
+
+/* Botón interactivo de Mesa */
+.table-btn {
+  background: transparent;
+  border: none;
+  padding: 0;
+  margin: 0;
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  cursor: pointer;
+  transition: transform 0.18s ease;
+  width: 100%;
+  max-width: 100px;
+}
+
+.table-btn:focus-visible {
+  outline: 3px solid #15324e !important;
+  outline-offset: 4px !important;
+  border-radius: 14px;
+}
+
+/* Pestañas de sillas superior e inferior */
+.chair-tab {
+  display: block;
+  width: 44px;
+  height: 8px;
+  border-radius: 4px;
+  transition: background-color 0.18s ease, border-color 0.18s ease;
+}
+
+/* Tablero central de la mesa */
+.table-body {
+  width: 82px;
+  height: 74px;
+  border-radius: 16px;
+  border: 1.5px solid #d1d8d4;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.18s ease;
+  background-color: #f1f3f2;
+}
+
+.table-num {
+  font-weight: 700;
+  font-size: 20px;
+  line-height: 1.1;
+  letter-spacing: -0.3px;
+}
+
+.table-capacity {
+  font-size: 11px;
+  font-weight: 500;
+  margin-top: 3px;
+}
+
+/* ==========================================================================
+   Estados Visuales de Mesas (Disponible, No disponible, Seleccionada)
+   ========================================================================== */
+
+/* 1. Disponible (Verde suave menta) */
+.table-btn.is-available .table-body {
+  background-color: #eaf5ed;
+  border-color: #9ad5b0;
+  color: #1e7855;
+}
+
+.table-btn.is-available .chair-tab {
+  background-color: #bde5cc;
+  border: 1px solid #9ad5b0;
+}
+
+.table-btn.is-available:hover .table-body {
+  transform: translateY(-2px);
+  border-color: #1b7954;
+  box-shadow: 0 4px 12px rgba(30, 120, 85, 0.16);
+}
+
+.table-btn.is-available:hover .chair-tab.top {
+  transform: translateY(-2px);
+}
+
+.table-btn.is-available:hover .chair-tab.bottom {
+  transform: translateY(2px);
+}
+
+/* 2. No disponible / Ocupada (Gris suave neutro) */
+.table-btn.is-occupied {
+  cursor: not-allowed;
+  opacity: 0.85;
+}
+
+.table-btn.is-occupied .table-body {
+  background-color: #f1f3f2;
+  border-color: #d1d8d4;
+  color: #8e9792;
+}
+
+.table-btn.is-occupied .chair-tab {
+  background-color: #dadfdc;
+  border: 1px solid #d1d8d4;
+}
+
+/* 3. Seleccionada (Azul marino profundo con texto blanco) */
+.table-btn.is-selected .table-body {
+  background-color: #152e4d !important;
+  border-color: #152e4d !important;
+  color: #ffffff !important;
+  box-shadow: 0 6px 16px rgba(21, 46, 77, 0.28) !important;
+  transform: translateY(-2px);
+}
+
+.table-btn.is-selected .chair-tab {
+  background-color: #24466d !important;
+  border: 1px solid #152e4d !important;
+}
+
+.table-btn.is-insufficient {
+  opacity: 0.88;
+}
+
+/* ==========================================================================
+   Puesto de Recepción (Fijo permanentemente en la esquina inferior derecha)
+   ========================================================================== */
+.reception-box {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  width: 120px;
+  height: 64px;
+  background-color: #ecf1ed;
+  border-top: 1.5px solid #d5dfd8;
+  border-left: 1.5px solid #d5dfd8;
+  border-top-left-radius: 8px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-start;
+  padding: 8px 12px;
+  box-sizing: border-box;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.reception-text {
+  font-size: 12px;
+  font-weight: 500;
+  color: #6e8478;
+}
+
+/* ==========================================================================
+   Leyenda Inferior
+   ========================================================================== */
+.floor-legend {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+  padding-top: 4px;
+  font-size: 13px;
+  color: #4a5c53;
+  flex-wrap: wrap;
+}
+
+.legend-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.legend-swatch {
+  width: 13px;
+  height: 13px;
+  border-radius: 3px;
+  display: inline-block;
+}
+
+.swatch-available {
+  background-color: #eaf5ed;
+  border: 1.5px solid #9ad5b0;
+}
+
+.swatch-occupied {
+  background-color: #f1f3f2;
+  border: 1.5px solid #d1d8d4;
+}
+
+.swatch-selected {
+  background-color: #152e4d;
+  border: 1.5px solid #152e4d;
+}
+
+/* ==========================================================================
+   Adaptación Responsiva Móvil (<= 600px y <= 390px)
+   ========================================================================== */
+@media (max-width: 600px) {
+  .floor-room {
+    padding: 10px 8px 12px;
+    border-radius: 12px;
+    gap: 10px;
+  }
+
+  .tables-grid {
+    gap: 12px 6px;
+    padding: 8px 2px 12px;
+  }
+
+  .table-body {
+    width: 68px;
+    height: 62px;
+    border-radius: 12px;
+  }
+
+  .table-num {
+    font-size: 16px;
+  }
+
+  .table-capacity {
+    font-size: 10px;
+    margin-top: 2px;
+  }
+
+  .chair-tab {
+    width: 36px;
+    height: 6px;
+    border-radius: 3px;
+  }
+
+  .reception-box {
+    width: 82px;
+    height: 48px;
+    padding: 4px 8px;
+    border-top-left-radius: 6px;
+  }
+
+  .reception-text {
+    font-size: 10px;
+  }
+
+  .floor-legend {
+    gap: 14px;
+    font-size: 11px;
+    padding-top: 4px;
+  }
+
+  .wall-label {
+    font-size: 9px;
+    letter-spacing: 1.6px;
+  }
+
+  .salon-title {
+    font-size: 15px;
+  }
+}
+
+@media (max-width: 360px) {
+  .table-body {
+    width: 58px;
+    height: 56px;
+    border-radius: 10px;
+  }
+
+  .table-num {
+    font-size: 14px;
+  }
+
+  .chair-tab {
+    width: 30px;
+  }
+
+  .reception-box {
+    width: 70px;
+    height: 42px;
+    padding: 3px 6px;
+  }
+}

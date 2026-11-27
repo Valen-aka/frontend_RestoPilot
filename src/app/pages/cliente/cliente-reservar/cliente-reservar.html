@@ -15,7 +15,12 @@
     </div>
 
     <div class="reserva-card">
-      <h2 class="card-title">Datos de tu visita</h2>
+      <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:8px;">
+        <h2 class="card-title" style="margin:0;">Datos de tu visita</h2>
+        <a mat-button routerLink="/cliente/reservar" [queryParams]="{vista: 'cliente-reservas-deshabilitadas'}" style="color:var(--rp-primary);font-size:13px;font-weight:500;">
+          Cambiar de restaurante →
+        </a>
+      </div>
       <p class="card-instruction">Completa el formulario para consultar la disponibilidad en tiempo real en nuestro plano de mesas.</p>
 
       @if (errorMsg()) {
@@ -87,7 +92,7 @@
 
   <!-- Pie de Página -->
   <footer class="client-footer">
-    <p>RestoPilot · La Mesa Verde (Lima - Miraflores)</p>
+    <p>RestoPilot · {{ store.draft().restauranteNombre || 'RESTOPILOT CENTRAL' }}</p>
     <p>Tu restaurante, en piloto automático.</p>
     <a routerLink="/cliente">Volver al inicio</a>
   </footer>

@@ -4,31 +4,26 @@ import {EstadoReserva, MesaPlano, ReservaDraft, ReservaItem} from './reserva.mod
 import {MesaDisponible} from '../../../core/models/reserva-query.model';
 import {ReservaResponse} from '../../../core/models/reserva-api.model';
 import {ReservaService} from '../../../core/services/reserva.service';
+import {AuthService} from '../../../core/services/auth.service';
+import {CatalogoService} from '../../../core/services/catalogo.service';
+import {ApiSession} from '../../../core/auth/api-session';
 
 function inferirZona(numero: number, coordX?: number): 'Terraza' | 'Salón Principal' | 'Ventanal' | 'Zona VIP' {
-  if (coordX !== undefined && coordX !== null) {
-    if (coordX <= 30) return 'Terraza';
-    if (coordX <= 60) return 'Salón Principal';
-    if (coordX <= 80) return 'Ventanal';
-    return 'Zona VIP';
-  }
-  if (numero <= 2) return 'Terraza';
-  if (numero <= 5) return 'Salón Principal';
-  if (numero <= 7) return 'Ventanal';
-  return 'Zona VIP';
+  // Estandarización de recinto común sin subdivisiones de zonas
+  return 'Salón Principal';
 }
 
 import {getFechaLima} from './reserva-date.util';
 
-const MESAS_INICIALES: MesaPlano[] = [
-  { id: 1, numero: 'Mesa 01', capacidad: 2, zona: 'Terraza', disponible: true, x: 10, y: 15 },
-  { id: 2, numero: 'Mesa 02', capacidad: 2, zona: 'Terraza', disponible: true, x: 30, y: 15 },
-  { id: 3, numero: 'Mesa 03', capacidad: 4, zona: 'Salón Principal', disponible: false, motivoNoDisponible: 'Ocupada en este turno', x: 55, y: 15 },
-  { id: 4, numero: 'Mesa 04', capacidad: 4, zona: 'Salón Principal', disponible: true, x: 80, y: 15 },
-  { id: 5, numero: 'Mesa 05', capacidad: 4, zona: 'Ventanal', disponible: true, x: 10, y: 55 },
-  { id: 6, numero: 'Mesa 06', capacidad: 6, zona: 'Ventanal', disponible: false, motivoNoDisponible: 'Reserva confirmada', x: 40, y: 55 },
-  { id: 7, numero: 'Mesa 07', capacidad: 6, zona: 'Salón Principal', disponible: true, x: 65, y: 55 },
-  { id: 8, numero: 'Mesa 08', capacidad: 8, zona: 'Zona VIP', disponible: true, x: 90, y: 55 }
+export const MESAS_CATALOGO: MesaPlano[] = [
+  { id: 1, numero: 'Mesa 01', capacidad: 2, zona: 'Salón Principal', disponible: true, x: 10, y: 15 },
+  { id: 2, numero: 'Mesa 02', capacidad: 4, zona: 'Salón Principal', disponible: true, x: 25, y: 15 },
+  { id: 3, numero: 'Mesa 03', capacidad: 4, zona: 'Salón Principal', disponible: false, motivoNoDisponible: 'Ocupada en este turno', x: 45, y: 15 },
+  { id: 4, numero: 'Mesa 04', capacidad: 4, zona: 'Salón Principal', disponible: true, x: 60, y: 15 },
+  { id: 5, numero: 'Mesa 05', capacidad: 4, zona: 'Salón Principal', disponible: true, x: 10, y: 55 },
+  { id: 6, numero: 'Mesa 06', capacidad: 6, zona: 'Salón Principal', disponible: false, motivoNoDisponible: 'Reserva confirmada', x: 30, y: 55 },
+  { id: 7, numero: 'Mesa 07', capacidad: 6, zona: 'Salón Principal', disponible: true, x: 75, y: 55 },
+  { id: 8, numero: 'Mesa 08', capacidad: 8, zona: 'Salón Principal', disponible: true, x: 90, y: 55 }
 ];
 
 const RESERVAS_MUESTRA: ReservaItem[] = [
@@ -132,25 +127,77 @@ const RESERVAS_MUESTRA: ReservaItem[] = [
 
 @Injectable({ providedIn: 'root' })
 export class ReservaStore {
+  readonly catalogoMesas = MESAS_CATALOGO;
   // El plano inicia sin mesas de muestra para mostrar únicamente la búsqueda vigente (US05 - 024)
   readonly mesas = signal<MesaPlano[]>([]);
   readonly busquedaVigente = signal<boolean>(false);
   readonly reservas = signal<ReservaItem[]>(RESERVAS_MUESTRA);
 
-  // Inicializa sin mesa preseleccionada de muestra (US06 - 026)
+  private readonly auth = inject(AuthService);
+  private readonly catalogo = inject(CatalogoService);
+
+  // Inicializa con restaurante estándar y datos reactivos del titular (US06)
   readonly draft = signal<ReservaDraft>({
     fecha: getFechaLima(),
     horaInicio: '13:30',
     horaFin: '15:00',
     comensales: 4,
+    restauranteId: 1,
+    restauranteNombre: 'RESTOPILOT CENTRAL',
     mesaId: undefined,
     mesaNumero: undefined,
     zona: undefined,
     notas: '',
-    nombreCliente: 'Ana Pérez',
-    emailCliente: 'ana.perez@ejemplo.com',
-    telefonoCliente: '+51 987 654 321'
+    nombreCliente: '',
+    emailCliente: '',
+    telefonoCliente: ''
   });
+
+  constructor() {
+    const s = this.auth.session();
+    if (s) {
+      this.actualizarDatosUsuarioDesdeSesion(s);
+    }
+    this.catalogo.restaurantes().subscribe({
+      next: (list) => {
+        const rid = this.draft().restauranteId || 1;
+        const match = list.find(r => r.id === rid);
+        if (match) {
+          this.setRestaurante(match.id, match.nombre);
+        }
+      },
+      error: () => {}
+    });
+  }
+
+  setRestaurante(id: number, nombre?: string) {
+    const fallback = id === 2 ? 'RestoPilotDemo' : 'RESTOPILOT CENTRAL';
+    this.draft.update(d => ({
+      ...d,
+      restauranteId: id,
+      restauranteNombre: nombre || (id === d.restauranteId && d.restauranteNombre ? d.restauranteNombre : fallback)
+    }));
+  }
+
+  actualizarDatosUsuarioDesdeSesion(session: ApiSession | null) {
+    if (!session) return;
+    const nombre = session.nombreCompleto?.trim();
+    let email = '';
+    if (session.accessToken && session.accessToken.includes('.')) {
+      try {
+        const part = session.accessToken.split('.')[1].replace(/-/g, '+').replace(/_/g, '/');
+        const claims = JSON.parse(atob(part.padEnd(Math.ceil(part.length / 4) * 4, '=')));
+        if (typeof claims['sub'] === 'string' && claims['sub'].includes('@')) {
+          email = claims['sub'];
+        }
+      } catch {}
+    }
+    this.draft.update(d => ({
+      ...d,
+      nombreCliente: nombre || d.nombreCliente || 'Cliente',
+      emailCliente: email || d.emailCliente || ''
+    }));
+  }
 
   // Filtro activo en el listado
   readonly filtroEstado = signal<string>('TODAS');
@@ -195,9 +242,14 @@ export class ReservaStore {
         // Al alterar los criterios de búsqueda, invalidamos la búsqueda anterior y limpiamos la mesa
         this.mesas.set([]);
         this.busquedaVigente.set(false);
+        const rid = criteria.restauranteId ?? d.restauranteId ?? 1;
+        const fallback = rid === 2 ? 'RestoPilotDemo' : 'RESTOPILOT CENTRAL';
+        const nombreRest = criteria.restauranteNombre || (rid === d.restauranteId && d.restauranteNombre ? d.restauranteNombre : fallback);
         return {
           ...d,
           ...criteria,
+          restauranteId: rid,
+          restauranteNombre: nombreRest,
           mesaId: undefined,
           mesaNumero: undefined,
           zona: undefined
@@ -218,16 +270,25 @@ export class ReservaStore {
   }
 
   actualizarMesasDesdeDisponibilidad(mesasDisponibles: readonly MesaDisponible[]) {
-    const mapeadas: MesaPlano[] = mesasDisponibles.map(m => ({
-      id: m.mesaId,
-      numero: `Mesa ${String(m.numero).padStart(2, '0')}`,
-      capacidad: m.capacidad,
-      zona: inferirZona(m.numero, m.coordenadaX),
-      disponible: m.disponible,
-      motivoNoDisponible: m.disponible ? undefined : 'Ocupada en este horario',
-      x: m.coordenadaX ?? ((m.numero * 18) % 85 + 5),
-      y: m.coordenadaY ?? ((m.numero * 22) % 65 + 15)
-    }));
+    const minCap = this.draft().comensales || 1;
+    const mapeadas: MesaPlano[] = mesasDisponibles.map(m => {
+      const tieneCapacidad = m.capacidad >= minCap;
+      const estaDisponible = m.disponible && tieneCapacidad;
+      const motivo = !m.disponible
+        ? 'Ocupada en este horario'
+        : (!tieneCapacidad ? 'Capacidad insuficiente para tu grupo' : undefined);
+
+      return {
+        id: m.mesaId,
+        numero: `Mesa ${String(m.numero).padStart(2, '0')}`,
+        capacidad: m.capacidad,
+        zona: inferirZona(m.numero, m.coordenadaX),
+        disponible: estaDisponible,
+        motivoNoDisponible: motivo,
+        x: m.coordenadaX ?? ((m.numero * 18) % 85 + 5),
+        y: m.coordenadaY ?? ((m.numero * 22) % 65 + 15)
+      };
+    });
     this.mesas.set(mapeadas);
     this.busquedaVigente.set(true);
 

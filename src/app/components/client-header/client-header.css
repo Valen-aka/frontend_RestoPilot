@@ -10,10 +10,10 @@ a:focus-visible,button:focus-visible{outline:3px solid var(--rp-focus-color);out
 
 .notification-area{position:relative;flex:none;order:0}.menu-symbol{display:none}
 @media(max-width:900px){.notification-area{order:3}.menu-toggle{order:2}nav{order:4}.account{order:5}}
-@media(max-width:400px){.client-header{gap:8px}.menu-toggle{width:44px;min-width:44px;padding-inline:0}.menu-text{display:none}.menu-symbol{display:inline;font-size:20px}}
+@media(max-width:400px){.client-header{padding:12px 14px;min-height:auto;gap:8px}.menu-toggle{width:44px;min-width:44px;padding-inline:0}.menu-text{display:none}.menu-symbol{display:inline;font-size:20px}}
 .account{display:flex;align-items:center;flex:none}
 .account-toggle{display:grid;place-items:center;width:44px;height:44px;border:1px solid var(--rp-primary);border-radius:50%;background:var(--rp-container,#d8f2e3);color:var(--rp-primary);font:700 14px var(--rp-font);letter-spacing:.02em;text-decoration:none}
 .account-toggle:hover,.account-toggle[aria-current="page"]{background:var(--rp-primary);color:#fff}
-@media(max-width:900px){.account,.account.open{display:flex;order:4;width:auto;border:0;padding:0}.notification-area{order:3}.client-header nav{order:5}}
-@media(max-width:400px){.brand{flex:none;width:44px;overflow:hidden}}@media(min-width:1251px){.client-header{position:relative;justify-content:flex-start;gap:12px}.client-header nav{position:absolute;left:50%;transform:translateX(-50%);margin-left:0}.notification-area{margin-left:auto}.account{margin-left:0}}
+@media(max-width:900px){.account,.account.open{display:flex;order:4;width:auto;border:0;padding:0}.notification-area{order:3}.client-header nav{order:5}.client-header nav:not(.open){display:none !important;height:0 !important;min-height:0 !important;padding:0 !important;margin:0 !important;border:0 !important;overflow:hidden !important}}
+@media(max-width:400px){.brand{flex:none;width:44px;height:44px;max-height:44px;overflow:hidden}.brand rp-brand{height:44px;overflow:hidden}.brand .wordmark{display:none !important}}@media(min-width:1251px){.client-header{position:relative;justify-content:flex-start;gap:12px}.client-header nav{position:absolute;left:50%;transform:translateX(-50%);margin-left:0}.notification-area{margin-left:auto}.account{margin-left:0}}
 @media(min-width:901px) and (max-width:1250px){.notification-area{margin-left:auto}}

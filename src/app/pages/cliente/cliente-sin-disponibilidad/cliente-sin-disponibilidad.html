@@ -56,7 +56,7 @@
 
   <!-- Pie de Página -->
   <footer class="client-footer">
-    <p>RestoPilot · La Mesa Verde (Lima - Miraflores)</p>
+    <p>RestoPilot · {{ store.draft().restauranteNombre || 'RESTOPILOT CENTRAL' }}</p>
     <p>Tu restaurante, en piloto automático.</p>
     <a routerLink="/cliente">Volver al inicio</a>
   </footer>

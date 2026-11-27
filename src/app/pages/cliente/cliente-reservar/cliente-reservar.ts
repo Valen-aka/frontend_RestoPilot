@@ -1,4 +1,4 @@
-import {Component, inject, signal} from '@angular/core';
+import {Component, inject, OnInit, signal} from '@angular/core';
 import {FormControl, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
 import {ActivatedRoute, Router, RouterLink} from '@angular/router';
 import {MatButtonModule} from '@angular/material/button';
@@ -9,6 +9,8 @@ import {MatSelectModule} from '@angular/material/select';
 import {MatIconModule} from '@angular/material/icon';
 import {ReservaStore} from '../reserva-ui/reserva-store';
 import {ReservaService} from '../../../core/services/reserva.service';
+import {CatalogoService} from '../../../core/services/catalogo.service';
+import {AuthService} from '../../../core/services/auth.service';
 import {getFechaLima, getHoraLima} from '../reserva-ui/reserva-date.util';
 
 /**
@@ -31,9 +33,11 @@ import {getFechaLima, getHoraLima} from '../reserva-ui/reserva-date.util';
   templateUrl: './cliente-reservar.html',
   styleUrls: ['../reserva-ui/reserva-view.css', './cliente-reservar.css']
 })
-export class ClienteReservarPage {
+export class ClienteReservarPage implements OnInit {
   readonly store = inject(ReservaStore);
   private readonly reservaService = inject(ReservaService);
+  private readonly catalogoService = inject(CatalogoService);
+  readonly auth = inject(AuthService);
   private readonly router = inject(Router);
   private readonly route = inject(ActivatedRoute);
 
@@ -43,6 +47,24 @@ export class ClienteReservarPage {
   // Fecha mínima: hoy en hora de Lima (America/Lima, UTC-5)
   readonly hoy = getFechaLima();
   private searchSequence = 0;
+
+  ngOnInit(): void {
+    const rawRest = this.route.snapshot.queryParamMap.get('restauranteId');
+    const rid = rawRest && /^[1-9]\d*$/.test(rawRest) ? Number(rawRest) : this.store.draft().restauranteId || 1;
+    this.store.setRestaurante(rid);
+    this.catalogoService.restaurantes().subscribe({
+      next: (list) => {
+        const match = list.find(r => r.id === rid);
+        if (match) this.store.setRestaurante(match.id, match.nombre);
+      },
+      error: () => {}
+    });
+
+    const s = this.auth.session();
+    if (s) {
+      this.store.actualizarDatosUsuarioDesdeSesion(s);
+    }
+  }
 
   readonly form0 = new FormGroup({
     fecha: new FormControl(this.store.draft().fecha || this.hoy, {
@@ -116,7 +138,8 @@ export class ClienteReservarPage {
 
     const currentSearchId = ++this.searchSequence;
     this.cargando.set(true);
-    this.reservaService.consultarDisponibilidadDirecta(rid, fecha, horaInicio, horaFin, comensales).subscribe({
+    // Consultar disponibilidad con 1 comensal para obtener todas las mesas del plano desde la Mesa 01
+    this.reservaService.consultarDisponibilidadDirecta(rid, fecha, horaInicio, horaFin, 1).subscribe({
       next: (res) => {
         // Asegurar que una respuesta de búsqueda anterior no sobrescriba la búsqueda vigente (US05 - 024)
         if (currentSearchId !== this.searchSequence) {
@@ -125,7 +148,7 @@ export class ClienteReservarPage {
 
         this.cargando.set(false);
         this.store.actualizarMesasDesdeDisponibilidad(res.mesas);
-        const hayLibres = res.mesas.some(m => m.disponible);
+        const hayLibres = res.mesas.some(m => m.disponible && m.capacidad >= comensales);
         if (!hayLibres || res.mesas.length === 0) {
           this.router.navigate(['/cliente/reservar'], {
             queryParams: { vista: 'cliente-sin-disponibilidad', restauranteId: rid },

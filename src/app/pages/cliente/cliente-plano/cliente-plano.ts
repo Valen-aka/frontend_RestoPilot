@@ -6,8 +6,11 @@ import {MatIconModule} from '@angular/material/icon';
 import {MatChipsModule} from '@angular/material/chips';
 import {ReservaStore} from '../reserva-ui/reserva-store';
 import {ReservaService} from '../../../core/services/reserva.service';
+import {CatalogoService} from '../../../core/services/catalogo.service';
+import {AuthService} from '../../../core/services/auth.service';
 import {MesaPlano} from '../reserva-ui/reserva.model';
 import {ClientLoadingSkeleton} from '../../../components/client-loading-skeleton/client-loading-skeleton';
+import {FloorPlan} from '../../../components/floor-plan/floor-plan';
 
 /**
  * Frame: cliente-plano | "Elige tu lugar favorito"
@@ -22,7 +25,8 @@ import {ClientLoadingSkeleton} from '../../../components/client-loading-skeleton
     MatCardModule,
     MatIconModule,
     MatChipsModule,
-    ClientLoadingSkeleton
+    ClientLoadingSkeleton,
+    FloorPlan
   ],
   templateUrl: './cliente-plano.html',
   styleUrls: ['../reserva-ui/reserva-view.css', './cliente-plano.css']
@@ -30,6 +34,8 @@ import {ClientLoadingSkeleton} from '../../../components/client-loading-skeleton
 export class ClientePlanoPage implements OnInit {
   readonly store = inject(ReservaStore);
   private readonly reservaService = inject(ReservaService);
+  private readonly catalogoService = inject(CatalogoService);
+  readonly auth = inject(AuthService);
   private readonly router = inject(Router);
   private readonly route = inject(ActivatedRoute);
 
@@ -38,7 +44,20 @@ export class ClientePlanoPage implements OnInit {
 
   ngOnInit() {
     const rawRest = this.route.snapshot.queryParamMap.get('restauranteId');
-    const rid = rawRest && /^[1-9]\d*$/.test(rawRest) ? Number(rawRest) : this.store.draft().restauranteId;
+    const rid = rawRest && /^[1-9]\d*$/.test(rawRest) ? Number(rawRest) : this.store.draft().restauranteId || 1;
+    this.store.setRestaurante(rid);
+    this.catalogoService.restaurantes().subscribe({
+      next: (list) => {
+        const match = list.find(r => r.id === rid);
+        if (match) this.store.setRestaurante(match.id, match.nombre);
+      },
+      error: () => {}
+    });
+
+    const s = this.auth.session();
+    if (s) {
+      this.store.actualizarDatosUsuarioDesdeSesion(s);
+    }
     const d = this.store.draft();
 
     if (!rid) {
@@ -50,7 +69,7 @@ export class ClientePlanoPage implements OnInit {
     if (!this.store.busquedaVigente() && d.fecha && d.horaInicio && d.horaFin && d.comensales) {
       this.cargando.set(true);
       this.errorMsg.set(null);
-      this.reservaService.consultarDisponibilidadDirecta(rid, d.fecha, d.horaInicio, d.horaFin, d.comensales).subscribe({
+      this.reservaService.consultarDisponibilidadDirecta(rid, d.fecha, d.horaInicio, d.horaFin, 1).subscribe({
         next: (res) => {
           this.cargando.set(false);
           this.store.actualizarMesasDesdeDisponibilidad(res.mesas);

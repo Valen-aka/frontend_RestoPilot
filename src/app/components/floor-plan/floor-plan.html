@@ -1,1 +1,77 @@
-<!-- TODO: componente reutilizable floor-plan. Sin contenido implementado. -->
+<div class="floor-plan-card" role="region" aria-label="Plano de distribución del salón">
+  <!-- Encabezado del plano: Salón principal · Fecha · Horario -->
+  <header class="floor-header">
+    <h2 class="salon-title">Salón principal · {{ headerSubtitle }}</h2>
+  </header>
+
+  <!-- Recinto Arquitectónico Estándar Común -->
+  <div class="floor-room">
+    <!-- Pared Superior: Ventana con vista al jardín -->
+    <div class="wall-top" aria-hidden="true">
+      <div class="window-panes">
+        @for (i of windowPanes; track i) {
+          <span class="window-pane"></span>
+        }
+      </div>
+      <span class="wall-label">VENTANA · VISTA AL JARDÍN</span>
+    </div>
+
+    <!-- Distribución de Mesas en 3 columnas -->
+    <div class="tables-grid">
+      @for (mesa of mesasOrdenadas; track mesa.id) {
+        <button
+          type="button"
+          class="table-btn"
+          [ngClass]="{
+            'is-available': mesa.disponible,
+            'is-occupied': !mesa.disponible,
+            'is-selected': mesaSeleccionadaId === mesa.id,
+            'is-insufficient': esMesaInsuficiente(mesa)
+          }"
+          [disabled]="soloLectura || !mesa.disponible"
+          (click)="onSeleccionarMesa(mesa)"
+          [attr.title]="mesa.motivoNoDisponible || null"
+          [attr.aria-label]="'Mesa ' + obtenerNumeroDosDigitos(mesa.numero) + ', ' + mesa.capacidad + ' personas, ' + (mesa.disponible ? 'disponible' : 'no disponible' + (mesa.motivoNoDisponible ? ' (' + mesa.motivoNoDisponible + ')' : '')) + (mesaSeleccionadaId === mesa.id ? ', seleccionada' : '')">
+
+          <!-- Pestaña superior de silla -->
+          <span class="chair-tab top" aria-hidden="true"></span>
+
+          <!-- Tablero de la mesa -->
+          <div class="table-body">
+            <span class="table-num">{{ obtenerNumeroDosDigitos(mesa.numero) }}</span>
+            <span class="table-capacity">{{ mesa.capacidad }} pers.</span>
+          </div>
+
+          <!-- Pestaña inferior de silla -->
+          <span class="chair-tab bottom" aria-hidden="true"></span>
+        </button>
+      }
+    </div>
+
+    <!-- Pared Inferior: Entrada principal -->
+    <div class="wall-bottom" aria-hidden="true">
+      <span class="wall-label">ENTRADA PRINCIPAL</span>
+    </div>
+
+    <!-- Puesto de Recepción fijo en la esquina inferior derecha -->
+    <div class="reception-box" aria-label="Recepción del local">
+      <span class="reception-text">Recepción</span>
+    </div>
+  </div>
+
+  <!-- Leyenda de estados de mesas -->
+  <footer class="floor-legend" role="list" aria-label="Leyenda de estados">
+    <div class="legend-item" role="listitem">
+      <span class="legend-swatch swatch-available" aria-hidden="true"></span>
+      <span>Disponible</span>
+    </div>
+    <div class="legend-item" role="listitem">
+      <span class="legend-swatch swatch-occupied" aria-hidden="true"></span>
+      <span>No disponible</span>
+    </div>
+    <div class="legend-item" role="listitem">
+      <span class="legend-swatch swatch-selected" aria-hidden="true"></span>
+      <span>Seleccionada</span>
+    </div>
+  </footer>
+</div>
