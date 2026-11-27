@@ -1,5 +1,11 @@
 # Voz en dispositivos reales
 
+## Confirmación de la corrección — 27/11/2026
+
+Tras recargar `http://127.0.0.1:18085/?manual`, enviar «Prueba de sonido» y pulsar Escuchar respuesta, la usuaria confirmó: **«Ahora sí se oye»**. Esta confirmación corresponde a la fixture local con `fix/lectura-respuestas` y audio real de Windows/Chrome; no certifica que la rama esté integrada o desplegada en la web publicada. La detención y los demás casos siguen cubiertos por las pruebas controladas y su antecedente manual, sin atribuirles una nueva confirmación física en esta revisión.
+
+El registro de reapertura siguiente describe el diagnóstico anterior a esta confirmación.
+
 ## Incidencia reabierta — 27/11/2026
 
 La usuaria informó nuevamente «sigue sin escucharse la respuesta». La confirmación del 25/11 se conserva como antecedente, pero no acredita que la lectura funcione actualmente. La reproducción audible y su detención vuelven a quedar **pendientes de validación** con la corrección de `fix/lectura-respuestas`.
