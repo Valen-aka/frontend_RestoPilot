@@ -5,6 +5,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { ChatMessage, ChatReply } from './chat-message.model';
+import { SpeechPlayback } from './speech-playback';
 
 interface Dictation {
   lang: string;
@@ -47,11 +48,12 @@ export class ChatPanel {
   readonly mode = signal<'text' | 'voice'>('text');
   readonly listening = signal(false);
   readonly speaking = signal(false);
+  readonly preparingSpeech = signal(false);
   readonly voiceError = signal('');
   private readonly browser = inject(DOCUMENT).defaultView;
   private readonly host = inject<ElementRef<HTMLElement>>(ElementRef);
   private readonly destroyRef = inject(DestroyRef);
-  private utterance?: SpeechSynthesisUtterance;
+  private playback?: SpeechPlayback;
   private readonly Dictation = (this.browser as (Window & {
     SpeechRecognition?: new () => Dictation;
     webkitSpeechRecognition?: new () => Dictation;
@@ -64,6 +66,11 @@ export class ChatPanel {
   private readonly money = new Intl.NumberFormat('es-PE', { style: 'currency', currency: 'PEN' });
 
   constructor() {
+    if (this.canSpeak && this.browser) {
+      this.playback = new SpeechPlayback(this.browser.speechSynthesis, text => new SpeechSynthesisUtterance(text),
+        state => { this.speaking.set(state === 'speaking'); this.preparingSpeech.set(state === 'loading'); },
+        error => this.voiceError.set(error));
+    }
     this.destroyRef.onDestroy(() => this.stopAudio());
     effect(() => {
       this.contextKey();
@@ -133,9 +140,7 @@ export class ChatPanel {
   }
 
   stopSpeaking(): void {
-    this.utterance = undefined;
-    this.speaking.set(false);
-    this.browser?.speechSynthesis?.cancel();
+    this.playback?.stop();
   }
 
   dictate(): void {
@@ -176,7 +181,6 @@ export class ChatPanel {
     if (!this.canSpeak || !synthesis) return;
     this.stopAudio();
     this.voiceError.set('');
-    synthesis.cancel();
     const data = reply.datos;
     let details = '';
     if (data?.estadoPagos) {
@@ -193,17 +197,7 @@ export class ChatPanel {
         details = `El pico de demanda fue a las ${top[0]} con ${top[1]} pedidos.`;
       }
     }
-    const speech = new SpeechSynthesisUtterance([reply.mensaje, details].filter(Boolean).join(' '));
-    speech.lang = 'es-PE';
-    this.utterance = speech;
-    speech.onend = () => { if (this.utterance === speech) this.stopSpeaking(); };
-    speech.onerror = () => {
-      if (this.utterance !== speech) return;
-      this.stopSpeaking();
-      this.voiceError.set('No se pudo leer la respuesta. Puedes leerla en el chat.');
-    };
-    this.speaking.set(true);
-    try { synthesis.speak(speech); } catch { speech.onerror?.(new Event('error') as SpeechSynthesisErrorEvent); }
+    this.playback?.play([reply.mensaje, details].filter(Boolean).join(' '));
   }
 
   parseDishes(dishes: readonly string[]): { nombre: string; cantidad: string }[] {
