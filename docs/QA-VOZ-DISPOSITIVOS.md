@@ -1,5 +1,17 @@
 # Voz en dispositivos reales
 
+## Incidencia reabierta — 27/11/2026
+
+La usuaria informó nuevamente «sigue sin escucharse la respuesta». La confirmación del 25/11 se conserva como antecedente, pero no acredita que la lectura funcione actualmente. La reproducción audible y su detención vuelven a quedar **pendientes de validación** con la corrección de `fix/lectura-respuestas`.
+
+Se elige una voz instalada (preferencia por español local), se espera `voiceschanged` si la lista aún está vacía y se reanuda el sintetizador si está pausado. La interfaz muestra preparación hasta recibir `onstart`. Si no aparecen voces o no comienza la lectura, muestra un error y permite reintentar. Un evento `onstart` confirma actividad del motor, no sonido audible en los altavoces.
+
+La página de prueba muestra los nombres e idiomas de las voces disponibles. Para diagnosticar el fallo se necesita registrar la URL probada, el mensaje que aparece tras pulsar Escuchar y si se oye audio. No se atribuye todavía el problema a Windows, a Chrome o al despliegue sin esa evidencia.
+
+Pruebas controladas: `npm run qa:speech` cubre voces tardías/ausentes, selección de idioma disponible, estado pausado, inicio real, falta de inicio, cancelación, eventos obsoletos y errores. Referencia de la API: [SpeechSynthesis](https://developer.mozilla.org/en-US/docs/Web/API/SpeechSynthesis).
+
+Validación del 27/11: 11 pruebas unitarias aprobadas, suite del panel aprobada (12 grupos, cinco tamaños) y `npm run verify` correcto. Esto demuestra el manejo de estados y errores en pruebas controladas, no audibilidad. La nueva confirmación física sigue pendiente.
+
 Estado: recorrido confirmado por la usuaria el 25/11/2026 en Windows con Chrome. La confirmación proviene de su prueba manual; no de observación automatizada ni de una grabación. No se registraron versiones exactas del sistema/navegador ni modelo de micrófono/altavoz. Los viewports automatizados no representan pruebas con hardware móvil.
 
 ## Preparación
