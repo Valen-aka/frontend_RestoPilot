@@ -1,5 +1,9 @@
 # Panel reutilizable de chat
 
+## Lectura sin sonido — incidencia reabierta
+
+La corrección de sincronización de QA no resolvió la reproducción audible reportada de nuevo por la usuaria. La suite anterior simulaba `speak()` y no comprobaba un inicio real del motor. `fix/lectura-respuestas` añade un controlador con selección de voces instaladas, carga tardía, reanudación y errores de inicio; el estado de reproducción depende de `onstart`. La simulación emite ese evento explícitamente y las pruebas unitarias verifican también su ausencia. La aceptación física vuelve a estar pendiente; consultar [el registro de dispositivos](QA-VOZ-DISPOSITIVOS.md).
+
 ## Corrección de QA — 25/11/2026
 
 Revisión en `fix/qa-panel-chat`, desde `develop` 0c1d52e. Se reprodujo el fallo original en `assert(await send.isDisabled())` después del resultado de dictado (línea 58 en esa revisión). Las lecturas inmediatas del DOM podían adelantarse a la actualización de Angular. Se sustituyeron por aserciones Playwright que esperan valores, disponibilidad, edición, foco y aparición/desaparición de controles. No se introducen pausas fijas ni reintentos que oculten ejecuciones fallidas.
