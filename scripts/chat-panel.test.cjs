@@ -29,13 +29,18 @@ const server = http.createServer((req, res) => {
     const context = await browser.newContext();
     context.setDefaultTimeout(10000);
     await context.addInitScript(() => {
+      window.SpeechSynthesisUtterance = class { constructor(text) { this.text = text; } };
       window.SpeechRecognition = class {
         start() { window.recognitionQA = this; }
         stop() { this.onend?.(); }
         abort() { window.abortedQA = true; this.onend?.(); }
       };
       Object.defineProperty(window, 'speechSynthesis', { value: {
-        speak(speech) { window.speechQA = speech; },
+        speak(speech) { window.speechQA = speech; speech.onstart?.(); },
+        getVoices() { return [{ name: 'Voz QA', lang: 'es-ES', localService: true }]; },
+        resume() {},
+        addEventListener() {},
+        removeEventListener() {},
         cancel() { window.cancelledQA = true; },
       } });
     });

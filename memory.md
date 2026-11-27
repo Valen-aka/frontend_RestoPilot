@@ -14,6 +14,12 @@ Conservar aprendizajes verificables que ayuden a evitar errores repetidos en est
 
 ## Aprendizajes verificados
 
+### 2026-11-27 — Invocar síntesis no demuestra audio audible
+
+- Evidencia: después de corregir la suite y recibir una confirmación humana, la usuaria volvió a reportar respuestas sin sonido. La simulación solo comprobaba el texto entregado a `speak()`.
+- Aprendizaje: separar preparación, evento de inicio y confirmación de audibilidad. No exigir `es-PE` si el dispositivo ofrece otra voz; consultar voces disponibles y manejar carga tardía, pausa y ausencia de inicio. Una prueba controlada no valida volumen, salida de audio ni la versión desplegada.
+- Comprobación: `npm run qa:speech`, regresión del panel y prueba física en la URL que usa la persona. Mantener la incidencia abierta hasta confirmar el audio de la versión corregida.
+
 ### 2026-11-25 — Sincronización de QA del panel de chat
 
 - Evidencia: la suite original consultaba `isDisabled()` inmediatamente después del callback de dictado y fallaba antes del render de Angular. Las comprobaciones de desaparición y valor también leían instantáneas del DOM.

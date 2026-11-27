@@ -187,10 +187,11 @@
         <ng-content select="[chat-actions]" />
       </div>
       <div class="status" role="status" aria-live="polite">
+        @if (preparingSpeech()) { <p>Preparando lectura…</p> }
         @if (busy()) { <p>Consultando al asistente…</p> }
         @if (listening()) { <p>Escuchando… Detén el dictado para revisar y editar el texto.</p> }
       </div>
-      @if (speaking()) {
+      @if (speaking() || preparingSpeech()) {
         <button mat-button type="button" (click)="stopSpeaking()">Detener lectura</button>
       }
       @if (error()) { <p class="error" role="alert">{{ error() }}</p> }

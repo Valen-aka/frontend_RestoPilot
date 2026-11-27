@@ -1,5 +1,5 @@
 // Isolated fixture: fake session and HTTP test backend, never real credentials.
-import { Component, inject, signal } from '@angular/core';
+import { Component, DestroyRef, inject, signal } from '@angular/core';
 import { provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting, HttpTestingController } from '@angular/common/http/testing';
 import { Router } from '@angular/router';
@@ -20,6 +20,7 @@ import { ChatMessage, ChatReply } from '../../src/app/components/chat-panel/chat
         <h1>Prueba local de voz — Windows y Chrome</h1>
         <p>Usa Voz, permite el micrófono y dicta. Detén el dictado, edita el texto y envíalo.
           Después pulsa Escuchar respuesta. La respuesta es fija de prueba, sin Gemini.</p>
+        <p role="status">Voces disponibles: {{ voices() || 'Esperando voces del navegador…' }}</p>
       </section>
     }
     @if (wrapper) {
@@ -37,13 +38,22 @@ import { ChatMessage, ChatReply } from '../../src/app/components/chat-panel/chat
 class ChatPanelFixture {
   readonly wrapper = new URLSearchParams(location.search).has('wrapper');
   readonly manual = new URLSearchParams(location.search).has('manual');
+  readonly voices = signal('');
   readonly http = inject(HttpTestingController);
   readonly messages = signal<ChatMessage[]>([]);
   readonly busy = signal(false);
   readonly error = signal('');
   readonly visible = signal(true);
   readonly sent: string[] = [];
-  constructor() { (window as unknown as { chatQA: ChatPanelFixture }).chatQA = this; }
+  constructor() {
+    (window as unknown as { chatQA: ChatPanelFixture }).chatQA = this;
+    if (this.manual && window.speechSynthesis) {
+      const update = () => this.voices.set(window.speechSynthesis.getVoices().map(v => `${v.name} (${v.lang})`).join(', '));
+      update();
+      window.speechSynthesis.addEventListener('voiceschanged', update);
+      inject(DestroyRef).onDestroy(() => window.speechSynthesis.removeEventListener('voiceschanged', update));
+    }
+  }
   send(text: string): void {
     this.sent.push(text);
     this.messages.update(messages => [...messages, { usuario: text }]);
